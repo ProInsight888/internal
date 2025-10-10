@@ -1,0 +1,782 @@
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, useForm, usePage } from "@inertiajs/react";
+import { Fragment, useState } from "react";
+
+// Status Card Component
+const StatusCard = ({ title, count, total, bgColor, textColor = "text-white" }) => (
+  <div className={`${bgColor} ${textColor} p-6 flex flex-col gap-3 rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.02]`}>
+    <div className="text-lg font-bold">{title}</div>
+    <div className="text-4xl text-right font-bold">
+      {count}/{total}
+    </div>
+    <div className="w-full bg-white/20 rounded-full h-2.5">
+      <div 
+        className="bg-white h-2.5 rounded-full" 
+        style={{ width: `${(count/total)*100}%` }}
+      ></div>
+    </div>
+  </div>
+);
+
+// Task Section Component
+const TaskSection = ({
+  title,
+  tasks,
+  borderColor,
+  bgColor,
+  textColor = "text-white",
+  isHidden,
+  toggleHidden,
+  showDescriptionIndex,
+  setShowDescriptionIndex,
+  icon
+}) => {
+  return (
+    <div className="w-full pb-4 border-b-2 border-gray-100">
+      <div className="flex items-center p-4 gap-3 rounded-t-xl" style={{ backgroundColor: `${borderColor}20` }}
+          onClick={toggleHidden}
+      >
+        <div
+          className={`${isHidden ? "rotate-0" : "rotate-90"} w-8 h-8 flex items-center justify-center rounded-lg cursor-pointer transition-all duration-200 hover:scale-110`}
+          style={{color: textColor }}
+        >
+          {icon || (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              className="fill-current"
+            >
+              <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+            </svg>
+          )}
+        </div>
+        <div className="text-xl font-bold flex items-center" style={{ color: borderColor }}>
+          {title}
+        </div>
+        <div className="ml-2 text-sm bg-white px-2 py-1 rounded-full font-bold shadow-sm" style={{ color: borderColor }}>
+          {tasks.length}
+        </div>
+      </div>
+      <div
+        className={`${isHidden ? "hidden" : ""} bg-white p-4 border border-gray-200 rounded-b-xl w-full overflow-x-auto mt-0 shadow-md`}
+      >
+        <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
+          <thead>
+            <tr className="text-sm border-b-2 bg-gray-50">
+              <th className="py-3 px-4 bg-gray-50 sticky top-0">No</th>
+              <th className="py-3 px-4 bg-gray-50 sticky top-0">Task</th>
+              <th className="py-3 px-4 bg-gray-50 sticky top-0">Penanggung Jawab</th>
+              <th className="py-3 px-4 bg-gray-50 sticky top-0">Task Format</th>
+              <th className="py-3 px-4 bg-gray-50 sticky top-0">Status</th>
+              <th className="py-3 px-4 bg-gray-50 sticky top-0">Company</th>
+              <th className="py-3 px-4 bg-gray-50 sticky top-0">Category</th>
+              <th className="py-3 px-4 bg-gray-50 sticky top-0">Deadline</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.map((task, index) => (
+              <Fragment key={task.uuid}>
+                <tr
+                  className="text-sm text-left cursor-pointer hover:bg-gray-50 even:bg-gray-50/30 transition-colors duration-150"
+                  onClick={() =>
+                    setShowDescriptionIndex(
+                      showDescriptionIndex === index ? null : index,
+                    )
+                  }
+                >
+                  <td className="px-4 py-3 font-medium">{index + 1}</td>
+                  <td className="px-4 py-3 font-semibold">{task.task_title}</td>
+                  <td className="px-4 py-3">
+                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      {task.penanggung_jawab}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">{task.task_format}</td>
+                  <td className="px-4 py-3">
+                    <span className="px-3 py-1.5 rounded-full text-xs font-bold shadow-sm" style={{
+                      backgroundColor: `${getStatusColor(task.status)}20`,
+                      color: getStatusColor(task.status)
+                    }}>
+                      {task.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 font-medium">{task.company}</td>
+                  <td className="px-4 py-3">
+                    <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      {task.category}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 font-semibold">{task.deadline}</td>
+                </tr>
+                {showDescriptionIndex === index && (
+                  <tr>
+                    <td colSpan={8}>
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200 rounded-xl p-4 my-2 shadow-inner">
+                        <div className="text-md font-bold text-gray-900 mb-2 flex items-center">
+                          <svg className="w-4 h-4 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path>
+                          </svg>
+                          {task.company} - Task Description
+                        </div>
+                        <div className="text-sm text-gray-700 bg-white p-3 rounded-lg border">
+                          {task.description}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+// Attendance Form Component
+const AttendanceForm = ({
+  onSubmit,
+  data,
+  setData,
+  errors,
+  sortDate,
+  setSortDate,
+}) => (
+  <div className="text-gray-800 mt-4 bg-gradient-to-br from-blue-50 to-purple-50 p-4 border border-blue-100 rounded-2xl shadow-sm">
+    <div className="pb-3 flex flex-col gap-3 justify-between">
+      <div className="flex flex-col md:flex-row justify-between gap-3">
+        <div className="relative flex-1">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"></path>
+            </svg>
+          </div>
+          <input
+            type="date"
+            value={sortDate}
+            onChange={(e) => setSortDate(e.target.value)}
+            className="pl-10 p-2.5 w-full border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 focus:border-transparent shadow-sm"
+          />
+        </div>
+        <form onSubmit={onSubmit} className="flex gap-3 flex-1">
+          <div className="relative w-full">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"></path>
+              </svg>
+            </div>
+            <select
+              value={data.absence}
+              onChange={(e) => setData("absence", e.target.value)}
+              className="pl-10 p-2.5 w-full border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 focus:border-transparent shadow-sm"
+            >
+              <option value="Hadir">Hadir</option>
+              <option value="Balek">Pulang</option>
+              <option value="Sakit">Sakit</option>
+              <option value="Izin">Izin</option>
+              <option value="Cuti">Cuti</option>
+              <option value="Ketemu Client">Ketemu Client</option>
+              <option value="Lembur">Lembur</option>
+              <option value="Pulang Lembur">Pulang Lembur</option>
+            </select>
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white font-bold px-4 py-2.5 rounded-lg hover:from-blue-600 hover:to-purple-600 text-sm transition-all duration-300 shadow-md hover:shadow-lg"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+      {errors.absence && (
+        <div className="text-red-500 font-semibold text-sm bg-red-50 p-2 rounded-lg border border-red-100">
+          {errors.absence}
+        </div>
+      )}
+    </div>
+  </div>
+);
+
+// Attendance Table Component
+const AttendanceTable = ({ absens }) => {
+  const dayNames = (inputDate) => {
+    const date = new Date(inputDate);
+    return date.toLocaleDateString("id-ID", { weekday: "long" });
+  };
+
+  return (
+    <div className="overflow-x-auto w-full bg-white rounded-2xl border border-gray-200 shadow-sm">
+      <table className="w-full table-fixed border-collapse">
+        <thead className="w-full bg-gradient-to-r from-blue-500 to-blue-400 text-white">
+          <tr className="text-xs md:text-sm text-left">
+            <th className="px-4 py-3">No</th>
+            <th className="px-4 py-3">Nama</th>
+            <th className="px-4 py-3">Status</th>
+            <th className="px-4 py-3">Hari</th>
+            <th className="px-4 py-3">Datang</th>
+            <th className="px-4 py-3">Pulang</th>
+          </tr>
+        </thead>
+        <tbody className="w-full">
+          {absens.map((absen, index) => (
+            <tr
+              key={absen.id}
+              className="text-xs md:text-sm text-left hover:bg-gray-50 even:bg-gray-50/30 transition-colors duration-150"
+            >
+              <td className="px-4 py-3 font-medium">{index + 1}</td>
+              <td className="px-4 py-3 font-semibold">{absen.user}</td>
+              <td className="px-4 py-3">
+                <span className="px-3 py-1.5 rounded-full text-xs font-bold shadow-sm" style={{
+                  backgroundColor: `${getAttendanceStatusColor(absen.status)}20`,
+                  color: getAttendanceStatusColor(absen.status)
+                }}>
+                  {absen.status}
+                </span>
+              </td>
+              <td className="px-4 py-3">
+                {dayNames(absen.tanggal)}
+              </td>
+              <td className="px-4 py-3 font-semibold">
+                {absen.jam_datang || '-'}
+              </td>
+              <td className="px-4 py-3 font-semibold">
+                {absen.jam_balek || '-'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+// Client Table Component
+const ClientTable = ({ clients }) => (
+  <div className="overflow-x-auto h-64 border border-gray-200 rounded-2xl bg-white shadow-sm">
+    <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
+      <thead>
+        <tr className="text-xs md:text-sm bg-gradient-to-r from-pink-500 to-pink-400 text-white">
+          <th className="p-4 sticky top-0">No</th>
+          <th className="p-4 sticky top-0">Nama</th>
+          <th className="p-4 sticky top-0">Type</th>
+          <th className="p-4 sticky top-0">Location</th>
+          <th className="p-4 sticky top-0">Contract</th>
+          <th className="p-4 sticky top-0">Product</th>
+          <th className="p-4 sticky top-0">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {clients.map((client, index) => (
+          <tr
+            key={client.id}
+            className="text-xs md:text-sm hover:bg-gray-50 even:bg-gray-50/30 transition-colors duration-150"
+          >
+            <td className="p-4 font-medium">{index + 1}</td>
+            <td className="p-4 font-semibold">{client.company_name}</td>
+            <td className="p-4">
+              <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                {client.type}
+              </span>
+            </td>
+            <td className="p-4">{client.location}</td>
+            <td className="p-4 font-medium">{client.contract}</td>
+            <td className="p-4">
+              <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                {client.package}
+              </span>
+            </td>
+            <td className="p-4">
+              <span className="px-3 py-1.5 rounded-full text-xs font-bold shadow-sm" style={{
+                backgroundColor: `${getClientStatusColor(client.status)}20`,
+                color: getClientStatusColor(client.status)
+              }}>
+                {client.status}
+              </span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+
+// Helper functions for status colors
+const getStatusColor = (status) => {
+  const statusColors = {
+    'On Progress': '#3B82F6', // blue
+    'Pending': '#F59E0B',     // amber
+    'Approved': '#10B981',    // emerald
+    'In Review': '#8B5CF6',   // violet
+    'Rejected': '#EF4444',    // red
+    'Revision': '#F97316',    // orange
+    'Idle': '#6B7280',        // gray
+    'Lunas': '#EC4899',       // pink
+    'Cici': '#14B8A6',        // teal
+  };
+  return statusColors[status] || '#6B7280';
+};
+
+const getAttendanceStatusColor = (status) => {
+  const statusColors = {
+    'Hadir': '#10B981',       // emerald
+    'Sakit': '#F59E0B',       // amber
+    'Izin': '#3B82F6',        // blue
+    'Cuti': '#8B5CF6',        // violet
+    'Ketemu Client': '#EC4899', // pink
+    'Lembur': '#F97316',      // orange
+    'Pulang Lembur': '#14B8A6', // teal
+    'Balek': '#06B6D4',       // cyan
+  };
+  return statusColors[status] || '#6B7280';
+};
+
+const getClientStatusColor = (status) => {
+  const statusColors = {
+    'Lunsa': '#10B981',       // emerald
+    'Cici': '#3B82F6',        // blue
+  };
+  return statusColors[status] || '#6B7280';
+};
+
+const TaskCard = ({ task }) => {
+  const deadline = new Date(task.deadline);
+  const today = new Date();
+  
+  deadline.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+  
+  const diffTime = deadline - today;
+  const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  // Get task status information
+  const { status, bgColor, textColor, borderColor, statusText } = getTaskStatus(remainingDays);
+  
+  // Format date for display
+  const formattedDate = new Date(task.deadline).toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric'
+  });
+  
+  return (
+    <div className={`flex-none w-72 rounded-xl border-2 ${borderColor} ${bgColor} p-4 m-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]`}>
+      <TaskStatusBadge status={status} remainingDays={remainingDays} />
+      <TaskTitle title={task.task_title} />
+      <TaskCompany company={task.company} />
+      <TaskDeadline date={formattedDate} />
+      {task.description && <TaskDescription description={task.description} />}
+      <TaskAssignee assignee={task.penanggung_jawab} />
+    </div>
+  );
+};
+
+const getTaskStatus = (remainingDays) => {
+  if (remainingDays < 0) {
+    return {
+      status: "overdue",
+      bgColor: "bg-red-50",
+      textColor: "text-red-700",
+      borderColor: "border-red-300",
+      statusText: `Overdue by ${Math.abs(remainingDays)} day${Math.abs(remainingDays) !== 1 ? 's' : ''}`
+    };
+  } else if (remainingDays === 0) {
+    return {
+      status: "due-today",
+      bgColor: "bg-amber-50",
+      textColor: "text-amber-700",
+      borderColor: "border-amber-300",
+      statusText: "Due today"
+    };
+  } else if (remainingDays <= 3) {
+    return {
+      status: "urgent",
+      bgColor: "bg-orange-50",
+      textColor: "text-orange-700",
+      borderColor: "border-orange-300",
+      statusText: `${remainingDays} day${remainingDays !== 1 ? 's' : ''} left`
+    };
+  } else if (remainingDays <= 7) {
+    return {
+      status: "approaching",
+      bgColor: "bg-yellow-50",
+      textColor: "text-yellow-700",
+      borderColor: "border-yellow-300",
+      statusText: `${remainingDays} day${remainingDays !== 1 ? 's' : ''} left`
+    };
+  } else {
+    return {
+      status: "on-track",
+      bgColor: "bg-green-50",
+      textColor: "text-green-700",
+      borderColor: "border-green-300",
+      statusText: `${remainingDays} day${remainingDays !== 1 ? 's' : ''} left`
+    };
+  }
+};
+
+const TaskStatusBadge = ({ status, remainingDays }) => {
+  const statusColors = {
+    overdue: "bg-red-100 text-red-800",
+    "due-today": "bg-amber-100 text-amber-800",
+    urgent: "bg-orange-100 text-orange-800",
+    approaching: "bg-yellow-100 text-yellow-800",
+    "on-track": "bg-green-100 text-green-800"
+  };
+  
+  return (
+    <div className="flex justify-between items-start mb-3">
+      <span className={`px-3 py-1 rounded-full text-xs font-bold ${statusColors[status]} shadow-sm`}>
+        {status === "overdue" ? `Overdue by ${Math.abs(remainingDays)} day${Math.abs(remainingDays) !== 1 ? 's' : ''}` :
+         status === "due-today" ? "Due today" :
+         `${remainingDays} day${remainingDays !== 1 ? 's' : ''} left`}
+      </span>
+      <div className={`w-3 h-3 rounded-full ${
+        status === "overdue" ? "bg-red-500" :
+        status === "due-today" ? "bg-amber-500" :
+        status === "urgent" ? "bg-orange-500" :
+        status === "approaching" ? "bg-yellow-400" : "bg-green-500"
+      }`}></div>
+    </div>
+  );
+};
+
+const TaskTitle = ({ title }) => (
+  <h3 className="font-bold text-lg mb-2 line-clamp-2 text-gray-800">
+    {title}
+  </h3>
+);
+
+const TaskCompany = ({ company }) => (
+  <div className="flex items-center mb-3 text-sm text-gray-600">
+    <svg className="w-4 h-4 mr-1.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-6 0H5m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+    </svg>
+    <span className="truncate">{company}</span>
+  </div>
+);
+
+const TaskDeadline = ({ date }) => (
+  <div className="flex items-center mb-4 text-sm">
+    <svg className="w-4 h-4 mr-1.5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>
+    <span className="font-semibold text-gray-700">{date}</span>
+  </div>
+);
+
+const TaskDescription = ({ description }) => (
+  <div className="mb-4">
+    <p className="text-sm text-gray-600 line-clamp-3">{description}</p>
+  </div>
+);
+
+const TaskAssignee = ({ assignee }) => (
+  <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+    <div className="flex items-center text-sm text-gray-600">
+      <svg className="w-4 h-4 mr-1.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+      <span className="truncate">{assignee}</span>
+    </div>
+  </div>
+);
+
+// Main Dashboard Component
+export default function Dashboard({ userName, absens, clients, tasks }) {
+  // State management
+  const user = usePage().props.auth.user;
+  const { data, setData, post, errors } = useForm({ absence: "Hadir" });
+
+  const date = new Date();
+  const today = date.toISOString().slice(0, 10);
+  const [sortDate, setSortDate] = useState(today);
+  const [showDescriptionIndex, setShowDescriptionIndex] = useState(null);
+  const [hiddenSections, setHiddenSections] = useState({
+    'on-progress': true,
+    'pending': true,
+    'approved': true,
+    'in-review': true,
+    'rejected': true,
+    'revision': true,
+    'idle': true,
+  });
+
+  let taskUserArray = []
+
+  tasks.forEach(task => {
+    const checkTask = task.penanggung_jawab === userName && task.status !== 'Approved'
+        if(checkTask){
+            taskUserArray.push(task)
+        }
+  });
+
+  // Filtered data
+  const filteredAbsens = absens.filter((absen) => absen.tanggal === sortDate);
+
+  // Task categorization
+  const categorizeTasks = () => {
+    const urgent = [];
+    const soon = [];
+    const up_coming = [];
+
+    tasks.forEach((task) => {
+      const deadline = new Date(task.deadline);
+      const today = new Date();
+
+      deadline.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+
+      const diffTime = deadline - today;
+      const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (remainingDays >= 0 && remainingDays <= 3) {
+        urgent.push(task);
+      } else if (remainingDays >= 4 && remainingDays <= 7) {
+        soon.push(task);
+      } else if (remainingDays >= 8) {
+        up_coming.push(task);
+      }
+    });
+
+    return { urgent, soon, up_coming };
+  };
+
+  const { urgent, soon, up_coming } = categorizeTasks();
+
+  // Task status filtering
+  const filterTasksByStatus = (status) =>
+    tasks.filter((task) => task.status === status);
+
+  const onProgressStatus = filterTasksByStatus("On Progress");
+  const pendingStatus = filterTasksByStatus("Pending");
+  const approvedStatus = filterTasksByStatus("Approved");
+  const inReviewStatus = filterTasksByStatus("In Review");
+  const rejectedStatus = filterTasksByStatus("Rejected");
+  const revisionStatus = filterTasksByStatus("Revision");
+  const idleStatus = filterTasksByStatus("Idle");
+
+  const task_not_include_cancle_approved =
+    idleStatus.length +
+    rejectedStatus.length +
+    pendingStatus.length +
+    inReviewStatus.length +
+    onProgressStatus.length;
+
+  // Handlers
+  const submit = (e) => {
+    e.preventDefault();
+    post(route("absen.store"), {
+      onSuccess: () => window.location.reload(),
+    });
+  };
+
+  const toggleSection = (section) => {
+    setHiddenSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  return (
+    <AuthenticatedLayout
+      header={
+        <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-6 rounded-2xl border border-white shadow-lg mb-6 text-white">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2">
+            Hi, {userName}! 👋
+          </h1>
+          <p className="text-lg opacity-90">
+            Another day to chase your goals! We're here to make sure
+            your stay is smooth, smart, and stress-free. You've got this 😊
+          </p>
+        </div>
+      }
+    >
+      <Head title="Dashboard" />
+
+      <div className="py-2 sm:py-3">
+        <div className="mx-auto w-full px-2 sm:px-3">
+            {/* Task Alert */}
+            {taskUserArray.length > 0 && (
+              <div className="w-full p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-200 shadow-sm mb-6">
+                <div className="flex items-center mb-4">
+                  <div className="bg-amber-500 p-2 rounded-lg mr-3">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-xl font-bold text-amber-800">Your Upcoming Tasks</h2>
+                </div>
+                <div className="flex overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-300 scrollbar-track-transparent">
+                  {taskUserArray.map((task) => (
+                    <TaskCard key={task.id} task={task} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+          {/* Summary Cards Section */}
+          <div className="rounded-2xl flex flex-col gap-5 mb-6">
+            <div className="w-full flex flex-col xl:flex-row gap-5">
+              <div className="w-full xl:w-2/3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <StatusCard
+                  title="Urgent Task"
+                  count={urgent.length}
+                  total={task_not_include_cancle_approved}
+                  bgColor="bg-gradient-to-br from-red-500 to-orange-500"
+                />
+                <StatusCard
+                  title="Soon"
+                  count={soon.length}
+                  total={task_not_include_cancle_approved}
+                  bgColor="bg-gradient-to-br from-amber-500 to-yellow-500"
+                />
+                <StatusCard
+                  title="Up Coming"
+                  count={up_coming.length}
+                  total={task_not_include_cancle_approved}
+                  bgColor="bg-gradient-to-br from-green-500 to-emerald-500"
+                />
+
+                {/* Client Table */}
+                {user.role !== 'intern' ? (
+                  <div className="text-gray-800 w-full bg-white p-5 flex flex-col gap-3 border border-gray-200 rounded-2xl col-span-1 sm:col-span-2 lg:col-span-3 shadow-md">
+                    <div className="text-xl font-bold pb-3 border-b border-gray-200 flex items-center gap-2">
+                      <span className="text-white p-2 rounded-lg">👥</span>
+                      Client Management
+                    </div>
+                    <ClientTable clients={clients} />
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+              </div>
+
+              {/* Attendance Section */}
+              <div className="w-full xl:w-1/3 flex flex-col gap-4">
+                <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-md">
+                  <div className="text-xl font-bold pb-3 border-b border-gray-200 flex items-center gap-2 mb-4">
+                    <span className="text-white p-2 rounded-lg">📅</span>
+                    Attendance
+                  </div>
+                  <AttendanceForm
+                    onSubmit={submit}
+                    data={data}
+                    setData={setData}
+                    errors={errors}
+                    sortDate={sortDate}
+                    setSortDate={setSortDate}
+                  />
+                  <div className="mt-4">
+                    <AttendanceTable absens={filteredAbsens} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tasks Section */}
+          <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-md">
+            <div className="text-xl font-bold pb-3 border-b border-gray-200 flex items-center gap-2 mb-4">
+              <span className=" text-white p-2 rounded-lg">✅</span>
+              Task Management
+            </div>
+            <div className="w-full flex flex-col gap-4">
+              <TaskSection
+                title="On Progress"
+                tasks={onProgressStatus}
+                borderColor="#3B82F6"
+                bgColor="#3B82F6"
+                textColor="#FFFFFF"
+                isHidden={hiddenSections['on-progress']}
+                toggleHidden={() => toggleSection('on-progress')}
+                showDescriptionIndex={showDescriptionIndex}
+                setShowDescriptionIndex={setShowDescriptionIndex}
+                icon="🚀"
+              />
+
+              <TaskSection
+                title="Pending"
+                tasks={pendingStatus}
+                borderColor="#F59E0B"
+                bgColor="#F59E0B"
+                textColor="#FFFFFF"
+                isHidden={hiddenSections['pending']}
+                toggleHidden={() => toggleSection('pending')}
+                showDescriptionIndex={showDescriptionIndex}
+                setShowDescriptionIndex={setShowDescriptionIndex}
+                icon="⏳"
+              />
+
+              <TaskSection
+                title="Approved"
+                tasks={approvedStatus}
+                borderColor="#10B981"
+                bgColor="#10B981"
+                textColor="#FFFFFF"
+                isHidden={hiddenSections['approved']}
+                toggleHidden={() => toggleSection('approved')}
+                showDescriptionIndex={showDescriptionIndex}
+                setShowDescriptionIndex={setShowDescriptionIndex}
+                icon="✅"
+              />
+
+              <TaskSection
+                title="In Review"
+                tasks={inReviewStatus}
+                borderColor="#8B5CF6"
+                bgColor="#8B5CF6"
+                textColor="#FFFFFF"
+                isHidden={hiddenSections['in-review']}
+                toggleHidden={() => toggleSection('in-review')}
+                showDescriptionIndex={showDescriptionIndex}
+                setShowDescriptionIndex={setShowDescriptionIndex}
+                icon="🔍"
+              />
+
+              <TaskSection
+                title="Rejected"
+                tasks={rejectedStatus}
+                borderColor="#EF4444"
+                bgColor="#EF4444"
+                textColor="#FFFFFF"
+                isHidden={hiddenSections['rejected']}
+                toggleHidden={() => toggleSection('rejected')}
+                showDescriptionIndex={showDescriptionIndex}
+                setShowDescriptionIndex={setShowDescriptionIndex}
+                icon="❌"
+              />
+
+              <TaskSection
+                title="Revision"
+                tasks={revisionStatus}
+                borderColor="#F97316"
+                bgColor="#F97316"
+                textColor="#FFFFFF"
+                isHidden={hiddenSections['revision']}
+                toggleHidden={() => toggleSection('revision')}
+                showDescriptionIndex={showDescriptionIndex}
+                setShowDescriptionIndex={setShowDescriptionIndex}
+                icon="📝"
+              />
+
+              <TaskSection
+                title="Idle"
+                tasks={idleStatus}
+                borderColor="#6B7280"
+                bgColor="#6B7280"
+                textColor="#FFFFFF"
+                isHidden={hiddenSections['idle']}
+                toggleHidden={() => toggleSection('idle')}
+                showDescriptionIndex={showDescriptionIndex}
+                setShowDescriptionIndex={setShowDescriptionIndex}
+                icon="💤"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </AuthenticatedLayout>
+  );
+}

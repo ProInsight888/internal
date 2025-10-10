@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    th {
+        padding: 1rem 1.5rem;
+    }
+
+    td {
+        padding: 1rem 1.5rem;
+    }
+
+    :root {
+        --color-1: #1e1e1e;
+        --color-2: #f7f7f7;
+        --color-3: #ef4444;
+        --color-4: #f97316;
+        --color-5: #eab308;
+        --color-6: #84cc16;
+        --color-7: #22c55e;
+        --color-8: #10b981;
+        --color-9: #14b8a6;
+        --color-10: #06b6d4;
+        --color-11: #0ea5e9;
+        --color-12: #3b82f6;
+        --color-13: #6366f1;
+        --color-14: #8b5cf6;
+        --color-15: #a855f7;
+        --color-16: #d946ef;
+        --color-17: #ec4899;
+        --color-18: #f43f5e;
+        --color-19: #78716c;
+        --color-20: #737373;
+        /* ... rest of your variables ... */
+        --sidebar-background: 0 0% 98%;
+        --sidebar-foreground: 240 5.3% 26.1%;
+        --sidebar-primary: 240 5.9% 10%;
+        --sidebar-primary-foreground: 0 0% 98%;
+        --sidebar-accent: 240 4.8% 95.9%;
+        --sidebar-accent-foreground: 240 5.9% 10%;
+        --sidebar-border: 220 13% 91%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+
+    .dark {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+        /* ... rest of your dark mode variables ... */
+        --sidebar-background: 240 5.9% 10%;
+        --sidebar-foreground: 240 4.8% 95.9%;
+        --sidebar-primary: 224.3 76.3% 48%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 240 3.7% 15.9%;
+        --sidebar-accent-foreground: 240 4.8% 95.9%;
+        --sidebar-border: 240 3.7% 15.9%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+}
+
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer base {
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+
+#login-bg-left{
+    background-image: url(/image/bg.jpg);
+    margin-left: 0vw;
+}

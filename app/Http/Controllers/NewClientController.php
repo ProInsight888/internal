@@ -1,0 +1,206 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\cicilan;
+use App\Models\newClient;
+use App\Http\Requests\StorenewClientRequest;
+use App\Http\Requests\UpdatenewClientRequest;
+use App\Models\task;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Number;
+use Inertia\Inertia;
+
+class NewClientController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $clients = newClient::all();
+        $cicilans = cicilan::all();
+        return inertia('NewClient/index', [
+            'clients' => $clients,
+            'cicilans' => $cicilans,
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return inertia('NewClient/create',[
+            
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StorenewClientRequest $request)
+    {
+        // dd($request->fase_pembayaran[1]);
+        $validated = $request->validate([
+            'company_name' => 'string|required',
+            'type' => 'string|required',
+            'location' => 'string|required',
+            'contract_tahun' => 'string|nullable',
+            'contract_bulan' => 'string|required',
+            'contract_hari' => 'string|required',
+            'package' => 'string|required',
+            'status' => 'required',
+            'cicil' => '',
+            'fase_pembayaran.*.cicilan' => 'string',
+            'fase_pembayaran.*.tanggal' => 'date',
+        ]);
+        
+        $today = now('Asia/Jakarta');
+        
+        $contract = $validated['contract_tahun'] . ' Tahun ' . $validated['contract_bulan'] . ' Bulan ' . $validated['contract_hari'] . ' Hari';
+
+        $month = (int) $validated['contract_bulan'];
+        $year = (int) $validated['contract_tahun'];
+
+        $extraYears = intdiv($month, 12);
+        $remainingMonths = $month % 12;
+        $totalYears = $year + $extraYears;
+
+        $contractEnd = now()->addYears($totalYears)->addMonths($remainingMonths);
+
+
+        $status = Str::lower($validated['status']);
+        $payment_month = $status === 'lunas' ?  $today->format('F') . '✅' : "-";
+        
+        $clientUuid = Str::uuid()->toString();
+
+        // dd($contractEnd->toDateString(), $payment_month);
+        
+        foreach ($request->fase_pembayaran as $fase) {
+            // echo $fase['cicilan'] . ' - ' . $fase['tanggal'] . '<br>';
+            // dd($fase['cicilan']);
+            cicilan::create([
+                'client_uuid' => $clientUuid,
+                'cicilan' => $fase['cicilan'],
+                'tanggal' => $fase['tanggal'],
+            ]);
+        };
+        
+        newClient::create([
+            'uuid' => $clientUuid,
+            'company_name' => $validated['company_name'],
+            'type' => $validated['type'],
+            'location' => $validated['location'],
+            'contract' => $contract,
+            'package' => $validated['package'],
+            'status' => $validated['status'],
+            'contract_end' => $contractEnd->toDateString(),
+            'payment_month' => $payment_month,
+        ]);
+
+
+        return Redirect::to('new_client')->with("success", 'New Client Created Successfully');
+    }
+    /**
+     * Display the specified resource.
+     */
+    public function show(newClient $newClient)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+        public function edit(newClient $newClient)
+        {
+            $client = $newClient->load('cicilans'); // Simple and clean
+            // dd($client);
+            // $cicilans = newClient::with('cicilan')->get();
+            return inertia('NewClient/edit', [
+                'clients' => $client,
+            ]);
+        }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdatenewClientRequest $request, newClient $newClient)
+    {
+        // dd($newClient->status);
+        
+        $validated = $request->validate([
+            'company_name' => 'string|required',
+            'type' => 'string|required',
+            'location' => 'string|required',
+            'contract_tahun' => 'string|nullable',
+            'contract_bulan' => 'string|required',
+            'contract_hari' => 'string|required',
+            'package' => 'string|required',
+            'status' => 'string|required',
+        ]);
+
+        $today = now('Asia/Jakarta');
+
+        $contract = $validated['contract_tahun'] . ' Tahun ' . $validated['contract_bulan'] . ' Bulan ' . $validated['contract_hari'] . ' Hari';
+
+        $month = (int) $validated['contract_bulan'];
+        $year = (int) $validated['contract_tahun'];
+
+        $extraYears = intdiv($month, 12);
+        $remainingMonths = $month % 12;
+        $totalYears = $year + $extraYears;
+
+        $contractEnd = now()->addYears($totalYears)->addMonths($remainingMonths);
+
+        $status = Str::lower($validated['status']);
+        $payment_month = $status === 'lunas' ? $today->format('F').'✅' : "-";
+
+        $uuid = $newClient->uuid;
+        // dd($array);
+
+        $update_client = newClient::where('uuid', $uuid);
+        $update_client->update([
+            'company_name' => $validated['company_name'],
+            'type' => $validated['type'],
+            'location' => $validated['location'],
+            'contract' => $contract,
+            'package' => $validated['package'],
+            'status' => $validated['status'],
+            'contract_end' => $contractEnd->toDateString(),
+            'payment_month' => $payment_month,
+        ]);
+
+        // $client = NewClient::where('uuid', $uuid)->firstOrFail();
+
+        // // Update logic here...
+
+        // $hasCicilan = $client->cicilans()->exists(); // returns true/false
+
+        // return redirect()->back()->with([
+        //     'has_cicilan' => $hasCicilan,
+        // ]);
+
+
+        // return Redirect::to('new_client');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(newClient $newClient)
+    {
+        // dd($newClient->uuid);
+        $uuid = $newClient->uuid;
+        $newClient = newClient::where('uuid', $uuid);
+        $cicilan = cicilan::where('client_uuid', $uuid);
+        $newClient->delete();
+        $cicilan->delete();
+
+        return Redirect::to('new_client')->with('deleted','New Client Deleted');
+    }
+}
