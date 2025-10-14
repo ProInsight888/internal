@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
     const currentRoute = usePage().url; // Get current route
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [showingNavigationDropdown, setShowingNavigationDropdown] =
+        useState(false);
     const [sidebarExpanded, setSidebarExpanded] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
 
@@ -185,8 +186,8 @@ export default function AuthenticatedLayout({ header, children }) {
         },
         {
             name: "Submitted Task",
-            href: route("result.index"),
-            routeName: "/result",
+            href: route("media_review.index"),
+            routeName: "/media_review",
             icon: (
                 <svg
                     className="w-6 h-6"
@@ -242,11 +243,22 @@ export default function AuthenticatedLayout({ header, children }) {
                                 aria-label="Toggle dark mode"
                             >
                                 {darkMode ? (
-                                    <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 2a1 1 0 011 1v1a1 1 0 01-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+                                    <svg
+                                        className="w-5 h-5 text-yellow-400"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            d="M10 2a1 1 0 011 1v1a1 1 0 01-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                            clipRule="evenodd"
+                                        />
                                     </svg>
                                 ) : (
-                                    <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg
+                                        className="w-5 h-5 text-gray-700 dark:text-gray-300"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
                                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
                                     </svg>
                                 )}
@@ -260,23 +272,54 @@ export default function AuthenticatedLayout({ header, children }) {
                                             <div className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 font-bold mr-2">
                                                 {user.name.charAt(0)}
                                             </div>
-                                            <span className="text-gray-700 dark:text-gray-300 mr-1">{user.name}</span>
-                                            <svg className="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                            <span className="text-gray-700 dark:text-gray-300 mr-1">
+                                                {user.name}
+                                            </span>
+                                            <svg
+                                                className="w-4 h-4 text-gray-700 dark:text-gray-300"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M19 9l-7 7-7-7"
+                                                />
                                             </svg>
                                         </div>
                                     </Dropdown.Trigger>
 
-                                    <Dropdown.Content align="right" width="48" className="dark:bg-gray-700 dark:border-gray-600">
+                                    <Dropdown.Content
+                                        align="right"
+                                        width="48"
+                                        className="dark:bg-gray-700 dark:border-gray-600"
+                                    >
                                         {/* <Dropdown.Link href={route("personal_dashboard.index")} className="flex items-center dark:text-gray-300 dark:hover:bg-gray-600">
                                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                             </svg>
                                             Profile
                                         </Dropdown.Link> */}
-                                        <Dropdown.Link href={route("logout")} method="post" as="button" className="flex items-center dark:text-gray-300 dark:hover:bg-gray-600">
-                                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                        <Dropdown.Link
+                                            href={route("logout")}
+                                            method="post"
+                                            as="button"
+                                            className="flex items-center dark:text-gray-300 dark:hover:bg-gray-600"
+                                        >
+                                            <svg
+                                                className="w-4 h-4 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                                />
                                             </svg>
                                             Logout
                                         </Dropdown.Link>
@@ -288,7 +331,11 @@ export default function AuthenticatedLayout({ header, children }) {
                         {/* Mobile menu button */}
                         <div className="flex items-center lg:hidden">
                             <button
-                                onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
+                                onClick={() =>
+                                    setShowingNavigationDropdown(
+                                        !showingNavigationDropdown
+                                    )
+                                }
                                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors"
                             >
                                 <svg
@@ -298,14 +345,22 @@ export default function AuthenticatedLayout({ header, children }) {
                                     viewBox="0 0 24 24"
                                 >
                                     <path
-                                        className={!showingNavigationDropdown ? "inline-flex" : "hidden"}
+                                        className={
+                                            !showingNavigationDropdown
+                                                ? "inline-flex"
+                                                : "hidden"
+                                        }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
                                         d="M4 6h16M4 12h16M4 18h16"
                                     />
                                     <path
-                                        className={showingNavigationDropdown ? "inline-flex" : "hidden"}
+                                        className={
+                                            showingNavigationDropdown
+                                                ? "inline-flex"
+                                                : "hidden"
+                                        }
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
@@ -325,16 +380,38 @@ export default function AuthenticatedLayout({ header, children }) {
                         {/* Logo and Toggle */}
                         <div className="flex items-center justify-center mb-6 px-2">
                             <button
-                                onClick={() => setSidebarExpanded(!sidebarExpanded)}
+                                onClick={() =>
+                                    setSidebarExpanded(!sidebarExpanded)
+                                }
                                 className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                             >
                                 {sidebarExpanded ? (
-                                    <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                    <svg
+                                        className="w-5 h-5 text-gray-700 dark:text-gray-300"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M15 19l-7-7 7-7"
+                                        />
                                     </svg>
                                 ) : (
-                                    <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    <svg
+                                        className="w-5 h-5 text-gray-700 dark:text-gray-300"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M9 5l7 7-7 7"
+                                        />
                                     </svg>
                                 )}
                             </button>
@@ -351,7 +428,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     expanded={sidebarExpanded}
                                     darkMode={darkMode}
                                     item_name={item.name}
-                                    user_role = {user.role}
+                                    user_role={user.role}
                                 >
                                     {item.name}
                                 </NavLink>
@@ -364,7 +441,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <NavLink
                                             key={item.name}
                                             href={item.href}
-                                            active={isActiveRoute(item.routeName)}
+                                            active={isActiveRoute(
+                                                item.routeName
+                                            )}
                                             icon={item.icon}
                                             expanded={sidebarExpanded}
                                             darkMode={darkMode}
@@ -403,7 +482,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                         active={isActiveRoute(item.routeName)}
                                         className="flex items-center px-4 py-3 rounded-lg transition-colors dark:text-gray-300 dark:hover:bg-gray-700"
                                     >
-                                        <span className="mr-3">{item.icon}</span>
+                                        <span className="mr-3">
+                                            {item.icon}
+                                        </span>
                                         {item.name}
                                     </ResponsiveNavLink>
                                 ))}
@@ -417,11 +498,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                     {user.name.charAt(0)}
                                 </div>
                                 <div>
-                                    <div className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</div>
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">{user.email}</div>
+                                    <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                        {user.name}
+                                    </div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                                        {user.email}
+                                    </div>
                                 </div>
                             </div>
-                            
+
                             {/* <ResponsiveNavLink
                                 href={route("personal_dashboard.index")}
                                 active={isActiveRoute("/personal_dashboard")}
@@ -438,8 +523,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                 as="button"
                                 className="flex items-center px-4 py-3 rounded-lg transition-colors dark:text-gray-300 dark:hover:bg-gray-700"
                             >
-                                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                <svg
+                                    className="w-5 h-5 mr-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                    />
                                 </svg>
                                 Log Out
                             </ResponsiveNavLink>
@@ -462,10 +557,12 @@ export default function AuthenticatedLayout({ header, children }) {
                     {children}
                 </div>
             </div>
-            
+
             {/* Overlay for expanded sidebar */}
-            <div 
-                className={`w-screen h-screen fixed bg-gray-900/30 ${sidebarExpanded ? 'block' : 'hidden'} transition-all z-40`} 
+            <div
+                className={`w-screen h-screen fixed bg-gray-900/30 ${
+                    sidebarExpanded ? "block" : "hidden"
+                } transition-all z-40`}
                 onClick={() => setSidebarExpanded(false)}
             ></div>
         </div>
@@ -473,7 +570,17 @@ export default function AuthenticatedLayout({ header, children }) {
 }
 
 // Custom NavLink component for sidebar
-function NavLink({ href, active, icon, expanded, children, className = "", darkMode, item_name, user_role }) {
+function NavLink({
+    href,
+    active,
+    icon,
+    expanded,
+    children,
+    className = "",
+    darkMode,
+    item_name,
+    user_role,
+}) {
     return (
         <>
             {((user_role === "intern" && item_name !== "Absensi") ||
@@ -497,7 +604,14 @@ function NavLink({ href, active, icon, expanded, children, className = "", darkM
 }
 
 // Custom ResponsiveNavLink component
-function ResponsiveNavLink({ href, active, method, as = "a", children, className = "" }) {
+function ResponsiveNavLink({
+    href,
+    active,
+    method,
+    as = "a",
+    children,
+    className = "",
+}) {
     return (
         <Link
             href={href}
