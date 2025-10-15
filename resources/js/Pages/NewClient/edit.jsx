@@ -18,6 +18,7 @@ export default function edit({ clients }) {
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
         company_name: clients?.company_name || "",
+        code: clients?.code || "",
         type: clients?.type || "",
         location: clients?.location || "",
         contract_tahun: contract_tahun,
@@ -57,35 +58,31 @@ export default function edit({ clients }) {
     const submit = (e) => {
         e.preventDefault();
 
-        // put(route('new_client.update', clients.uuid), {
-        //     preserveScroll: true,
-        //     onSuccess: () => alert('Client updated!')
-        // });
         put(route("new_client.update", clients.uuid), {
+            preserveScroll: true,
             onSuccess: () => {
-                if (data.status === "Cicil" || clients.cicilans.length !== 0) {
+                // handle cicilan updates
+                if (data.status === "Cicil") {
+                    // delete old cicilan first
                     router.delete(
                         route("deleteCicilan.destroy", clients.uuid),
                         {
                             onSuccess: () => {
+                                // then post new ones
                                 post(
                                     route("storeCicilan.store", clients.uuid),
                                     {
                                         onSuccess: () => {
                                             window.location.reload();
                                         },
-                                    },
+                                        onError: (errors) =>
+                                            console.error(errors),
+                                    }
                                 );
                             },
                             onError: (errors) => console.error(errors),
-                        },
+                        }
                     );
-                } else {
-                    post(route("storeCicilan.store", clients.uuid), {
-                        onSuccess: () => {
-                            window.location.reload();
-                        },
-                    });
                 }
             },
             onError: (errors) => console.error(errors),
@@ -132,6 +129,27 @@ export default function edit({ clients }) {
 
                                 <InputError
                                     message={errors.company_name}
+                                    className="mt-2"
+                                />
+                            </div>
+
+                            <div className="mb-6 mt-3">
+                                <InputLabel htmlFor="code" value="Code" />
+
+                                <TextInput
+                                    id="code"
+                                    name="code"
+                                    value={data.code}
+                                    maxLength={4}
+                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400"
+                                    onChange={(e) =>
+                                        setData("code", e.target.value.toUpperCase())
+                                    }
+                                    required
+                                />
+
+                                <InputError
+                                    message={errors.code}
                                     className="mt-2"
                                 />
                             </div>
@@ -219,7 +237,7 @@ export default function edit({ clients }) {
                                         onChange={(e) =>
                                             setData(
                                                 "contract_tahun",
-                                                e.target.value,
+                                                e.target.value
                                             )
                                         }
                                     />
@@ -235,7 +253,7 @@ export default function edit({ clients }) {
                                         onChange={(e) =>
                                             setData(
                                                 "contract_bulan",
-                                                e.target.value,
+                                                e.target.value
                                             )
                                         }
                                     />
@@ -251,7 +269,7 @@ export default function edit({ clients }) {
                                         onChange={(e) =>
                                             setData(
                                                 "contract_hari",
-                                                e.target.value,
+                                                e.target.value
                                             )
                                         }
                                     />
@@ -304,7 +322,11 @@ export default function edit({ clients }) {
                                         <option value="Cicil">Cicil</option>
                                     </select>
                                     <div
-                                        className={`${data.status === "Cicil" ? "" : "hidden"} flex items-center`}
+                                        className={`${
+                                            data.status === "Cicil"
+                                                ? ""
+                                                : "hidden"
+                                        } flex items-center`}
                                     >
                                         <input
                                             id="cicil"
@@ -358,7 +380,7 @@ export default function edit({ clients }) {
                                                         };
                                                         setData(
                                                             "fase_pembayaran",
-                                                            updatedCheck,
+                                                            updatedCheck
                                                         );
                                                     }}
                                                 />
@@ -383,7 +405,7 @@ export default function edit({ clients }) {
                                                     };
                                                     setData(
                                                         "fase_pembayaran",
-                                                        updatedFase,
+                                                        updatedFase
                                                     );
                                                 }}
                                             />
@@ -393,11 +415,51 @@ export default function edit({ clients }) {
 
                             <div className="mt-4 flex items-center justify-end">
                                 <PrimaryButton
-                                    className="ms-4"
-                                    onSubmit={(e) => submit(e)}
+                                    type="submit"
                                     disabled={processing}
+                                    className="bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-medium py-2.5 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg disabled:opacity-50"
                                 >
-                                    Update Client Data
+                                    {processing ? (
+                                        <span className="flex items-center">
+                                            <svg
+                                                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <circle
+                                                    className="opacity-25"
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="10"
+                                                    stroke="currentColor"
+                                                    strokeWidth="4"
+                                                ></circle>
+                                                <path
+                                                    className="opacity-75"
+                                                    fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                ></path>
+                                            </svg>
+                                            Updating...
+                                        </span>
+                                    ) : (
+                                        <span className="flex items-center">
+                                            <svg
+                                                className="w-4 h-4 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                                />
+                                            </svg>
+                                            Update Client Data
+                                        </span>
+                                    )}
                                 </PrimaryButton>
                             </div>
                         </form>

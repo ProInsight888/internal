@@ -32,6 +32,8 @@ class task extends Model
         return $this->hasOne(result::class, 'task_uuid', 'uuid')->latestOfMany();
     }
 
+    
+
     public function rejectedRevision(){
         return $this->hasOne(rejectedRevision::class, 'task_uuid', 'uuid')->latestOfMany();
     }

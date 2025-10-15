@@ -62,7 +62,7 @@ const PriorityBadge = ({ deadline }) => {
 
     return (
         <span
-            className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${bgColor}`}
+            className={`text-xs font-medium px-2.5 py-0.5 rounded-sm ${bgColor}`}
         >
             {priority}
         </span>
@@ -88,37 +88,38 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
 
         return colorMap[status] || colorMap.default;
     };
+    console.log(task);
 
     return (
         <div
             className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 ${getCardColor(
                 task.status
             )}`}
-        >
+                onClick={() => onOpenDetails(task, index)}
+            >
+
             <div className="p-5">
                 {/* Header */}
                 <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center">
-                        <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
                         <PriorityBadge deadline={task.deadline} />
                     </div>
                     <StatusBadge status={task.status} />
                 </div>
 
-                {/* Task Title */}
-                <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
-                    {task.task_title}
+                {/* Task Company Name */}
+                <h3 className="text-15px  text-black mb-2 line-clamp-2">
+                    {task.company}
                 </h3>
 
-                {/* Company and Category */}
-                <div className="flex items-center gap-2 mb-3">
-                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                        {task.company}
-                    </span>
-                    <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                        {task.category}
-                    </span>
-                </div>
+                {/* Code */}
+                <h1 className="font-bold text-4xl text-black">
+                    {task?.company_code?.code || "N/A"}
+                </h1>
+
+                <h3 className="text-15px  text-black mb-2 line-clamp-2">
+                    {task.task_title}
+                </h3>
 
                 {/* Assignee and Format */}
                 <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
@@ -137,35 +138,9 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-between items-center pt-3 border-t border-gray-100">
-                    <button
-                        onClick={() => onOpenDetails(task, index)}
-                        className="flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
-                    >
-                        <svg
-                            className="w-4 h-4 mr-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                            />
-                        </svg>
-                        View Details
-                    </button>
-
+                <div className=" flex justify-between items-center pt-3 border-t-2  border-black">
                     {!["Cancel", "In Review"].includes(task.status) && (
-                        <div className="flex space-x-2">
+                        <div className="position-relative flex space-x-2">
                             <Link
                                 href={route("it.edit", task.uuid)}
                                 className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
@@ -242,8 +217,12 @@ const TaskModal = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+        onClick={onClose}
+        >
+            <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+            >
                 {/* Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
                     <div className="flex justify-between items-start">

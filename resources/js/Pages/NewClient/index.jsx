@@ -93,8 +93,8 @@ export default function ClientIndex({ clients, cicilans }) {
     // Get status badge color
     const getStatusColor = (status) => {
         const statusColors = {
-            Lunsa: "bg-gradient-to-r from-green-500 to-emerald-600",
-            Cici: "bg-gradient-to-r from-blue-500 to-cyan-600",
+            Lunas: "bg-gradient-to-r from-green-500 to-emerald-600",
+            Cicil: "bg-gradient-to-r from-blue-500 to-cyan-600",
             Active: "bg-gradient-to-r from-green-500 to-emerald-600",
             Inactive: "bg-gradient-to-r from-gray-500 to-slate-600",
             Pending: "bg-gradient-to-r from-amber-500 to-orange-500",
@@ -278,28 +278,7 @@ export default function ClientIndex({ clients, cicilans }) {
         },
         {
             header: "Code",
-            render: (client) => {
-                const generateCode = (companyName) => {
-                    if (!companyName) return "N/A";
-                    const words = companyName.split(" ");
-                    const firstWord = words[0] || "";
-                    const secondWord = words[1] || "";
-
-                    let code = firstWord.charAt(0).toUpperCase();
-                    code += secondWord
-                        .substring(0, 3)
-                        .toUpperCase()
-                        .padEnd(3, "A");
-
-                    return code;
-                };
-
-                return (
-                    <div className="text-sm font-mono">
-                        {generateCode(client.company_name)}
-                    </div>
-                );
-            },
+            render: (client) => client.code,
             className: "",
         },
     ];
@@ -422,8 +401,8 @@ export default function ClientIndex({ clients, cicilans }) {
                                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                             >
                                 <option value="all">All Statuses</option>
-                                <option value="Lunas">Lunsa</option>
-                                <option value="Cicil">Cici</option>
+                                <option value="Lunas">Lunas</option>
+                                <option value="Cicil">Cicil</option>
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
                                 <option value="Pending">Pending</option>
