@@ -10,6 +10,7 @@ import {
     CheckCircle,
     Clock,
     Slash,
+    RefreshCw,
 } from "lucide-react";
 
 export default function TaskSideBar({
@@ -42,21 +43,40 @@ export default function TaskSideBar({
     // Count tasks by status
     const taskCounts = tasks.reduce(
         (acc, t) => {
+            acc.all++; // Count all tasks
             if (t.status === "In Review") acc.inReview++;
             else if (t.status === "Rejected") acc.rejected++;
             else if (t.status === "Approved") acc.approved++;
             else if (t.status === "Cancel") acc.cancel++;
-            else acc.all++;
+            else if (t.status === "Idle") acc.idle++;
+            else if (t.status === "On Progress") acc.onProgress++;
+            else if (t.status === "Pending") acc.pending++;
             return acc;
         },
-        { all: 0, inReview: 0, rejected: 0, approved: 0, cancel: 0 }
+        { 
+            all: 0, 
+            inReview: 0, 
+            rejected: 0, 
+            approved: 0, 
+            cancel: 0,
+            idle: 0,
+            onProgress: 0,
+            pending: 0
+        }
     );
 
     const task_status = [
         {
+            key: "All",
+            label: "All Tasks",
+            count: taskCounts.all,
+            color: "bg-gray-100 text-gray-800",
+            icon: <LayoutDashboard className="h-4 w-4" />,
+        },
+        {
             key: "",
             label: "Active Task",
-            count: taskCounts.all,
+            count: taskCounts.all - taskCounts.cancel - taskCounts.approved, // Only active tasks
             color: "bg-blue-100 text-blue-800",
             icon: <Circle className="h-4 w-4" />,
         },
@@ -159,10 +179,8 @@ export default function TaskSideBar({
                         <X className="h-4 w-4" />
                     </button>
 
-                    {/* Sidebar Header */}
-
                     {/* Sidebar Content */}
-                    <div className="overflow-y-auto h-[calc(100vh-4rem)] py-4">
+                    <div className="overflow-y-auto h-[calc(100vh-4rem)] py-4 scrollbar-hide">
                         {/* Team Navigation */}
                         <div className="px-4 mb-6">
                             <div
@@ -206,7 +224,7 @@ export default function TaskSideBar({
                             ))}
                         </div>
 
-                        {/* Task*/}
+                        {/* Task Status Filters */}
                         <div className="px-4">
                             <div
                                 className={`flex items-center ${
@@ -279,10 +297,12 @@ export default function TaskSideBar({
                                 )}
                             </div>
 
-                            <div className="flex flex-col">
+                            <div className="flex flex-col space-y-3">
                                 {/* User Filter */}
-                                <div className="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm py-2">
-                                    <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 flex items-center gap-2"></label>
+                                <div className="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-3">
+                                    <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                                        Filter by User
+                                    </label>
                                     <select
                                         className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                                         value={selectedUser}
@@ -290,9 +310,7 @@ export default function TaskSideBar({
                                             setSelectedUser(e.target.value)
                                         }
                                     >
-                                        <option value="" hidden>
-                                            👤 Filter by User
-                                        </option>
+                                        <option value="">All Users</option>
                                         {Array.from(
                                             new Set(
                                                 users.map((user) => user.name)
@@ -306,9 +324,10 @@ export default function TaskSideBar({
                                 </div>
 
                                 {/* Company Filter */}
-
-                                <div className="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm py-2">
-                                    <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 flex items-center gap-2"></label>
+                                <div className="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-3">
+                                    <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                                        Filter by Company
+                                    </label>
                                     <select
                                         className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                                         value={selectedCompany}
@@ -316,9 +335,7 @@ export default function TaskSideBar({
                                             setSelectedCompany(e.target.value)
                                         }
                                     >
-                                        <option value="" hidden>
-                                            🏢 Filter by Company
-                                        </option>
+                                        <option value="">All Companies</option>
                                         {Array.from(
                                             new Set(
                                                 tasks.map(
@@ -334,8 +351,10 @@ export default function TaskSideBar({
                                 </div>
 
                                 {/* Deadline Sort */}
-                                <div className="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm py-2">
-                                    <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 flex items-center gap-2"></label>
+                                <div className="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-3">
+                                    <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                                        Sort by Deadline
+                                    </label>
                                     <select
                                         className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                                         value={sortDeadline}
@@ -361,6 +380,17 @@ export default function TaskSideBar({
             <div className="flex-1 overflow-auto md:ml-0 transition-margin duration-300">
                 <div className="p-6">{children}</div>
             </div>
+
+            {/* Add custom CSS to hide scrollbar */}
+            <style jsx>{`
+                .scrollbar-hide {
+                    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                    scrollbar-width: none;  /* Firefox */
+                }
+                .scrollbar-hide::-webkit-scrollbar {
+                    display: none;  /* Safari and Chrome */
+                }
+            `}</style>
         </div>
     );
 }

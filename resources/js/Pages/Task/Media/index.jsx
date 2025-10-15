@@ -91,83 +91,75 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
 
     return (
         <div
-            className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 ${getCardColor(
+            className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 cursor-pointer ${getCardColor(
                 task.status
             )}`}
+            onClick={() => onOpenDetails(task, index)}
         >
             <div className="p-5">
                 {/* Header */}
-                <div className="flex justify-between items-start mb-4">
+                <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center">
-                        <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
                         <PriorityBadge deadline={task.deadline} />
                     </div>
                     <StatusBadge status={task.status} />
                 </div>
 
+                {/* Task Company Name */}
+                <h3 className="text-sm font-semibold text-black tracking-wide -mb-0.5 line-clamp-1">
+                    {task.company}
+                </h3>
+
+                {/* Code */}
+                <h1 className="font-black text-3xl text-gray-900 -mb-0.5 leading-tight">
+                    {task?.company_code?.code || "N/A"}
+                </h1>
+
                 {/* Task Title */}
-                <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+                <h3 className="text-md text-black font-medium mb-1 line-clamp-2">
                     {task.task_title}
                 </h3>
 
-                {/* Company and Category */}
-                <div className="flex items-center gap-2 mb-3">
-                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                        {task.company}
-                    </span>
-                    <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                        {task.category}
-                    </span>
-                </div>
-
                 {/* Assignee and Format */}
-                <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
-                    <span className="font-medium">{task.penanggung_jawab}</span>
-                    <span>{task.task_format}</span>
+                <div className="flex items-center justify-between mb-2 text-sm text-gray-600">
+                    <div className="flex items-center">
+                        <div className="flex -space-x-3 mr-3">
+                            {task.penanggung_jawab
+                                ?.split(",")
+                                .map((assignee, index) => (
+                                    <div
+                                        key={index}
+                                        className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-800 font-bold border-[1px] border-black shadow-sm"
+                                        title={assignee.trim()} // Show full name on hover
+                                    >
+                                        {assignee.trim().charAt(0)}
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+                    <span className="font-medium text-black text-xs ">
+                        {task.task_format}
+                    </span>
                 </div>
 
                 {/* Deadline */}
                 <div className="flex items-center justify-between mb-4">
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-black">
                         Deadline:{" "}
-                        <span className="font-medium text-gray-700">
+                        <span className="font-semibold text-gray-700">
                             {task.deadline}
                         </span>
                     </div>
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-between items-center pt-3 border-t border-gray-100">
-                    <button
-                        onClick={() => onOpenDetails(task, index)}
-                        className="flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
-                    >
-                        <svg
-                            className="w-4 h-4 mr-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                            />
-                        </svg>
-                        View Details
-                    </button>
-                    {user_role !== "intern" && task.status !== "Cancel" && (
+                <div className="flex justify-end items-center pt-3 border-t border-black">
+                    {!["Cancel", "In Review"].includes(task.status) && (
                         <div className="flex space-x-2">
                             <Link
                                 href={route("media.edit", task.uuid)}
-                                className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                                onClick={(e) => e.stopPropagation()}
+                                className="p-2 text-black hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200"
                             >
                                 <svg
                                     className="w-4 h-4"
@@ -184,8 +176,8 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                 </svg>
                             </Link>
                             <button
-                                onClick={() => {
-                                    console.log(task.uuid);
+                                onClick={(e) => {
+                                    e.stopPropagation(); // This prevents the card click
                                     if (
                                         confirm(
                                             "Are you sure you want to delete this task?"
@@ -204,7 +196,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                         );
                                     }
                                 }}
-                                className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                className="p-2 text-black hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
                             >
                                 <svg
                                     className="w-4 h-4"
@@ -489,8 +481,16 @@ export default function TaskIndex({ tasks, userName, users }) {
                           task.status
                       )
                     : task.status === selectedFilter;
+
+            // Case-insensitive matching for multiple assignees
             const matchesUser =
-                selectedUser === "" || task.penanggung_jawab === selectedUser;
+                selectedUser === "" ||
+                (task.penanggung_jawab &&
+                    task.penanggung_jawab
+                        .split(",")
+                        .map((name) => name.trim().toLowerCase())
+                        .includes(selectedUser.toLowerCase()));
+
             const matchesCompany =
                 selectedCompany === "" || task.company === selectedCompany;
             return matchesFilter && matchesUser && matchesCompany;
@@ -528,7 +528,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
             <AuthenticatedLayout>
-                <Head title="Task Management" />
+                <Head title="Media Team Task Management" />
                 <TaskSideBar
                     users={users}
                     tasks={tasks}
@@ -541,7 +541,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                     selectedCompany={selectedCompany}
                     setSelectedCompany={setSelectedCompany}
                 >
-                    <div className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-8">
+                    <div className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-8 overflow-y-auto h-[calc(100vh-4rem)] py-4 scrollbar-hide">
                         {/* Success Message */}
                         {successMessage && (
                             <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 p-4 rounded-lg border border-green-200 mb-6 flex items-center">

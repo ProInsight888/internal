@@ -15,7 +15,7 @@ const StatusBadge = ({ status }) => {
         Revision: "#F97316", // orange
         Idle: "#6B7280", // gray
         Lunas: "#EC4899", // pink
-        Cicil: "#14B8A6", // teal
+        Cici: "#14B8A6", // teal
     };
 
     return (
@@ -62,7 +62,7 @@ const PriorityBadge = ({ deadline }) => {
 
     return (
         <span
-            className={`text-xs font-medium px-2.5 py-0.5 rounded-sm ${bgColor}`}
+            className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${bgColor}`}
         >
             {priority}
         </span>
@@ -70,7 +70,7 @@ const PriorityBadge = ({ deadline }) => {
 };
 
 // Task Card Component
-const TaskCard = ({ task, onOpenDetails, index }) => {
+const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
     // Assign different pastel colors based on task status
     // console.log(task, onOpenDetails, index)
     const getCardColor = (status) => {
@@ -88,7 +88,6 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
 
         return colorMap[status] || colorMap.default;
     };
-    console.log(task);
 
     return (
         <div
@@ -99,7 +98,7 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
         >
             <div className="p-5">
                 {/* Header */}
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center">
                         <PriorityBadge deadline={task.deadline} />
                     </div>
@@ -107,43 +106,60 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
                 </div>
 
                 {/* Task Company Name */}
-                <h3 className="text-15px  text-black line-clamp-2">
+                <h3 className="text-sm font-semibold text-black tracking-wide -mb-0.5 line-clamp-1">
                     {task.company}
                 </h3>
 
                 {/* Code */}
-                <h1 className="font-bold text-4xl text-black">
+                <h1 className="font-black text-3xl text-gray-900 -mb-0.5 leading-tight">
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
-                <h3 className="text-15px  text-black line-clamp-2">
+                {/* Task Title */}
+                <h3 className="text-md text-black font-medium mb-1 line-clamp-2">
                     {task.task_title}
                 </h3>
 
                 {/* Assignee and Format */}
-                <div className="flex items-center justify-between mb-2 mt-2 text-sm text-gray-600">
-                    <span className="font-medium">{task.penanggung_jawab}</span>
-                    <span>{task.task_format}</span>
+                <div className="flex items-center justify-between mb-2 text-sm text-gray-600">
+                    <div className="flex items-center">
+                        <div className="flex -space-x-3 mr-3">
+                            {task.penanggung_jawab
+                                ?.split(",")
+                                .map((assignee, index) => (
+                                    <div
+                                        key={index}
+                                        className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-800 font-bold border-[1px] border-black shadow-sm"
+                                        title={assignee.trim()} // Show full name on hover
+                                    >
+                                        {assignee.trim().charAt(0)}
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+                    <span className="font-medium text-black text-xs ">
+                        {task.task_format}
+                    </span>
                 </div>
 
                 {/* Deadline */}
                 <div className="flex items-center justify-between mb-4">
-                    <div className="text-sm text-gray-500">
+                    <div className="text-xs text-black">
                         Deadline:{" "}
-                        <span className="font-medium text-gray-700">
+                        <span className="font-semibold text-gray-700">
                             {task.deadline}
                         </span>
                     </div>
                 </div>
 
                 {/* Actions */}
-                <div className=" flex justify-end items-center pt-3 border-t-2  border-black">
+                <div className="flex justify-end items-center pt-3 border-t border-black">
                     {!["Cancel", "In Review"].includes(task.status) && (
-                        <div className="position-relative flex space-x-2">
+                        <div className="flex space-x-2">
                             <Link
                                 href={route("it.edit", task.uuid)}
                                 onClick={(e) => e.stopPropagation()}
-                                className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                                className="p-2 text-black hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200"
                             >
                                 <svg
                                     className="w-4 h-4"
@@ -180,7 +196,7 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
                                         );
                                     }
                                 }}
-                                className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                className="p-2 text-black hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
                             >
                                 <svg
                                     className="w-4 h-4"
@@ -217,13 +233,12 @@ const TaskModal = ({
 }) => {
     if (!isOpen) return null;
 
+    console.log(userName);
+    console.log(task.penanggung_jawab);
+
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-        onClick={onClose}
-        >
-            <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-            >
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
                     <div className="flex justify-between items-start">
@@ -356,7 +371,7 @@ const TaskModal = ({
                                         {task.status === "Approved"
                                             ? "Approved"
                                             : "Under Review"}{" "}
-                                        - {task?.result_link}
+                                        - {task.result?.link}
                                     </p>
                                 </div>
                             ) : (
@@ -440,12 +455,12 @@ const TaskModal = ({
 // Filter Tabs Component
 
 export default function TaskIndex({ tasks, userName, users }) {
-    const user = usePage().props.auth.user.name;
+    const user = usePage().props.auth.user;
 
     const { data, setData, post, put, processing, errors } = useForm({
         uuid: "",
         link: "",
-        sended_by: user || "User Name Not Found",
+        sended_by: user.name || "User Name Not Found",
     });
 
     const [selectedFilter, setSelectedFilter] = useState("");
@@ -466,8 +481,16 @@ export default function TaskIndex({ tasks, userName, users }) {
                           task.status
                       )
                     : task.status === selectedFilter;
+
+            // Case-insensitive matching for multiple assignees
             const matchesUser =
-                selectedUser === "" || task.penanggung_jawab === selectedUser;
+                selectedUser === "" ||
+                (task.penanggung_jawab &&
+                    task.penanggung_jawab
+                        .split(",")
+                        .map((name) => name.trim().toLowerCase())
+                        .includes(selectedUser.toLowerCase()));
+
             const matchesCompany =
                 selectedCompany === "" || task.company === selectedCompany;
             return matchesFilter && matchesUser && matchesCompany;
@@ -495,6 +518,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     // Submit task
     const submitTask = (e) => {
         e.preventDefault();
+        console.log(data.uuid);
         put(route("it_submit.update", { it: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),
@@ -504,14 +528,20 @@ export default function TaskIndex({ tasks, userName, users }) {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
             <AuthenticatedLayout>
-                <Head title="IT Team Task Management" />
+                <Head title="Media Team Task Management" />
                 <TaskSideBar
                     users={users}
                     tasks={tasks}
                     selectedFilter={selectedFilter}
                     setSelectedFilter={setSelectedFilter}
+                    selectedUser={selectedUser}
+                    setSelectedUser={setSelectedUser}
+                    sortDeadline={sortDeadline}
+                    setSortDeadline={setSortDeadline}
+                    selectedCompany={selectedCompany}
+                    setSelectedCompany={setSelectedCompany}
                 >
-                    <div className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-8">
+                    <div className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-8 overflow-y-auto h-[calc(100vh-4rem)] py-4 scrollbar-hide">
                         {/* Success Message */}
                         {successMessage && (
                             <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 p-4 rounded-lg border border-green-200 mb-6 flex items-center">
@@ -530,38 +560,37 @@ export default function TaskIndex({ tasks, userName, users }) {
                             </div>
                         )}
 
-                        {/* Filters Section */}
-
-                        {/* Add New Task Button */}
                         <div className="flex justify-end mb-6">
-                            <Link
-                                href={route("it.create")}
-                                className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
-                            >
-                                <svg
-                                    className="w-5 h-5 mr-2"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                            {user.role !== "intern" && (
+                                <Link
+                                    href={route("it.create")}
+                                    className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                    />
-                                </svg>
-                                Add New Task
-                            </Link>
+                                    <svg
+                                        className="w-5 h-5 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                        />
+                                    </svg>
+                                    Add New Task
+                                </Link>
+                            )}
                         </div>
 
                         {/* Tasks Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {selectedFilter === "" ? (
                                 <>
-                                    <div className="col-span-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                                            <div className="gap-5 flex-flex-col [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                                    <div className="col-span-3">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                                            <div className="gap-5 flex-flex-col">
                                                 <div className="w-full p-3 pl-0 flex gap-2">
                                                     <div className="h-[1.7rem] bg-[#d141b7] w-2"></div>
                                                     <p className="font-extrabold">
@@ -576,18 +605,27 @@ export default function TaskIndex({ tasks, userName, users }) {
                                                     )
                                                     .map((task, index) => {
                                                         return (
-                                                            <TaskCard
-                                                                key={task.uuid}
-                                                                task={task}
-                                                                onOpenDetails={
-                                                                    openTaskDetails
-                                                                }
-                                                                index={index}
-                                                            />
+                                                            <>
+                                                                <TaskCard
+                                                                    key={
+                                                                        task.uuid
+                                                                    }
+                                                                    task={task}
+                                                                    onOpenDetails={
+                                                                        openTaskDetails
+                                                                    }
+                                                                    index={
+                                                                        index
+                                                                    }
+                                                                    user_role={
+                                                                        user.role
+                                                                    }
+                                                                />
+                                                            </>
                                                         );
                                                     })}
                                             </div>
-                                            <div className="gap-5 flex-flex-col [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                                            <div className="gap-5 flex-flex-col">
                                                 <div className="w-full p-3 pl-0 flex gap-2">
                                                     <div className="h-[1.7rem] bg-[#3B82F6] w-2"></div>
                                                     <p className="font-extrabold">
@@ -609,11 +647,14 @@ export default function TaskIndex({ tasks, userName, users }) {
                                                                     openTaskDetails
                                                                 }
                                                                 index={index}
+                                                                user_role={
+                                                                    user.role
+                                                                }
                                                             />
                                                         );
                                                     })}
                                             </div>
-                                            <div className="gap-5 flex-flex-col [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                                            <div className="gap-5 flex-flex-col">
                                                 <div className="w-full p-3 pl-0 flex gap-2">
                                                     <div className="h-[1.7rem] bg-[#F59E0B] w-2"></div>
                                                     <p className="font-extrabold">
@@ -635,6 +676,9 @@ export default function TaskIndex({ tasks, userName, users }) {
                                                                     openTaskDetails
                                                                 }
                                                                 index={index}
+                                                                user_role={
+                                                                    user.role
+                                                                }
                                                             />
                                                         );
                                                     })}
@@ -650,6 +694,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                                             task={task}
                                             onOpenDetails={openTaskDetails}
                                             index={index}
+                                            user_role={user.role}
                                         />
                                     );
                                 })
@@ -679,12 +724,14 @@ export default function TaskIndex({ tasks, userName, users }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                <Link
-                                    href={route("it.create")}
-                                    className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
-                                >
-                                    Create New Task
-                                </Link>
+                                {user.role !== "intern" && (
+                                    <Link
+                                        href={route("it.create")}
+                                        className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
+                                    >
+                                        Create New Task
+                                    </Link>
+                                )}
                             </div>
                         )}
                     </div>

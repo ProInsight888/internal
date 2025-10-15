@@ -551,7 +551,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                         <div className="bg-amber-50 p-4 rounded-xl border border-amber-200">
                                             <label
                                                 htmlFor="revision-comments"
-                                                className="block text-sm font-medium text-amber-800 mb-2 flex items-center"
+                                                className="block text-sm font-medium text-amber-800 mb-2 items-center"
                                             >
                                                 <svg
                                                     className="w-4 h-4 mr-1"

@@ -24,4 +24,9 @@ class media extends Model
     public function getRouteKeyName() {
         return 'uuid';
     }
+        
+    public function companyCode(){
+        return $this->hasOne(newClient::class, 'company_name', 'company');
+    }
+    
 }

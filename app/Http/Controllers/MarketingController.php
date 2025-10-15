@@ -15,7 +15,7 @@ class MarketingController extends Controller
 {
     public function index()
     {
-        $tasks = marketing::all();
+        $tasks = marketing::with('companyCode')->get();
         $users = User::all();
         return Inertia::render('Task/Marketing/index', [
             'tasks' => $tasks,

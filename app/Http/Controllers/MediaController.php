@@ -14,7 +14,7 @@ class MediaController extends Controller
     public function index()
     {
         // $tasks = Task::with('result')->get();
-        $tasks = media::all();
+        $tasks = media::with('companyCode')->get();
         $users = User::all();
         // dd($users);
         return inertia('Task/Media/index', [
