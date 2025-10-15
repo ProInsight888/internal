@@ -264,7 +264,7 @@ export default function Create({
                                             value={data.company} // keep it controlled
                                             >
                                             <SelectTrigger className="w-full border-gray-300 rounded-[0.5rem]">
-                                                <SelectValue placeholder="Category" className="text-gray-400" />
+                                                <SelectValue placeholder="Company" className="text-gray-400" />
                                             </SelectTrigger>
                                             <SelectContent className="border-gray-300">
                                                 {Array.from(new Set(companies.map(company => company.company_name))).map((name, idx) => (

@@ -318,9 +318,12 @@ const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, p
 
 
 export default function TaskIndex({ tasks, userName, users }) {
+    const user = usePage().props.auth.user.name
+
     const { data, setData, post, put, processing, errors } = useForm({
         uuid: "",
         link: "",
+        sended_by: user || "User Name Not Found",
     });
 
     const [selectedFilter, setSelectedFilter] = useState("");
@@ -367,14 +370,9 @@ export default function TaskIndex({ tasks, userName, users }) {
     // Submit task
     const submitTask = (e) => {
         e.preventDefault();
-        post(route("result.store"), {
-            onSuccess: () => {
-                put(route("update_task_submit.update"), {
-                    onSuccess: () => window.location.reload(),
-                    onError: (e) => console.error("PUT error", e),
-                });
-            },
-            onError: (e) => console.error("POST error", e),
+        put(route("creative_submit.update", { creative: data.uuid }), {
+            onSuccess: () => window.location.reload(),
+            onError: (e) => console.error("PUT error", e),
         });
     };
 

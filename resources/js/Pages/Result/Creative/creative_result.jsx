@@ -96,8 +96,10 @@ export default function TaskResult({ tasks, users, userName }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        put(route("it_review.update", { it_review: data.uuid }), {
-            onSuccess: () => {},
+        put(route("creative_review.update", { creative_review: data.uuid }), {
+            onSuccess: () => {
+                window.location.reload()
+            },
             onError: (errors) => console.error(errors),
         });
     };

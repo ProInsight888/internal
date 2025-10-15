@@ -33,6 +33,6 @@ class update_submit_marketing_task extends Controller
             'send_time' => $time,
             'send_date' => $date,
         ]);
-        return redirect()->route('it.index')->with('success', 'Task Updated');
+        return redirect()->route('marketing.index')->with('success', 'Task Updated');
     }
 }

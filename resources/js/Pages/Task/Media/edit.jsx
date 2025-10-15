@@ -29,6 +29,8 @@ export default function edit({
         deadline: task?.deadline || "",
     });
 
+    console.log(task)
+
     const pj = data.penanggung_jawab; // contoh: "Apin SH,Felix Zeng"
     const arr = pj
     ? pj.split(",").map(name => {
@@ -129,7 +131,7 @@ export default function edit({
         const dataSelectUser = selectedUsers.map(user => user.name).join(",");
         setData("penanggung_jawab", dataSelectUser);
         e.preventDefault();
-        put(route("task.update", task.uuid), {
+        put(route("media.update", task.uuid), {
             onSuccess: () => {
                 alert("Task updated successfully!");
             },
@@ -143,22 +145,28 @@ export default function edit({
             <div className="max-w-4xl mx-auto px-4 py-8">
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
                     <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-4 border-b  border-gray-200">
-                        <h2 className="text-xl font-bold text-white">Create New Task Details</h2>
+                        <h2 className="text-xl font-bold text-white">
+                            Create New Task Details
+                        </h2>
                     </div>
-                    
-                    <div className="p-6">
-                        <form onSubmit={submit} ref={formRef} className="space-y-6">
-                            {/* Task Title */}
-                                <div ref={dropdownRef}>
-                                    <label
-                                        htmlFor="task_title"
-                                        className="block text-sm font-medium text-gray-700 mb-2"
-                                    >
-                                        Task Title
-                                    </label>
 
-                                    <div className="relative">
-                                        <input
+                    <div className="p-6">
+                        <form
+                            onSubmit={submit}
+                            ref={formRef}
+                            className="space-y-6"
+                        >
+                            {/* Task Title */}
+                            <div ref={dropdownRef}>
+                                <label
+                                    htmlFor="task_title"
+                                    className="block text-sm font-medium text-gray-700 mb-2"
+                                >
+                                    Task Title
+                                </label>
+
+                                <div className="relative">
+                                    <input
                                         type="text"
                                         name="task_title"
                                         value={data.task_title}
@@ -168,36 +176,56 @@ export default function edit({
                                         placeholder="Enter task title"
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 px-4 py-2 
                                                     focus:ring-0 focus:ring-none focus:border-gray-400 shadow-sm"
-                                        autoComplete='off'
-                                        />
+                                        autoComplete="off"
+                                    />
 
-                                        {showOptionTitle && task_title.length > 0 && (
-                                        <div className="absolute z-10 mt-1 w-full bg-white border py-2 max-h-32 border-gray-200 rounded-[0.5rem] shadow-lg 
-                                                        overflow-y-auto animate-fadeIn">
-                                            {task_title.map((option, i) => (
-                                                <div
-                                                    key={i}
-                                                    onMouseDown={(e) => {
-                                                    e.stopPropagation();
-                                                    setData("task_title", option.task_title);
-                                                    setShowOptionTitle(false);
-                                                    }}
-                                                    onMouseEnter={() => setHighlightedIndex(i)}
-                                                    className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                ${highlightedIndex === i ? "bg-blue-50 text-blue-600" : "hover:bg-gray-50"}`}
-                                                >
-                                                    <span className="truncate">{option.task_title}</span>
-                                                </div>
+                                    {showOptionTitle &&
+                                        task_title.length > 0 && (
+                                            <div
+                                                className="absolute z-10 mt-1 w-full bg-white border py-2 max-h-32 border-gray-200 rounded-[0.5rem] shadow-lg 
+                                                        overflow-y-auto animate-fadeIn"
+                                            >
+                                                {task_title.map((option, i) => (
+                                                    <div
+                                                        key={i}
+                                                        onMouseDown={(e) => {
+                                                            e.stopPropagation();
+                                                            setData(
+                                                                "task_title",
+                                                                option.task_title
+                                                            );
+                                                            setShowOptionTitle(
+                                                                false
+                                                            );
+                                                        }}
+                                                        onMouseEnter={() =>
+                                                            setHighlightedIndex(
+                                                                i
+                                                            )
+                                                        }
+                                                        className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                                                ${
+                                                                    highlightedIndex ===
+                                                                    i
+                                                                        ? "bg-blue-50 text-blue-600"
+                                                                        : "hover:bg-gray-50"
+                                                                }`}
+                                                    >
+                                                        <span className="truncate">
+                                                            {option.task_title}
+                                                        </span>
+                                                    </div>
                                                 ))}
-                                        </div>
+                                            </div>
                                         )}
-                                    </div>
-
-                                    {errors.task_title && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.task_title}</p>
-                                    )}
                                 </div>
-                            
+
+                                {errors.task_title && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors.task_title}
+                                    </p>
+                                )}
+                            </div>
 
                             {/* Assignee and Status */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -207,14 +235,16 @@ export default function edit({
                                         className="block text-sm text-gray-700 mb-2"
                                         value="Penanggung Jawab"
                                     />
-                                    <div 
+                                    <div
                                         className="w-full p-2 border border-gray-300 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2"
-                                        onClick={() => setResponsiblePopUp(true)}
+                                        onClick={() =>
+                                            setResponsiblePopUp(true)
+                                        }
                                     >
                                         {selectedUsers.length > 0 ? (
-                                            selectedUsers.map(user => (
-                                                <span 
-                                                    key={user.id} 
+                                            selectedUsers.map((user) => (
+                                                <span
+                                                    key={user.id}
                                                     className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded flex items-center"
                                                 >
                                                     {user.name}
@@ -231,10 +261,16 @@ export default function edit({
                                                 </span>
                                             ))
                                         ) : (
-                                            <span className="text-gray-400 text-sm">Select Penanggung Jawab</span>
+                                            <span className="text-gray-400 text-sm">
+                                                Select Penanggung Jawab
+                                            </span>
                                         )}
                                     </div>
-                                    {errors.penanggung_jawab && <p className="text-red-500 text-sm mt-1">{errors.penanggung_jawab}</p>}
+                                    {errors.penanggung_jawab && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.penanggung_jawab}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -244,24 +280,41 @@ export default function edit({
                                         className="block text-sm font-medium text-gray-700 mb-2"
                                     />
                                     <div className="relative w-full">
-                                        <Select>
+                                        <Select
+                                            onValueChange={(value) => setData("status", value)} 
+                                            value={data.status} // keep it controlled
+                                            >
                                             <SelectTrigger className="w-full border-gray-300 rounded-[0.5rem]">
-                                                <SelectValue placeholder="Status" className="text-gray-400"/>
+                                                <SelectValue
+                                                    placeholder="Status"
+                                                    className="text-gray-400"
+                                                />
                                             </SelectTrigger>
                                             <SelectContent className="border-gray-300">
-                                                <SelectItem value="Idle">Idle</SelectItem>
-                                                <SelectItem value="On Progress">On Progress</SelectItem>
-                                                <SelectItem value="Pending">Pending</SelectItem>
-                                                <SelectItem value="In Review">In Review</SelectItem>
-                                                <SelectItem value="Completed">Completed</SelectItem>
+                                                <SelectItem value="Idle">
+                                                    Idle
+                                                </SelectItem>
+                                                <SelectItem value="On Progress">
+                                                    On Progress
+                                                </SelectItem>
+                                                <SelectItem value="Pending">
+                                                    Pending
+                                                </SelectItem>
+                                                <SelectItem value="In Review">
+                                                    In Review
+                                                </SelectItem>
+                                                <SelectItem value="Completed">
+                                                    Completed
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
 
-
                                         {/* Custom dropdown icon */}
 
-                                        {errors.category && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.category}</p>
+                                        {errors.status && (
+                                            <p className="text-red-500 text-sm mt-1">
+                                                {errors.status}
+                                            </p>
                                         )}
                                     </div>
                                 </div>
@@ -273,28 +326,47 @@ export default function edit({
                                     htmlFor="company"
                                     value="Company"
                                     className="block text-sm font-medium text-gray-700 mb-2"
-                                />  
+                                />
                                 <div className="relative w-full">
-                                        <Select>
-                                            <SelectTrigger className="w-full border-gray-300 rounded-[0.5rem]">
-                                                <SelectValue placeholder="Category" className="text-gray-400"/>
-                                            </SelectTrigger>
-                                            <SelectContent className="border-gray-300">
-                                                {Array.from(new Set(companies.map(company => company.company_name))).map((name, idx) => (
-                                                    <SelectItem key={idx} value={name}>
-                                                        {name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                    <Select
+                                        onValueChange={(value) =>
+                                            setData("company", value)
+                                        }
+                                        value={data.company} // keep it controlled
+                                    >
+                                        <SelectTrigger className="w-full border-gray-300 rounded-[0.5rem]">
+                                            <SelectValue
+                                                placeholder="Company"
+                                                className="text-gray-400"
+                                            />
+                                        </SelectTrigger>
+                                        <SelectContent className="border-gray-300">
+                                            {Array.from(
+                                                new Set(
+                                                    companies.map(
+                                                        (company) =>
+                                                            company.company_name
+                                                    )
+                                                )
+                                            ).map((name, idx) => (
+                                                <SelectItem
+                                                    key={idx}
+                                                    value={name}
+                                                >
+                                                    {name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
 
+                                    {/* Custom dropdown icon */}
 
-                                        {/* Custom dropdown icon */}
-
-                                        {errors.category && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.category}</p>
-                                        )}
-                                    </div>
+                                    {errors.company && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.company}
+                                        </p>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Task Format */}
@@ -312,30 +384,51 @@ export default function edit({
                                         autoComplete="off"
                                         placeholder="Enter task format"
                                         onChange={formatChange}
-                                        onFocus={() => setShowOptionFormat(true)}
+                                        onFocus={() =>
+                                            setShowOptionFormat(true)
+                                        }
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 px-4 py-2 
                                                     focus:ring-0 focus:ring-none focus:border-gray-400 shadow-sm"
                                     />
-                                    {showOptionFormat && task_format.length > 0 && (
-                                        <div className="absolute z-10 mt-1 w-full bg-white border py-2 max-h-32 border-gray-200 rounded-[0.5rem] shadow-lg 
-                                                        overflow-y-auto animate-fadeIn">
-                                            {task_format.map((option, i) => (
-                                                <div
-                                                    key={i}
-                                                    onMouseDown={() => {
-                                                        setData("task_format", option.task_format);
-                                                        setShowOptionFormat(false);
-                                                    }}
-                                                    className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                ${highlightedIndex === i ? "bg-blue-50 text-blue-600" : "hover:bg-gray-50"}`}
-                                                >
-                                                    {option.task_format}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
+                                    {showOptionFormat &&
+                                        task_format.length > 0 && (
+                                            <div
+                                                className="absolute z-10 mt-1 w-full bg-white border py-2 max-h-32 border-gray-200 rounded-[0.5rem] shadow-lg 
+                                                        overflow-y-auto animate-fadeIn"
+                                            >
+                                                {task_format.map(
+                                                    (option, i) => (
+                                                        <div
+                                                            key={i}
+                                                            onMouseDown={() => {
+                                                                setData(
+                                                                    "task_format",
+                                                                    option.task_format
+                                                                );
+                                                                setShowOptionFormat(
+                                                                    false
+                                                                );
+                                                            }}
+                                                            className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                                                ${
+                                                                    highlightedIndex ===
+                                                                    i
+                                                                        ? "bg-blue-50 text-blue-600"
+                                                                        : "hover:bg-gray-50"
+                                                                }`}
+                                                        >
+                                                            {option.task_format}
+                                                        </div>
+                                                    )
+                                                )}
+                                            </div>
+                                        )}
                                 </div>
-                                {errors.task_format && <p className="text-red-500 text-sm mt-1">{errors.task_format}</p>}
+                                {errors.task_format && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors.task_format}
+                                    </p>
+                                )}
                             </div>
 
                             {/* Category and Deadline */}
@@ -347,22 +440,37 @@ export default function edit({
                                         className="block text-sm font-medium text-gray-700 mb-2"
                                     />
                                     <div className="relative w-full">
-                                        <Select>
+                                        <Select
+                                            onValueChange={(value) =>
+                                                setData("category", value)
+                                            }
+                                            value={data.category} // keep it controlled
+                                        >
                                             <SelectTrigger className="w-full border-gray-300 rounded-[0.5rem]">
-                                                <SelectValue placeholder="Category" className="text-gray-400"/>
+                                                <SelectValue
+                                                    placeholder="Category"
+                                                    className="text-gray-400"
+                                                />
                                             </SelectTrigger>
                                             <SelectContent className="border-gray-300">
-                                                <SelectItem value="Monthly">📅 Monthly</SelectItem>
-                                                <SelectItem value="By Request">📝 By Request</SelectItem>
-                                                <SelectItem value="Urgent">⚡ Urgent</SelectItem>
+                                                <SelectItem value="Monthly">
+                                                    📅 Monthly
+                                                </SelectItem>
+                                                <SelectItem value="By Request">
+                                                    📝 By Request
+                                                </SelectItem>
+                                                <SelectItem value="Urgent">
+                                                    ⚡ Urgent
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
-
 
                                         {/* Custom dropdown icon */}
 
                                         {errors.category && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.category}</p>
+                                            <p className="text-red-500 text-sm mt-1">
+                                                {errors.category}
+                                            </p>
                                         )}
                                     </div>
                                 </div>
@@ -377,11 +485,21 @@ export default function edit({
                                         name="deadline"
                                         type="date"
                                         value={data.deadline}
-                                        min={new Date().toISOString().split('T')[0]}
-                                        onChange={(e) => setData("deadline", e.target.value)}
+                                        min={
+                                            new Date()
+                                                .toISOString()
+                                                .split("T")[0]
+                                        }
+                                        onChange={(e) =>
+                                            setData("deadline", e.target.value)
+                                        }
                                         className="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                     />
-                                    {errors.deadline && <p className="text-red-500 text-sm mt-1">{errors.deadline}</p>}
+                                    {errors.deadline && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.deadline}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
 
@@ -400,33 +518,64 @@ export default function edit({
                                         id="description"
                                         name="description"
                                         placeholder="Enter task description"
-                                        onFocus={() => setShowOptionDescription(true)}
+                                        onFocus={() =>
+                                            setShowOptionDescription(true)
+                                        }
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 px-4 py-2 
                                                     focus:ring-0 focus:ring-none focus:border-gray-400 shadow-sm"
                                         rows={4}
                                     />
-                                    {showOptionDescription && description.length > 0 && (
-                                        <div className="absolute z-10 mt-1 w-full bg-white border py-2 max-h-32 border-gray-200 rounded-[0.5rem] shadow-lg 
-                                                        overflow-y-auto animate-fadeIn">
-                                                {description.map((option, i) => (
-                                                <div
-                                                    key={i}
-                                                    onMouseDown={(e) => {
-                                                    e.stopPropagation();
-                                                    setData("description", option.description);
-                                                    setShowOptionDescription(false);
-                                                    }}
-                                                    onMouseEnter={() => setHighlightedIndex(i)}
-                                                    className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                ${highlightedIndex === i ? "bg-blue-50 text-blue-600" : "hover:bg-gray-50"}`}
-                                                >
-                                                    <span className="truncate">{option.description}</span>
-                                                </div>
-                                                ))}
-                                        </div>
-                                    )}
+                                    {showOptionDescription &&
+                                        description.length > 0 && (
+                                            <div
+                                                className="absolute z-10 mt-1 w-full bg-white border py-2 max-h-32 border-gray-200 rounded-[0.5rem] shadow-lg 
+                                                        overflow-y-auto animate-fadeIn"
+                                            >
+                                                {description.map(
+                                                    (option, i) => (
+                                                        <div
+                                                            key={i}
+                                                            onMouseDown={(
+                                                                e
+                                                            ) => {
+                                                                e.stopPropagation();
+                                                                setData(
+                                                                    "description",
+                                                                    option.description
+                                                                );
+                                                                setShowOptionDescription(
+                                                                    false
+                                                                );
+                                                            }}
+                                                            onMouseEnter={() =>
+                                                                setHighlightedIndex(
+                                                                    i
+                                                                )
+                                                            }
+                                                            className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                                                ${
+                                                                    highlightedIndex ===
+                                                                    i
+                                                                        ? "bg-blue-50 text-blue-600"
+                                                                        : "hover:bg-gray-50"
+                                                                }`}
+                                                        >
+                                                            <span className="truncate">
+                                                                {
+                                                                    option.description
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                    )
+                                                )}
+                                            </div>
+                                        )}
                                 </div>
-                                {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+                                {errors.description && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors.description}
+                                    </p>
+                                )}
                             </div>
 
                             {/* Submit Button */}
@@ -438,16 +587,41 @@ export default function edit({
                                 >
                                     {processing ? (
                                         <span className="flex items-center">
-                                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            <svg
+                                                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <circle
+                                                    className="opacity-25"
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="10"
+                                                    stroke="currentColor"
+                                                    strokeWidth="4"
+                                                ></circle>
+                                                <path
+                                                    className="opacity-75"
+                                                    fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                ></path>
                                             </svg>
                                             Creating Task...
                                         </span>
                                     ) : (
                                         <span className="flex items-center">
-                                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                            <svg
+                                                className="w-5 h-5 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                                />
                                             </svg>
                                             Create Task
                                         </span>
@@ -462,19 +636,25 @@ export default function edit({
             {/* Responsible User Selection Modal */}
             {responsiblePopUp && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-                    <div 
+                    <div
                         className="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="p-6 border-b">
-                            <h3 className="text-lg font-semibold text-gray-800">Select Responsible Users</h3>
-                            <p className="text-gray-500 text-sm">You can select multiple users</p>
-                            
+                            <h3 className="text-lg font-semibold text-gray-800">
+                                Select Responsible Users
+                            </h3>
+                            <p className="text-gray-500 text-sm">
+                                You can select multiple users
+                            </p>
+
                             <div className="mt-4 relative">
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     value={searchUser}
-                                    onChange={(e) => setSearchUser(e.target.value)}
+                                    onChange={(e) =>
+                                        setSearchUser(e.target.value)
+                                    }
                                     placeholder="Search users..."
                                     className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black "
                                 />
@@ -482,30 +662,43 @@ export default function edit({
                         </div>
                         <div className="flex-1 overflow-y-auto p-4 max-h-72">
                             {filteredUsers.length > 0 ? (
-                                filteredUsers.map(user => (
-                                    <div 
-                                        key={user.id} 
-                                        className={`p-3 rounded-lg mb-2 cursor-pointer transition-colors ${selectedUsers.some(selected => selected.id === user.id) ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-100'}`}
+                                filteredUsers.map((user) => (
+                                    <div
+                                        key={user.id}
+                                        className={`p-3 rounded-lg mb-2 cursor-pointer transition-colors ${
+                                            selectedUsers.some(
+                                                (selected) =>
+                                                    selected.id === user.id
+                                            )
+                                                ? "bg-blue-100 border border-blue-300"
+                                                : "hover:bg-gray-100"
+                                        }`}
                                         onClick={() => handleUserSelect(user)}
                                     >
-                                        <div className="font-medium">{user.name}</div>
-                                        <div className="text-sm text-gray-500">{user.email}</div>
+                                        <div className="font-medium">
+                                            {user.name}
+                                        </div>
+                                        <div className="text-sm text-gray-500">
+                                            {user.email}
+                                        </div>
                                     </div>
                                 ))
                             ) : (
-                                <p className="text-gray-500 text-center py-4">No users found</p>
+                                <p className="text-gray-500 text-center py-4">
+                                    No users found
+                                </p>
                             )}
                         </div>
-                        
+
                         <div className="p-4 border-t bg-gray-50 flex justify-between items-center">
                             <div className="flex flex-wrap gap-2">
-                                {selectedUsers.map(user => (
-                                    <span 
-                                        key={user.id} 
+                                {selectedUsers.map((user) => (
+                                    <span
+                                        key={user.id}
                                         className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded flex items-center"
                                     >
                                         {user.name}
-                                        <button 
+                                        <button
                                             type="button"
                                             onClick={() => removeUser(user.id)}
                                             className="ml-1 text-blue-600 hover:text-blue-800"
@@ -516,14 +709,14 @@ export default function edit({
                                 ))}
                             </div>
                             <div className="flex gap-2">
-                                <button 
+                                <button
                                     type="button"
                                     onClick={() => setResponsiblePopUp(false)}
                                     className="px-4 py-2 text-gray-600 hover:text-gray-800"
                                 >
                                     Cancel
                                 </button>
-                                <button 
+                                <button
                                     type="button"
                                     onClick={applySelectedUsers}
                                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"

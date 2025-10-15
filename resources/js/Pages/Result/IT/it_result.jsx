@@ -97,7 +97,9 @@ export default function TaskResult({ tasks, users, userName }) {
         e.preventDefault();
 
         put(route("it_review.update", { it_review: data.uuid }), {
-            onSuccess: () => {},
+            onSuccess: () => {
+                window.location.reload()
+            },
             onError: (errors) => console.error(errors),
         });
     };
