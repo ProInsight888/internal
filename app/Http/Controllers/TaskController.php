@@ -91,7 +91,6 @@ class TaskController extends Controller
             'category' => $validatedData['category'],
             'deadline' => $validatedData['deadline'],
         ]);
-
         return redirect()->route('task.index')->with('success', 'Task saved successfully!');
     }
 

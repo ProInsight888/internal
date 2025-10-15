@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('new_clients', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
             $table->string('company_name');
+            $table->string('code', 4) -> nullable();
             $table->string('type');
             $table->string('location');
             $table->string('contract');

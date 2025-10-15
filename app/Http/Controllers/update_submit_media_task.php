@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\media;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,7 +17,6 @@ class update_submit_media_task extends Controller
             // 'status' => 'required|max:255',
             // 'revision' => 'required|max:255',
         ]);
-
         $uuid = $media->uuid;
         // dd($uuid);
 

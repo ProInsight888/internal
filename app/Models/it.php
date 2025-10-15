@@ -33,7 +33,11 @@ class it extends Model
     public function result(){
         return $this->hasOne(result::class, 'task_uuid', 'uuid')->latestOfMany();
     }
-
+    
+    public function companyCode(){
+        return $this->hasOne(newClient::class, 'company_name', 'company');
+    }
+    
     public function rejectedRevision()
     {
         return $this->hasOne(rejectedRevision::class, 'task_uuid', 'uuid')->latestOfMany();

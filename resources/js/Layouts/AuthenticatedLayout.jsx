@@ -82,7 +82,7 @@ export default function AuthenticatedLayout({ header, children }) {
             ),
         },
         {
-            name: "Absensi",
+            name: "Attendance",
             href: route("absen.index"),
             routeName: "/absen",
             icon: (
@@ -102,7 +102,7 @@ export default function AuthenticatedLayout({ header, children }) {
             ),
         },
         {
-            name: "Kalender",
+            name: "Calendar",
             href: route("kalender.index"),
             routeName: "/kalender",
             icon: (
@@ -122,7 +122,7 @@ export default function AuthenticatedLayout({ header, children }) {
             ),
         },
         {
-            name: "Items",
+            name: "Equipments",
             href: route("items.index"),
             routeName: "/items",
             icon: (

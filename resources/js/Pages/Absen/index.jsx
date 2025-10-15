@@ -14,7 +14,7 @@ const MonthSelector = ({ value, onChange }) => (
             </svg>
         </div>
         <select
-            className="bg-gradient-to-r from-blue-50 to-indigo-50 pl-10 pr-4 py-2.5 w-full md:w-64 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200"
+            className=" from-blue-50 to-indigo-50 pl-10 pr-4 py-2.5 w-full md:w-64 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200"
             value={value}
             onChange={onChange}
         >

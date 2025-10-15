@@ -15,7 +15,8 @@ class ItController extends Controller
 {
     public function index()
     {
-        $tasks = it::all();
+        $tasks = it::with('companyCode')->get();
+        // dd($tasks);
         $users = User::all();
         return Inertia::render('Task/IT/index', [
             'tasks' => $tasks,

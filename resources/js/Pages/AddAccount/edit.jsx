@@ -117,7 +117,7 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
                 error={formProps.errors.role}
                 as="select"
                 options={roleOptions}
-                placeholder="Select Team"
+                placeholder="Select Role"
                 helpText="Select the appropriate access level for this user"
             />
 
@@ -178,7 +178,7 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
-                            Create User Account
+                            Update Account
                         </span>
                     )}
                 </PrimaryButton>

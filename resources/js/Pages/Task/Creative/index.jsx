@@ -16,7 +16,7 @@ const StatusBadge = ({ status }) => {
     'Revision': '#F97316',    // orange
     'Idle': '#6B7280',        // gray
     'Lunas': '#EC4899',       // pink
-    'Cici': '#14B8A6',        // teal
+    'Cicil': '#14B8A6',        // teal
   };
 
     return (
@@ -380,7 +380,6 @@ export default function TaskIndex({ tasks, userName, users }) {
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
             <AuthenticatedLayout>
                 <Head title="Creative Team Task Management" />
-                Creative Team
                     <TaskSideBar
                         users = {users}
                         tasks = {tasks}

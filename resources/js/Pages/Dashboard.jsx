@@ -174,10 +174,6 @@ const AttendanceForm = ({
             >
               <option value="Hadir">Hadir</option>
               <option value="Balek">Pulang</option>
-              <option value="Sakit">Sakit</option>
-              <option value="Izin">Izin</option>
-              <option value="Cuti">Cuti</option>
-              <option value="Ketemu Client">Ketemu Client</option>
               <option value="Lembur">Lembur</option>
               <option value="Pulang Lembur">Pulang Lembur</option>
             </select>
@@ -254,10 +250,10 @@ const AttendanceTable = ({ absens }) => {
 
 // Client Table Component
 const ClientTable = ({ clients }) => (
-  <div className="overflow-x-auto h-64 border border-gray-200 rounded-2xl bg-white shadow-sm">
+  <div className="overflow-x-auto h-64 border border-gray-200 rounded-2xl bg-white shadow-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
     <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
       <thead>
-        <tr className="text-xs md:text-sm bg-gradient-to-r from-pink-500 to-pink-400 text-white">
+        <tr className="sticky top-0 text-xs md:text-sm bg-gradient-to-r from-pink-500 to-pink-400 text-white">
           <th className="p-4 sticky top-0">No</th>
           <th className="p-4 sticky top-0">Nama</th>
           <th className="p-4 sticky top-0">Type</th>
@@ -265,6 +261,7 @@ const ClientTable = ({ clients }) => (
           <th className="p-4 sticky top-0">Contract</th>
           <th className="p-4 sticky top-0">Product</th>
           <th className="p-4 sticky top-0">Status</th>
+          <th className="p-4 sticky top-0">Code</th>
         </tr>
       </thead>
       <tbody>
@@ -294,6 +291,12 @@ const ClientTable = ({ clients }) => (
               }}>
                 {client.status}
               </span>
+              <span className="px-3 py-1.5 rounded-full text-xs font-bold shadow-sm" style={{
+                backgroundColor: `${getClientStatusColor(client.status)}20`,
+                color: getClientStatusColor(client.code)
+              }}>
+                {client.code}
+              </span>
             </td>
           </tr>
         ))}
@@ -313,7 +316,7 @@ const getStatusColor = (status) => {
     'Revision': '#F97316',    // orange
     'Idle': '#6B7280',        // gray
     'Lunas': '#EC4899',       // pink
-    'Cici': '#14B8A6',        // teal
+    'Cicil': '#14B8A6',        // teal
   };
   return statusColors[status] || '#6B7280';
 };
@@ -334,8 +337,8 @@ const getAttendanceStatusColor = (status) => {
 
 const getClientStatusColor = (status) => {
   const statusColors = {
-    'Lunsa': '#10B981',       // emerald
-    'Cici': '#3B82F6',        // blue
+    'Lunas': '#10B981',       // emerald
+    'Cicil': '#3B82F6',        // blue
   };
   return statusColors[status] || '#6B7280';
 };
