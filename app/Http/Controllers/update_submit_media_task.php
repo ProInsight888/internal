@@ -17,7 +17,6 @@ class update_submit_media_task extends Controller
             // 'status' => 'required|max:255',
             // 'revision' => 'required|max:255',
         ]);
-        
         $uuid = $media->uuid;
         // dd($uuid);
 
@@ -28,7 +27,7 @@ class update_submit_media_task extends Controller
         $update_task->update([
             'result_link' => $validated['link'],
             'sended_by' => $validated['sended_by'],
-            'status' =>  'In Review',
+            'status' => 'In Review',
             'send_time' => $time,
             'send_date' => $date,
         ]);

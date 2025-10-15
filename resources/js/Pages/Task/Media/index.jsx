@@ -4,24 +4,25 @@ import TaskSideBar from "@/Layouts/TaskSideBar";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 
-
 // Status Badge Component
 const StatusBadge = ({ status }) => {
     const statusColors = {
-        'On Progress': '#3B82F6', // blue
-        'Pending': '#F59E0B',     // amber
-        'Approved': '#10B981',    // emerald
-        'In Review': '#8B5CF6',   // violet
-        'Rejected': '#EF4444',    // red
-        'Revision': '#F97316',    // orange
-        'Idle': '#6B7280',        // gray
-        'Lunas': '#EC4899',       // pink
-        'Cicil': '#14B8A6',        // teal
+        "On Progress": "#3B82F6", // blue
+        Pending: "#F59E0B", // amber
+        Approved: "#10B981", // emerald
+        "In Review": "#8B5CF6", // violet
+        Rejected: "#EF4444", // red
+        Revision: "#F97316", // orange
+        Idle: "#6B7280", // gray
+        Lunas: "#EC4899", // pink
+        Cici: "#14B8A6", // teal
     };
 
     return (
         <div
-            className={`${statusColors[status] || "bg-gray-200 text-black"} font-medium py-1.5 px-3 rounded-full text-center text-xs shadow-sm`}
+            className={`${
+                statusColors[status] || "bg-gray-200 text-black"
+            } font-medium py-1.5 px-3 rounded-full text-center text-xs shadow-sm`}
         >
             {status}
         </div>
@@ -60,7 +61,9 @@ const PriorityBadge = ({ deadline }) => {
     }
 
     return (
-        <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${bgColor}`}>
+        <span
+            className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${bgColor}`}
+        >
             {priority}
         </span>
     );
@@ -72,22 +75,26 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
     // console.log(task, onOpenDetails, index)
     const getCardColor = (status) => {
         const colorMap = {
-            'In Review': 'bg-[#8B5CF6]/10 border-[#8B5CF6] shadow-xl',   // violet
-            'Rejected': 'bg-[#EF4444]/10 border-[#EF4444] shadow-xl',    // red
-            'Approved': 'bg-[#10B981]/10 border-[#10B981] shadow-xl',    // emerald
-            "Cancel": "bg-slate-100 border-slate-800",
-            'Idle': 'bg-[#d141b7]/10 border-[#d141b7] shadow-xl',        // gray
-            'Revision': 'bg-[#F97316]/10 border-[#F97316] shadow-xl',    // orange
-            'Pending': 'bg-[#F59E0B]/10 border-[#F59E0B] shadow-xl',     // amber
-            'On Progress': 'bg-[#3B82F6]/10 border-[#3B82F6] shadow-xl', // blue
-            "default": "bg-purple-100 border-purple-200"
+            "In Review": "bg-[#8B5CF6]/10 border-[#8B5CF6] shadow-xl", // violet
+            Rejected: "bg-[#EF4444]/10 border-[#EF4444] shadow-xl", // red
+            Approved: "bg-[#10B981]/10 border-[#10B981] shadow-xl", // emerald
+            Cancel: "bg-slate-100 border-slate-800",
+            Idle: "bg-[#d141b7]/10 border-[#d141b7] shadow-xl", // gray
+            Revision: "bg-[#F97316]/10 border-[#F97316] shadow-xl", // orange
+            Pending: "bg-[#F59E0B]/10 border-[#F59E0B] shadow-xl", // amber
+            "On Progress": "bg-[#3B82F6]/10 border-[#3B82F6] shadow-xl", // blue
+            default: "bg-purple-100 border-purple-200",
         };
 
         return colorMap[status] || colorMap.default;
     };
 
     return (
-        <div className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 ${getCardColor(task.status)}`}>
+        <div
+            className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 ${getCardColor(
+                task.status
+            )}`}
+        >
             <div className="p-5">
                 {/* Header */}
                 <div className="flex justify-between items-start mb-4">
@@ -122,7 +129,10 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                 {/* Deadline */}
                 <div className="flex items-center justify-between mb-4">
                     <div className="text-sm text-gray-500">
-                        Deadline: <span className="font-medium text-gray-700">{task.deadline}</span>
+                        Deadline:{" "}
+                        <span className="font-medium text-gray-700">
+                            {task.deadline}
+                        </span>
                     </div>
                 </div>
 
@@ -132,36 +142,82 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                         onClick={() => onOpenDetails(task, index)}
                         className="flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm"
                     >
-                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        <svg
+                            className="w-4 h-4 mr-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                            />
                         </svg>
                         View Details
                     </button>
-                    {user_role !== 'intern' && task.status !== "Cancel" && (
+                    {user_role !== "intern" && task.status !== "Cancel" && (
                         <div className="flex space-x-2">
                             <Link
                                 href={route("media.edit", task.uuid)}
                                 className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                             >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                <svg
+                                    className="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                    />
                                 </svg>
                             </Link>
                             <button
                                 onClick={() => {
-                                    console.log(task.uuid)
-                                    if (confirm("Are you sure you want to delete this task?")) {
-                                        router.delete(route("media.destroy", task.uuid), {
-                                            onSuccess: () => alert("Task deleted successfully!"),
-                                            onError: (errors) => console.error(errors),
-                                        });
+                                    console.log(task.uuid);
+                                    if (
+                                        confirm(
+                                            "Are you sure you want to delete this task?"
+                                        )
+                                    ) {
+                                        router.delete(
+                                            route("media.destroy", task.uuid),
+                                            {
+                                                onSuccess: () =>
+                                                    alert(
+                                                        "Task deleted successfully!"
+                                                    ),
+                                                onError: (errors) =>
+                                                    console.error(errors),
+                                            }
+                                        );
                                     }
                                 }}
                                 className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                             >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                <svg
+                                    className="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                    />
                                 </svg>
                             </button>
                         </div>
@@ -173,11 +229,20 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
 };
 
 // Task Modal Component
-const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, processing }) => {
+const TaskModal = ({
+    task,
+    isOpen,
+    onClose,
+    data,
+    setData,
+    onSubmit,
+    userName,
+    processing,
+}) => {
     if (!isOpen) return null;
 
-    console.log(userName)
-    console.log(task.penanggung_jawab)
+    console.log(userName);
+    console.log(task.penanggung_jawab);
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -186,18 +251,32 @@ const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, p
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h2 className="text-2xl font-bold mb-2">{task.task_title}</h2>
+                            <h2 className="text-2xl font-bold mb-2">
+                                {task.task_title}
+                            </h2>
                             <div className="flex items-center gap-3">
                                 <StatusBadge status={task.status} />
-                                <span className="text-blue-100">{task.company}</span>
+                                <span className="text-blue-100">
+                                    {task.company}
+                                </span>
                             </div>
                         </div>
                         <button
                             onClick={onClose}
                             className="text-white hover:text-blue-200 transition-colors"
                         >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            <svg
+                                className="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
                             </svg>
                         </button>
                     </div>
@@ -209,7 +288,9 @@ const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, p
                     <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                             <span className="text-gray-500">Assignee:</span>
-                            <p className="font-medium">{task.penanggung_jawab}</p>
+                            <p className="font-medium">
+                                {task.penanggung_jawab}
+                            </p>
                         </div>
                         <div>
                             <span className="text-gray-500">Format:</span>
@@ -221,15 +302,25 @@ const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, p
                         </div>
                         <div>
                             <span className="text-gray-500">Deadline:</span>
-                            <p className="font-medium text-red-600">{task.deadline}</p>
+                            <p className="font-medium text-red-600">
+                                {task.deadline}
+                            </p>
                         </div>
                     </div>
 
                     {/* Description */}
                     <div>
                         <h3 className="text-lg font-semibold mb-3 flex items-center">
-                            <svg className="w-5 h-5 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path>
+                            <svg
+                                className="w-5 h-5 mr-2 text-blue-600"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                    clipRule="evenodd"
+                                ></path>
                             </svg>
                             Description
                         </h3>
@@ -239,24 +330,45 @@ const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, p
                     </div>
 
                     {/* Revision Notice (if rejected) */}
-                    {task.status === "Rejected" && task.rejected_revision?.revision && (
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                            <h4 className="text-red-800 font-semibold mb-2 flex items-center">
-                                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"></path>
-                                </svg>
-                                Revision Required
-                            </h4>
-                            <p className="text-red-700">{task.rejected_revision.revision}</p>
-                        </div>
-                    )}
+                    {task.status === "Rejected" &&
+                        task.rejected_revision?.revision && (
+                            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                                <h4 className="text-red-800 font-semibold mb-2 flex items-center">
+                                    <svg
+                                        className="w-5 h-5 mr-2"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clipRule="evenodd"
+                                        ></path>
+                                    </svg>
+                                    Revision Required
+                                </h4>
+                                <p className="text-red-700">
+                                    {task.rejected_revision.revision}
+                                </p>
+                            </div>
+                        )}
 
                     {/* Submission Form */}
                     {task.status !== "Cancel" && (
                         <div>
                             <h3 className="text-lg font-semibold mb-3 flex items-center">
-                                <svg className="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <svg
+                                    className="w-5 h-5 mr-2 text-green-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
                                 </svg>
                                 Submit Your Work
                             </h3>
@@ -264,25 +376,49 @@ const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, p
                             {["In Review", "Approved"].includes(task.status) ? (
                                 <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                                     <p className="text-green-800 font-medium">
-                                        {task.status === "Approved" ? "Approved" : "Under Review"} - {task.result?.link}
+                                        {task.status === "Approved"
+                                            ? "Approved"
+                                            : "Under Review"}{" "}
+                                        - {task.result?.link}
                                     </p>
                                 </div>
                             ) : (
                                 <form onSubmit={onSubmit}>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
-                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clipRule="evenodd"></path>
+                                            <svg
+                                                className="w-5 h-5"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
+                                                    clipRule="evenodd"
+                                                ></path>
                                             </svg>
                                         </div>
                                         <input
                                             type="text"
                                             className="w-full pl-10 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                             value={data.link}
-                                            onChange={(e) => setData("link", e.target.value)}
+                                            onChange={(e) =>
+                                                setData("link", e.target.value)
+                                            }
                                             placeholder="https://example.com/your-work"
                                             required
-                                            disabled={!(task.penanggung_jawab ?? "")?.split(',').map(s => s.trim().toLowerCase()).includes(userName.trim().toLowerCase())}
+                                            disabled={
+                                                !(task.penanggung_jawab ?? "")
+                                                    ?.split(",")
+                                                    .map((s) =>
+                                                        s.trim().toLowerCase()
+                                                    )
+                                                    .includes(
+                                                        userName
+                                                            .trim()
+                                                            .toLowerCase()
+                                                    )
+                                            }
                                         />
                                     </div>
                                     <div className="mt-4 flex justify-end space-x-3">
@@ -298,8 +434,18 @@ const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, p
                                             className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg shadow-md transition-all duration-300 disabled:opacity-50"
                                             disabled={processing}
                                         >
-                                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            <svg
+                                                className="w-5 h-5 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                                                />
                                             </svg>
                                             Submit Task
                                         </button>
@@ -316,15 +462,14 @@ const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, p
 
 // Filter Tabs Component
 
-
 export default function TaskIndex({ tasks, userName, users }) {
-    const user = usePage().props.auth.user
+    const user = usePage().props.auth.user;
 
     const { data, setData, post, put, processing, errors } = useForm({
         uuid: "",
         link: "",
+        sended_by: user.name || "User Name Not Found",
     });
-
 
     const [selectedFilter, setSelectedFilter] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
@@ -337,10 +482,17 @@ export default function TaskIndex({ tasks, userName, users }) {
 
     // Filter and sort tasks
     const filteredTasks = tasks
-        .filter(task => {
-            const matchesFilter = selectedFilter === "" ? !["Rejected", "Approved", "In Review", "Cancel"].includes(task.status) : task.status === selectedFilter;
-            const matchesUser = selectedUser === "" || task.penanggung_jawab === selectedUser;
-            const matchesCompany = selectedCompany === "" || task.company === selectedCompany;
+        .filter((task) => {
+            const matchesFilter =
+                selectedFilter === ""
+                    ? !["Rejected", "Approved", "In Review", "Cancel"].includes(
+                          task.status
+                      )
+                    : task.status === selectedFilter;
+            const matchesUser =
+                selectedUser === "" || task.penanggung_jawab === selectedUser;
+            const matchesCompany =
+                selectedCompany === "" || task.company === selectedCompany;
             return matchesFilter && matchesUser && matchesCompany;
         })
         .sort((a, b) => {
@@ -348,8 +500,6 @@ export default function TaskIndex({ tasks, userName, users }) {
             const dateB = new Date(b.deadline);
             return sortDeadline === "Desc" ? dateA - dateB : dateB - dateA;
         });
-
-
 
     // Open task details modal
     const openTaskDetails = (task, index) => {
@@ -365,12 +515,10 @@ export default function TaskIndex({ tasks, userName, users }) {
         setSelectedTask(null);
     };
 
-
-
     // Submit task
     const submitTask = (e) => {
         e.preventDefault();
-        console.log(data.uuid)
+        console.log(data.uuid);
         put(route("media_submit.update", { media: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),
@@ -413,25 +561,27 @@ export default function TaskIndex({ tasks, userName, users }) {
                         )}
 
                         <div className="flex justify-end mb-6">
-                            <Link
-                                href={route("media.create")}
-                                className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
-                            >
-                                <svg
-                                    className="w-5 h-5 mr-2"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                            {user.role !== "intern" && (
+                                <Link
+                                    href={route("media.create")}
+                                    className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                    />
-                                </svg>
-                                Add New Task
-                            </Link>
+                                    <svg
+                                        className="w-5 h-5 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                        />
+                                    </svg>
+                                    Add New Task
+                                </Link>
+                            )}
                         </div>
 
                         {/* Tasks Grid */}
@@ -574,12 +724,14 @@ export default function TaskIndex({ tasks, userName, users }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                <Link
-                                    href={route("media.create")}
-                                    className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
-                                >
-                                    Create New Task
-                                </Link>
+                                {user.role !== "intern" && (
+                                    <Link
+                                        href={route("media.create")}
+                                        className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
+                                    >
+                                        Create New Task
+                                    </Link>
+                                )}
                             </div>
                         )}
                     </div>
