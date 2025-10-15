@@ -1,7 +1,7 @@
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, Link } from "@inertiajs/react";
 import { useState, useRef, useEffect } from "react";
 import {
   Select,
@@ -124,8 +124,31 @@ export default function Create({
 
             <div className="max-w-4xl mx-auto px-4 py-8">
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-4 border-b  border-gray-200">
-                        <h2 className="text-xl font-bold text-white">Create New Task Details</h2>
+                    {/* Updated Header with Back Button */}
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-4 border-b border-gray-200">
+                        <div className="flex items-center justify-between">
+                            <Link
+                                href={route("creative.index")} // Adjust this route to match your tasks listing page
+                                className="inline-flex items-center text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200 bg-white/20 hover:bg-white/30 rounded-lg px-3 py-2 backdrop-blur-sm"
+                            >
+                                <svg 
+                                    className="w-4 h-4 mr-2" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path 
+                                        strokeLinecap="round" 
+                                        strokeLinejoin="round" 
+                                        strokeWidth={2} 
+                                        d="M10 19l-7-7m0 0l7-7m-7 7h18" 
+                                    />
+                                </svg>
+                                Back to Tasks
+                            </Link>
+                            <h2 className="text-xl font-bold text-white">Create New Task Details</h2>
+                            <div className="w-20"></div> {/* Spacer for balance */}
+                        </div>
                     </div>
                     
                     <div className="p-6">

@@ -329,7 +329,7 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
                 error={formProps.errors.role}
                 as="select"
                 options={roleOptions}
-                placeholder="Select Team"
+                placeholder="Select Role"
                 helpText="Select the appropriate access level for this user"
             />
 

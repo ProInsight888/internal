@@ -17,6 +17,7 @@ export default function create({}) {
         package: "",
         status: "Lunas",
         cicil: "",
+        code: "", // Add code field
         fase_pembayaran: [{ cicilan: "", tanggal: "" }],
     });
 
@@ -47,6 +48,28 @@ export default function create({}) {
             }
         }
     }, [data.cicil, data.status]);
+
+    // Optional: Auto-generate code when company name changes
+    useEffect(() => {
+        if (data.company_name && !data.code) {
+            const generateCode = (companyName) => {
+                if (!companyName) return "";
+                const words = companyName.split(" ");
+                const firstWord = words[0] || "";
+                const secondWord = words[1] || "";
+
+                let code = firstWord.charAt(0).toUpperCase();
+                code += secondWord
+                    .substring(0, 3)
+                    .toUpperCase()
+                    .padEnd(3, "A");
+
+                return code;
+            };
+
+            setData("code", generateCode(data.company_name));
+        }
+    }, [data.company_name]);
 
     console.log(data);
 
@@ -99,6 +122,36 @@ export default function create({}) {
 
                                 <InputError
                                     message={errors.company_name}
+                                    className="mt-2"
+                                />
+                            </div>
+
+                            {/* Add Code Input Field */}
+                            <div className="mb-6">
+                                <InputLabel
+                                    htmlFor="code"
+                                    value="Client Code"
+                                />
+                                <div className="flex items-center gap-2">
+                                    <TextInput
+                                        id="code"
+                                        name="code"
+                                        value={data.code}
+                                        className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 font-mono"
+                                        autoComplete="code"
+                                        onChange={(e) =>
+                                            setData("code", e.target.value.toUpperCase())
+                                        }
+                                        placeholder="e.g., EYCA"
+                                        maxLength={4}
+                                        required
+                                    />
+                                    <span className="text-sm text-gray-500 font-mono">
+                                        (4 characters)
+                                    </span>
+                                </div>
+                                <InputError
+                                    message={errors.code}
                                     className="mt-2"
                                 />
                             </div>

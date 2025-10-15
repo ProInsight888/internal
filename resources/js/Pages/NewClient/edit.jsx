@@ -397,7 +397,7 @@ export default function edit({ clients }) {
                                     onSubmit={(e) => submit(e)}
                                     disabled={processing}
                                 >
-                                    New Account
+                                    Update Client Data
                                 </PrimaryButton>
                             </div>
                         </form>

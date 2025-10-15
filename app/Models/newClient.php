@@ -13,6 +13,7 @@ class newClient extends Model
     protected $fillable = [
         'uuid',
         'company_name',
+        'code',
         'type',
         'location',
         'contract',

@@ -9,7 +9,9 @@ import {
   Circle,
   CheckCircle,
   Clock,
-  Slash
+  Slash,
+  User,
+  Building
 } from "lucide-react";
 
 export default function TaskSideBar({ header, children, users, tasks, selectedFilter, setSelectedFilter, selectedUser, setSelectedUser, sortDeadline, setSortDeadline, selectedCompany, setSelectedCompany }) {
@@ -54,6 +56,10 @@ export default function TaskSideBar({ header, children, users, tasks, selectedFi
     { key: "it", label: "IT Team", description: "Technical support", route: route("it.index"), color: "bg-green-500" },
   ];
 
+  // Get unique users and companies
+  const uniqueUsers = Array.from(new Set(users.map(user => user.name))).sort();
+  const uniqueCompanies = Array.from(new Set(tasks.map(task => task.company))).sort();
+
   return (
       <div className="flex h-screen bg-gray-50">
           {/* Overlay for mobile */}
@@ -92,10 +98,8 @@ export default function TaskSideBar({ header, children, users, tasks, selectedFi
                       <X className="h-4 w-4" />
                   </button>
 
-                  {/* Sidebar Header */}
-
                   {/* Sidebar Content */}
-                  <div className="overflow-y-auto h-[calc(100vh-4rem)] py-4">
+                  <div className="overflow-y-auto h-[calc(100vh-4rem)] py-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                       {/* Team Navigation */}
                       <div className="px-4 mb-6">
                           <div
@@ -139,7 +143,7 @@ export default function TaskSideBar({ header, children, users, tasks, selectedFi
                           ))}
                       </div>
 
-                      {/* Task*/}
+                      {/* Task Status */}
                       <div className="px-4">
                           <div
                               className={`flex items-center ${
@@ -211,76 +215,64 @@ export default function TaskSideBar({ header, children, users, tasks, selectedFi
                               )}
                           </div>
 
-                          <div className="flex flex-col">
-                              {/* User Filter */}
-                              <div className="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm py-2">
-                                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 flex items-center gap-2"></label>
+                          <div className="space-y-3">
+                              {/* User Filter - IMPROVED */}
+                              <div className="relative">
+                                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                      <User className="h-4 w-4 text-gray-400" />
+                                  </div>
                                   <select
-                                      className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                                      className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-gray-50 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none cursor-pointer"
                                       value={selectedUser}
-                                      onChange={(e) =>
-                                          setSelectedUser(e.target.value)
-                                      }
+                                      onChange={(e) => setSelectedUser(e.target.value)}
                                   >
-                                      <option value="" hidden>
-                                          👤 Filter by User
-                                      </option>
-                                      {Array.from(
-                                          new Set(
-                                              users.map(
-                                                (user) => user.name)
-                                          )
-                                      ).map((user, idx) => (
+                                      <option value="">All Users</option>
+                                      {uniqueUsers.map((user, idx) => (
                                           <option key={idx} value={user}>
                                               {user}
                                           </option>
                                       ))}
                                   </select>
+                                  <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                  </div>
                               </div>
 
-                              {/* Company Filter */}
-
-                              <div className="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm py-2">
-                                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 flex items-center gap-2"></label>
+                              {/* Company Filter - IMPROVED */}
+                              <div className="relative">
+                                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                      <Building className="h-4 w-4 text-gray-400" />
+                                  </div>
                                   <select
-                                      className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                                      className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-gray-50 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none cursor-pointer"
                                       value={selectedCompany}
-                                      onChange={(e) =>
-                                          setSelectedCompany(e.target.value)
-                                      }
+                                      onChange={(e) => setSelectedCompany(e.target.value)}
                                   >
-                                      <option value="" hidden>
-                                          🏢 Filter by Company
-                                      </option>
-                                      {Array.from(
-                                          new Set(
-                                              tasks.map((task) => task.company)
-                                          )
-                                      ).map((company, idx) => (
+                                      <option value="">All Companies</option>
+                                      {uniqueCompanies.map((company, idx) => (
                                           <option key={idx} value={company}>
                                               {company}
                                           </option>
                                       ))}
                                   </select>
+                                  <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                  </div>
                               </div>
 
-                              {/* Deadline Sort */}
-                              <div className="flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm py-2">
-                                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 flex items-center gap-2"></label>
+                              {/* Deadline Sort - IMPROVED */}
+                              <div className="relative">
+                                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                      <Clock className="h-4 w-4 text-gray-400" />
+                                  </div>
                                   <select
-                                      className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                                      className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-gray-50 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all appearance-none cursor-pointer"
                                       value={sortDeadline}
-                                      onChange={(e) =>
-                                          setSortDeadline(e.target.value)
-                                      }
+                                      onChange={(e) => setSortDeadline(e.target.value)}
                                   >
-                                      <option value="Desc">
-                                          ⏰ Urgent First
-                                      </option>
-                                      <option value="Asc">
-                                          ⏰ Not Urgent First
-                                      </option>
+                                      <option value="Desc">Urgent First</option>
+                                      <option value="Asc">Not Urgent First</option>
                                   </select>
+                                  <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                  </div>
                               </div>
                           </div>
                       </div>

@@ -47,6 +47,7 @@ class NewClientController extends Controller
         // dd($request->fase_pembayaran[1]);
         $validated = $request->validate([
             'company_name' => 'string|required',
+            'code' => 'required|string|max:4|unique:new_clients,code',
             'type' => 'string|required',
             'location' => 'string|required',
             'contract_tahun' => 'string|nullable',
@@ -93,6 +94,7 @@ class NewClientController extends Controller
         newClient::create([
             'uuid' => $clientUuid,
             'company_name' => $validated['company_name'],
+            'code' => $validated['code'],
             'type' => $validated['type'],
             'location' => $validated['location'],
             'contract' => $contract,
@@ -135,6 +137,7 @@ class NewClientController extends Controller
         
         $validated = $request->validate([
             'company_name' => 'string|required',
+            'code' => 'string|required',
             'type' => 'string|required',
             'location' => 'string|required',
             'contract_tahun' => 'string|nullable',
@@ -166,6 +169,7 @@ class NewClientController extends Controller
         $update_client = newClient::where('uuid', $uuid);
         $update_client->update([
             'company_name' => $validated['company_name'],
+            'code' => $validated['code'],
             'type' => $validated['type'],
             'location' => $validated['location'],
             'contract' => $contract,
@@ -201,6 +205,6 @@ class NewClientController extends Controller
         $newClient->delete();
         $cicilan->delete();
 
-        return Redirect::to('new_client')->with('deleted','New Client Deleted');
+        return Redirect::to('new_client')->with('deleted','Client Deleted');
     }
 }

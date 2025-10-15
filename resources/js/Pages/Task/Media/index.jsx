@@ -8,16 +8,16 @@ import { useState, useEffect } from "react";
 // Status Badge Component
 const StatusBadge = ({ status }) => {
     const statusColors = {
-    'On Progress': '#3B82F6', // blue
-    'Pending': '#F59E0B',     // amber
-    'Approved': '#10B981',    // emerald
-    'In Review': '#8B5CF6',   // violet
-    'Rejected': '#EF4444',    // red
-    'Revision': '#F97316',    // orange
-    'Idle': '#6B7280',        // gray
-    'Lunas': '#EC4899',       // pink
-    'Cici': '#14B8A6',        // teal
-  };
+        'On Progress': '#3B82F6', // blue
+        'Pending': '#F59E0B',     // amber
+        'Approved': '#10B981',    // emerald
+        'In Review': '#8B5CF6',   // violet
+        'Rejected': '#EF4444',    // red
+        'Revision': '#F97316',    // orange
+        'Idle': '#6B7280',        // gray
+        'Lunas': '#EC4899',       // pink
+        'Cicil': '#14B8A6',        // teal
+    };
 
     return (
         <div
@@ -41,7 +41,7 @@ const PriorityBadge = ({ deadline }) => {
 
     let priority = "";
     let bgColor = "";
-    
+
     if (remainingDays < 0) {
         priority = "Overdue";
         bgColor = "bg-red-100 text-red-800";
@@ -72,17 +72,17 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
     // console.log(task, onOpenDetails, index)
     const getCardColor = (status) => {
         const colorMap = {
-                'In Review': 'bg-[#8B5CF6]/10 border-[#8B5CF6] shadow-xl',   // violet
+            'In Review': 'bg-[#8B5CF6]/10 border-[#8B5CF6] shadow-xl',   // violet
             'Rejected': 'bg-[#EF4444]/10 border-[#EF4444] shadow-xl',    // red
-                'Approved': 'bg-[#10B981]/10 border-[#10B981] shadow-xl',    // emerald
+            'Approved': 'bg-[#10B981]/10 border-[#10B981] shadow-xl',    // emerald
             "Cancel": "bg-slate-100 border-slate-800",
             'Idle': 'bg-[#d141b7]/10 border-[#d141b7] shadow-xl',        // gray
             'Revision': 'bg-[#F97316]/10 border-[#F97316] shadow-xl',    // orange
-                'Pending': 'bg-[#F59E0B]/10 border-[#F59E0B] shadow-xl',     // amber
-                'On Progress': 'bg-[#3B82F6]/10 border-[#3B82F6] shadow-xl', // blue
+            'Pending': 'bg-[#F59E0B]/10 border-[#F59E0B] shadow-xl',     // amber
+            'On Progress': 'bg-[#3B82F6]/10 border-[#3B82F6] shadow-xl', // blue
             "default": "bg-purple-100 border-purple-200"
         };
-                
+
         return colorMap[status] || colorMap.default;
     };
 
@@ -139,32 +139,32 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                         View Details
                     </button>
                     {user_role !== 'intern' && task.status !== "Cancel" && (
-                            <div className="flex space-x-2">
-                                <Link
-                                    href={route("media.edit", task.uuid)}
-                                    className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                                >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                </Link>
-                                <button
-                                    onClick={() => {
-                                        console.log(task.uuid)
-                                        if (confirm("Are you sure you want to delete this task?")) {
-                                            router.delete(route("media.destroy", task.uuid), {
-                                                onSuccess: () => alert("Task deleted successfully!"),
-                                                onError: (errors) => console.error(errors),
-                                            });
-                                        }
-                                    }}
-                                    className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                            </div>
+                        <div className="flex space-x-2">
+                            <Link
+                                href={route("media.edit", task.uuid)}
+                                className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                            </Link>
+                            <button
+                                onClick={() => {
+                                    console.log(task.uuid)
+                                    if (confirm("Are you sure you want to delete this task?")) {
+                                        router.delete(route("media.destroy", task.uuid), {
+                                            onSuccess: () => alert("Task deleted successfully!"),
+                                            onError: (errors) => console.error(errors),
+                                        });
+                                    }
+                                }}
+                                className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>
@@ -260,7 +260,7 @@ const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, p
                                 </svg>
                                 Submit Your Work
                             </h3>
-                            
+
                             {["In Review", "Approved"].includes(task.status) ? (
                                 <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                                     <p className="text-green-800 font-medium">
@@ -282,7 +282,7 @@ const TaskModal = ({ task, isOpen, onClose, data, setData, onSubmit, userName, p
                                             onChange={(e) => setData("link", e.target.value)}
                                             placeholder="https://example.com/your-work"
                                             required
-                                            disabled={!(task.penanggung_jawab??"")?.split(',').map(s => s.trim().toLowerCase()).includes(userName.trim().toLowerCase())}
+                                            disabled={!(task.penanggung_jawab ?? "")?.split(',').map(s => s.trim().toLowerCase()).includes(userName.trim().toLowerCase())}
                                         />
                                     </div>
                                     <div className="mt-4 flex justify-end space-x-3">
@@ -349,7 +349,7 @@ export default function TaskIndex({ tasks, userName, users }) {
             return sortDeadline === "Desc" ? dateA - dateB : dateB - dateA;
         });
 
-    
+
 
     // Open task details modal
     const openTaskDetails = (task, index) => {
@@ -365,7 +365,7 @@ export default function TaskIndex({ tasks, userName, users }) {
         setSelectedTask(null);
     };
 
-    
+
 
     // Submit task
     const submitTask = (e) => {
@@ -414,7 +414,7 @@ export default function TaskIndex({ tasks, userName, users }) {
 
                         <div className="flex justify-end mb-6">
                             <Link
-                                href={route("marketing.create")}
+                                href={route("media.create")}
                                 className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                             >
                                 <svg
