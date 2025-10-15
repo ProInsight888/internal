@@ -145,32 +145,10 @@ export default function edit({
 
             <div className="max-w-4xl mx-auto px-4 py-8">
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div className="flex justify-between bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-4 border-b  border-gray-200">
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-4 border-b  border-gray-200">
                         <h2 className="text-xl font-bold text-white">
                             Edit IT Task Details
                         </h2>
-
-                        <div className="">
-                            <Link
-                                href={route("it.index")}
-                                className="inline-flex items-center px-4 py-2 text-gray-200 hover:text-gray-300 font-medium rounded-lg transition-colors"
-                            >
-                                <svg
-                                    className="w-4 h-4 mr-2"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                                    />
-                                </svg>
-                                Back to Tasks
-                            </Link>
-                        </div>
                     </div>
 
                     <div className="p-6">
@@ -303,7 +281,12 @@ export default function edit({
                                         className="block text-sm font-medium text-gray-700 mb-2"
                                     />
                                     <div className="relative w-full">
-                                        <Select>
+                                        <Select
+                                            onValueChange={(value) =>
+                                                setData("status", value)
+                                            }
+                                            value={data.status}
+                                        >
                                             <SelectTrigger className="w-full border-gray-300 rounded-[0.5rem]">
                                                 <SelectValue
                                                     placeholder="Status"
@@ -331,9 +314,9 @@ export default function edit({
 
                                         {/* Custom dropdown icon */}
 
-                                        {errors.category && (
+                                        {errors.status && (
                                             <p className="text-red-500 text-sm mt-1">
-                                                {errors.category}
+                                                {errors.status}
                                             </p>
                                         )}
                                     </div>
@@ -348,10 +331,15 @@ export default function edit({
                                     className="block text-sm font-medium text-gray-700 mb-2"
                                 />
                                 <div className="relative w-full">
-                                    <Select>
+                                    <Select
+                                        onValueChange={(value) =>
+                                            setData("company", value)
+                                        }
+                                        value={data.company}
+                                    >
                                         <SelectTrigger className="w-full border-gray-300 rounded-[0.5rem]">
                                             <SelectValue
-                                                placeholder="Category"
+                                                placeholder="Company"
                                                 className="text-gray-400"
                                             />
                                         </SelectTrigger>
@@ -376,9 +364,9 @@ export default function edit({
 
                                     {/* Custom dropdown icon */}
 
-                                    {errors.category && (
+                                    {errors.company && (
                                         <p className="text-red-500 text-sm mt-1">
-                                            {errors.category}
+                                            {errors.company}
                                         </p>
                                     )}
                                 </div>
@@ -455,7 +443,12 @@ export default function edit({
                                         className="block text-sm font-medium text-gray-700 mb-2"
                                     />
                                     <div className="relative w-full">
-                                        <Select>
+                                        <Select
+                                            onValueChange={(value) =>
+                                                setData("category", value)
+                                            }
+                                            value={data.category}
+                                        >
                                             <SelectTrigger className="w-full border-gray-300 rounded-[0.5rem]">
                                                 <SelectValue
                                                     placeholder="Category"

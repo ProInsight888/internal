@@ -46,6 +46,6 @@ class mediaReviewController extends Controller
             'send_time' => $time,
             'send_date' => $date,
         ]);
-        return redirect()->route('madia_review.index')->with('success', 'Task Updated');
+        return redirect()->route('media_review.index')->with('success', 'Task Updated');
     }
 }
