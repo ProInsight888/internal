@@ -1,7 +1,7 @@
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, Link } from "@inertiajs/react";
 import { useState, useRef, useEffect } from "react";
 import {
   Select,
@@ -146,6 +146,29 @@ export default function edit({
             <Head title="Edit IT Task" />
 
             <div className="max-w-4xl mx-auto px-4 py-8">
+                {/* Back to Tasks Button */}
+                <div className="mb-6">
+                    <Link
+                        href={route("it.index")}
+                        className="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors mb-4"
+                    >
+                        <svg
+                            className="w-4 h-4 mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                            />
+                        </svg>
+                        Back to Tasks
+                    </Link>
+                </div>
+
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
                     <div className="bg-gradient-to-r from-blue-500 to-indigo-500 px-6 py-4 border-b  border-gray-200">
                         <h2 className="text-xl font-bold text-white">Edit IT Task Details</h2>

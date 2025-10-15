@@ -92,15 +92,14 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
 
     return (
         <div
-            className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 ${getCardColor(
+            className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 cursor-pointer ${getCardColor(
                 task.status
             )}`}
-                onClick={() => onOpenDetails(task, index)}
-            >
-
+            onClick={() => onOpenDetails(task, index)}
+        >
             <div className="p-5">
                 {/* Header */}
-                <div className="flex justify-between items-start mb-4">
+                <div className="flex justify-between items-start">
                     <div className="flex items-center">
                         <PriorityBadge deadline={task.deadline} />
                     </div>
@@ -108,7 +107,7 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
                 </div>
 
                 {/* Task Company Name */}
-                <h3 className="text-15px  text-black mb-2 line-clamp-2">
+                <h3 className="text-15px  text-black line-clamp-2">
                     {task.company}
                 </h3>
 
@@ -117,12 +116,12 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
-                <h3 className="text-15px  text-black mb-2 line-clamp-2">
+                <h3 className="text-15px  text-black line-clamp-2">
                     {task.task_title}
                 </h3>
 
                 {/* Assignee and Format */}
-                <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
+                <div className="flex items-center justify-between mb-2 mt-2 text-sm text-gray-600">
                     <span className="font-medium">{task.penanggung_jawab}</span>
                     <span>{task.task_format}</span>
                 </div>
@@ -138,11 +137,12 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
                 </div>
 
                 {/* Actions */}
-                <div className=" flex justify-between items-center pt-3 border-t-2  border-black">
+                <div className=" flex justify-end items-center pt-3 border-t-2  border-black">
                     {!["Cancel", "In Review"].includes(task.status) && (
                         <div className="position-relative flex space-x-2">
                             <Link
                                 href={route("it.edit", task.uuid)}
+                                onClick={(e) => e.stopPropagation()}
                                 className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                             >
                                 <svg
@@ -160,7 +160,8 @@ const TaskCard = ({ task, onOpenDetails, index }) => {
                                 </svg>
                             </Link>
                             <button
-                                onClick={() => {
+                                onClick={(e) => {
+                                    e.stopPropagation(); // This prevents the card click
                                     if (
                                         confirm(
                                             "Are you sure you want to delete this task?"

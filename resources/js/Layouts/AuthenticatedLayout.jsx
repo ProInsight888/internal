@@ -36,7 +36,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
     // Check if a route is active
     const isActiveRoute = (routeName) => {
-        return currentRoute.startsWith(routeName);
+        return (
+            currentRoute === routeName ||
+            currentRoute.startsWith(routeName + "/")
+        );
     };
 
     // Navigation items
