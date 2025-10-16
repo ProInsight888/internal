@@ -111,7 +111,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                 </h3>
 
                 {/* Code */}
-                <h1 className="font-black text-3xl text-gray-900 -mb-0.5 leading-tight">
+                <h1 className="font-black text-2xl text-gray-900 -mb-0.5 leading-tight">
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
@@ -237,8 +237,14 @@ const TaskModal = ({
     console.log(task.penanggung_jawab);
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={onClose} // Add this to close when clicking overlay
+        >
+            <div 
+                className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()} // Add this to prevent closing when clicking inside
+            >
                 {/* Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
                     <div className="flex justify-between items-start">
@@ -451,7 +457,6 @@ const TaskModal = ({
         </div>
     );
 };
-
 // Filter Tabs Component
 
 export default function TaskIndex({ tasks, userName, users }) {

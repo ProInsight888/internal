@@ -320,9 +320,9 @@ export default function edit({ clients }) {
                                             setData("status", e.target.value)
                                         }
                                     >
-                                        <option value="Lunas">Lunas</option>
-                                        <option value="Cicil">Cicil</option>
-                                        <option value="Belum Bayar">Belum Bayar</option>
+                                        <option value="Lunas">Paid</option>
+                                        <option value="Cicil">Instalments</option>
+                                        <option value="Belum Bayar">Unpaid</option>
                                     </select>
                                     <div
                                         className={`${

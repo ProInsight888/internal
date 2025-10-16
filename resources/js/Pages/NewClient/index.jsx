@@ -120,121 +120,72 @@ export default function ClientIndex({ clients, cicilans }) {
     });
 
     const ClientActionsDropDown = ({
-        client,
-        index,
-        showDeleteEdit,
-        setShowDeleteEdit,
-        dropdownRefs,
-    }) => {
-        useEffect(() => {
-            function handleClickOutside(e) {
-                if (
-                    showDeleteEdit !== false &&
-                    dropdownRefs.current[showDeleteEdit] &&
-                    !dropdownRefs.current[showDeleteEdit].contains(e.target)
-                ) {
-                    setShowDeleteEdit(false);
-                }
-            }
-
-            document.addEventListener("mousedown", handleClickOutside);
-            return () =>
-                document.removeEventListener("mousedown", handleClickOutside);
-        }, [showDeleteEdit]);
-
-        return (
-            <div className="relative">
-                <button
-                    onClick={() =>
-                        setShowDeleteEdit(
-                            showDeleteEdit === index ? null : index
-                        )
-                    }
-                    className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+    client,
+    index,
+    showDeleteEdit,
+    setShowDeleteEdit,
+    dropdownRefs,
+}) => {
+    return (
+        <div className="flex space-x-2">
+            {/* Edit Button */}
+            <Link
+                href={route("new_client.edit", client.uuid)}
+                className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                title="Edit Client"
+            >
+                <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        fill="currentColor"
-                        className="text-gray-600 hover:text-gray-800"
-                        viewBox="0 0 24 24"
-                    >
-                        <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-                        <path d="M12 8a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                        <path d="M12 14a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                        <path d="M8 12a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" />
-                        <path d="M14 12a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" />
-                    </svg>
-                </button>
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                </svg>
+            </Link>
 
-                {showDeleteEdit === index && (
-                    <div
-                        ref={(el) => (dropdownRefs.current[index] = el)}
-                        className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-xl z-10 border border-gray-200 overflow-hidden"
-                    >
-                        <Link
-                            href={route("new_client.edit", client.uuid)}
-                            className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-150"
-                        >
-                            <svg
-                                className="w-4 h-4 mr-2"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                />
-                            </svg>
-                            Edit Client
-                        </Link>
-                        <div className="border-t border-gray-200"></div>
-                        <button
-                            onClick={() => {
-                                if (
-                                    confirm(
-                                        `Are you sure you want to delete ${client.company_name}? This action cannot be undone.`
-                                    )
-                                ) {
-                                    router.delete(
-                                        route(
-                                            "new_client.destroy",
-                                            client.uuid
-                                        ),
-                                        {
-                                            onSuccess: () => {},
-                                            onError: (errors) =>
-                                                console.error(errors),
-                                        }
-                                    );
-                                }
-                            }}
-                            className="flex items-center w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors duration-150"
-                        >
-                            <svg
-                                className="w-4 h-4 mr-2"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                            </svg>
-                            Delete Client
-                        </button>
-                    </div>
-                )}
-            </div>
-        );
-    };
+            {/* Delete Button */}
+            <button
+                onClick={() => {
+                    if (
+                        confirm(
+                            `Are you sure you want to delete ${client.company_name}? This action cannot be undone.`
+                        )
+                    ) {
+                        router.delete(
+                            route("new_client.destroy", client.uuid),
+                            {
+                                onSuccess: () => {},
+                                onError: (errors) => console.error(errors),
+                            }
+                        );
+                    }
+                }}
+                className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                title="Delete Client"
+            >
+                <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                </svg>
+            </button>
+        </div>
+    );
+};
 
     // Table columns configuration
     const tableColumns = [
@@ -403,8 +354,8 @@ export default function ClientIndex({ clients, cicilans }) {
                             >
                                 <option value="all">All Statuses</option>
                                 <option value="Lunas">Lunas</option>
-                                <option value="Cicil">Cicil</option>
-                                <option value="Belum Bayar">Belum Bayar</option>
+                                <option value="Cicil">Instalments</option>
+                                <option value="Belum Bayar">Unpaid</option>
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
                                 <option value="Pending">Pending</option>

@@ -15,7 +15,7 @@ const StatusBadge = ({ status }) => {
         Revision: "#F97316", // orange
         Idle: "#6B7280", // gray
         Lunas: "#EC4899", // pink
-        Cici: "#14B8A6", // teal
+        Cicil: "#14B8A6", // teal
     };
 
     return (
@@ -111,7 +111,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                 </h3>
 
                 {/* Code */}
-                <h1 className="font-black text-3xl text-gray-900 -mb-0.5 leading-tight">
+                <h1 className="font-black text-2xl text-gray-900 -mb-0.5 leading-tight">
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
@@ -184,10 +184,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                         )
                                     ) {
                                         router.delete(
-                                            route(
-                                                "creative.destroy",
-                                                task.uuid
-                                            ),
+                                            route("creative.destroy", task.uuid),
                                             {
                                                 onSuccess: () =>
                                                     alert(
@@ -240,8 +237,14 @@ const TaskModal = ({
     console.log(task.penanggung_jawab);
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={onClose} // Add this to close when clicking overlay
+        >
+            <div 
+                className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()} // Add this to prevent closing when clicking inside
+            >
                 {/* Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
                     <div className="flex justify-between items-start">
@@ -454,16 +457,15 @@ const TaskModal = ({
         </div>
     );
 };
-
 // Filter Tabs Component
 
 export default function TaskIndex({ tasks, userName, users }) {
-    const user = usePage().props.auth.user.name;
+    const user = usePage().props.auth.user;
 
     const { data, setData, post, put, processing, errors } = useForm({
         uuid: "",
         link: "",
-        sended_by: user || "User Name Not Found",
+        sended_by: user.name || "User Name Not Found",
     });
 
     const [selectedFilter, setSelectedFilter] = useState("");
@@ -521,6 +523,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     // Submit task
     const submitTask = (e) => {
         e.preventDefault();
+        console.log(data.uuid);
         put(route("creative_submit.update", { creative: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),

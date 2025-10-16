@@ -38,6 +38,45 @@ const DropdownItem = ({ onClick, children, className = "", icon }) => (
     </button>
 );
 
+// Team Badge Component
+const TeamBadge = ({ team }) => {
+    const getTeamBadgeColor = (team) => {
+        switch (team?.toLowerCase()) {
+            case 'media':
+                return 'bg-gradient-to-r from-purple-500 to-pink-600 text-white';
+            case 'creative':
+                return 'bg-gradient-to-r from-orange-500 to-red-600 text-white';
+            case 'marketing':
+                return 'bg-gradient-to-r from-green-500 to-teal-600 text-white';
+            case 'it':
+                return 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white';
+            default:
+                return 'bg-gray-200 text-gray-800';
+        }
+    };
+
+    const getTeamDisplayName = (team) => {
+        switch (team?.toLowerCase()) {
+            case 'media':
+                return 'Media Team';
+            case 'creative':
+                return 'Creative Team';
+            case 'marketing':
+                return 'Marketing';
+            case 'it':
+                return 'IT Team';
+            default:
+                return team || 'No Team';
+        }
+    };
+
+    return (
+        <span className={`px-3 py-1 rounded-full text-xs font-bold ${getTeamBadgeColor(team)}`}>
+            {getTeamDisplayName(team)}
+        </span>
+    );
+};
+
 const UserTableRow = ({
     user,
     index,
@@ -75,22 +114,38 @@ const UserTableRow = ({
                     {user.role?.toLowerCase() || 'No role'}
                 </span>
             </td>
-            <td className="px-4 py-3 flex">
-                {/* <div className="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-xl z-10 border border-gray-200 overflow-hidden"> */}
+            <td className="px-4 py-3">
+                <TeamBadge team={user.team} />
+            </td>
+            <td className="px-4 py-3">
+                <div className="flex space-x-2">
+                    {/* Edit Button */}
                     <Link
                         href={route("add_account.edit", { user: user.id })}
-                        className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-150"
+                        className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                        title="Edit User"
                     >
-                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                            />
                         </svg>
                     </Link>
-                    {/* <div className="border-t border-gray-200"></div> */}
-                    <DropdownItem
+
+                    {/* Delete Button */}
+                    <button
                         onClick={() => {
                             if (
                                 confirm(
-                                    `Are you sure you want to delete ${user.name}? This action cannot be undone.`,
+                                    `Are you sure you want to delete ${user.name}? This action cannot be undone.`
                                 )
                             ) {
                                 router.delete(
@@ -100,29 +155,39 @@ const UserTableRow = ({
                                 );
                             }
                         }}
-                        className="text-red-600"
-                        icon={
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                        }
+                        className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                        title="Delete User"
                     >
-                    </DropdownItem>
-                {/* </div> */}
+                        <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                        </svg>
+                    </button>
+                </div>
             </td>
         </tr>
     );
 };
 
-const UserListTable = ({ users, searchTerm, setSearchTerm, filterRole, setFilterRole }) => {
+const UserListTable = ({ users, searchTerm, setSearchTerm, filterRole, setFilterRole, filterTeam, setFilterTeam }) => {
     const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
     
-    // Filter users based on search term and role filter
+    // Filter users based on search term, role filter, and team filter
     const filteredUsers = users.filter(user => {
         const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                              user.email.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesRole = filterRole === 'all' || user.role?.toLowerCase() === filterRole;
-        return matchesSearch && matchesRole;
+        const matchesTeam = filterTeam === 'all' || user.team?.toLowerCase() === filterTeam;
+        return matchesSearch && matchesRole && matchesTeam;
     });
 
     return (
@@ -130,7 +195,7 @@ const UserListTable = ({ users, searchTerm, setSearchTerm, filterRole, setFilter
             <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
                 <h2 className="text-xl font-bold text-gray-800 mb-4">User List</h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     {/* Search Input */}
                     <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -158,6 +223,21 @@ const UserListTable = ({ users, searchTerm, setSearchTerm, filterRole, setFilter
                             <option value="admin">Admin</option>
                             <option value="member">Member</option>
                             <option value="intern">Intern</option>
+                        </select>
+                    </div>
+
+                    {/* Team Filter */}
+                    <div>
+                        <select
+                            value={filterTeam}
+                            onChange={(e) => setFilterTeam(e.target.value)}
+                            className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                        >
+                            <option value="all">All Teams</option>
+                            <option value="media">Media Team</option>
+                            <option value="creative">Creative Team</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="it">IT Team</option>
                         </select>
                     </div>
                 </div>
@@ -188,6 +268,9 @@ const UserListTable = ({ users, searchTerm, setSearchTerm, filterRole, setFilter
                                 Role
                             </th>
                             <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                Team
+                            </th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                 Actions
                             </th>
                         </tr>
@@ -213,7 +296,7 @@ const UserListTable = ({ users, searchTerm, setSearchTerm, filterRole, setFilter
                         <h3 className="text-lg font-medium text-gray-700 mb-2">No users found</h3>
                         <p className="text-gray-500 mb-4">Try adjusting your search or filter criteria</p>
                         <button 
-                            onClick={() => { setSearchTerm(''); setFilterRole('all'); }}
+                            onClick={() => { setSearchTerm(''); setFilterRole('all'); setFilterTeam('all'); }}
                             className="text-blue-600 hover:text-blue-800 font-medium"
                         >
                             Clear filters
@@ -445,6 +528,7 @@ export default function UserManagement({ users, userName }) {
     
     const [searchTerm, setSearchTerm] = useState("");
     const [filterRole, setFilterRole] = useState("all");
+    const [filterTeam, setFilterTeam] = useState("all");
     const [dismissedAlerts, setDismissedAlerts] = useState([]);
 
     const submit = (e) => {
@@ -505,6 +589,8 @@ export default function UserManagement({ users, userName }) {
                                     setSearchTerm={setSearchTerm}
                                     filterRole={filterRole}
                                     setFilterRole={setFilterRole}
+                                    filterTeam={filterTeam}
+                                    setFilterTeam={setFilterTeam}
                                 />
                             </div>
 
