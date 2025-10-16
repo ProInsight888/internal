@@ -95,6 +95,7 @@ export default function ClientIndex({ clients, cicilans }) {
         const statusColors = {
             Lunas: "bg-gradient-to-r from-green-500 to-emerald-600",
             Cicil: "bg-gradient-to-r from-blue-500 to-cyan-600",
+            "Belum Bayar": "bg-gradient-to-r from-red-500 to-rose-600",
             Active: "bg-gradient-to-r from-green-500 to-emerald-600",
             Inactive: "bg-gradient-to-r from-gray-500 to-slate-600",
             Pending: "bg-gradient-to-r from-amber-500 to-orange-500",
@@ -403,6 +404,7 @@ export default function ClientIndex({ clients, cicilans }) {
                                 <option value="all">All Statuses</option>
                                 <option value="Lunas">Lunas</option>
                                 <option value="Cicil">Cicil</option>
+                                <option value="Belum Bayar">Belum Bayar</option>
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
                                 <option value="Pending">Pending</option>

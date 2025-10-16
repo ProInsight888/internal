@@ -54,15 +54,15 @@ export default function TaskSideBar({
             else if (t.status === "Pending") acc.pending++;
             return acc;
         },
-        { 
-            all: 0, 
-            inReview: 0, 
-            rejected: 0, 
-            approved: 0, 
+        {
+            all: 0,
+            inReview: 0,
+            rejected: 0,
+            approved: 0,
             cancel: 0,
             idle: 0,
             onProgress: 0,
-            pending: 0
+            pending: 0,
         }
     );
 
@@ -164,10 +164,9 @@ export default function TaskSideBar({
                 <div className="flex-shrink-0 p-4 border-b border-gray-200">
                     <div className="flex items-center justify-between">
                         {!isCollapsed && (
-                            <div className="flex items-center space-x-3">
-                            </div>
+                            <div className="flex items-center space-x-3"></div>
                         )}
-                        
+
                         {/* Collapse Toggle */}
                         <button
                             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -194,7 +193,11 @@ export default function TaskSideBar({
                 <div className="flex-1 overflow-y-auto py-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                     {/* Team Navigation */}
                     <div className="px-4 mb-8">
-                        <div className={`flex items-center ${isCollapsed ? "justify-center" : ""} text-gray-500 mb-4`}>
+                        <div
+                            className={`flex items-center ${
+                                isCollapsed ? "justify-center" : ""
+                            } text-gray-500 mb-4`}
+                        >
                             <Users className="h-4 w-4" />
                             {!isCollapsed && (
                                 <span className="ml-2 text-xs font-semibold uppercase tracking-wider">
@@ -215,7 +218,9 @@ export default function TaskSideBar({
                                             : "text-gray-700 hover:bg-gray-50 border border-transparent hover:border-gray-200"
                                     }`}
                                 >
-                                    <div className={`flex-shrink-0 h-3 w-3 rounded-full ${team.color}`} />
+                                    <div
+                                        className={`flex-shrink-0 h-3 w-3 rounded-full ${team.color}`}
+                                    />
                                     {!isCollapsed && (
                                         <div className="ml-3 flex-1 min-w-0">
                                             <div className="text-sm font-medium truncate">
@@ -233,7 +238,11 @@ export default function TaskSideBar({
 
                     {/* Task Status Filters */}
                     <div className="px-4 mb-8">
-                        <div className={`flex items-center ${isCollapsed ? "justify-center" : ""} text-gray-500 mb-4`}>
+                        <div
+                            className={`flex items-center ${
+                                isCollapsed ? "justify-center" : ""
+                            } text-gray-500 mb-4`}
+                        >
                             <Filter className="h-4 w-4" />
                             {!isCollapsed && (
                                 <span className="ml-2 text-xs font-semibold uppercase tracking-wider">
@@ -258,7 +267,9 @@ export default function TaskSideBar({
                                 >
                                     <div className="flex items-center justify-between w-full">
                                         <div className="flex items-center min-w-0">
-                                            <span className={`p-2 rounded-lg ${filter.color} mr-3`}>
+                                            <span
+                                                className={`p-2 rounded-lg ${filter.color} mr-3`}
+                                            >
                                                 {filter.icon}
                                             </span>
                                             {!isCollapsed && (
@@ -268,11 +279,14 @@ export default function TaskSideBar({
                                             )}
                                         </div>
                                         {!isCollapsed && (
-                                            <span className={`py-1 px-2 rounded-full text-xs font-bold min-w-[2rem] flex items-center justify-center ${
-                                                selectedFilter === filter.key
-                                                    ? "bg-blue-100 text-blue-800"
-                                                    : "bg-gray-100 text-gray-700"
-                                            }`}>
+                                            <span
+                                                className={`py-1 px-2 rounded-full text-xs font-bold min-w-[2rem] flex items-center justify-center ${
+                                                    selectedFilter ===
+                                                    filter.key
+                                                        ? "bg-blue-100 text-blue-800"
+                                                        : "bg-gray-100 text-gray-700"
+                                                }`}
+                                            >
                                                 {filter.count}
                                             </span>
                                         )}
@@ -301,10 +315,16 @@ export default function TaskSideBar({
                                     <select
                                         className="w-full px-3 py-2 rounded-lg bg-white border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                         value={selectedUser}
-                                        onChange={(e) => setSelectedUser(e.target.value)}
+                                        onChange={(e) =>
+                                            setSelectedUser(e.target.value)
+                                        }
                                     >
                                         <option value="">All Users</option>
-                                        {Array.from(new Set(users.map((user) => user.name))).map((user, idx) => (
+                                        {Array.from(
+                                            new Set(
+                                                users.map((user) => user.name)
+                                            )
+                                        ).map((user, idx) => (
                                             <option key={idx} value={user}>
                                                 {user}
                                             </option>
@@ -320,10 +340,18 @@ export default function TaskSideBar({
                                     <select
                                         className="w-full px-3 py-2 rounded-lg bg-white border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                         value={selectedCompany}
-                                        onChange={(e) => setSelectedCompany(e.target.value)}
+                                        onChange={(e) =>
+                                            setSelectedCompany(e.target.value)
+                                        }
                                     >
                                         <option value="">All Companies</option>
-                                        {Array.from(new Set(tasks.map((task) => task.company))).map((company, idx) => (
+                                        {Array.from(
+                                            new Set(
+                                                tasks.map(
+                                                    (task) => task.company
+                                                )
+                                            )
+                                        ).map((company, idx) => (
                                             <option key={idx} value={company}>
                                                 {company}
                                             </option>
@@ -339,10 +367,16 @@ export default function TaskSideBar({
                                     <select
                                         className="w-full px-3 py-2 rounded-lg bg-white border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                         value={sortDeadline}
-                                        onChange={(e) => setSortDeadline(e.target.value)}
+                                        onChange={(e) =>
+                                            setSortDeadline(e.target.value)
+                                        }
                                     >
-                                        <option value="Desc">⏰ Urgent First</option>
-                                        <option value="Asc">⏰ Not Urgent First</option>
+                                        <option value="Desc">
+                                            ⏰ Urgent First
+                                        </option>
+                                        <option value="Asc">
+                                            ⏰ Not Urgent First
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -359,12 +393,10 @@ export default function TaskSideBar({
                         {header}
                     </div>
                 )}
-                
+
                 {/* Scrollable Main Content */}
                 <div className="flex-1 overflow-auto">
-                    <div className="p-6 max-w-7xl mx-auto">
-                        {children}
-                    </div>
+                    <div className="p-6 max-w-7xl mx-auto">{children}</div>
                 </div>
             </div>
         </div>

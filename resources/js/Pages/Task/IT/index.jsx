@@ -15,7 +15,7 @@ const StatusBadge = ({ status }) => {
         Revision: "#F97316", // orange
         Idle: "#6B7280", // gray
         Lunas: "#EC4899", // pink
-        Cici: "#14B8A6", // teal
+        Cicil: "#14B8A6", // teal
     };
 
     return (

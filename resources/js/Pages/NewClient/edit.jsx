@@ -171,24 +171,26 @@ export default function edit({ clients }) {
                                     }
                                     required
                                 >
-                                    <option value="Protall">Protall</option>
-                                    <option value="Progrand">Progrand</option>
-                                    <option value="Proventi">Proventi</option>
-                                    <option value="Promax">Promax</option>
-                                    <option value="Company Profile">
-                                        Company Profile
-                                    </option>
-                                    <option value="HR System">HR System</option>
-                                    <option value="Invitation Link">
-                                        Invitation Link
-                                    </option>
-                                    <option value="Application">
-                                        Application
-                                    </option>
-                                    <option value="Photo & Video">
-                                        Photo & Video
-                                    </option>
-                                    <option value="Adds On">Adds On</option>
+    <optgroup label="Social Media Management">
+        <option value="Protall">Protall</option>
+        <option value="Progrand">Progrand</option>
+        <option value="Proventi">Proventi</option>
+        <option value="Promax">Promax</option>
+        <option value="Feeds">Add Ons Feeds</option>
+        <option value="Reels">Add Ons Reels</option>
+    </optgroup>
+
+    <optgroup label="Digital Branding">
+        <option value="Company Profile">Company Profile</option>
+        <option value="HR System">HR System</option>
+        <option value="Invitation Link">Invitation Link</option>
+        <option value="Application">Application</option>
+        <option value="Design">Package Design</option>
+    </optgroup>
+
+    <optgroup label="Event Documentation">
+        <option value="Photo & Video">Photo & Video</option>
+    </optgroup>
                                 </select>
 
                                 <InputError
@@ -320,6 +322,7 @@ export default function edit({ clients }) {
                                     >
                                         <option value="Lunas">Lunas</option>
                                         <option value="Cicil">Cicil</option>
+                                        <option value="Belum Bayar">Belum Bayar</option>
                                     </select>
                                     <div
                                         className={`${
@@ -340,7 +343,7 @@ export default function edit({ clients }) {
                                                 setData("cicil", e.target.value)
                                             }
                                         />
-                                        kali
+                                        X
                                     </div>
                                 </div>
                                 <InputError

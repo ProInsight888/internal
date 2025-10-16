@@ -184,7 +184,10 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                         )
                                     ) {
                                         router.delete(
-                                            route("creative.destroy", task.uuid),
+                                            route(
+                                                "creative.destroy",
+                                                task.uuid
+                                            ),
                                             {
                                                 onSuccess: () =>
                                                     alert(
@@ -455,7 +458,7 @@ const TaskModal = ({
 // Filter Tabs Component
 
 export default function TaskIndex({ tasks, userName, users }) {
-    const user = usePage().props.auth.user.name
+    const user = usePage().props.auth.user.name;
 
     const { data, setData, post, put, processing, errors } = useForm({
         uuid: "",

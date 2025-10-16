@@ -35,7 +35,7 @@ export default function create({}) {
                 console.log("Jumlah yang akan dibuat:", jumlah);
                 console.log(
                     "Sebelum Update fase_pembayaran:",
-                    data.fase_pembayaran,
+                    data.fase_pembayaran
                 );
                 console.log("Setelah Update fase_pembayaran:", fase);
                 setData("fase_pembayaran", fase);
@@ -59,10 +59,7 @@ export default function create({}) {
                 const secondWord = words[1] || "";
 
                 let code = firstWord.charAt(0).toUpperCase();
-                code += secondWord
-                    .substring(0, 3)
-                    .toUpperCase()
-                    .padEnd(3, "A");
+                code += secondWord.substring(0, 3).toUpperCase().padEnd(3, "A");
 
                 return code;
             };
@@ -140,7 +137,10 @@ export default function create({}) {
                                         className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 font-mono"
                                         autoComplete="code"
                                         onChange={(e) =>
-                                            setData("code", e.target.value.toUpperCase())
+                                            setData(
+                                                "code",
+                                                e.target.value.toUpperCase()
+                                            )
                                         }
                                         placeholder="e.g., EYCA"
                                         maxLength={4}
@@ -162,39 +162,40 @@ export default function create({}) {
                                     value="What Package"
                                 />
 
-                                <select
-                                    id="package"
-                                    name="package"
-                                    value={data.package}
-                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black"
-                                    autoComplete="package"
-                                    onChange={(e) =>
-                                        setData("package", e.target.value)
-                                    }
-                                    required
-                                >
-                                    <option value="" selected disabled hidden>
-                                        Select Package
-                                    </option>
-                                    <option value="Protall">Protall</option>
-                                    <option value="Progrand">Progrand</option>
-                                    <option value="Proventi">Proventi</option>
-                                    <option value="Promax">Promax</option>
-                                    <option value="Company Profile">
-                                        Company Profile
-                                    </option>
-                                    <option value="HR System">HR System</option>
-                                    <option value="Invitation Link">
-                                        Invitation Link
-                                    </option>
-                                    <option value="Application">
-                                        Application
-                                    </option>
-                                    <option value="Photo & Video">
-                                        Photo & Video
-                                    </option>
-                                    <option value="Adds On">Adds On</option>
-                                </select>
+<select
+    id="package"
+    name="package"
+    value={data.package}
+    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black"
+    autoComplete="package"
+    onChange={(e) => setData("package", e.target.value)}
+    required
+>
+    <option value="" disabled hidden>
+        Select Package
+    </option>
+
+    <optgroup label="Social Media Management">
+        <option value="Protall">Protall</option>
+        <option value="Progrand">Progrand</option>
+        <option value="Proventi">Proventi</option>
+        <option value="Promax">Promax</option>
+        <option value="Feeds">Add Ons Feeds</option>
+        <option value="Reels">Add Ons Reels</option>
+    </optgroup>
+
+    <optgroup label="Digital Branding">
+        <option value="Company Profile">Company Profile</option>
+        <option value="HR System">HR System</option>
+        <option value="Invitation Link">Invitation Link</option>
+        <option value="Application">Application</option>
+        <option value="Design">Package Design</option>
+    </optgroup>
+
+    <optgroup label="Event Documentation">
+        <option value="Photo & Video">Photo & Video</option>
+    </optgroup>
+</select>
 
                                 <InputError
                                     message={errors.package}
@@ -242,7 +243,7 @@ export default function create({}) {
                                         onChange={(e) =>
                                             setData(
                                                 "contract_tahun",
-                                                e.target.value,
+                                                e.target.value
                                             )
                                         }
                                     />
@@ -258,7 +259,7 @@ export default function create({}) {
                                         onChange={(e) =>
                                             setData(
                                                 "contract_bulan",
-                                                e.target.value,
+                                                e.target.value
                                             )
                                         }
                                     />
@@ -274,7 +275,7 @@ export default function create({}) {
                                         onChange={(e) =>
                                             setData(
                                                 "contract_hari",
-                                                e.target.value,
+                                                e.target.value
                                             )
                                         }
                                     />
@@ -326,9 +327,14 @@ export default function create({}) {
                                     >
                                         <option value="Lunas">Lunas</option>
                                         <option value="Cicil">Cicil</option>
+                                        <option value="Belum Bayar">Belum Bayar</option>
                                     </select>
                                     <div
-                                        className={`${data.status === "Cicil" ? "" : "hidden"} flex items-center`}
+                                        className={`${
+                                            data.status === "Cicil"
+                                                ? ""
+                                                : "hidden"
+                                        } flex items-center`}
                                     >
                                         <input
                                             id="cicil"
@@ -342,7 +348,7 @@ export default function create({}) {
                                                 setData("cicil", e.target.value)
                                             }
                                         />
-                                        kali
+                                        X
                                     </div>
                                 </div>
 
@@ -377,7 +383,7 @@ export default function create({}) {
                                                     };
                                                     setData(
                                                         "fase_pembayaran",
-                                                        updatedFase,
+                                                        updatedFase
                                                     );
                                                 }}
                                             />
