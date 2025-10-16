@@ -190,7 +190,7 @@ class NewClientController extends Controller
         // ]);
 
 
-        // return Redirect::to('new_client');
+        return Redirect::to('new_client')->with('success','Client Updated Successfully');
     }
 
     /**
