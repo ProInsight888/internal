@@ -83,7 +83,7 @@ export default function EquipmentInventory({
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Action Buttons */}
                     <div className="flex flex-wrap gap-4 mb-6">
-                        {user.role !== "intern" && (
+                        {user.role !== "intern" && user.role !== "member" && (
                             <Link
                                 href={route("items.create")}
                                 className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
@@ -193,7 +193,7 @@ export default function EquipmentInventory({
                                                                     }
                                                                 </span>
                                                             </div>
-                                                            {user.role !== 'intern' && (
+                                                            {user.role !== 'intern' && user.role !== 'member' && (
                                                                 <div className="flex gap-2">
                                                                     <Link
                                                                         href={route(

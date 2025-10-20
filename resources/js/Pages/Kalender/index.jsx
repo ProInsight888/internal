@@ -133,7 +133,7 @@ export default function index({ schedule }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header Section */}
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-                        {user.role !== "intern" && (
+                        {user.role !== "intern" && user.role !== 'member' && (
                             <Link
                                 href={route("kalender.create")}
                                 className="flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"

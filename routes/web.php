@@ -66,7 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('kalender', KalenderController::class);
     Route::put('kalender', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
-    Route::resource('items', ItemsController::class);
+    Route::resource('items', ItemsController::class); 
     Route::resource('data_collection', ToolDataCollectionController::class);
     Route::resource('check', CheckDataCollectionController::class);
 
@@ -101,6 +101,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('add_account/{user}', [AddAccountController::class, 'destroy'])->name('add_account.destroy');
     Route::delete('deleteCicilan/{uuid}', [deleteCicilan::class, 'destroy'])->name('deleteCicilan.destroy');
     Route::post('storeCicilan/{uuid}', [deleteCicilan::class, 'store'])->name('storeCicilan.store');
+    Route::get('media/create', [AddAccountController::class, 'edit'])->name('media.create');
+    Route::get('creative/create', [AddAccountController::class, 'edit'])->name('creative.create');
+    Route::get('marketing/create', [AddAccountController::class, 'edit'])->name('marketing.create');
+    Route::get('it/create', [AddAccountController::class, 'edit'])->name('it.create');
 
     Route::resource('new_client', NewClientController::class);
 

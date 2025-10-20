@@ -669,15 +669,21 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         idle: true,
     });
 
-    let taskUserArray = [];
+let taskUserArray = [];
 
-    tasks.forEach((task) => {
-        const checkTask =
-            task.penanggung_jawab === userName && task.status !== "Approved";
-        if (checkTask) {
-            taskUserArray.push(task);
-        }
-    });
+tasks.forEach((task) => {
+    if (!task.penanggung_jawab) return;
+    
+    // Split by comma and check if userName is in the list
+    const assignees = task.penanggung_jawab.split(',').map(name => name.trim());
+    const isAssignedToUser = assignees.includes(userName);
+    const isNotApproved = task.status !== "Approved";
+    const isNotRejected = task.status !== "Rejected";
+    
+    if (isAssignedToUser && isNotApproved && isNotRejected) {
+        taskUserArray.push(task);
+    }
+}); 
 
     // Filtered data
     const filteredAbsens = absens.filter((absen) => absen.tanggal === sortDate);
@@ -820,7 +826,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                 />
 
                                 {/* Client Table */}
-                                {user.role !== "intern" ? (
+                                {user.role !== "intern" && user.role !== "member" ? (
                                     <div className="text-gray-800 w-full bg-white p-5 flex flex-col gap-3 border border-gray-200 rounded-2xl col-span-1 sm:col-span-2 lg:col-span-3 shadow-md">
                                         <div className="text-xl font-bold pb-3 border-b border-gray-200 flex items-center gap-2">
                                             <span className="text-white p-2 rounded-lg">

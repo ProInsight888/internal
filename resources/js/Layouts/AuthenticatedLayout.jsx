@@ -240,7 +240,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         {/* Right side items */}
                         <div className="flex items-center space-x-4">
                             {/* Dark/Light mode toggle */}
-                            <button
+                            {/* <button
                                 onClick={() => setDarkMode(!darkMode)}
                                 className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                                 aria-label="Toggle dark mode"
@@ -265,7 +265,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
                                     </svg>
                                 )}
-                            </button>
+                            </button> */}
 
                             {/* Desktop Profile & Logout */}
                             <div className="hidden lg:flex items-center space-x-4">

@@ -353,7 +353,7 @@ export default function ClientIndex({ clients, cicilans }) {
                                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                             >
                                 <option value="all">All Statuses</option>
-                                <option value="Lunas">Lunas</option>
+                                <option value="Lunas">Paid</option>
                                 <option value="Cicil">Instalments</option>
                                 <option value="Belum Bayar">Unpaid</option>
                                 <option value="Active">Active</option>

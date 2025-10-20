@@ -185,7 +185,6 @@ export default function Register({ users }) {
                                     </option>
                                     <option value="intern">Intern</option>
                                     <option value="admin">Admin</option>
-                                    <option value="admin">God</option>
                                 </select>
 
                                 <InputError

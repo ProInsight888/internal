@@ -116,7 +116,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                 </h1>
 
                 {/* Task Title */}
-                <h3 className="text-md text-black font-medium mb-1 line-clamp-2">
+                <h3 className="text-md text-black font-medium mb-1 line-clamp-2 break-words">
                     {task.task_title}
                 </h3>
 
@@ -137,7 +137,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                 ))}
                         </div>
                     </div>
-                    <span className="font-medium text-black text-xs ">
+                    <span className="font-medium text-black text-xs  line-clamp-2 break-words">
                         {task.task_format}
                     </span>
                 </div>
@@ -154,7 +154,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
 
                 {/* Actions */}
                 <div className="flex justify-end items-center pt-3 border-t border-black">
-                    {!["Cancel", "In Review"].includes(task.status) && (
+                    {!["Cancel", "In Review"].includes(task.status) &&  user_role !== 'member' &&(
                         <div className="flex space-x-2">
                             <Link
                                 href={route("media.edit", task.uuid)}
@@ -249,7 +249,7 @@ const TaskModal = ({
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h2 className="text-2xl font-bold mb-2">
+                            <h2 className="text-2xl font-bold mb-2 max-w-xl break-words">
                                 {task.task_title}
                             </h2>
                             <div className="flex items-center gap-3">
@@ -292,7 +292,7 @@ const TaskModal = ({
                         </div>
                         <div>
                             <span className="text-gray-500">Format:</span>
-                            <p className="font-medium">{task.task_format}</p>
+                            <p className="font-medium line-clamp-3 break-words">{task.task_format}</p>
                         </div>
                         <div>
                             <span className="text-gray-500">Category:</span>
@@ -566,7 +566,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                         )}
 
                         <div className="flex justify-end mb-6">
-                            {user.role !== "intern" && (
+                            {user.role !== "intern" && user.role !== 'member' && (
                                 <Link
                                     href={route("media.create")}
                                     className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
@@ -729,7 +729,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                {user.role !== "intern" && (
+                                {user.role !== "intern" && user.role !== 'member' && (
                                     <Link
                                         href={route("media.create")}
                                         className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
