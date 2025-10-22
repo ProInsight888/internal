@@ -66,7 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('kalender', KalenderController::class);
     Route::put('kalender', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
-    Route::resource('items', ItemsController::class); 
+    Route::resource('items', ItemsController::class);
     Route::resource('data_collection', ToolDataCollectionController::class);
     Route::resource('check', CheckDataCollectionController::class);
 
@@ -85,7 +85,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //     ->name('export.absences');
     Route::resource('media', MediaController::class)->parameters([
         'media' => 'media' // pastikan bukan 'medium'
+
     ]);
+    Route::get('profile', [ProfileController::class, 'index'])->middleware('auth')->name('profile');
+    Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/avatar', [ProfileController::class, 'removeAvatar'])->name('profile.avatar.remove');
 
     Route::put('media_submit/{media}', [update_submit_media_task::class, 'update'])->name('media_submit.update');
     Route::resource('media_review', mediaReviewController::class);

@@ -107,7 +107,7 @@ export default function TaskResult({ tasks, users, userName }) {
     return (
         <AuthenticatedLayout
             header={
-                <div className="bg-gradient-to-r from-blue-600 to-purple-700 p-6 rounded-2xl text-white shadow-lg mb-8">
+                <div className="bg-gradient-to-r from-blue-600 to-purple-700 p-6 rounded-2xl text-white shadow-lg mb-8 dark:from-blue-800 dark:to-purple-900">
                     <h1 className="text-3xl sm:text-4xl font-bold mb-3">
                         Media Task Results Review 🎯
                     </h1>
@@ -125,9 +125,9 @@ export default function TaskResult({ tasks, users, userName }) {
                 selectedFilter={selectedFilter}
                 setSelectedFilter={setSelectedFilter}
             >
-                <div className="max-w-[2000px] mx-auto px-4 py-8">
+                <div className="max-w-[2000px] mx-auto px-4 py-8 dark:bg-gray-900">
                     {/* Search and Stats Section */}
-                    <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                    <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 dark:bg-gray-800 dark:shadow-gray-900/30">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                             <div className="flex-1">
                                 <div className="relative">
@@ -151,20 +151,20 @@ export default function TaskResult({ tasks, users, userName }) {
                                         onChange={(e) =>
                                             setSearchTerm(e.target.value)
                                         }
-                                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                                     />
                                 </div>
                             </div>
                             <div className="flex items-center gap-4">
-                                <div className="bg-blue-50 px-4 py-2 rounded-lg border border-blue-200">
-                                    <span className="text-blue-700 font-semibold">
+                                <div className="bg-blue-50 px-4 py-2 rounded-lg border border-blue-200 dark:bg-blue-900/20 dark:border-blue-800">
+                                    <span className="text-blue-700 font-semibold dark:text-blue-300">
                                         {filteredTasks.length} task
                                         {filteredTasks.length !== 1 ? "s" : ""}{" "}
                                         awaiting review
                                     </span>
                                 </div>
                                 <button
-                                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+                                    className="flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                                     onClick={() => setSearchTerm("")}
                                 >
                                     <svg
@@ -202,7 +202,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                             ? `${getStatusColor(
                                                   status
                                               )} text-white shadow-md`
-                                            : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                                            : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600"
                                     }`}
                                 >
                                     {status}
@@ -212,20 +212,20 @@ export default function TaskResult({ tasks, users, userName }) {
                     </div>
 
                     {/* Tasks Cards Grid */}
-                    <div className="bg-white shadow-lg rounded-2xl overflow-hidden">
-                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                            <h2 className="text-xl font-bold text-gray-800">
+                    <div className="bg-white shadow-lg rounded-2xl overflow-hidden dark:bg-gray-800 dark:shadow-gray-900/30">
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center dark:from-blue-900/20 dark:to-indigo-900/20 dark:border-gray-700">
+                            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
                                 {statusFilter} Tasks
                             </h2>
-                            <span className="text-sm text-gray-600">
+                            <span className="text-sm text-gray-600 dark:text-gray-400">
                                 Sorted by: Deadline (soonest first)
                             </span>
                         </div>
 
                         {filteredTasks.length === 0 ? (
-                            <div className="text-center py-12 bg-gradient-to-r from-gray-50 to-blue-50">
+                            <div className="text-center py-12 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20">
                                 <svg
-                                    className="w-16 h-16 mx-auto text-gray-400 mb-4"
+                                    className="w-16 h-16 mx-auto text-gray-400 mb-4 dark:text-gray-500"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -237,10 +237,10 @@ export default function TaskResult({ tasks, users, userName }) {
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                                     />
                                 </svg>
-                                <h3 className="text-lg font-medium text-gray-700 mb-2">
+                                <h3 className="text-lg font-medium text-gray-700 mb-2 dark:text-gray-300">
                                     No {statusFilter.toLowerCase()} tasks
                                 </h3>
-                                <p className="text-gray-500">
+                                <p className="text-gray-500 dark:text-gray-400">
                                     {statusFilter === "In Review"
                                         ? "All tasks have been reviewed or no tasks match your search criteria"
                                         : `No tasks with status "${statusFilter}" found`}
@@ -251,12 +251,12 @@ export default function TaskResult({ tasks, users, userName }) {
                                 {filteredTasks.map((task, index) => (
                                     <div
                                         key={task.uuid}
-                                        className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                                        className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300 dark:bg-gray-700 dark:border-gray-600"
                                     >
                                         {/* Card Header */}
-                                        <div className="p-4 border-b border-gray-100">
+                                        <div className="p-4 border-b border-gray-100 dark:border-gray-600">
                                             <div className="flex justify-between items-start">
-                                                <h3 className="font-bold text-gray-800 text-lg line-clamp-2">
+                                                <h3 className="font-bold text-gray-800 text-lg line-clamp-2 dark:text-gray-200">
                                                     {task.task_title}
                                                 </h3>
                                                 <span
@@ -267,7 +267,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                                     {task.status}
                                                 </span>
                                             </div>
-                                            <p className="text-sm text-gray-500 mt-1">
+                                            <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
                                                 {task.category}
                                             </p>
                                         </div>
@@ -276,34 +276,34 @@ export default function TaskResult({ tasks, users, userName }) {
                                         <div className="p-4">
                                             <div className="grid grid-cols-2 gap-4 mb-4">
                                                 <div>
-                                                    <p className="text-xs text-gray-500 uppercase">
+                                                    <p className="text-xs text-gray-500 uppercase dark:text-gray-400">
                                                         Assignee
                                                     </p>
-                                                    <p className="font-medium text-gray-800">
+                                                    <p className="font-medium text-gray-800 dark:text-gray-200">
                                                         {task.penanggung_jawab}
                                                     </p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs text-gray-500 uppercase">
+                                                    <p className="text-xs text-gray-500 uppercase dark:text-gray-400">
                                                         Company
                                                     </p>
-                                                    <p className="font-medium text-gray-800">
+                                                    <p className="font-medium text-gray-800 dark:text-gray-200">
                                                         {task.company}
                                                     </p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs text-gray-500 uppercase">
+                                                    <p className="text-xs text-gray-500 uppercase dark:text-gray-400">
                                                         Format
                                                     </p>
-                                                    <p className="font-medium text-gray-800">
+                                                    <p className="font-medium text-gray-800 dark:text-gray-200">
                                                         {task.task_format}
                                                     </p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs text-gray-500 uppercase">
+                                                    <p className="text-xs text-gray-500 uppercase dark:text-gray-400">
                                                         Deadline
                                                     </p>
-                                                    <p className="font-medium text-gray-800">
+                                                    <p className="font-medium text-gray-800 dark:text-gray-200">
                                                         {formatDate(
                                                             task.deadline
                                                         )}
@@ -313,8 +313,8 @@ export default function TaskResult({ tasks, users, userName }) {
                                                             getDaysUntilDeadline(
                                                                 task.deadline
                                                             ) < 3
-                                                                ? "text-red-500"
-                                                                : "text-gray-500"
+                                                                ? "text-red-500 dark:text-red-400"
+                                                                : "text-gray-500 dark:text-gray-400"
                                                         }`}
                                                     >
                                                         {getDaysUntilDeadline(
@@ -328,15 +328,15 @@ export default function TaskResult({ tasks, users, userName }) {
                                                 </div>
                                             </div>
 
-                                            <div className="bg-blue-50 p-3 rounded-lg mb-4">
-                                                <p className="text-xs text-blue-700 uppercase font-medium mb-1">
+                                            <div className="bg-blue-50 p-3 rounded-lg mb-4 dark:bg-blue-900/20">
+                                                <p className="text-xs text-blue-700 uppercase font-medium mb-1 dark:text-blue-300">
                                                     Submission Link
                                                 </p>
                                                 <a
                                                     href={task.result?.link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="text-blue-600 hover:underline text-sm break-all inline-flex items-center"
+                                                    className="text-blue-600 hover:underline text-sm break-all inline-flex items-center dark:text-blue-400"
                                                 >
                                                     <svg
                                                         className="w-4 h-4 mr-1"
@@ -357,7 +357,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                         </div>
 
                                         {/* Card Footer */}
-                                        <div className="p-4 bg-gray-50 border-t border-gray-100">
+                                        <div className="p-4 bg-gray-50 border-t border-gray-100 dark:bg-gray-600 dark:border-gray-500">
                                             {task.status === "In Review" ? (
                                                 <button
                                                     onClick={() =>
@@ -382,7 +382,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                                     Review Task
                                                 </button>
                                             ) : (
-                                                <div className="text-center text-sm text-gray-500">
+                                                <div className="text-center text-sm text-gray-500 dark:text-gray-400">
                                                     Reviewed on{" "}
                                                     {formatDate(
                                                         task.updated_at
@@ -400,14 +400,14 @@ export default function TaskResult({ tasks, users, userName }) {
                 {/* Review Modal */}
                 {isReviewModalOpen && selectedTask && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                        <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 rounded-t-2xl flex justify-between items-center">
-                                <h3 className="text-xl font-bold text-gray-800">
+                        <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:shadow-gray-900/30">
+                            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 rounded-t-2xl flex justify-between items-center dark:bg-gray-800 dark:border-gray-700">
+                                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">
                                     Review Submission
                                 </h3>
                                 <button
                                     onClick={closeReviewModal}
-                                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                                    className="text-gray-400 hover:text-gray-600 transition-colors dark:hover:text-gray-300"
                                 >
                                     <svg
                                         className="w-6 h-6"
@@ -427,42 +427,42 @@ export default function TaskResult({ tasks, users, userName }) {
 
                             <div className="p-6 space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="bg-gray-50 p-4 rounded-lg">
-                                        <h4 className="font-semibold text-gray-700 mb-2">
+                                    <div className="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">
+                                        <h4 className="font-semibold text-gray-700 mb-2 dark:text-gray-300">
                                             Task Details
                                         </h4>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
                                             {selectedTask.task_title}
                                         </p>
                                     </div>
-                                    <div className="bg-gray-50 p-4 rounded-lg">
-                                        <h4 className="font-semibold text-gray-700 mb-2">
+                                    <div className="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">
+                                        <h4 className="font-semibold text-gray-700 mb-2 dark:text-gray-300">
                                             Assignee
                                         </h4>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
                                             {selectedTask.penanggung_jawab}
                                         </p>
                                     </div>
-                                    <div className="bg-gray-50 p-4 rounded-lg">
-                                        <h4 className="font-semibold text-gray-700 mb-2">
+                                    <div className="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">
+                                        <h4 className="font-semibold text-gray-700 mb-2 dark:text-gray-300">
                                             Company
                                         </h4>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
                                             {selectedTask.company}
                                         </p>
                                     </div>
-                                    <div className="bg-gray-50 p-4 rounded-lg">
-                                        <h4 className="font-semibold text-gray-700 mb-2">
+                                    <div className="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">
+                                        <h4 className="font-semibold text-gray-700 mb-2 dark:text-gray-300">
                                             Deadline
                                         </h4>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
                                             {formatDate(selectedTask.deadline)}
                                         </p>
                                     </div>
                                 </div>
 
-                                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
-                                    <h4 className="font-semibold text-blue-700 mb-2 flex items-center">
+                                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200 dark:bg-blue-900/20 dark:border-blue-800">
+                                    <h4 className="font-semibold text-blue-700 mb-2 flex items-center dark:text-blue-300">
                                         <svg
                                             className="w-4 h-4 mr-2"
                                             fill="none"
@@ -482,7 +482,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                         href={selectedTask.result?.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-blue-600 hover:underline break-all inline-flex items-center"
+                                        className="text-blue-600 hover:underline break-all inline-flex items-center dark:text-blue-400"
                                     >
                                         <svg
                                             className="w-4 h-4 mr-1"
@@ -506,7 +506,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                     className="space-y-6"
                                 >
                                     <div>
-                                        <h4 className="font-semibold text-gray-700 mb-4">
+                                        <h4 className="font-semibold text-gray-700 mb-4 dark:text-gray-300">
                                             Review Decision
                                         </h4>
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -522,7 +522,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                                             ? `${getStatusColor(
                                                                   status
                                                               )} text-white shadow-md border-transparent`
-                                                            : "bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                                                            : "bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:shadow-sm dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:border-gray-500"
                                                     }`}
                                                 >
                                                     <input
@@ -550,10 +550,10 @@ export default function TaskResult({ tasks, users, userName }) {
                                     </div>
 
                                     {data.status === "Rejected" && (
-                                        <div className="bg-amber-50 p-4 rounded-xl border border-amber-200">
+                                        <div className="bg-amber-50 p-4 rounded-xl border border-amber-200 dark:bg-amber-900/20 dark:border-amber-800">
                                             <label
                                                 htmlFor="revision-comments"
-                                                className="block text-sm font-medium text-amber-800 mb-2 items-center"
+                                                className="block text-sm font-medium text-amber-800 mb-2 items-center dark:text-amber-300"
                                             >
                                                 <svg
                                                     className="w-4 h-4 mr-1"
@@ -581,21 +581,21 @@ export default function TaskResult({ tasks, users, userName }) {
                                                 }
                                                 id="revision-comments"
                                                 placeholder="Please provide detailed feedback on what needs to be improved..."
-                                                className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 resize-none bg-white"
+                                                className="w-full px-3 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 resize-none bg-white dark:bg-gray-600 dark:border-amber-600 dark:text-white"
                                                 rows={4}
                                             />
-                                            <p className="text-xs text-amber-600 mt-1">
+                                            <p className="text-xs text-amber-600 mt-1 dark:text-amber-400">
                                                 Please be specific about what
                                                 needs to be revised
                                             </p>
                                         </div>
                                     )}
 
-                                    <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                                    <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                                         <button
                                             type="button"
                                             onClick={closeReviewModal}
-                                            className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+                                            className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 dark:text-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                                         >
                                             Cancel
                                         </button>
@@ -604,7 +604,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                             disabled={
                                                 processing || !data.status
                                             }
-                                            className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white rounded-lg shadow-md transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                                            className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white rounded-lg shadow-md transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center dark:from-blue-700 dark:to-purple-800 dark:hover:from-blue-800 dark:hover:to-purple-900"
                                         >
                                             {processing ? (
                                                 <>

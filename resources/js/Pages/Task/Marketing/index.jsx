@@ -1,5 +1,4 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-// import TaskSideBar from "@/Layouts/TaskSideBar";
 import TaskSideBar from "@/Layouts/TaskSideBar";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
@@ -21,8 +20,8 @@ const StatusBadge = ({ status }) => {
     return (
         <div
             className={`${
-                statusColors[status] || "bg-gray-200 text-black"
-            } font-medium py-1.5 px-3 rounded-full text-center text-xs shadow-sm`}
+                statusColors[status] || "bg-gray-200 text-black dark:bg-gray-700 dark:text-white"
+            } font-medium py-1.5 px-3 rounded-full text-center text-xs shadow-sm dark:shadow-gray-800`}
         >
             {status}
         </div>
@@ -45,19 +44,19 @@ const PriorityBadge = ({ deadline }) => {
 
     if (remainingDays < 0) {
         priority = "Overdue";
-        bgColor = "bg-red-100 text-red-800";
+        bgColor = "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
     } else if (remainingDays === 0) {
         priority = "Due Today";
-        bgColor = "bg-amber-100 text-amber-800";
+        bgColor = "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300";
     } else if (remainingDays <= 3) {
         priority = "High";
-        bgColor = "bg-orange-100 text-orange-800";
+        bgColor = "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300";
     } else if (remainingDays <= 7) {
         priority = "Medium";
-        bgColor = "bg-yellow-100 text-yellow-800";
+        bgColor = "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300";
     } else {
         priority = "Low";
-        bgColor = "bg-green-100 text-green-800";
+        bgColor = "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
     }
 
     return (
@@ -72,18 +71,17 @@ const PriorityBadge = ({ deadline }) => {
 // Task Card Component
 const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
     // Assign different pastel colors based on task status
-    // console.log(task, onOpenDetails, index)
     const getCardColor = (status) => {
         const colorMap = {
-            "In Review": "bg-[#8B5CF6]/10 border-[#8B5CF6] shadow-xl", // violet
-            Rejected: "bg-[#EF4444]/10 border-[#EF4444] shadow-xl", // red
-            Approved: "bg-[#10B981]/10 border-[#10B981] shadow-xl", // emerald
-            Cancel: "bg-slate-100 border-slate-800",
-            Idle: "bg-[#d141b7]/10 border-[#d141b7] shadow-xl", // gray
-            Revision: "bg-[#F97316]/10 border-[#F97316] shadow-xl", // orange
-            Pending: "bg-[#F59E0B]/10 border-[#F59E0B] shadow-xl", // amber
-            "On Progress": "bg-[#3B82F6]/10 border-[#3B82F6] shadow-xl", // blue
-            default: "bg-purple-100 border-purple-200",
+            "In Review": "bg-[#8B5CF6]/10 border-[#8B5CF6] shadow-xl dark:bg-[#8B5CF6]/20 dark:border-[#8B5CF6]/80",
+            Rejected: "bg-[#EF4444]/10 border-[#EF4444] shadow-xl dark:bg-[#EF4444]/20 dark:border-[#EF4444]/80",
+            Approved: "bg-[#10B981]/10 border-[#10B981] shadow-xl dark:bg-[#10B981]/20 dark:border-[#10B981]/80",
+            Cancel: "bg-slate-100 border-slate-800 dark:bg-slate-800 dark:border-slate-600",
+            Idle: "bg-[#d141b7]/10 border-[#d141b7] shadow-xl dark:bg-[#d141b7]/20 dark:border-[#d141b7]/80",
+            Revision: "bg-[#F97316]/10 border-[#F97316] shadow-xl dark:bg-[#F97316]/20 dark:border-[#F97316]/80",
+            Pending: "bg-[#F59E0B]/10 border-[#F59E0B] shadow-xl dark:bg-[#F59E0B]/20 dark:border-[#F59E0B]/80",
+            "On Progress": "bg-[#3B82F6]/10 border-[#3B82F6] shadow-xl dark:bg-[#3B82F6]/20 dark:border-[#3B82F6]/80",
+            default: "bg-purple-100 border-purple-200 dark:bg-purple-900/20 dark:border-purple-700",
         };
 
         return colorMap[status] || colorMap.default;
@@ -91,7 +89,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
 
     return (
         <div
-            className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 cursor-pointer ${getCardColor(
+            className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 cursor-pointer dark:shadow-gray-800 ${getCardColor(
                 task.status
             )}`}
             onClick={() => onOpenDetails(task, index)}
@@ -106,22 +104,22 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                 </div>
 
                 {/* Task Company Name */}
-                <h3 className="text-sm font-semibold text-black tracking-wide -mb-0.5 line-clamp-1">
+                <h3 className="text-sm font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1">
                     {task.company}
                 </h3>
 
                 {/* Code */}
-                <h1 className="font-black text-2xl text-gray-900 -mb-0.5 leading-tight">
+                <h1 className="font-black text-2xl text-gray-900 dark:text-white -mb-0.5 leading-tight">
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
                 {/* Task Title */}
-                <h3 className="text-md text-black font-medium mb-1 line-clamp-2">
+                <h3 className="text-md text-black dark:text-white font-medium mb-1 line-clamp-2 break-words">
                     {task.task_title}
                 </h3>
 
                 {/* Assignee and Format */}
-                <div className="flex items-center justify-between mb-2 text-sm text-gray-600">
+                <div className="flex items-center justify-between mb-2 text-sm text-gray-600 dark:text-gray-400">
                     <div className="flex items-center">
                         <div className="flex -space-x-3 mr-3">
                             {task.penanggung_jawab
@@ -129,7 +127,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                 .map((assignee, index) => (
                                     <div
                                         key={index}
-                                        className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-800 font-bold border-[1px] border-black shadow-sm"
+                                        className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border-[1px] border-black dark:border-white shadow-sm"
                                         title={assignee.trim()} // Show full name on hover
                                     >
                                         {assignee.trim().charAt(0)}
@@ -137,29 +135,29 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                 ))}
                         </div>
                     </div>
-                    <span className="font-medium text-black text-xs ">
+                    <span className="font-medium text-black dark:text-white text-xs line-clamp-2 break-words">
                         {task.task_format}
                     </span>
                 </div>
 
                 {/* Deadline */}
                 <div className="flex items-center justify-between mb-4">
-                    <div className="text-xs text-black">
+                    <div className="text-xs text-black dark:text-white">
                         Deadline:{" "}
-                        <span className="font-semibold text-gray-700">
+                        <span className="font-semibold text-gray-700 dark:text-gray-300">
                             {task.deadline}
                         </span>
                     </div>
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-end items-center pt-3 border-t border-black">
-                    {!["Cancel", "In Review"].includes(task.status) && user_role !== 'member' && (
+                <div className="flex justify-end items-center pt-3 border-t border-black dark:border-white">
+                    {!["Cancel", "In Review"].includes(task.status) &&  user_role !== 'member' && user_role !== 'intern' && (
                         <div className="flex space-x-2">
                             <Link
                                 href={route("marketing.edit", task.uuid)}
                                 onClick={(e) => e.stopPropagation()}
-                                className="p-2 text-black hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200"
+                                className="p-2 text-black dark:text-white hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-lg transition-colors duration-200"
                             >
                                 <svg
                                     className="w-4 h-4"
@@ -196,7 +194,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                         );
                                     }
                                 }}
-                                className="p-2 text-black hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                                className="p-2 text-black dark:text-white hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors duration-200"
                             >
                                 <svg
                                     className="w-4 h-4"
@@ -233,23 +231,20 @@ const TaskModal = ({
 }) => {
     if (!isOpen) return null;
 
-    console.log(userName);
-    console.log(task.penanggung_jawab);
-
     return (
         <div 
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
             onClick={onClose} // Add this to close when clicking overlay
         >
             <div 
-                className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()} // Add this to prevent closing when clicking inside
             >
                 {/* Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h2 className="text-2xl font-bold mb-2">
+                            <h2 className="text-2xl font-bold mb-2 max-w-xl break-words">
                                 {task.task_title}
                             </h2>
                             <div className="flex items-center gap-3">
@@ -285,22 +280,22 @@ const TaskModal = ({
                     {/* Task Details */}
                     <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                            <span className="text-gray-500">Assignee:</span>
-                            <p className="font-medium">
+                            <span className="text-gray-500 dark:text-gray-400">Assignee:</span>
+                            <p className="font-medium dark:text-white">
                                 {task.penanggung_jawab}
                             </p>
                         </div>
                         <div>
-                            <span className="text-gray-500">Format:</span>
-                            <p className="font-medium">{task.task_format}</p>
+                            <span className="text-gray-500 dark:text-gray-400">Format:</span>
+                            <p className="font-medium line-clamp-3 break-words dark:text-white">{task.task_format}</p>
                         </div>
                         <div>
-                            <span className="text-gray-500">Category:</span>
-                            <p className="font-medium">{task.category}</p>
+                            <span className="text-gray-500 dark:text-gray-400">Category:</span>
+                            <p className="font-medium dark:text-white">{task.category}</p>
                         </div>
                         <div>
-                            <span className="text-gray-500">Deadline:</span>
-                            <p className="font-medium text-red-600">
+                            <span className="text-gray-500 dark:text-gray-400">Deadline:</span>
+                            <p className="font-medium text-red-600 dark:text-red-400">
                                 {task.deadline}
                             </p>
                         </div>
@@ -308,9 +303,9 @@ const TaskModal = ({
 
                     {/* Description */}
                     <div>
-                        <h3 className="text-lg font-semibold mb-3 flex items-center">
+                        <h3 className="text-lg font-semibold mb-3 flex items-center dark:text-white">
                             <svg
-                                className="w-5 h-5 mr-2 text-blue-600"
+                                className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                             >
@@ -322,7 +317,7 @@ const TaskModal = ({
                             </svg>
                             Description
                         </h3>
-                        <p className="text-gray-700 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <p className="text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
                             {task.description}
                         </p>
                     </div>
@@ -330,8 +325,8 @@ const TaskModal = ({
                     {/* Revision Notice (if rejected) */}
                     {task.status === "Rejected" &&
                         task.rejected_revision?.revision && (
-                            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                                <h4 className="text-red-800 font-semibold mb-2 flex items-center">
+                            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                                <h4 className="text-red-800 dark:text-red-300 font-semibold mb-2 flex items-center">
                                     <svg
                                         className="w-5 h-5 mr-2"
                                         fill="currentColor"
@@ -345,7 +340,7 @@ const TaskModal = ({
                                     </svg>
                                     Revision Required
                                 </h4>
-                                <p className="text-red-700">
+                                <p className="text-red-700 dark:text-red-300">
                                     {task.rejected_revision.revision}
                                 </p>
                             </div>
@@ -354,9 +349,9 @@ const TaskModal = ({
                     {/* Submission Form */}
                     {task.status !== "Cancel" && (
                         <div>
-                            <h3 className="text-lg font-semibold mb-3 flex items-center">
+                            <h3 className="text-lg font-semibold mb-3 flex items-center dark:text-white">
                                 <svg
-                                    className="w-5 h-5 mr-2 text-green-600"
+                                    className="w-5 h-5 mr-2 text-green-600 dark:text-green-400"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -372,8 +367,8 @@ const TaskModal = ({
                             </h3>
 
                             {["In Review", "Approved"].includes(task.status) ? (
-                                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                                    <p className="text-green-800 font-medium">
+                                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                                    <p className="text-green-800 dark:text-green-300 font-medium">
                                         {task.status === "Approved"
                                             ? "Approved"
                                             : "Under Review"}{" "}
@@ -383,7 +378,7 @@ const TaskModal = ({
                             ) : (
                                 <form onSubmit={onSubmit}>
                                     <div className="relative">
-                                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
+                                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500 dark:text-gray-400">
                                             <svg
                                                 className="w-5 h-5"
                                                 fill="currentColor"
@@ -398,7 +393,7 @@ const TaskModal = ({
                                         </div>
                                         <input
                                             type="text"
-                                            className="w-full pl-10 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                            className="w-full pl-10 p-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-600 shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                             value={data.link}
                                             onChange={(e) =>
                                                 setData("link", e.target.value)
@@ -423,7 +418,7 @@ const TaskModal = ({
                                         <button
                                             type="button"
                                             onClick={onClose}
-                                            className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+                                            className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                                         >
                                             Cancel
                                         </button>
@@ -457,7 +452,6 @@ const TaskModal = ({
         </div>
     );
 };
-// Filter Tabs Component
 
 export default function TaskIndex({ tasks, userName, users }) {
     const user = usePage().props.auth.user;
@@ -531,7 +525,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <AuthenticatedLayout>
                 <Head title="Media Team Task Management" />
                 <TaskSideBar
@@ -549,7 +543,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                     <div className="mx-auto max-w-9xl px-4 sm:px-6 lg:px-8 overflow-y-auto h-[calc(100vh-4rem)] py-4 scrollbar-hide">
                         {/* Success Message */}
                         {successMessage && (
-                            <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 p-4 rounded-lg border border-green-200 mb-6 flex items-center">
+                            <div className="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 text-green-800 dark:text-green-300 p-4 rounded-lg border border-green-200 dark:border-green-800 mb-6 flex items-center">
                                 <svg
                                     className="w-5 h-5 mr-2"
                                     fill="currentColor"
@@ -598,7 +592,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                                             <div className="gap-5 flex-flex-col">
                                                 <div className="w-full p-3 pl-0 flex gap-2">
                                                     <div className="h-[1.7rem] bg-[#d141b7] w-2"></div>
-                                                    <p className="font-extrabold">
+                                                    <p className="font-extrabold dark:text-white">
                                                         Idle
                                                     </p>
                                                 </div>
@@ -633,7 +627,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                                             <div className="gap-5 flex-flex-col">
                                                 <div className="w-full p-3 pl-0 flex gap-2">
                                                     <div className="h-[1.7rem] bg-[#3B82F6] w-2"></div>
-                                                    <p className="font-extrabold">
+                                                    <p className="font-extrabold dark:text-white">
                                                         On Progress
                                                     </p>
                                                 </div>
@@ -662,7 +656,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                                             <div className="gap-5 flex-flex-col">
                                                 <div className="w-full p-3 pl-0 flex gap-2">
                                                     <div className="h-[1.7rem] bg-[#F59E0B] w-2"></div>
-                                                    <p className="font-extrabold">
+                                                    <p className="font-extrabold dark:text-white">
                                                         Pending
                                                     </p>
                                                 </div>
@@ -708,9 +702,9 @@ export default function TaskIndex({ tasks, userName, users }) {
 
                         {/* Empty State */}
                         {filteredTasks.length === 0 && (
-                            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-12 text-center">
+                            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg p-12 text-center">
                                 <svg
-                                    className="w-16 h-16 text-gray-400 mx-auto mb-4"
+                                    className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -722,10 +716,10 @@ export default function TaskIndex({ tasks, userName, users }) {
                                         d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                                     />
                                 </svg>
-                                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                                     No tasks found
                                 </h3>
-                                <p className="text-gray-500 mb-4">
+                                <p className="text-gray-500 dark:text-gray-400 mb-4">
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>

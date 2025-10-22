@@ -81,9 +81,13 @@ export default function ClientIndex({ clients, cicilans }) {
                         key={index}
                         className="flex items-center mb-1 last:mb-0"
                     >
-                        <span className="text-sm">{formattedDate}</span>
+                        <span className="text-sm dark:text-gray-300">
+                            {formattedDate}
+                        </span>
                         {cicilan.status_cicilan === "true" && (
-                            <span className="ml-2 text-green-500">✅</span>
+                            <span className="ml-2 text-green-500 dark:text-green-400">
+                                ✅
+                            </span>
                         )}
                     </div>
                 );
@@ -93,16 +97,19 @@ export default function ClientIndex({ clients, cicilans }) {
     // Get status badge color
     const getStatusColor = (status) => {
         const statusColors = {
-            Lunas: "bg-gradient-to-r from-green-500 to-emerald-600",
-            Cicil: "bg-gradient-to-r from-blue-500 to-cyan-600",
-            "Belum Bayar": "bg-gradient-to-r from-red-500 to-rose-600",
-            Active: "bg-gradient-to-r from-green-500 to-emerald-600",
-            Inactive: "bg-gradient-to-r from-gray-500 to-slate-600",
-            Pending: "bg-gradient-to-r from-amber-500 to-orange-500",
+            Lunas: "bg-gradient-to-r from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700",
+            Cicil: "bg-gradient-to-r from-blue-500 to-cyan-600 dark:from-blue-600 dark:to-cyan-700",
+            "Belum Bayar":
+                "bg-gradient-to-r from-red-500 to-rose-600 dark:from-red-600 dark:to-rose-700",
+            Active: "bg-gradient-to-r from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700",
+            Inactive:
+                "bg-gradient-to-r from-gray-500 to-slate-600 dark:from-gray-600 dark:to-slate-700",
+            Pending:
+                "bg-gradient-to-r from-amber-500 to-orange-500 dark:from-amber-600 dark:to-orange-600",
         };
         return (
             statusColors[status] ||
-            "bg-gradient-to-r from-gray-500 to-slate-600"
+            "bg-gradient-to-r from-gray-500 to-slate-600 dark:from-gray-600 dark:to-slate-700"
         );
     };
 
@@ -120,72 +127,72 @@ export default function ClientIndex({ clients, cicilans }) {
     });
 
     const ClientActionsDropDown = ({
-    client,
-    index,
-    showDeleteEdit,
-    setShowDeleteEdit,
-    dropdownRefs,
-}) => {
-    return (
-        <div className="flex space-x-2">
-            {/* Edit Button */}
-            <Link
-                href={route("new_client.edit", client.uuid)}
-                className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
-                title="Edit Client"
-            >
-                <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+        client,
+        index,
+        showDeleteEdit,
+        setShowDeleteEdit,
+        dropdownRefs,
+    }) => {
+        return (
+            <div className="flex space-x-2">
+                {/* Edit Button */}
+                <Link
+                    href={route("new_client.edit", client.uuid)}
+                    className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 dark:text-gray-400 dark:hover:text-blue-400 dark:hover:bg-blue-900/30"
+                    title="Edit Client"
                 >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                    />
-                </svg>
-            </Link>
+                    <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                    </svg>
+                </Link>
 
-            {/* Delete Button */}
-            <button
-                onClick={() => {
-                    if (
-                        confirm(
-                            `Are you sure you want to delete ${client.company_name}? This action cannot be undone.`
-                        )
-                    ) {
-                        router.delete(
-                            route("new_client.destroy", client.uuid),
-                            {
-                                onSuccess: () => {},
-                                onError: (errors) => console.error(errors),
-                            }
-                        );
-                    }
-                }}
-                className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
-                title="Delete Client"
-            >
-                <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                {/* Delete Button */}
+                <button
+                    onClick={() => {
+                        if (
+                            confirm(
+                                `Are you sure you want to delete ${client.company_name}? This action cannot be undone.`
+                            )
+                        ) {
+                            router.delete(
+                                route("new_client.destroy", client.uuid),
+                                {
+                                    onSuccess: () => {},
+                                    onError: (errors) => console.error(errors),
+                                }
+                            );
+                        }
+                    }}
+                    className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-900/30"
+                    title="Delete Client"
                 >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    />
-                </svg>
-            </button>
-        </div>
-    );
-};
+                    <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                    </svg>
+                </button>
+            </div>
+        );
+    };
 
     // Table columns configuration
     const tableColumns = [
@@ -238,7 +245,7 @@ export default function ClientIndex({ clients, cicilans }) {
     return (
         <AuthenticatedLayout
             header={
-                <div className="bg-gradient-to-r from-blue-600 to-purple-700 p-6 rounded-2xl text-white shadow-lg">
+                <div className="bg-gradient-to-r from-blue-600 to-purple-700 p-6 rounded-2xl text-white shadow-lg dark:from-blue-800 dark:to-purple-900">
                     <h1 className="text-3xl sm:text-4xl font-bold mb-3">
                         Client Management
                     </h1>
@@ -263,7 +270,7 @@ export default function ClientIndex({ clients, cicilans }) {
 
                     <Link
                         href={route("new_client.create")}
-                        className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                        className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg dark:from-blue-700 dark:to-purple-800 dark:hover:from-blue-800 dark:hover:to-purple-900"
                     >
                         <svg
                             className="w-5 h-5 mr-2"
@@ -285,7 +292,7 @@ export default function ClientIndex({ clients, cicilans }) {
                 {/* Flash Messages */}
                 <div className="mb-6">
                     {successMessage && (
-                        <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 p-4 rounded-lg border border-green-200 flex items-center mb-4">
+                        <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 p-4 rounded-lg border border-green-200 flex items-center mb-4 dark:bg-green-900/20 dark:border-green-800/30 dark:text-green-300">
                             <svg
                                 className="w-5 h-5 mr-3"
                                 fill="currentColor"
@@ -301,7 +308,7 @@ export default function ClientIndex({ clients, cicilans }) {
                         </div>
                     )}
                     {deletedMessage && (
-                        <div className="bg-gradient-to-r from-red-100 to-rose-100 text-red-800 p-4 rounded-lg border border-red-200 flex items-center mb-4">
+                        <div className="bg-gradient-to-r from-red-100 to-rose-100 text-red-800 p-4 rounded-lg border border-red-200 flex items-center mb-4 dark:bg-red-900/20 dark:border-red-800/30 dark:text-red-300">
                             <svg
                                 className="w-5 h-5 mr-3"
                                 fill="currentColor"
@@ -319,7 +326,7 @@ export default function ClientIndex({ clients, cicilans }) {
                 </div>
 
                 {/* Search and Filter Section */}
-                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 dark:bg-gray-800 dark:shadow-gray-900/30">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -340,7 +347,7 @@ export default function ClientIndex({ clients, cicilans }) {
                                 placeholder="Search clients by name, location, or type..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:ring-blue-400 dark:focus:border-blue-400"
                             />
                         </div>
 
@@ -350,7 +357,7 @@ export default function ClientIndex({ clients, cicilans }) {
                                 onChange={(e) =>
                                     setStatusFilter(e.target.value)
                                 }
-                                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                             >
                                 <option value="all">All Statuses</option>
                                 <option value="Lunas">Paid</option>
@@ -365,13 +372,13 @@ export default function ClientIndex({ clients, cicilans }) {
                 </div>
 
                 {/* Clients Table */}
-                <div className="bg-white shadow-lg rounded-2xl overflow-hidden">
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
+                <div className="bg-white shadow-lg rounded-2xl overflow-hidden dark:bg-gray-800 dark:shadow-gray-900/30">
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200 dark:from-blue-900/20 dark:to-indigo-900/20 dark:border-gray-700">
                         <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-bold text-gray-800">
+                            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
                                 Client List
                             </h2>
-                            <span className="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-semibold shadow-sm">
+                            <span className="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-semibold shadow-sm dark:bg-gray-700 dark:text-blue-400">
                                 {filteredClients.length}{" "}
                                 {filteredClients.length === 1
                                     ? "client"
@@ -382,32 +389,32 @@ export default function ClientIndex({ clients, cicilans }) {
 
                     <div className="overflow-x-auto">
                         <table className="w-full">
-                            <thead className="bg-gray-50">
+                            <thead className="bg-gray-50 dark:bg-gray-700">
                                 <tr>
                                     {tableColumns.map((column, index) => (
                                         <th
                                             key={index}
-                                            className={`px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider ${column.className}`}
+                                            className={`px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider dark:text-gray-300 ${column.className}`}
                                         >
                                             {column.header}
                                         </th>
                                     ))}
-                                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider dark:text-gray-300">
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                 {filteredClients.map((client, index) => (
                                     <tr
                                         key={client.uuid}
-                                        className="hover:bg-blue-50 transition-colors duration-150"
+                                        className="hover:bg-blue-50 transition-colors duration-150 dark:hover:bg-blue-900/20"
                                     >
                                         {tableColumns.map(
                                             (column, colIndex) => (
                                                 <td
                                                     key={colIndex}
-                                                    className="px-4 py-4 text-sm text-gray-700"
+                                                    className="px-4 py-4 text-sm text-gray-700 dark:text-gray-300"
                                                 >
                                                     {column.render
                                                         ? column.render(
@@ -437,9 +444,9 @@ export default function ClientIndex({ clients, cicilans }) {
                         </table>
 
                         {filteredClients.length === 0 && (
-                            <div className="text-center py-12 bg-gradient-to-r from-gray-50 to-blue-50">
+                            <div className="text-center py-12 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20">
                                 <svg
-                                    className="w-16 h-16 mx-auto text-gray-400 mb-4"
+                                    className="w-16 h-16 mx-auto text-gray-400 mb-4 dark:text-gray-500"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -451,15 +458,15 @@ export default function ClientIndex({ clients, cicilans }) {
                                         d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-6 0H5m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                                     />
                                 </svg>
-                                <h3 className="text-lg font-medium text-gray-700 mb-2">
+                                <h3 className="text-lg font-medium text-gray-700 mb-2 dark:text-gray-300">
                                     No clients found
                                 </h3>
-                                <p className="text-gray-500 mb-4">
+                                <p className="text-gray-500 mb-4 dark:text-gray-400">
                                     Try adjusting your search or filter criteria
                                 </p>
                                 <Link
                                     href={route("new_client.create")}
-                                    className="text-blue-600 hover:text-blue-800 font-medium"
+                                    className="text-blue-600 hover:text-blue-800 font-medium dark:text-blue-400 dark:hover:text-blue-300"
                                 >
                                     Add your first client
                                 </Link>

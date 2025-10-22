@@ -11,15 +11,15 @@ const StatusCard = ({
     textColor = "text-white",
 }) => (
     <div
-        className={`${bgColor} ${textColor} p-6 flex flex-col gap-3 rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.02]`}
+        className={`${bgColor} ${textColor} p-6 flex flex-col gap-3 rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.02] dark:shadow-gray-800/50`}
     >
         <div className="text-lg font-bold">{title}</div>
         <div className="text-4xl text-right font-bold">
             {count}/{total}
         </div>
-        <div className="w-full bg-white/20 rounded-full h-2.5">
+        <div className="w-full bg-white/20 rounded-full h-2.5 dark:bg-gray-800/30">
             <div
-                className="bg-white h-2.5 rounded-full"
+                className="bg-white h-2.5 rounded-full dark:bg-gray-200"
                 style={{ width: `${(count / total) * 100}%` }}
             ></div>
         </div>
@@ -40,9 +40,9 @@ const TaskSection = ({
     icon,
 }) => {
     return (
-        <div className="w-full pb-4 border-b-2 border-gray-100">
+        <div className="w-full pb-4 border-b-2 border-gray-100 dark:border-gray-700">
             <div
-                className="flex items-center p-4 gap-3 rounded-t-xl"
+                className="flex items-center p-4 gap-3 rounded-t-xl cursor-pointer"
                 style={{ backgroundColor: `${borderColor}20` }}
                 onClick={toggleHidden}
             >
@@ -70,7 +70,7 @@ const TaskSection = ({
                     {title}
                 </div>
                 <div
-                    className="ml-2 text-sm bg-white px-2 py-1 rounded-full font-bold shadow-sm"
+                    className="ml-2 text-sm bg-white px-2 py-1 rounded-full font-bold shadow-sm dark:bg-gray-800"
                     style={{ color: borderColor }}
                 >
                     {tasks.length}
@@ -79,33 +79,33 @@ const TaskSection = ({
             <div
                 className={`${
                     isHidden ? "hidden" : ""
-                } bg-white p-4 border border-gray-200 rounded-b-xl w-full overflow-x-auto mt-0 shadow-md`}
+                } bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-700 rounded-b-xl w-full overflow-x-auto mt-0 shadow-md`}
             >
                 <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
                     <thead>
-                        <tr className="text-sm border-b-2 bg-gray-50">
-                            <th className="py-3 px-4 bg-gray-50 sticky top-0">
+                        <tr className="text-sm border-b-2 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
                                 No
                             </th>
-                            <th className="py-3 px-4 bg-gray-50 sticky top-0">
+                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
                                 Task
                             </th>
-                            <th className="py-3 px-4 bg-gray-50 sticky top-0">
+                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
                                 Penanggung Jawab
                             </th>
-                            <th className="py-3 px-4 bg-gray-50 sticky top-0">
+                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
                                 Task Format
                             </th>
-                            <th className="py-3 px-4 bg-gray-50 sticky top-0">
+                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
                                 Status
                             </th>
-                            <th className="py-3 px-4 bg-gray-50 sticky top-0">
+                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
                                 Company
                             </th>
-                            <th className="py-3 px-4 bg-gray-50 sticky top-0">
+                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
                                 Category
                             </th>
-                            <th className="py-3 px-4 bg-gray-50 sticky top-0">
+                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
                                 Deadline
                             </th>
                         </tr>
@@ -114,7 +114,7 @@ const TaskSection = ({
                         {tasks.map((task, index) => (
                             <Fragment key={task.uuid}>
                                 <tr
-                                    className="text-sm text-left cursor-pointer hover:bg-gray-50 even:bg-gray-50/30 transition-colors duration-150"
+                                    className="text-sm text-left cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 even:bg-gray-50/30 dark:even:bg-gray-700/50 transition-colors duration-150 dark:text-gray-300"
                                     onClick={() =>
                                         setShowDescriptionIndex(
                                             showDescriptionIndex === index
@@ -130,7 +130,7 @@ const TaskSection = ({
                                         {task.task_title}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                        <span className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                             {task.penanggung_jawab}
                                         </span>
                                     </td>
@@ -156,7 +156,7 @@ const TaskSection = ({
                                         {task.company}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                        <span className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                             {task.category}
                                         </span>
                                     </td>
@@ -167,8 +167,8 @@ const TaskSection = ({
                                 {showDescriptionIndex === index && (
                                     <tr>
                                         <td colSpan={8}>
-                                            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200 rounded-xl p-4 my-2 shadow-inner">
-                                                <div className="text-md font-bold text-gray-900 mb-2 flex items-center">
+                                            <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-gray-200 dark:border-gray-600 rounded-xl p-4 my-2 shadow-inner">
+                                                <div className="text-md font-bold text-gray-900 dark:text-gray-100 mb-2 flex items-center">
                                                     <svg
                                                         className="w-4 h-4 mr-2 text-blue-500"
                                                         fill="currentColor"
@@ -183,7 +183,7 @@ const TaskSection = ({
                                                     {task.company} - Task
                                                     Description
                                                 </div>
-                                                <div className="text-sm text-gray-700 bg-white p-3 rounded-lg border">
+                                                <div className="text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 p-3 rounded-lg border dark:border-gray-600">
                                                     {task.description}
                                                 </div>
                                             </div>
@@ -208,13 +208,13 @@ const AttendanceForm = ({
     sortDate,
     setSortDate,
 }) => (
-    <div className="text-gray-800 mt-4 bg-gradient-to-br from-blue-50 to-purple-50 p-4 border border-blue-100 rounded-2xl shadow-sm">
+    <div className="text-gray-800 dark:text-gray-200 mt-4 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-4 border border-blue-100 dark:border-blue-800 rounded-2xl shadow-sm">
         <div className="pb-3 flex flex-col gap-3 justify-between">
             <div className="flex flex-col md:flex-row justify-between gap-3">
                 <div className="relative flex-1">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg
-                            className="w-4 h-4 text-gray-500"
+                            className="w-4 h-4 text-gray-500 dark:text-gray-400"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                         >
@@ -229,14 +229,14 @@ const AttendanceForm = ({
                         type="date"
                         value={sortDate}
                         onChange={(e) => setSortDate(e.target.value)}
-                        className="pl-10 p-2.5 w-full border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 focus:border-transparent shadow-sm"
+                        className="pl-10 p-2.5 w-full border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-transparent shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
                 </div>
                 <form onSubmit={onSubmit} className="flex gap-3 flex-1">
                     <div className="relative w-full">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg
-                                className="w-4 h-4 text-gray-500"
+                                className="w-4 h-4 text-gray-500 dark:text-gray-400"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                             >
@@ -250,24 +250,22 @@ const AttendanceForm = ({
                         <select
                             value={data.absence}
                             onChange={(e) => setData("absence", e.target.value)}
-                            className="pl-10 p-2.5 w-full border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 focus:border-transparent shadow-sm"
+                            className="pl-10 p-2.5 w-full border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-transparent shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         >
                             <option value="Hadir">Hadir</option>
                             <option value="Balek">Pulang</option>
-                            <option value="Lembur">Lembur</option>
-                            <option value="Pulang Lembur">Pulang Lembur</option>
                         </select>
                     </div>
                     <button
                         type="submit"
-                        className="bg-blue-500 text-white font-bold px-4 py-2.5 rounded-lg hover:from-blue-600 hover:to-purple-600 text-sm transition-all duration-300 shadow-md hover:shadow-lg"
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-2.5 rounded-lg text-sm transition-all duration-300 shadow-md hover:shadow-lg"
                     >
                         Submit
                     </button>
                 </form>
             </div>
             {errors.absence && (
-                <div className="text-red-500 font-semibold text-sm bg-red-50 p-2 rounded-lg border border-red-100">
+                <div className="text-red-500 dark:text-red-400 font-semibold text-sm bg-red-50 dark:bg-red-900/20 p-2 rounded-lg border border-red-100 dark:border-red-800">
                     {errors.absence}
                 </div>
             )}
@@ -283,7 +281,7 @@ const AttendanceTable = ({ absens }) => {
     };
 
     return (
-        <div className="overflow-x-auto w-full bg-white rounded-2xl border border-gray-200 shadow-sm">
+        <div className="overflow-x-auto w-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
             <table className="w-full table-fixed border-collapse">
                 <thead className="w-full bg-gradient-to-r from-blue-500 to-blue-400 text-white">
                     <tr className="text-xs md:text-sm text-left">
@@ -299,7 +297,7 @@ const AttendanceTable = ({ absens }) => {
                     {absens.map((absen, index) => (
                         <tr
                             key={absen.id}
-                            className="text-xs md:text-sm text-left hover:bg-gray-50 even:bg-gray-50/30 transition-colors duration-150"
+                            className="text-xs md:text-sm text-left hover:bg-gray-50 dark:hover:bg-gray-700 even:bg-gray-50/30 dark:even:bg-gray-700/50 transition-colors duration-150 dark:text-gray-300"
                         >
                             <td className="px-4 py-3 font-medium">
                                 {index + 1}
@@ -341,7 +339,7 @@ const AttendanceTable = ({ absens }) => {
 
 // Client Table Component
 const ClientTable = ({ clients }) => (
-    <div className="overflow-x-auto h-64 border border-gray-200 rounded-2xl bg-white shadow-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <div className="overflow-x-auto h-64 border border-gray-200 dark:border-gray-700 rounded-2xl bg-white dark:bg-gray-800 shadow-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
             <thead>
                 <tr className="sticky top-0 text-xs md:text-sm bg-gradient-to-r from-pink-500 to-pink-400 text-white">
@@ -359,21 +357,21 @@ const ClientTable = ({ clients }) => (
                 {clients.map((client, index) => (
                     <tr
                         key={client.id}
-                        className="text-xs md:text-sm hover:bg-gray-50 even:bg-gray-50/30 transition-colors duration-150"
+                        className="text-xs md:text-sm hover:bg-gray-50 dark:hover:bg-gray-700 even:bg-gray-50/30 dark:even:bg-gray-700/50 transition-colors duration-150 dark:text-gray-300"
                     >
                         <td className="p-4 font-medium">{index + 1}</td>
                         <td className="p-4 font-semibold">
                             {client.company_name}
                         </td>
                         <td className="p-4">
-                            <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                            <span className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                 {client.type}
                             </span>
                         </td>
                         <td className="p-4">{client.location}</td>
                         <td className="p-4 font-medium">{client.contract}</td>
                         <td className="p-4">
-                            <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                            <span className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                 {client.package}
                             </span>
                         </td>
@@ -471,7 +469,7 @@ const TaskCard = ({ task }) => {
 
     return (
         <div
-            className={`flex-none w-72 rounded-xl border-2 ${borderColor} ${bgColor} p-4 m-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]`}
+            className={`flex-none w-72 rounded-xl border-2 ${borderColor} ${bgColor} p-4 m-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] dark:shadow-gray-800`}
         >
             <TaskStatusBadge status={status} remainingDays={remainingDays} />
             <TaskTitle title={task.task_title} />
@@ -489,9 +487,9 @@ const getTaskStatus = (remainingDays) => {
     if (remainingDays < 0) {
         return {
             status: "overdue",
-            bgColor: "bg-red-50",
-            textColor: "text-red-700",
-            borderColor: "border-red-300",
+            bgColor: "bg-red-50 dark:bg-red-900/20",
+            textColor: "text-red-700 dark:text-red-300",
+            borderColor: "border-red-300 dark:border-red-700",
             statusText: `Overdue by ${Math.abs(remainingDays)} day${
                 Math.abs(remainingDays) !== 1 ? "s" : ""
             }`,
@@ -499,17 +497,17 @@ const getTaskStatus = (remainingDays) => {
     } else if (remainingDays === 0) {
         return {
             status: "due-today",
-            bgColor: "bg-amber-50",
-            textColor: "text-amber-700",
-            borderColor: "border-amber-300",
+            bgColor: "bg-amber-50 dark:bg-amber-900/20",
+            textColor: "text-amber-700 dark:text-amber-300",
+            borderColor: "border-amber-300 dark:border-amber-700",
             statusText: "Due today",
         };
     } else if (remainingDays <= 3) {
         return {
             status: "urgent",
-            bgColor: "bg-orange-50",
-            textColor: "text-orange-700",
-            borderColor: "border-orange-300",
+            bgColor: "bg-orange-50 dark:bg-orange-900/20",
+            textColor: "text-orange-700 dark:text-orange-300",
+            borderColor: "border-orange-300 dark:border-orange-700",
             statusText: `${remainingDays} day${
                 remainingDays !== 1 ? "s" : ""
             } left`,
@@ -517,9 +515,9 @@ const getTaskStatus = (remainingDays) => {
     } else if (remainingDays <= 7) {
         return {
             status: "approaching",
-            bgColor: "bg-yellow-50",
-            textColor: "text-yellow-700",
-            borderColor: "border-yellow-300",
+            bgColor: "bg-yellow-50 dark:bg-yellow-900/20",
+            textColor: "text-yellow-700 dark:text-yellow-300",
+            borderColor: "border-yellow-300 dark:border-yellow-700",
             statusText: `${remainingDays} day${
                 remainingDays !== 1 ? "s" : ""
             } left`,
@@ -527,9 +525,9 @@ const getTaskStatus = (remainingDays) => {
     } else {
         return {
             status: "on-track",
-            bgColor: "bg-green-50",
-            textColor: "text-green-700",
-            borderColor: "border-green-300",
+            bgColor: "bg-green-50 dark:bg-green-900/20",
+            textColor: "text-green-700 dark:text-green-300",
+            borderColor: "border-green-300 dark:border-green-700",
             statusText: `${remainingDays} day${
                 remainingDays !== 1 ? "s" : ""
             } left`,
@@ -539,11 +537,14 @@ const getTaskStatus = (remainingDays) => {
 
 const TaskStatusBadge = ({ status, remainingDays }) => {
     const statusColors = {
-        overdue: "bg-red-100 text-red-800",
-        "due-today": "bg-amber-100 text-amber-800",
-        urgent: "bg-orange-100 text-orange-800",
-        approaching: "bg-yellow-100 text-yellow-800",
-        "on-track": "bg-green-100 text-green-800",
+        overdue: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
+        "due-today":
+            "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300",
+        urgent: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300",
+        approaching:
+            "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300",
+        "on-track":
+            "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
     };
 
     return (
@@ -579,13 +580,13 @@ const TaskStatusBadge = ({ status, remainingDays }) => {
 };
 
 const TaskTitle = ({ title }) => (
-    <h3 className="font-bold text-lg mb-2 line-clamp-2 text-gray-800">
+    <h3 className="font-bold text-lg mb-2 line-clamp-2 text-gray-800 dark:text-gray-200">
         {title}
     </h3>
 );
 
 const TaskCompany = ({ company }) => (
-    <div className="flex items-center mb-3 text-sm text-gray-600">
+    <div className="flex items-center mb-3 text-sm text-gray-600 dark:text-gray-400">
         <svg
             className="w-4 h-4 mr-1.5 text-blue-500"
             fill="none"
@@ -618,19 +619,23 @@ const TaskDeadline = ({ date }) => (
                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             />
         </svg>
-        <span className="font-semibold text-gray-700">{date}</span>
+        <span className="font-semibold text-gray-700 dark:text-gray-300">
+            {date}
+        </span>
     </div>
 );
 
 const TaskDescription = ({ description }) => (
     <div className="mb-4">
-        <p className="text-sm text-gray-600 line-clamp-3">{description}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+            {description}
+        </p>
     </div>
 );
 
 const TaskAssignee = ({ assignee }) => (
-    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-        <div className="flex items-center text-sm text-gray-600">
+    <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
             <svg
                 className="w-4 h-4 mr-1.5 text-green-500"
                 fill="none"
@@ -669,21 +674,23 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         idle: true,
     });
 
-let taskUserArray = [];
+    let taskUserArray = [];
 
-tasks.forEach((task) => {
-    if (!task.penanggung_jawab) return;
-    
-    // Split by comma and check if userName is in the list
-    const assignees = task.penanggung_jawab.split(',').map(name => name.trim());
-    const isAssignedToUser = assignees.includes(userName);
-    const isNotApproved = task.status !== "Approved";
-    const isNotRejected = task.status !== "Rejected";
-    
-    if (isAssignedToUser && isNotApproved && isNotRejected) {
-        taskUserArray.push(task);
-    }
-}); 
+    tasks.forEach((task) => {
+        if (!task.penanggung_jawab) return;
+
+        // Split by comma and check if userName is in the list
+        const assignees = task.penanggung_jawab
+            .split(",")
+            .map((name) => name.trim());
+        const isAssignedToUser = assignees.includes(userName);
+        const isNotApproved = task.status !== "Approved";
+        const isNotRejected = task.status !== "Rejected";
+
+        if (isAssignedToUser && isNotApproved && isNotRejected) {
+            taskUserArray.push(task);
+        }
+    });
 
     // Filtered data
     const filteredAbsens = absens.filter((absen) => absen.tanggal === sortDate);
@@ -773,7 +780,7 @@ tasks.forEach((task) => {
                 <div className="mx-auto w-full px-2 sm:px-3">
                     {/* Task Alert */}
                     {taskUserArray.length > 0 && (
-                        <div className="w-full p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-200 shadow-sm mb-6">
+                        <div className="w-full p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl border border-amber-200 dark:border-amber-700 shadow-sm mb-6">
                             <div className="flex items-center mb-4">
                                 <div className="bg-amber-500 p-2 rounded-lg mr-3">
                                     <svg
@@ -790,11 +797,11 @@ tasks.forEach((task) => {
                                         />
                                     </svg>
                                 </div>
-                                <h2 className="text-xl font-bold text-amber-800">
+                                <h2 className="text-xl font-bold text-amber-800 dark:text-amber-300">
                                     Your Upcoming Tasks
                                 </h2>
                             </div>
-                            <div className="flex overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-300 scrollbar-track-transparent">
+                            <div className="flex overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-300 dark:scrollbar-thumb-amber-600 scrollbar-track-transparent">
                                 {taskUserArray.map((task) => (
                                     <TaskCard key={task.id} task={task} />
                                 ))}
@@ -826,9 +833,10 @@ tasks.forEach((task) => {
                                 />
 
                                 {/* Client Table */}
-                                {user.role !== "intern" && user.role !== "member" ? (
-                                    <div className="text-gray-800 w-full bg-white p-5 flex flex-col gap-3 border border-gray-200 rounded-2xl col-span-1 sm:col-span-2 lg:col-span-3 shadow-md">
-                                        <div className="text-xl font-bold pb-3 border-b border-gray-200 flex items-center gap-2">
+                                {user.role !== "intern" &&
+                                user.role !== "member" ? (
+                                    <div className="text-gray-800 dark:text-gray-200 w-full bg-white dark:bg-gray-800 dark:border-gray-600 p-5 flex flex-col gap-3 border border-gray-200 rounded-2xl col-span-1 sm:col-span-2 lg:col-span-3 shadow-md">
+                                        <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2">
                                             <span className="text-white p-2 rounded-lg">
                                                 👥
                                             </span>
@@ -843,8 +851,8 @@ tasks.forEach((task) => {
 
                             {/* Attendance Section */}
                             <div className="w-full xl:w-1/3 flex flex-col gap-4">
-                                <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-md">
-                                    <div className="text-xl font-bold pb-3 border-b border-gray-200 flex items-center gap-2 mb-4">
+                                <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md">
+                                    <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2 mb-4">
                                         <span className="text-white p-2 rounded-lg">
                                             📅
                                         </span>
@@ -869,8 +877,8 @@ tasks.forEach((task) => {
                     </div>
 
                     {/* Tasks Section */}
-                    <div className="bg-white rounded-2xl p-5 border border-gray-200 shadow-md">
-                        <div className="text-xl font-bold pb-3 border-b border-gray-200 flex items-center gap-2 mb-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-200 dark:border-gray-700 shadow-md">
+                        <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2 mb-4">
                             <span className=" text-white p-2 rounded-lg">
                                 ✅
                             </span>

@@ -2,81 +2,91 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use App\Models\User;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\Rule;
-use Inertia\Inertia;
-use Inertia\Response;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(User $user): Response
+    public function index(Request $request)
     {
-        // dd($user->email);
-        
-        return Inertia::render('AddAccount/edit', [
-            'user'=>$user
+        return inertia('Profile/Index', [
+            'auth' => [
+                'user' => [
+                    'id' => $request->user()->id,
+                    'name' => $request->user()->name,
+                    'email' => $request->user()->email,
+                    'avatar_url' => $request->user()->avatar
+                        ? asset('storage/' . $request->user()->avatar)
+                        : null,
+                ],
+            ],
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request, user $user)
+    public function update(Request $request)
     {
+
+        \Log::info('ProfileController@update hit');
+        // dd('controller hit', $request->all(), $request->file('avatar'));
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'avatar' => 'nullable|file|image|max:8192',
+            'current_password' => 'nullable|string',
+            'new_password' => 'nullable|string|min:8|confirmed',
+        ]);
+        
+
+        // Handle avatar upload
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+
+            $path = $request->file('avatar')->store('avatars', 'public');
+
+            // Debug line — check if file exists in disk
+            // dd([
+            //     'stored_path' => $path,
+            //     'exists_in_storage' => Storage::disk('public')->exists($path),
+            //     'full_path' => Storage::disk('public')->path($path),
+            // ]);
+
+            $user->avatar = $path;
+        }
+
         // dd($request);
-        $validated = $request->validate(
-            [
-                'name' => 'required|string|max:50',
-                'role' => 'required|string|max:50',
-                'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
-                'password' => 'nullable|string|max:50',
-            ]
-        );
 
-        $id = $user->id;
+        // Handle password change
+        if (!empty($validated['current_password']) && !empty($validated['new_password'])) {
+            if (!Hash::check($validated['current_password'], $user->password)) {
+                return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+            }
+
+            $user->password = Hash::make($validated['new_password']);
+        }
         
-        $update_user = User::where('id', $id);
-        $update_user->update([
-            'name' => $validated['name'],
-            'role' => $validated['role'],
-            'email' => $validated['email'],
-            'password' => $validated['password'] 
-                ? Hash::make($validated['password']) 
-                : $user->password,
-        ]);
-        return Redirect::to('/add_account')->with('success', 'Account Edited!');
+        $user->name = $validated['name'];
+        $user->save();
 
+        return back()->with('success', 'Profile updated successfully.');
     }
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(User $user): RedirectResponse
+
+
+    public function removeAvatar(Request $request)
     {
-        // dd($user);
-        // $request->validate([
-        //     'password' => ['required', 'current_password'],
-        // ]);
+        $user = $request->user();
 
-        // $userSelected = $user->user();
+        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+            Storage::disk('public')->delete($user->avatar);
+        }
 
-        // Auth::logout();
+        $user->avatar = null;
+        $user->save();
 
-        $user->delete();
-
-        // $user->session()->invalidate();
-        // $user->session()->regenerateToken();
-
-        return Redirect::to('/add_account')->with('deleted', 'Account Deleted');
+        return back()->with('success', 'Avatar removed.');
     }
 }
