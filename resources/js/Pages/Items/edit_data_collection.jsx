@@ -102,25 +102,25 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                     header={
                         <div className="text-center py-8 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg shadow-lg">
                             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                                New Event Documentation
+                                Edit Event Documentation
                             </h1>
                             <p className="text-lg md:text-xl opacity-90 max-w-3xl mx-auto">
-                                Select equipment for your event and keep track of what you need
+                                Update equipment selection for your event and keep track of what you need
                             </p>
                         </div>
                     }
                 >
-                    <Head title="Create Event Documentation" />
+                    <Head title="Edit Event Documentation" />
         
-                    <div className="py-8">
+                    <div className="py-8 bg-gray-50 dark:bg-gray-900">
                         <div className="max-w-6xl mx-auto px-4">
-                            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+                            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
                                 <div className="p-8">
                                     {/* Event Information Section */}
                                     <div className="mb-10">
                                         <div className="flex items-center mb-6">
                                             <div className="w-3 h-8 bg-indigo-600 rounded-full mr-3"></div>
-                                            <h2 className="text-2xl font-bold text-gray-800">Event Information</h2>
+                                            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Event Information</h2>
                                         </div>
                                         
                                         <form onSubmit={submit} ref={formRef}>
@@ -129,14 +129,14 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                     <InputLabel 
                                                         htmlFor="event_name" 
                                                         value="Event Name"
-                                                        className="text-base font-medium text-gray-700 mb-2"
+                                                        className="text-base font-medium text-gray-700 dark:text-gray-300 mb-2"
                                                     />
                                                     <TextInput
                                                         type="text"
                                                         name="event_name"
                                                         value={data.event_name}
                                                         onChange={(e) => setData("event_name", e.target.value)}
-                                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                                         placeholder="Enter event name"
                                                     />
                                                     {errors.event_name && <div className="text-red-500 text-sm mt-1">{errors.event_name}</div>}
@@ -146,14 +146,14 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                     <InputLabel 
                                                         htmlFor="tanggal_event" 
                                                         value="Event Date"
-                                                        className="text-base font-medium text-gray-700 mb-2"
+                                                        className="text-base font-medium text-gray-700 dark:text-gray-300 mb-2"
                                                     />
                                                     <TextInput
                                                         name="tanggal_event"
                                                         type="date"
                                                         value={data.tanggal_event}
                                                         onChange={(e) => setData("tanggal_event", e.target.value)}
-                                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                                     />
                                                     {errors.tanggal_event && <div className="text-red-500 text-sm mt-1">{errors.tanggal_event}</div>}
                                                 </div>
@@ -163,22 +163,22 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                             <div className="mb-8">
                                                 <div className="flex items-center mb-6">
                                                     <div className="w-3 h-8 bg-indigo-600 rounded-full mr-3"></div>
-                                                    <h2 className="text-2xl font-bold text-gray-800">Equipment Selection</h2>
+                                                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Equipment Selection</h2>
                                                 </div>
                                                 
                                                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                                                     <div className="w-full md:w-auto">
-                                                        <InputLabel value="Search Equipment" className="text-base font-medium text-gray-700 mb-2" />
+                                                        <InputLabel value="Search Equipment" className="text-base font-medium text-gray-700 dark:text-gray-300 mb-2" />
                                                         <div className="relative">
                                                             <TextInput
                                                                 type="text"
                                                                 placeholder="Search equipment..."
                                                                 value={searchTerm}
                                                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                                                className="w-full md:w-64 pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                                                                className="w-full md:w-64 pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 transition bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                                             />
                                                             <svg 
-                                                                className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" 
+                                                                className="absolute left-3 top-3.5 h-5 w-5 text-gray-400 dark:text-gray-500" 
                                                                 xmlns="http://www.w3.org/2000/svg" 
                                                                 viewBox="0 0 20 20" 
                                                                 fill="currentColor"
@@ -189,7 +189,7 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                     </div>
                                                     
                                                     <div className="w-full md:w-auto">
-                                                        <InputLabel value="Filter by Category" className="text-base font-medium text-gray-700 mb-2" />
+                                                        <InputLabel value="Filter by Category" className="text-base font-medium text-gray-700 dark:text-gray-300 mb-2" />
                                                         <div className="flex flex-wrap gap-2">
                                                             {categories.map(category => (
                                                                 <button
@@ -199,7 +199,7 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                                     className={`px-4 py-2 rounded-xl text-sm font-medium transition ${
                                                                         activeCategory === category
                                                                             ? 'bg-indigo-600 text-white shadow-md'
-                                                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                                                                     }`}
                                                                 >
                                                                     {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -210,10 +210,10 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                 </div>
         
                                                 <div className="mb-4 flex items-center justify-between">
-                                                    <p className="text-sm text-gray-500">
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400">
                                                         {filteredItems.length} items in <span className="font-medium capitalize">{activeCategory}</span>
                                                     </p>
-                                                    <p className="text-sm text-indigo-600 font-medium">
+                                                    <p className="text-sm text-indigo-600 dark:text-indigo-400 font-medium">
                                                         {Object.values(data.items).filter(item => item.checked).length} items selected
                                                     </p>
                                                 </div>
@@ -225,8 +225,8 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                                 key={item.id} 
                                                                 className={`p-4 rounded-xl border transition-all ${
                                                                     data.items?.[item.id]?.checked 
-                                                                        ? 'bg-indigo-50 border-indigo-200 shadow-sm' 
-                                                                        : 'bg-gray-50 border-gray-200 hover:bg-white'
+                                                                        ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-700 shadow-sm' 
+                                                                        : 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 hover:bg-white dark:hover:bg-gray-600'
                                                                 }`}
                                                             >
                                                                 <div className="flex items-start justify-between">
@@ -238,7 +238,7 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                                             className="mt-1"
                                                                         />
                                                                         <label
-                                                                            className="block text-md font-medium text-gray-700 cursor-pointer"
+                                                                            className="block text-md font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
                                                                             htmlFor={item.id}
                                                                         >
                                                                             {item.name}
@@ -249,13 +249,13 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                                       item.category === "tripod lighting" || 
                                                                       item.category === "battery camera") && (
                                                                         <div className="flex items-center">
-                                                                            <span className="text-sm text-gray-500 mr-2">Qty:</span>
+                                                                            <span className="text-sm text-gray-500 dark:text-gray-400 mr-2">Qty:</span>
                                                                             <input
                                                                                 type="number"
                                                                                 min="1"
                                                                                 value={data.items?.[item.id]?.quantity || 1}
                                                                                 onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
-                                                                                className="w-16 px-2 py-1 border border-gray-300 rounded-md text-center focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                                                                className="w-16 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-center focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 bg-white dark:bg-gray-600 text-gray-900 dark:text-white"
                                                                                 disabled={!data.items?.[item.id]?.checked}
                                                                             />
                                                                         </div>
@@ -264,7 +264,7 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                             </div>
                                                         ))
                                                     ) : (
-                                                        <div className="col-span-2 text-center py-8 text-gray-500">
+                                                        <div className="col-span-2 text-center py-8 text-gray-500 dark:text-gray-400">
                                                             {searchTerm 
                                                                 ? `No equipment found in "${activeCategory}" matching "${searchTerm}"`
                                                                 : `No equipment found in "${activeCategory}"`
@@ -274,10 +274,10 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                 </div>
                                             </div>
         
-                                            <div className="flex items-center justify-end pt-6 border-t border-gray-200">
+                                            <div className="flex items-center justify-end pt-6 border-t border-gray-200 dark:border-gray-600">
                                                 <button
                                                     type="submit"
-                                                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 border border-transparent rounded-xl font-semibold text-white tracking-widest hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 disabled:opacity-50 shadow-md hover:shadow-lg"
+                                                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-blue-600 border border-transparent rounded-xl font-semibold text-white tracking-widest hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 disabled:opacity-50 shadow-md hover:shadow-lg"
                                                     disabled={processing}
                                                 >
                                                     {processing ? (
@@ -286,11 +286,11 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                             </svg>
-                                                            Creating...
+                                                            Updating...
                                                         </>
                                                     ) : (
                                                         <>
-                                                            Create Documentation
+                                                            Update Documentation
                                                             <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                                             </svg>

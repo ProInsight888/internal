@@ -35,7 +35,7 @@ export default function create({}) {
                 console.log("Jumlah yang akan dibuat:", jumlah);
                 console.log(
                     "Sebelum Update fase_pembayaran:",
-                    data.fase_pembayaran,
+                    data.fase_pembayaran
                 );
                 console.log("Setelah Update fase_pembayaran:", fase);
                 setData("fase_pembayaran", fase);
@@ -59,10 +59,7 @@ export default function create({}) {
                 const secondWord = words[1] || "";
 
                 let code = firstWord.charAt(0).toUpperCase();
-                code += secondWord
-                    .substring(0, 3)
-                    .toUpperCase()
-                    .padEnd(3, "A");
+                code += secondWord.substring(0, 3).toUpperCase().padEnd(3, "A");
 
                 return code;
             };
@@ -86,19 +83,19 @@ export default function create({}) {
         <AuthenticatedLayout
             header={
                 <>
-                    <h1 className="text-6xl flex justify-center mt-8 font-semibold leading-tight text-[#1c1c1c] mb-2">
+                    <h1 className="text-6xl flex justify-center mt-8 font-semibold leading-tight text-[#1c1c1c] mb-2 dark:text-white">
                         Yeah! We Have a New Client 🥳🎉✨
                     </h1>
-                    <p className="text-2xl flex justify-center">
+                    <p className="text-2xl flex justify-center dark:text-gray-300">
                         The more client we get the better, so add our client
                         now!
                     </p>
                 </>
             }
         >
-            <div className="flex flex-col items-center w-7xl pt-6 sm:justify-center sm:pt-0 ">
+            <div className="flex flex-col items-center w-7xl pt-6 sm:justify-center sm:pt-0 dark:bg-gray-900">
                 <div className="max-w-7xl w-full flex mt-6 gap-5 justify-center">
-                    <div className="w-full overflow-hidden px-6 py-4 shadow-md sm:max-w-xl sm:rounded-lg">
+                    <div className="w-full overflow-hidden px-6 py-4 shadow-md sm:max-w-xl sm:rounded-lg dark:bg-gray-800 dark:shadow-gray-900/30">
                         <Head title="New Client" />
 
                         <form onSubmit={submit}>
@@ -106,13 +103,14 @@ export default function create({}) {
                                 <InputLabel
                                     htmlFor="company_name"
                                     value="Company Name"
+                                    className="dark:text-gray-300"
                                 />
 
                                 <TextInput
                                     id="company_name"
                                     name="company_name"
                                     value={data.company_name}
-                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400"
+                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
                                     autoComplete="company_name"
                                     onChange={(e) =>
                                         setData("company_name", e.target.value)
@@ -122,7 +120,7 @@ export default function create({}) {
 
                                 <InputError
                                     message={errors.company_name}
-                                    className="mt-2"
+                                    className="mt-2 dark:text-red-400"
                                 />
                             </div>
 
@@ -131,28 +129,32 @@ export default function create({}) {
                                 <InputLabel
                                     htmlFor="code"
                                     value="Client Code"
+                                    className="dark:text-gray-300"
                                 />
                                 <div className="flex items-center gap-2">
                                     <TextInput
                                         id="code"
                                         name="code"
                                         value={data.code}
-                                        className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 font-mono"
+                                        className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400 font-mono"
                                         autoComplete="code"
                                         onChange={(e) =>
-                                            setData("code", e.target.value.toUpperCase())
+                                            setData(
+                                                "code",
+                                                e.target.value.toUpperCase()
+                                            )
                                         }
                                         placeholder="e.g., EYCA"
                                         maxLength={4}
                                         required
                                     />
-                                    <span className="text-sm text-gray-500 font-mono">
+                                    <span className="text-sm text-gray-500 font-mono dark:text-gray-400">
                                         (4 characters)
                                     </span>
                                 </div>
                                 <InputError
                                     message={errors.code}
-                                    className="mt-2"
+                                    className="mt-2 dark:text-red-400"
                                 />
                             </div>
 
@@ -160,45 +162,47 @@ export default function create({}) {
                                 <InputLabel
                                     htmlFor="package"
                                     value="What Package"
+                                    className="dark:text-gray-300"
                                 />
 
                                 <select
                                     id="package"
                                     name="package"
                                     value={data.package}
-                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black"
+                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
                                     autoComplete="package"
-                                    onChange={(e) =>
-                                        setData("package", e.target.value)
-                                    }
+                                    onChange={(e) => setData("package", e.target.value)}
                                     required
                                 >
-                                    <option value="" selected disabled hidden>
+                                    <option value="" disabled hidden className="dark:text-gray-400">
                                         Select Package
                                     </option>
-                                    <option value="Protall">Protall</option>
-                                    <option value="Progrand">Progrand</option>
-                                    <option value="Proventi">Proventi</option>
-                                    <option value="Promax">Promax</option>
-                                    <option value="Company Profile">
-                                        Company Profile
-                                    </option>
-                                    <option value="HR System">HR System</option>
-                                    <option value="Invitation Link">
-                                        Invitation Link
-                                    </option>
-                                    <option value="Application">
-                                        Application
-                                    </option>
-                                    <option value="Photo & Video">
-                                        Photo & Video
-                                    </option>
-                                    <option value="Adds On">Adds On</option>
+
+                                    <optgroup label="Social Media Management" className="dark:text-gray-300">
+                                        <option value="Protall">Protall</option>
+                                        <option value="Progrand">Progrand</option>
+                                        <option value="Proventi">Proventi</option>
+                                        <option value="Promax">Promax</option>
+                                        <option value="Feeds">Add Ons Feeds</option>
+                                        <option value="Reels">Add Ons Reels</option>
+                                    </optgroup>
+
+                                    <optgroup label="Digital Branding" className="dark:text-gray-300">
+                                        <option value="Company Profile">Company Profile</option>
+                                        <option value="HR System">HR System</option>
+                                        <option value="Invitation Link">Invitation Link</option>
+                                        <option value="Application">Application</option>
+                                        <option value="Design">Package Design</option>
+                                    </optgroup>
+
+                                    <optgroup label="Event Documentation" className="dark:text-gray-300">
+                                        <option value="Photo & Video">Photo & Video</option>
+                                    </optgroup>
                                 </select>
 
                                 <InputError
                                     message={errors.package}
-                                    className="mt-2"
+                                    className="mt-2 dark:text-red-400"
                                 />
                             </div>
 
@@ -206,13 +210,14 @@ export default function create({}) {
                                 <InputLabel
                                     htmlFor="location"
                                     value="Business Location"
+                                    className="dark:text-gray-300"
                                 />
 
                                 <TextInput
                                     id="location"
                                     name="location"
                                     value={data.location}
-                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400"
+                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
                                     autoComplete="location"
                                     onChange={(e) =>
                                         setData("location", e.target.value)
@@ -222,7 +227,7 @@ export default function create({}) {
 
                                 <InputError
                                     message={errors.location}
-                                    className="mt-2"
+                                    className="mt-2 dark:text-red-400"
                                 />
                             </div>
 
@@ -230,19 +235,20 @@ export default function create({}) {
                                 <InputLabel
                                     htmlFor="contract"
                                     value="Contract"
+                                    className="dark:text-gray-300"
                                 />
 
-                                <div className="flex items-end justify-between">
+                                <div className="flex items-end justify-between dark:text-gray-300">
                                     <input
                                         id="contract"
                                         name="contract"
                                         value={data.contract_tahun}
-                                        className="mt-1 w-4/12 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b "
+                                        className="mt-1 w-4/12 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
                                         type="number"
                                         onChange={(e) =>
                                             setData(
                                                 "contract_tahun",
-                                                e.target.value,
+                                                e.target.value
                                             )
                                         }
                                     />
@@ -251,14 +257,14 @@ export default function create({}) {
                                         id="contract"
                                         name="contract"
                                         value={data.contract_bulan}
-                                        className="mt-1 w-4/12 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b "
+                                        className="mt-1 w-4/12 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
                                         autoComplete="contract"
                                         type="number"
                                         max="11"
                                         onChange={(e) =>
                                             setData(
                                                 "contract_bulan",
-                                                e.target.value,
+                                                e.target.value
                                             )
                                         }
                                     />
@@ -267,14 +273,14 @@ export default function create({}) {
                                         id="contract"
                                         name="contract"
                                         value={data.contract_hari}
-                                        className="mt-1 w-4/12 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b "
+                                        className="mt-1 w-4/12 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
                                         autoComplete="contract"
                                         type="number"
                                         max="31"
                                         onChange={(e) =>
                                             setData(
                                                 "contract_hari",
-                                                e.target.value,
+                                                e.target.value
                                             )
                                         }
                                     />
@@ -283,7 +289,7 @@ export default function create({}) {
 
                                 <InputError
                                     message={errors.contract}
-                                    className="mt-2"
+                                    className="mt-2 dark:text-red-400"
                                 />
                             </div>
 
@@ -291,13 +297,14 @@ export default function create({}) {
                                 <InputLabel
                                     htmlFor="type"
                                     value="Type Of Business"
+                                    className="dark:text-gray-300"
                                 />
 
                                 <TextInput
                                     id="type"
                                     name="type"
                                     value={data.type}
-                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400"
+                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
                                     autoComplete="type"
                                     onChange={(e) =>
                                         setData("type", e.target.value)
@@ -307,34 +314,39 @@ export default function create({}) {
 
                                 <InputError
                                     message={errors.type}
-                                    className="mt-2"
+                                    className="mt-2 dark:text-red-400"
                                 />
                             </div>
                             <div className="mb-6">
-                                <InputLabel htmlFor="status" value="Status" />
+                                <InputLabel htmlFor="status" value="Status" className="dark:text-gray-300" />
 
                                 <div className="flex items-center gap-10">
                                     <select
                                         id="status"
                                         name="status"
                                         value={data.status}
-                                        className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400"
+                                        className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
                                         autoComplete="status"
                                         onChange={(e) =>
                                             setData("status", e.target.value)
                                         }
                                     >
-                                        <option value="Lunas">Lunas</option>
-                                        <option value="Cicil">Cicil</option>
+                                        <option value="Lunas">Paid</option>
+                                        <option value="Cicil">Instalments</option>
+                                        <option value="Belum Bayar">Unpaid</option>
                                     </select>
                                     <div
-                                        className={`${data.status === "Cicil" ? "" : "hidden"} flex items-center`}
+                                        className={`${
+                                            data.status === "Cicil"
+                                                ? ""
+                                                : "hidden"
+                                        } flex items-center dark:text-gray-300`}
                                     >
                                         <input
                                             id="cicil"
                                             name="cicil"
                                             value={data.cicil}
-                                            className={` mt-1 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b`}
+                                            className={`mt-1 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b dark:border-gray-600 dark:text-white dark:focus:border-blue-400`}
                                             type="number"
                                             min="1"
                                             max="10"
@@ -342,13 +354,13 @@ export default function create({}) {
                                                 setData("cicil", e.target.value)
                                             }
                                         />
-                                        kali
+                                        X
                                     </div>
                                 </div>
 
                                 <InputError
                                     message={errors.status}
-                                    className="mt-2"
+                                    className="mt-2 dark:text-red-400"
                                 />
                             </div>
 
@@ -360,12 +372,13 @@ export default function create({}) {
                                             <InputLabel
                                                 htmlFor={`fase-${index}`}
                                                 value={`Tanggal ${fase.cicilan}`}
+                                                className="dark:text-gray-300"
                                             />
                                             <TextInput
                                                 type="date"
                                                 id={`fase-${index}`}
                                                 name={`fase-${index}`}
-                                                className=" block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black"
+                                                className="block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
                                                 value={fase.tanggal || ""}
                                                 onChange={(e) => {
                                                     const updatedFase = [
@@ -377,7 +390,7 @@ export default function create({}) {
                                                     };
                                                     setData(
                                                         "fase_pembayaran",
-                                                        updatedFase,
+                                                        updatedFase
                                                     );
                                                 }}
                                             />
@@ -386,11 +399,11 @@ export default function create({}) {
                             </div>
                             <div className="mt-4 flex items-center justify-end">
                                 <PrimaryButton
-                                    className="ms-4"
+                                    className="ms-4 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700"
                                     onSubmit={(e) => submit(e)}
                                     disabled={processing}
                                 >
-                                    New Account
+                                    {processing ? "Creating..." : "New Account"}
                                 </PrimaryButton>
                             </div>
                         </form>

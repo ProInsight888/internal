@@ -83,7 +83,7 @@ export default function EquipmentInventory({
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Action Buttons */}
                     <div className="flex flex-wrap gap-4 mb-6">
-                        {user.role !== "intern" && (
+                        {user.role !== "intern" && user.role !== "member" && (
                             <Link
                                 href={route("items.create")}
                                 className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
@@ -127,7 +127,7 @@ export default function EquipmentInventory({
 
                     {/* Success Message */}
                     {successMessage && (
-                        <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 p-4 rounded-lg border border-green-200 flex items-center mb-6">
+                        <div className="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 text-green-800 dark:text-green-300 p-4 rounded-lg border border-green-200 dark:border-green-800 flex items-center mb-6">
                             <svg
                                 className="w-5 h-5 mr-3"
                                 fill="currentColor"
@@ -144,9 +144,9 @@ export default function EquipmentInventory({
                     )}
 
                     {/* Equipment Inventory */}
-                    <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
-                        <div className="bg-gradient-to-r from-gray-50 to-blue-50 px-6 py-4 border-b border-gray-200">
-                            <h2 className="text-2xl font-bold text-gray-800">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-8 border border-gray-200 dark:border-gray-700">
+                        <div className="bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-700 dark:to-blue-900/20 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                                 Equipment Inventory
                             </h2>
                         </div>
@@ -159,7 +159,7 @@ export default function EquipmentInventory({
                                             0 && (
                                             <div
                                                 key={category}
-                                                className="bg-gray-50 rounded-xl p-4 border border-gray-200"
+                                                className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600"
                                             >
                                                 <div
                                                     className={`flex items-center p-3 rounded-lg mb-4 ${categoryColors[category]} text-white`}
@@ -181,26 +181,26 @@ export default function EquipmentInventory({
                                                     ].map((item) => (
                                                         <div
                                                             key={item.id}
-                                                            className="flex items-center justify-between bg-white p-3 rounded-lg border border-gray-200 hover:shadow-md transition-shadow duration-200"
+                                                            className="flex items-center justify-between bg-white dark:bg-gray-600 p-3 rounded-lg border border-gray-200 dark:border-gray-500 hover:shadow-md dark:hover:shadow-gray-900 transition-shadow duration-200"
                                                         >
                                                             <div className="flex items-center">
-                                                                <span className="text-lg font-medium">
+                                                                <span className="text-lg font-medium text-gray-900 dark:text-white">
                                                                     {item.name}
                                                                 </span>
-                                                                <span className="ml-2 bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded-full">
+                                                                <span className="ml-2 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-bold px-2 py-1 rounded-full">
                                                                     {
                                                                         item.quantity
                                                                     }
                                                                 </span>
                                                             </div>
-                                                            {user.role !== 'intern' && (
+                                                            {user.role !== 'intern' && user.role !== 'member' && (
                                                                 <div className="flex gap-2">
                                                                     <Link
                                                                         href={route(
                                                                             "items.edit",
                                                                             item
                                                                         )}
-                                                                        className="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors duration-200"
+                                                                        className="flex items-center justify-center w-8 h-8 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors duration-200"
                                                                         title="Edit"
                                                                     >
                                                                         <svg
@@ -248,7 +248,7 @@ export default function EquipmentInventory({
                                                                                 );
                                                                             }
                                                                         }}
-                                                                        className="flex items-center justify-center w-8 h-8 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors duration-200"
+                                                                        className="flex items-center justify-center w-8 h-8 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200"
                                                                         title="Delete"
                                                                     >
                                                                         <svg
@@ -281,9 +281,9 @@ export default function EquipmentInventory({
 
                     {/* Tool Data Collections */}
                     {events_name && events_name.length > 0 && (
-                        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                            <div className="bg-gradient-to-r from-gray-50 to-green-50 px-6 py-4 border-b border-gray-200">
-                                <h2 className="text-2xl font-bold text-gray-800">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                            <div className="bg-gradient-to-r from-gray-50 to-green-50 dark:from-gray-700 dark:to-green-900/20 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+                                <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                                     Tool Data Collections
                                 </h2>
                             </div>
@@ -292,10 +292,10 @@ export default function EquipmentInventory({
                                     {events_name.map((event, index) => (
                                         <div
                                             key={index}
-                                            className="bg-gray-50 rounded-xl p-5 border border-gray-200"
+                                            className="bg-gray-50 dark:bg-gray-700 rounded-xl p-5 border border-gray-200 dark:border-gray-600"
                                         >
                                             <div className="flex items-center justify-between mb-4">
-                                                <h3 className="text-xl font-bold text-gray-800 bg-white px-4 py-2 rounded-lg border border-gray-200">
+                                                <h3 className="text-xl font-bold text-gray-800 dark:text-white bg-white dark:bg-gray-600 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-500">
                                                     {event}
                                                 </h3>
                                                 <div className="flex gap-2">
@@ -328,7 +328,7 @@ export default function EquipmentInventory({
                                                                 );
                                                             }
                                                         }}
-                                                        className="flex items-center justify-center px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors duration-200"
+                                                        className="flex items-center justify-center px-4 py-2 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200"
                                                         title="Delete Collection"
                                                     >
                                                         <svg
@@ -346,22 +346,12 @@ export default function EquipmentInventory({
                                                         </svg>
                                                         Delete
                                                     </button>
-                                                    {/* <Link
-                                                        href={route("data_collection.edit", event)}
-                                                        className="flex items-center justify-center px-4 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors duration-200"
-                                                        title="Edit Collection"
-                                                    >
-                                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                        </svg>
-                                                        Edit
-                                                    </Link> */}
                                                     <Link
                                                         href={route(
                                                             "check.edit",
                                                             event
                                                         )}
-                                                        className="flex items-center justify-center px-4 py-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 transition-colors duration-200"
+                                                        className="flex items-center justify-center px-4 py-2 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors duration-200"
                                                         title="Check Collection"
                                                     >
                                                         <svg
@@ -391,12 +381,12 @@ export default function EquipmentInventory({
                                                     .map((data, idx) => (
                                                         <div
                                                             key={idx}
-                                                            className="bg-white p-3 rounded-lg border border-gray-200 flex justify-between items-center"
+                                                            className="bg-white dark:bg-gray-600 p-3 rounded-lg border border-gray-200 dark:border-gray-500 flex justify-between items-center"
                                                         >
-                                                            <span className="font-medium">
+                                                            <span className="font-medium text-gray-900 dark:text-white">
                                                                 {data.items}
                                                             </span>
-                                                            <span className="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded-full">
+                                                            <span className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-bold px-2 py-1 rounded-full">
                                                                 {data.quantity}
                                                             </span>
                                                         </div>

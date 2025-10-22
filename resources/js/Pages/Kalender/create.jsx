@@ -58,13 +58,13 @@ export default function index({}) {
         >
             <Head title="Create Event" />
 
-            <div className="py-8 bg-gray-50 min-h-screen">
+            <div className="py-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
                 <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
                         <div className="p-1 bg-gradient-to-r from-purple-500 to-indigo-600"></div>
                         
                         <div className="p-8">
-                            <div className="text-2xl font-bold text-gray-800 mb-6">Create New Event</div>
+                            <div className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Create New Event</div>
 
                             <form onSubmit={submit} className="space-y-6">
                                 {/* Event Title */}
@@ -72,13 +72,13 @@ export default function index({}) {
                                     <InputLabel
                                         htmlFor="event_title"
                                         value="Event Title"
-                                        className="text-lg font-medium text-gray-800 mb-2"
+                                        className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2"
                                     />
                                     <TextInput
                                         id="event_title"
                                         name="text"
                                         value={data.event_title}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 transition bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                         onChange={(e) =>
                                             setData("event_title", e.target.value)
                                         }
@@ -98,14 +98,14 @@ export default function index({}) {
                                         <InputLabel 
                                             htmlFor="start" 
                                             value="Start Date" 
-                                            className="text-lg font-medium text-gray-800 mb-2"
+                                            className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2"
                                         />
                                         <TextInput
                                             id="start"
                                             type="date"
                                             name="start"
                                             value={data.start}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+                                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 transition bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                             onChange={(e) =>
                                                 setData("start", e.target.value)
                                             }
@@ -122,14 +122,14 @@ export default function index({}) {
                                         <InputLabel 
                                             htmlFor="start_time" 
                                             value="Start Time" 
-                                            className="text-lg font-medium text-gray-800 mb-2"
+                                            className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2"
                                         />
                                         <TextInput
                                             id="start_time"
                                             type="time"
                                             name="start_time"
                                             value={data.start_time}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+                                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 transition bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                             onChange={(e) =>
                                                 setData("start_time", e.target.value)
                                             }
@@ -146,14 +146,14 @@ export default function index({}) {
                                         <InputLabel 
                                             htmlFor="end" 
                                             value="End Date" 
-                                            className="text-lg font-medium text-gray-800 mb-2"
+                                            className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2"
                                         />
                                         <TextInput
                                             id="end"
                                             type="date"
                                             name="end"
                                             value={data.end}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+                                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 transition bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                             onChange={(e) =>
                                                 setData("end", e.target.value)
                                             }
@@ -170,14 +170,14 @@ export default function index({}) {
                                         <InputLabel 
                                             htmlFor="end_time" 
                                             value="End Time" 
-                                            className="text-lg font-medium text-gray-800 mb-2"
+                                            className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2"
                                         />
                                         <TextInput
                                             id="end_time"
                                             type="time"
                                             name="end_time"
                                             value={data.end_time}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+                                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 transition bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                             onChange={(e) =>
                                                 setData("end_time", e.target.value)
                                             }
@@ -195,13 +195,13 @@ export default function index({}) {
                                     <InputLabel
                                         htmlFor="description"
                                         value="Description"
-                                        className="text-lg font-medium text-gray-800 mb-2"
+                                        className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2"
                                     />
                                     <textarea
                                         id="description"
                                         name="description"
                                         value={data.description}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition min-h-[120px]"
+                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-purple-500 dark:focus:border-purple-400 transition min-h-[120px] bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none"
                                         onChange={(e) =>
                                             setData("description", e.target.value)
                                         }
@@ -217,7 +217,7 @@ export default function index({}) {
                                 {/* Submit Button */}
                                 <div className="flex items-center justify-end pt-4">
                                     <PrimaryButton
-                                        className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-700 text-white font-medium rounded-lg shadow-md hover:from-purple-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition disabled:opacity-70"
+                                        className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-700 text-white font-medium rounded-lg shadow-md hover:from-purple-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition disabled:opacity-70"
                                         disabled={processing}
                                     >
                                         {processing ? 'Creating Event...' : 'Create Event'}

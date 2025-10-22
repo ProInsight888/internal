@@ -36,7 +36,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
     // Check if a route is active
     const isActiveRoute = (routeName) => {
-        return currentRoute.startsWith(routeName);
+        return (
+            currentRoute === routeName ||
+            currentRoute.startsWith(routeName + "/")
+        );
     };
 
     // Navigation items
@@ -265,12 +268,24 @@ export default function AuthenticatedLayout({ header, children }) {
                             </button>
 
                             {/* Desktop Profile & Logout */}
-                            <div className="hidden lg:flex items-center space-x-4">
+                            <div className="hidden lg:flex items-center space-x-4 ">
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                        <div className="flex items-center text-sm rounded-full focus:outline-none cursor-pointer">
+                                        <div className="flex items-center text-sm rounded-full focus:outline-none cursor-pointer ">
                                             <div className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 font-bold mr-2">
-                                                {user.name.charAt(0)}
+                                                {user?.avatar_url ? (
+                                                    <img
+                                                        src={user.avatar_url}
+                                                        alt={user.name}
+                                                        className="w-8 h-8 rounded-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 text-indigo-800 font-bold">
+                                                        {user?.name
+                                                            ?.substring(0, 2)
+                                                            .toUpperCase()}
+                                                    </div>
+                                                )}
                                             </div>
                                             <span className="text-gray-700 dark:text-gray-300 mr-1">
                                                 {user.name}
@@ -303,10 +318,30 @@ export default function AuthenticatedLayout({ header, children }) {
                                             Profile
                                         </Dropdown.Link> */}
                                         <Dropdown.Link
+                                            href={route("profile")}
+                                            as="button"
+                                            className="flex items-center dark:text-black dark:hover:bg-gray-200"
+                                        >
+                                            <svg
+                                                className="w-4 h-4 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={1}
+                                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"
+                                                />
+                                            </svg>
+                                            Profile
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
                                             href={route("logout")}
                                             method="post"
                                             as="button"
-                                            className="flex items-center dark:text-gray-300 dark:hover:bg-gray-600"
+                                            className="flex items-center dark:text-black dark:hover:bg-gray-200"
                                         >
                                             <svg
                                                 className="w-4 h-4 mr-2"

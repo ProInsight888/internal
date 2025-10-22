@@ -100,7 +100,7 @@ export function ExampleCombobox({ value, onChange }) {
                 >
                     {value
                         ? frameworks.find(
-                              (framework) => framework.value === value,
+                              (framework) => framework.value === value
                           )?.label
                         : "Select framework..."}
                     <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />

@@ -44,7 +44,13 @@ class NewClientController extends Controller
      */
     public function store(StorenewClientRequest $request)
     {
-        // dd($request->fase_pembayaran[1]);
+        // Map the status values
+        $statusMapping = [
+            'Paid' => 'lunas',
+            'Unpaid' => 'belum bayar', 
+            'Instalments' => 'cicil'
+        ];
+
         $validated = $request->validate([
             'company_name' => 'string|required',
             'code' => 'required|string|max:4|unique:new_clients,code',
@@ -73,17 +79,14 @@ class NewClientController extends Controller
 
         $contractEnd = now()->addYears($totalYears)->addMonths($remainingMonths);
 
-
-        $status = Str::lower($validated['status']);
+        // Map the status for internal storage
+        $internalStatus = $statusMapping[$validated['status']] ?? $validated['status'];
+        $status = Str::lower($internalStatus);
         $payment_month = $status === 'lunas' ?  $today->format('F') . '✅' : "-";
         
         $clientUuid = Str::uuid()->toString();
 
-        // dd($contractEnd->toDateString(), $payment_month);
-        
         foreach ($request->fase_pembayaran as $fase) {
-            // echo $fase['cicilan'] . ' - ' . $fase['tanggal'] . '<br>';
-            // dd($fase['cicilan']);
             cicilan::create([
                 'client_uuid' => $clientUuid,
                 'cicilan' => $fase['cicilan'],
@@ -99,42 +102,47 @@ class NewClientController extends Controller
             'location' => $validated['location'],
             'contract' => $contract,
             'package' => $validated['package'],
-            'status' => $validated['status'],
+            'status' => $internalStatus, // Store the internal status
             'contract_end' => $contractEnd->toDateString(),
             'payment_month' => $payment_month,
         ]);
 
-
         return Redirect::to('new_client')->with("success", 'New Client Created Successfully');
-    }
-    /**
-     * Display the specified resource.
-     */
-    public function show(newClient $newClient)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-        public function edit(newClient $newClient)
-        {
-            $client = $newClient->load('cicilans'); // Simple and clean
-            // dd($client);
-            // $cicilans = newClient::with('cicilan')->get();
-            return inertia('NewClient/edit', [
-                'clients' => $client,
-            ]);
-        }
+    public function edit(newClient $newClient)
+    {
+        $client = $newClient->load('cicilans');
+        
+        // Map internal status to display status for the frontend
+        $statusMapping = [
+            'lunas' => 'Paid',
+            'belum bayar' => 'Unpaid',
+            'cicil' => 'Instalments'
+        ];
+        
+        $client->display_status = $statusMapping[$client->status] ?? $client->status;
+        
+        return inertia('NewClient/edit', [
+            'clients' => $client,
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdatenewClientRequest $request, newClient $newClient)
     {
-        // dd($newClient->status);
-        
+        // Map the status values
+        $statusMapping = [
+            'Paid' => 'lunas',
+            'Unpaid' => 'belum bayar',
+            'Instalments' => 'cicil'
+        ];
+
         $validated = $request->validate([
             'company_name' => 'string|required',
             'code' => 'string|required',
@@ -160,11 +168,12 @@ class NewClientController extends Controller
 
         $contractEnd = now()->addYears($totalYears)->addMonths($remainingMonths);
 
-        $status = Str::lower($validated['status']);
+        // Map the status for internal storage
+        $internalStatus = $statusMapping[$validated['status']] ?? $validated['status'];
+        $status = Str::lower($internalStatus);
         $payment_month = $status === 'lunas' ? $today->format('F').'✅' : "-";
 
         $uuid = $newClient->uuid;
-        // dd($array);
 
         $update_client = newClient::where('uuid', $uuid);
         $update_client->update([
@@ -174,23 +183,12 @@ class NewClientController extends Controller
             'location' => $validated['location'],
             'contract' => $contract,
             'package' => $validated['package'],
-            'status' => $validated['status'],
+            'status' => $internalStatus, // Store the internal status
             'contract_end' => $contractEnd->toDateString(),
             'payment_month' => $payment_month,
         ]);
 
-        // $client = NewClient::where('uuid', $uuid)->firstOrFail();
-
-        // // Update logic here...
-
-        // $hasCicilan = $client->cicilans()->exists(); // returns true/false
-
-        // return redirect()->back()->with([
-        //     'has_cicilan' => $hasCicilan,
-        // ]);
-
-
-        // return Redirect::to('new_client');
+        return Redirect::to('new_client')->with('success','Client Updated Successfully');
     }
 
     /**
@@ -198,7 +196,6 @@ class NewClientController extends Controller
      */
     public function destroy(newClient $newClient)
     {
-        // dd($newClient->uuid);
         $uuid = $newClient->uuid;
         $newClient = newClient::where('uuid', $uuid);
         $cicilan = cicilan::where('client_uuid', $uuid);

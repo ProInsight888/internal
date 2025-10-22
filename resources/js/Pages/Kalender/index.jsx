@@ -133,7 +133,7 @@ export default function index({ schedule }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Header Section */}
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-                        {user.role !== "intern" && (
+                        {user.role !== "intern" && user.role !== 'member' && (
                             <Link
                                 href={route("kalender.create")}
                                 className="flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
@@ -155,9 +155,9 @@ export default function index({ schedule }) {
                             </Link>
                         )}
 
-                        <div className="flex items-center text-sm text-gray-600 bg-blue-50 p-2 rounded-lg">
+                        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/30 p-2 rounded-lg border border-blue-100 dark:border-blue-800">
                             <svg
-                                className="w-4 h-4 mr-2 text-blue-500"
+                                className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                             >
@@ -174,7 +174,7 @@ export default function index({ schedule }) {
                     {/* Flash Messages */}
                     <div className="mb-6">
                         {success && (
-                            <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 p-4 rounded-lg border border-green-200 flex items-center">
+                            <div className="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 text-green-800 dark:text-green-300 p-4 rounded-lg border border-green-200 dark:border-green-800 flex items-center">
                                 <svg
                                     className="w-5 h-5 mr-3"
                                     fill="currentColor"
@@ -190,7 +190,7 @@ export default function index({ schedule }) {
                             </div>
                         )}
                         {deleteMessage && (
-                            <div className="bg-gradient-to-r from-red-100 to-rose-100 text-red-800 p-4 rounded-lg border border-red-200 flex items-center">
+                            <div className="bg-gradient-to-r from-red-100 to-rose-100 dark:from-red-900/20 dark:to-rose-900/20 text-red-800 dark:text-red-300 p-4 rounded-lg border border-red-200 dark:border-red-800 flex items-center">
                                 <svg
                                     className="w-5 h-5 mr-3"
                                     fill="currentColor"
@@ -208,21 +208,21 @@ export default function index({ schedule }) {
                     </div>
 
                     {/* Calendar Container */}
-                    <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
                         <ScheduleXCalendar calendarApp={calendar} />
                     </div>
 
                     {/* Custom Context Menu */}
                     {customMenu.visible && (
                         <div
-                            className="absolute bg-white border border-gray-300 rounded-lg shadow-xl z-50 overflow-hidden"
+                            className="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl z-50 overflow-hidden"
                             style={{
                                 top: customMenu.top,
                                 left: customMenu.left,
                             }}
                         >
-                            <div className="bg-gradient-to-r from-gray-50 to-blue-50 px-4 py-2 border-b border-gray-200">
-                                <p className="text-sm font-medium text-gray-700">
+                            <div className="bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-700 dark:to-blue-900/30 px-4 py-2 border-b border-gray-200 dark:border-gray-600">
+                                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Event Actions
                                 </p>
                             </div>
@@ -234,7 +234,7 @@ export default function index({ schedule }) {
                                             "kalender.edit",
                                             customMenu.eventId
                                         )}
-                                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-150"
+                                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-150"
                                     >
                                         <svg
                                             className="w-4 h-4 mr-2"
@@ -281,7 +281,7 @@ export default function index({ schedule }) {
                                                 );
                                             }
                                         }}
-                                        className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150"
+                                        className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-150"
                                     >
                                         <svg
                                             className="w-4 h-4 mr-2"
