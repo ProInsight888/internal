@@ -189,6 +189,7 @@ export default function AbsenceDashboard({ absens, user }) {
     const { data, setData, post, errors, processing } = useForm({
         from_date: "",
         end_date: "",
+
     });
 
     // Get unique users
@@ -211,6 +212,7 @@ export default function AbsenceDashboard({ absens, user }) {
             date_from: data.from_date,
             date_end: data.end_date,
             users: userArray,
+            sortName : sortName
         }).toString();
 
         const url = `/api/export-data?${query}`;
