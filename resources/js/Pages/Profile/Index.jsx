@@ -2,7 +2,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
-
 export default function Index({ auth }) {
     const { data, setData, post, put, processing, errors } = useForm({
         name: auth.user.name || "",

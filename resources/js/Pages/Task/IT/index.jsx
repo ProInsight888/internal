@@ -138,9 +138,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                 ?.split(",")
                                 .map((assignee, index) => {
                                     const trimmed = assignee.trim();
-
-                                    // Find the user in the global users array (from props)
-                                    const userData = users?.find(
+                                    const user = users?.find(
                                         (u) =>
                                             u.name.toLowerCase() ===
                                             trimmed.toLowerCase()
@@ -152,24 +150,12 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                             className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border-[1px] border-black dark:border-white shadow-sm overflow-hidden relative"
                                             title={trimmed}
                                         >
-                                            {userData?.avatar_url ? (
-                                                <>
-                                                    <img
-                                                        src={user.avatar_url}
-                                                        alt={user.name}
-                                                        className="w-8 h-8 rounded-full object-cover"
-                                                    />
-                                                    <div
-                                                        className="w-full h-full hidden items-center justify-center bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300"
-                                                        style={{
-                                                            display: "none",
-                                                        }}
-                                                    >
-                                                        {trimmed
-                                                            .substring(0, 2)
-                                                            .toUpperCase()}
-                                                    </div>
-                                                </>
+                                            {user?.avatar_url ? (
+                                                <img
+                                                    src={user.avatar_url}
+                                                    alt={user.name}
+                                                    className="w-8 h-8 rounded-full object-cover"
+                                                />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center">
                                                     {trimmed
