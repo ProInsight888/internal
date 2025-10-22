@@ -18,8 +18,7 @@ class SpreadsheetController extends Controller
 {
     public function export(Request $request)
     {
-
-        // dd($request->user);
+        dd($request);
         try {
             $client = new Client();
             $client->setAuthConfig(storage_path('app/credentials/google-sheets.json'));
@@ -31,7 +30,6 @@ class SpreadsheetController extends Controller
             $endDate = $request->date_end;
             $period = CarbonPeriod::create($startDate, $endDate);
 
-            
             // 1. FIRST CLEAR THE EXISTING DATA
             $this->clearSheetData($service, $spreadsheetId, 'Sheet3');
             
@@ -117,12 +115,6 @@ class SpreadsheetController extends Controller
                     }
 
                     // dd($periodSortUser, $date->format('Y-m-d'));
-
-
-                    
-                    
-                    
-                    
                 }
                 $values[] = [''];
                 $values[] = ['-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'];
