@@ -192,6 +192,26 @@ class NewClientController extends Controller
         return Redirect::to('new_client')->with('success','Client Updated Successfully');
     }
 
+    public function show(newClient $newClient)
+    {
+        $client = $newClient->load('cicilans');
+        
+        // Map internal status to display status for the frontend
+        $statusMapping = [
+            'lunas' => 'Paid',
+            'belum bayar' => 'Unpaid',
+            'cicil' => 'Instalments'
+        ];
+
+        // dd( $client);
+        
+        $client->display_status = $statusMapping[$client->status] ?? $client->status;
+        
+        return Inertia('NewClient/show', [
+            'client' => $client,
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

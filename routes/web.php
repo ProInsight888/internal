@@ -133,8 +133,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('rejectedRevision', [RejectedRevisionController::class, 'store'])->name('rejectedRevision.store');
 });
 
-
-
+// New Client Contract Route
+Route::prefix('new_client')->group(function () {
+    Route::get('/{contract}/edit', [ContractController::class, 'edit'])->name('new_client.edit');
+    Route::put('/{contract}', [ContractController::class, 'update'])->name('new_client.update');
+    Route::get('/contract/pdf/{clientsUuid}', [ContractController::class, 'clientContract'])->name('new_client.contract.pdf');
+});
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
