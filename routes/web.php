@@ -82,7 +82,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     // Route::resource('kalender', KalenderController::class);
-    // Route::put('kalender', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
+    Route::put('calendar', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
     Route::resource('items', ItemsController::class);
     Route::resource('data_collection', ToolDataCollectionController::class);
     Route::resource('check', CheckDataCollectionController::class);

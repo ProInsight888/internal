@@ -22,7 +22,7 @@ class newClient extends Model
         'contract_end',
         'payment_month',
         'code',
-        'no_surat',
+        'reference_num',
         'today',
         'contract_start',
         'contract_end',
