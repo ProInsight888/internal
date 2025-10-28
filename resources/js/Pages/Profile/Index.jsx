@@ -39,6 +39,8 @@ export default function Index({ auth }) {
         });
     };
 
+
+
     return (
         <AuthenticatedLayout
             user={auth.user}

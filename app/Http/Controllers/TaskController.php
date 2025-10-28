@@ -12,6 +12,8 @@ use Illuminate\Console\View\Components\Task as ComponentsTask;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -19,16 +21,36 @@ class TaskController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-        $tasks = task::all();
-        $users = User::all();
+    {        
+        $tasks = Task::all();
         
-        return inertia('Task/index',[
+        $users = User::select('id', 'name', 'avatar')
+
+        ->get()
+        ->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'avatar_url' => $user->avatar
+                ? asset('storage/' . $user->avatar)
+                : null,
+            ];
+        });
+        
+
+        return inertia('Task/index', [
             'tasks' => $tasks,
             'users' => $users,
-            'userName' => Auth::user()->name,
-        ]); //Task/index ini lebih ke file yang ingin diakses itu yang mana, dan pake /
+            'auth' => [
+                'user' => [
+                    'id' => Auth::user()->id,
+                    'name' => Auth::user()->name,
+                    'avatar_url' => Auth::user()->avatar
+                        ? asset('storage/' . Auth::user()->avatar)
+                        : null,
+                ],
+            ],
+        ]);
     }
 
     /**
@@ -39,18 +61,18 @@ class TaskController extends Controller
         $users = User::all();
         $companies = newClient::all();
         $task_title = task::select('task_title')
-                            ->distinct()
-                            ->orderBy('task_title')
-                            ->get();
+            ->distinct()
+            ->orderBy('task_title')
+            ->get();
         $task_format = task::select('task_format')
-                            ->distinct()
-                            ->orderBy('task_format')
-                            ->get();
+            ->distinct()
+            ->orderBy('task_format')
+            ->get();
         $description = task::select('description')
-                            ->distinct()
-                            ->orderBy('task_title')
-                            ->orderBy('description')
-                            ->get();
+            ->distinct()
+            ->orderBy('task_title')
+            ->orderBy('description')
+            ->get();
         return inertia('Task/create', [
             'users' => $users,
             'companies' => $companies,
@@ -76,8 +98,8 @@ class TaskController extends Controller
             'deadline' => 'string|required',
         ]);
         // dd($request);
-        
-        
+
+
         $formUuid = Str::uuid()->toString();
 
         task::create([
@@ -148,13 +170,13 @@ class TaskController extends Controller
             'category' => 'nullable|string',
             'deadline' => 'nullable|date',
         ]);
-        
+
         $uuid = $task->uuid;
         // dd($uuid);
 
         $update_task = task::where('uuid', $uuid);
         $update_task->update($validated);
-        return redirect()->route('task.index')->with('success','Task Updated');
+        return redirect()->route('task.index')->with('success', 'Task Updated');
     }
 
     /**
@@ -165,7 +187,7 @@ class TaskController extends Controller
         $uuid = $task->uuid;
         // dd($uuid);
 
-        $del_task= task::where('uuid', $uuid);
+        $del_task = task::where('uuid', $uuid);
         // $del_status= task_status::where('task_uuid', $uuid);
         $del_task->delete();
         // $del_status->delete();

@@ -45,7 +45,7 @@ export default function Create({
 
     // Filter users based on search input
     const filteredUsers = users.filter(user => 
-        user.name.toLowerCase().includes(searchUser.toLowerCase())
+        user.email.toLowerCase().includes(searchUser.toLowerCase())
     );
 
     // Handle user selection for responsible persons
@@ -62,7 +62,7 @@ export default function Create({
 
     // Apply selected users to form data
     const applySelectedUsers = () => {
-        const dataSelectUser = selectedUsers.map(user => user.name).join(",");
+        const dataSelectUser = selectedUsers.map(user => user.email).join(",");
         setData("penanggung_jawab", dataSelectUser);
         setResponsiblePopUp(false);
     };
@@ -222,7 +222,7 @@ export default function Create({
                                                     key={user.id} 
                                                     className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded flex items-center"
                                                 >
-                                                    {user.name}
+                                                    {user.email}
                                                     <button
                                                         type="button"
                                                         onClick={(e) => {
@@ -264,7 +264,6 @@ export default function Create({
                                             </SelectContent>
                                         </Select>
 
-
                                         {/* Custom dropdown icon */}
 
                                         {errors.category && (
@@ -297,8 +296,6 @@ export default function Create({
                                                 ))}
                                             </SelectContent>
                                         </Select>
-
-
 
                                         {/* Custom dropdown icon */}
 
@@ -499,7 +496,7 @@ export default function Create({
                                         className={`p-3 rounded-lg mb-2 cursor-pointer transition-colors ${selectedUsers.some(selected => selected.id === user.id) ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-100'}`}
                                         onClick={() => handleUserSelect(user)}
                                     >
-                                        <div className="font-medium">{user.name}</div>
+                                        <div className="font-medium">{user.email}</div>
                                         <div className="text-sm text-gray-500">{user.email}</div>
                                     </div>
                                 ))
@@ -515,7 +512,7 @@ export default function Create({
                                         key={user.id} 
                                         className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded flex items-center"
                                     >
-                                        {user.name}
+                                        {user.email}
                                         <button 
                                             type="button"
                                             onClick={() => removeUser(user.id)}

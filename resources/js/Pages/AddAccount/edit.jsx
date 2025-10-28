@@ -213,7 +213,7 @@ export default function edit({ user }) {
             header={
                 <div className="text-center py-8 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg dark:from-indigo-800 dark:to-purple-900">
                     <h1 className="text-3xl md:text-4xl font-bold mb-4">
-                        Update Account Information ✏️
+                        Update  a ✏️
                     </h1>
                     <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
                         Edit {user?.name}'s account details and permissions

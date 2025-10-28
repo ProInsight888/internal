@@ -105,18 +105,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('add_account/{user}', [AddAccountController::class, 'destroy'])->name('add_account.destroy');
     Route::delete('deleteCicilan/{uuid}', [deleteCicilan::class, 'destroy'])->name('deleteCicilan.destroy');
     Route::post('storeCicilan/{uuid}', [deleteCicilan::class, 'store'])->name('storeCicilan.store');
-    Route::get('media/create', [AddAccountController::class, 'edit'])->name('media.create');
-    Route::get('creative/create', [AddAccountController::class, 'edit'])->name('creative.create');
-    Route::get('marketing/create', [AddAccountController::class, 'edit'])->name('marketing.create');
-    Route::get('it/create', [AddAccountController::class, 'edit'])->name('it.create');
+    
+    Route::get('media/create', [mediaController::class, 'create'])->name('media.create');
+    Route::get('creative/create', [CreativeController::class, 'create'])->name('creative.create');
+    Route::get('marketing/create', [MarketingController::class, 'create'])->name('marketing.create');
+    Route::get('it/create', [ItController::class, 'create'])->name('it.create');
 
     Route::resource('new_client', NewClientController::class);
 
     Route::get('result', [ResultController::class, 'index'])->name('result.index');
     Route::post('rejectedRevision', [RejectedRevisionController::class, 'store'])->name('rejectedRevision.store');
 });
-
-
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
