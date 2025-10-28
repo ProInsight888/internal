@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\cicilan;
 use App\Models\contract;
+use App\Models\contract_pic;
 use App\Models\newClient;
 // use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class ContractController extends Controller
 
     public function update(Request $request, newClient $newClient)
     {
-        // dd($request, $newClient->uuid);
+        // dd($request->pics);
 
         $validated = $request->validate([
             // 'company_name' => 'string|nullable',
@@ -36,7 +37,7 @@ class ContractController extends Controller
             'full_address' => 'string|nullable',
             'pic_name' => 'string|nullable',
             'pic_tlp_num' => 'string|nullable',
-            'pic_title' => 'string|nullable',
+            // 'pic_title' => 'string|nullable',
             'pic_position' => 'string|nullable',
             'price' => 'string|nullable',
         ]);
@@ -45,8 +46,19 @@ class ContractController extends Controller
 
         $uuid = $request->uuid;
 
+        $pics = $request->pics;
+
+        foreach ($pics as $pic) {
+            // dd($pic);
+            contract_pic::create([
+                'new_client_contract_uuid' => $uuid,
+                'pic_name' => $pic['pic_name'],
+                'pic_tlp_num' => $pic['pic_tlp_num'],
+                'pic_position' => $pic['pic_position'],
+            ]);
+        }
+
         $update_client = newClient::where('uuid', $uuid);
-        // dd($uuid);
         $update_client->update([
             'reference_num' => $validated['reference_num'],
             'today' => $today,
@@ -54,10 +66,6 @@ class ContractController extends Controller
             'contract_start' => $validated['contract_start'],
             'contract_end' => $validated['contract_end'],
             'full_address' => $validated['full_address'],
-            'pic_name' => $validated['pic_name'],
-            'pic_tlp_num' => $validated['pic_tlp_num'],
-            'pic_title' => $validated['pic_title'],
-            'pic_position' => $validated['pic_position'],
             'price' => $validated['price'],
         ]);
 
@@ -69,9 +77,9 @@ class ContractController extends Controller
         $uuid = $request->clientsUuid;
         $client = newClient::where('uuid', $uuid)->first();
         $imageLogo = public_path('logo/logo.png');
-        
+        $pics = contract_pic::where('new_client_contract_uuid', $uuid)->get();
         // dd($client);
-        $pdf = Pdf::loadView('pdfs.contract', compact('imageLogo', 'client'))
+        $pdf = Pdf::loadView('pdfs.contract', compact('imageLogo', 'client', 'pics'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('client_contract.pdf'); 

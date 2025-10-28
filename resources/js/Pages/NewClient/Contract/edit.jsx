@@ -26,43 +26,43 @@ export default function edit({ clients }) {
         contract_start: clients?.contract_start ?? "",
         contract_end: clients?.contract_end ?? "",
         full_address: clients?.full_address ?? "",
-        pic_name: clients?.pic_name ?? "",
-        pic_tlp_num: clients?.pic_tlp_num ?? "",
-        pic_title: clients?.pic_title ?? "",
-        pic_position: clients?.pic_position ?? "",
+        pic_num: 1,
+        pics: [{ 
+            pic_name: "",
+            pic_tlp_num: "",
+            pic_position: "",
+         }],
         price: clients?.price ?? "",
     });
 
-    // console.log(data);
+    console.log(data.pics);
 
-    // useEffect(() => {
-    //     const jumlah = parseInt(data.cicil || 0);
-    //     if (data.status === "Cicil" && jumlah > 0) {
-    //         if (data.fase_pembayaran.length !== jumlah) {
-    //             const fase = Array.from({ length: jumlah }, (_, i) => ({
-    //                 cicilan: `Cicilan ${i + 1}`,
-    //                 tanggal: data.fase_pembayaran[i]?.tanggal || "",
-    //                 status_cicilan:
-    //                     data.fase_pembayaran[i]?.status_cicilan || "false",
-    //             }));
-    //             setData("fase_pembayaran", fase);
-    //         }
-    //     } else if (data.status !== "Cicil" && data.fase_pembayaran.length > 0) {
-    //         setData("fase_pembayaran", []);
-    //     }
-    // }, [data.cicil, data.status]);
+    useEffect(() => {
+        const jumlah = parseInt(data.pic_num || 0);
+        if (data.pic_num >= 1) {
+            if (data.pics.length !== jumlah) {
+                const pic = Array.from({ length: jumlah }, (_, i) => ({
+                    pic_name: data.pics[i]?.pic_name || "",
+                    pic_tlp_num: data.pics[i]?.pic_tlp_num || "",
+                    pic_position: data.pics[i]?.pic_position || "",
+                }));
+                setData("pics", pic);
+            }
+        } else if (data.pic_num <= 0) {
+            setData("pics", []);
+        }
+    }, [data.pic_num, data.pics]);
 
-    // console.log(data.status);
+    console.log(data.status);
 
     const submit = (e) => {
         e.preventDefault();
         put(route("contract.update", clients.uuid), {
             onSuccess: () => {
-                const clientsUuid = clients.uuid
-                window.open(`/contract/${clientsUuid}/contract`, '_blank')
-            }
+                const clientsUuid = clients.uuid;
+                window.open(`/contract/${clientsUuid}/contract`, "_blank");
+            },
         });
-        
     };
 
     return (
@@ -125,7 +125,7 @@ export default function edit({ clients }) {
                                                 value={data.reference_num}
                                                 className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                                                 autoComplete="reference_num"
-                                                placeholder='001/VII/2025/PRO'
+                                                placeholder="001/VII/2025/PRO"
                                                 onChange={(e) =>
                                                     setData(
                                                         "reference_num",
@@ -270,8 +270,161 @@ export default function edit({ clients }) {
                                             />
                                         </div>
 
+                                        <div className="mb-6">
+                                            <InputLabel
+                                                htmlFor="pic_num"
+                                                value="Total PIC"
+                                                className="dark:text-gray-300"
+                                            />
+                                            <div className="flex items-center">
+                                                <input
+                                                    id="pic_num"
+                                                    name="pic_num"
+                                                    value={data.pic_num}
+                                                    className={`mt-1 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b dark:border-gray-600 dark:text-white dark:focus:border-blue-400`}
+                                                    type="number"
+                                                    min="1"
+                                                    max="10"
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "pic_num",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                                <div>X</div>
+                                            </div>
+
+                                            <InputError
+                                                message={errors.status}
+                                                className="mt-2 dark:text-red-400"
+                                            />
+                                        </div>
+
+                                        {data.pic_num >= 1 && data.pic_num <=10 &&
+                                            data.pics.map((pic, index) => (
+                                                <div className="w-full">
+                                                    <div className="grid lg:grid-cols-2 grid-cols-1 w-full gap-8">
+                                                        <div className="">
+                                                            <InputLabel
+                                                                htmlFor={`pic_name_${index}`}
+                                                                value={`PIC Name (${index + 1})`}
+                                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                                            />
+
+                                                            <TextInput
+                                                                id={`pic_name_${index}`}
+                                                                name={`pic_name_${index}`}
+                                                                value={
+                                                                    data.pics[index]?.pic_name
+                                                                }
+                                                                className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                                                autoComplete="pic_name"
+                                                                onChange={(e) => {
+                                                                    const updatedPics = [
+                                                                        ...data.pics,
+                                                                    ];
+                                                                    updatedPics[index] = {
+                                                                        ...updatedPics[index],
+                                                                        pic_name: e.target.value,
+                                                                    };
+                                                                    setData("pics", updatedPics)
+                                                                }}
+                                                                required
+                                                            />
+
+                                                            <InputError
+                                                                message={
+                                                                    errors.pics
+                                                                }
+                                                                className="mt-2 dark:text-red-400"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <InputLabel
+                                                                htmlFor={`pic_tlp_num_${index}`}
+                                                                value={`PIC Telp Num (${index + 1})`}
+                                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                                            />
+
+                                                            <TextInput
+                                                                id={`pic_tlp_num_${index}`}
+                                                                name={`pic_tlp_num_${index}`}
+                                                                value={
+                                                                    data.pics[index].pic_tlp_num
+                                                                }
+                                                                className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                                                autoComplete={`pic_tlp_num_${index}`}
+                                                                onChange={(e) =>{
+                                                                    const updatedPics = [
+                                                                        ...data.pics,
+                                                                    ];
+                                                                    updatedPics[index] = {
+                                                                        ...updatedPics[index],
+                                                                        pic_tlp_num: e.target.value,
+                                                                    }
+                                                                    setData(
+                                                                        'pics',
+                                                                        updatedPics
+                                                                    )
+                                                                }}
+                                                                required
+                                                            />
+
+                                                            <InputError
+                                                                message={
+                                                                    errors.pics
+                                                                }
+                                                                className="mt-2 dark:text-red-400"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* PIC title & position */}
+
+                                                    <div className="mt-5">
+                                                        <InputLabel
+                                                            htmlFor={`pic_position_${index}`}
+                                                            value={`PIC Position (${index + 1})`}
+                                                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                                        />
+
+                                                        <TextInput
+                                                            id={`pic_position_${index}`}
+                                                            name={`pic_position_${index}`}
+                                                            value={
+                                                                data.pics[index]?.pic_position
+                                                            }
+                                                            className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                                            autoComplete={`pic_position_${index}`}
+                                                            onChange={(e) => {
+                                                                const updatedPics = [
+                                                                    ...data.pics
+                                                                ]
+                                                                updatedPics[index] = {
+                                                                    ...updatedPics[index],
+                                                                    pic_position: e.target.value
+                                                                }
+                                                                setData(
+                                                                    "pics",
+                                                                    updatedPics
+                                                                )
+                                                            }
+                                                            }
+                                                            required
+                                                        />
+
+                                                        <InputError
+                                                            message={
+                                                                errors.pics
+                                                            }
+                                                            className="mt-2 dark:text-red-400"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ))}
                                         {/* PIC_num & PIC_name */}
-                                        <div className="grid lg:grid-cols-2 grid-cols-1 w-full gap-8">
+                                        {/* <div className="grid lg:grid-cols-2 grid-cols-1 w-full gap-8">
                                             <div className="">
                                                 <InputLabel
                                                     htmlFor="pic_name"
@@ -326,70 +479,40 @@ export default function edit({ clients }) {
                                                     className="mt-2 dark:text-red-400"
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
 
                                         {/* PIC title & position */}
-                                        <div className="grid lg:grid-cols-2 grid-cols-1 w-full gap-8">
-                                            <div className="">
-                                                <InputLabel
-                                                    htmlFor="pic_title"
-                                                    value="PIC Title"
-                                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                                />
 
-                                                <TextInput
-                                                    id="pic_title"
-                                                    name="pic_title"
-                                                    value={data.pic_title}
-                                                    className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                    autoComplete="pic_title"
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "pic_title",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    required
-                                                />
+                                        {/* <div>
+                                            <InputLabel
+                                                htmlFor="pic_position"
+                                                value="PIC Position"
+                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                            />
 
-                                                <InputError
-                                                    message={errors.pic_title}
-                                                    className="mt-2 dark:text-red-400"
-                                                />
-                                            </div>
-                                            <div>
-                                                <InputLabel
-                                                    htmlFor="pic_position"
-                                                    value="PIC Position"
-                                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                                />
+                                            <TextInput
+                                                id="pic_position"
+                                                name="pic_position"
+                                                value={data.pic_position}
+                                                className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                                autoComplete="pic_position"
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "pic_position",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                required
+                                            />
 
-                                                <TextInput
-                                                    id="pic_position"
-                                                    name="pic_position"
-                                                    value={data.pic_position}
-                                                    className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                    autoComplete="pic_position"
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "pic_position",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    required
-                                                />
-
-                                                <InputError
-                                                    message={
-                                                        errors.pic_position
-                                                    }
-                                                    className="mt-2 dark:text-red-400"
-                                                />
-                                            </div>
-                                        </div>
+                                            <InputError
+                                                message={errors.pic_position}
+                                                className="mt-2 dark:text-red-400"
+                                            />
+                                        </div> */}
 
                                         {/* Package */}
-                                        <div>
+                                        {/* <div>
                                             <InputLabel
                                                 htmlFor="package"
                                                 value="Package"
@@ -469,7 +592,7 @@ export default function edit({ clients }) {
                                                 message={errors.package}
                                                 className="mt-2 dark:text-red-400"
                                             />
-                                        </div>
+                                        </div> */}
 
                                         {/* Price */}
                                         <div>

@@ -17,10 +17,6 @@ return new class extends Migration {
             $table->string('contract_end')->nullable();
             $table->string('full_address')->nullable();
             $table->string('tlp_num')->nullable();
-            $table->string('pic_tlp_num')->nullable();
-            $table->string('pic_name')->nullable();
-            $table->string('pic_title')->nullable();
-            $table->string('pic_position')->nullable();
             $table->string('price')->nullable();
         });
     }
@@ -37,10 +33,6 @@ return new class extends Migration {
             $table->dropColumn('contract_end'); //don
             $table->dropColumn('full_address'); //don
             $table->dropColumn('tlp_num'); //don
-            $table->dropColumn('pic_tlp_num'); //don
-            $table->dropColumn('pic_name'); //don
-            $table->dropColumn('pic_title'); // don
-            $table->dropColumn('pic_position'); // don
             $table->dropColumn('price');
         });
     }

@@ -89,7 +89,9 @@
                 <div class=""><b>1. {{ $client->company_name }}</b></div>
                 <div>Alamat : {{ $client->full_address }}</div>
                 <div>Telp: {{ $client->tlp_num }}</div>
-                <div>Telp: {{ $client->pic_tlp_num }} a/n {{ $client->pic_name }}, {{ $client->pic_title }} sebagai {{ $client->pic_position }}</div>
+                @foreach ($pics as $key => $pic)
+                    <div>Telp: {{ $pic->pic_name }} a/n {{ $pic->pic_tlp_num }}, sebagai {{ $pic->pic_position }}</div>
+                @endforeach
                 <div>Selanjutnya disebut sebagai <b>PlHAK PERTAMA</b></div>
             </div>
             <br>
