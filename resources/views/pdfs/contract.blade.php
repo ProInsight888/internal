@@ -81,7 +81,7 @@
     <div>
         <div class=""><b><u>SURAT PERJANJIAN KERJASAMA</u></b></div>
         <div>
-            <div>Nomor Surat : {{ $client->no_surat }}</div>
+            <div>Nomor Surat : {{ $client->reference_num }}</div>
             <div>Berlaku: {{ $client->contract_start }} sampai {{ $client->contract_end }}</div>
             <br>
             <div>Pada hari ini, <b>Rabu</b>, Tanggal 10-01-2025, yang bertanda tangan di bawah ini</div>

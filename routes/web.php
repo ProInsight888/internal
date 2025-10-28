@@ -82,7 +82,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     // Route::resource('kalender', KalenderController::class);
+<<<<<<< HEAD
     // Route::put('kalender', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
+=======
+    Route::put('calendar', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
+>>>>>>> 818e29b616d9b38d241e1aaf50516bdd936e5fba
     Route::resource('items', ItemsController::class);
     Route::resource('data_collection', ToolDataCollectionController::class);
     Route::resource('check', CheckDataCollectionController::class);
@@ -113,6 +117,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
 });
 
+
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('add_account', [AddAccountController::class, 'index'])->name('add_account.index');
     Route::post('add_account', [AddAccountController::class, 'store'])->name('add_account.store');
@@ -131,6 +136,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('result', [ResultController::class, 'index'])->name('result.index');
     Route::post('rejectedRevision', [RejectedRevisionController::class, 'store'])->name('rejectedRevision.store');
 });
+
+
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -18,7 +18,7 @@ class ContractController extends Controller
     {
         $client = newClient::where('uuid', $contract);
         // dd($client);
-        return Inertia::render('Contract/edit', [
+        return Inertia::render('NewClient/Contract/edit', [
             'clients' => $contract,
         ]);
     }
@@ -29,6 +29,7 @@ class ContractController extends Controller
 
         $validated = $request->validate([
             // 'company_name' => 'string|nullable',
+            'reference_num' => 'string|nullable',
             'tlp_num' => 'string|nullable',
             'contract_start' => 'string|nullable',
             'contract_end' => 'string|nullable',
@@ -47,6 +48,7 @@ class ContractController extends Controller
         $update_client = newClient::where('uuid', $uuid);
         // dd($uuid);
         $update_client->update([
+            'reference_num' => $validated['reference_num'],
             'today' => $today,
             'tlp_num' => $validated['tlp_num'],
             'contract_start' => $validated['contract_start'],
