@@ -63,7 +63,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::resource('/personal_dashboard', PersonalDashboardController::class);
     Route::resource('absen', AbsenController::class);
 
-
     Route::resource('kalender', KalenderController::class);
     Route::put('kalender', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
     Route::resource('items', ItemsController::class);
@@ -95,7 +94,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('media_review', mediaReviewController::class);
     // Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
 });
-
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('add_account', [AddAccountController::class, 'index'])->name('add_account.index');
