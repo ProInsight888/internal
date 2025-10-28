@@ -18,7 +18,7 @@ class SpreadsheetController extends Controller
 {
     public function export(Request $request)
     {
-        dd($request);
+        // dd($request);
         try {
             $client = new Client();
             $client->setAuthConfig(storage_path('app/credentials/google-sheets.json'));
@@ -32,7 +32,9 @@ class SpreadsheetController extends Controller
 
             // 1. FIRST CLEAR THE EXISTING DATA
             $this->clearSheetData($service, $spreadsheetId, 'Sheet3');
-            
+            $sortName = $request->sortName;
+
+            // dd($request->sortName);
             // 2. GET NEW DATA FROM DATABASE
             $absens = Absen::whereBetween('tanggal', [
                 $startDate,
@@ -40,7 +42,9 @@ class SpreadsheetController extends Controller
                 ])
                 ->orderBy('tanggal', 'asc')
                 ->get();
-
+                
+                // dd($absens);
+                
                 // 3. PREPARE NEW DATA
                 $values = [];
                 $values[] = ['Attendance Report: ' . $startDate . ' to ' . $endDate];
@@ -54,22 +58,84 @@ class SpreadsheetController extends Controller
                         return "$jam Jam";
                     if ($jam === "00")
                         return "$menitSisa Menit";
-                if ($jam === '00' && $menitSisa === '00')
-                    return '';
-                return "$jam Jam $menitSisa Menit";
-            }
-            
-            foreach($users as $userIndex => $user) {
+                    if ($jam === '00' && $menitSisa === '00')
+                        return '';
+                    return "$jam Jam $menitSisa Menit";
+                }
                 
-                $values[] = [''];
-                $values[] = [$user];
-                $values[] = ['Date', 'Day', 'Working Hour', 'Activity', 'Check-in', 'Check-out', 'Overtime', 'Notes', 'Status'] ;
+            if($sortName === null){
+                foreach($users as $userIndex => $user) {
+                    
+                    $values[] = [''];
+                    $values[] = [$user];
+                    $values[] = ['Date', 'Day', 'Working Hour', 'Activity', 'Check-in', 'Check-out', 'Overtime', 'Notes', 'Status'] ;
 
-                $absenSortUser = $absens->where('user', $user);
-                
+                    $absenSortUser = $absens->where('user', $user);
+                    
+                    // $absenSortUser = $absens->where('user', $user); 
+                    foreach ($period as $date){
+                        $daysName = Carbon::parse($date)->locale('id')->dayName;
+                        if ($daysName === 'Minggu') {
+                            $working_hour = '00:00 - 23:59';
+                        } elseif ($daysName === 'Sabtu') {
+                            $working_hour = '08:00 - 12:00';
+                        } else {
+                            $working_hour = '09:00 - 17:00';
+                        }
+                        
+                        // dd($absenSortUser, $date->format('Y-m-d'));
+                        $periodSortUser = $absenSortUser->where('tanggal', $date->format('Y-m-d'));
+                        // dd($periodSortUser);
+                        if ($periodSortUser->isNotEmpty()) {
+                            foreach ($periodSortUser as $userIndex => $user) {
+                                $jam_balek = $user->jam_balek ? Carbon::parse($user->jam_balek) : null;
+                                $jam_datang = $user->jam_datang ? Carbon::parse($user->jam_datang) : null;
+                                $weekDayBalek = Carbon::parse('17:00');
+                                $weekEndBalek = Carbon::parse('12:00');
+
+                                $durasi_weekDay = $jam_balek ? formatDurasi($weekDayBalek->diffInMinutes($jam_balek)) : '';
+                                $durasi_weekEnd = $jam_balek ? formatDurasi($weekEndBalek->diffInMinutes($jam_balek)) : '';
+
+                                $jamDatangFormatted = $jam_datang ? "'" . $jam_datang->format('H:i') : '';
+                                $jamBalekFormatted = $jam_balek ? "'" . $jam_balek->format('H:i') : '';
+
+                                $values[] = [
+                                    $date->format('Y-m-d'),
+                                    $daysName,
+                                    $working_hour,
+                                    $daysName === 'Minggu' ? 'Work-Over Time' : 'Work',
+                                    $jamDatangFormatted,
+                                    $jamBalekFormatted,
+                                    $daysName === 'Sabtu' ? $durasi_weekEnd : $durasi_weekDay,
+                                    '',
+                                    $user->status ?? 'N/A',
+                                ];
+                            }
+                        } else {
+                            $values[] = [
+                                $date->format('Y-m-d'),
+                                $daysName,
+                                $working_hour,
+                                $daysName === 'Minggu' ? 'Work-Over Time' : 'Work',
+                            ];
+                        }
+
+                        // dd($periodSortUser, $date->format('Y-m-d'));
+                    }
+                    $values[] = [''];
+                    $values[] = ['-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'];
+                    $values[] = [''];
+                }
+            }
+            else{
+                $values[] = [''];
+                $values[] = [$sortName];
+                $values[] = ['Date', 'Day', 'Working Hour', 'Activity', 'Check-in', 'Check-out', 'Overtime', 'Notes', 'Status'];
+
+                $absenSortUser = $absens->where('user', $sortName);
+
                 // $absenSortUser = $absens->where('user', $user); 
-                // dd($absenSortUser);
-                foreach ($period as $date){
+                foreach ($period as $date) {
                     $daysName = Carbon::parse($date)->locale('id')->dayName;
                     if ($daysName === 'Minggu') {
                         $working_hour = '00:00 - 23:59';
@@ -78,8 +144,10 @@ class SpreadsheetController extends Controller
                     } else {
                         $working_hour = '09:00 - 17:00';
                     }
-                    
+
+                    // dd($absenSortUser, $date->format('Y-m-d'));
                     $periodSortUser = $absenSortUser->where('tanggal', $date->format('Y-m-d'));
+                    // dd($periodSortUser);
                     if ($periodSortUser->isNotEmpty()) {
                         foreach ($periodSortUser as $userIndex => $user) {
                             $jam_balek = $user->jam_balek ? Carbon::parse($user->jam_balek) : null;
@@ -116,12 +184,8 @@ class SpreadsheetController extends Controller
 
                     // dd($periodSortUser, $date->format('Y-m-d'));
                 }
-                $values[] = [''];
-                $values[] = ['-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'];
-                $values[] = [''];
             }
-            
-            
+            // dd($values);
             
             // 4. UPDATE WITH NEW DATA
             $body = new ValueRange(['values' => $values]);

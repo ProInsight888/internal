@@ -7,6 +7,7 @@ use App\Models\newClient;
 use App\Http\Requests\StorenewClientRequest;
 use App\Http\Requests\UpdatenewClientRequest;
 use App\Models\task;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
@@ -204,4 +205,6 @@ class NewClientController extends Controller
 
         return Redirect::to('new_client')->with('deleted','Client Deleted');
     }
+
+    
 }

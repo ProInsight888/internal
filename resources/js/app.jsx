@@ -20,7 +20,7 @@ createInertiaApp({
         root.render(<App {...props} />);
     },
     progress: {
-        color: "#4B5563",
+        color: "#7F00FF",
     },
 }).then(() => {
     document.getElementById("app").removeAttribute("data-page");

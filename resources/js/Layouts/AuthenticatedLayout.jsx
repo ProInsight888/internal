@@ -106,8 +106,8 @@ export default function AuthenticatedLayout({ header, children }) {
         },
         {
             name: "Calendar",
-            href: route("kalender.index"),
-            routeName: "/kalender",
+            href: route("calendar.index"),
+            routeName: "/calendar",
             icon: (
                 <svg
                     className="w-5 h-5"
@@ -275,7 +275,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                             <div className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 font-bold mr-2">
                                                 {user?.avatar_url ? (
                                                     <img
-                                                        src={user.avatar_url}
+                                                        src={`/storage/${user.avatar}`}
                                                         alt={user.name}
                                                         className="w-8 h-8 rounded-full object-cover"
                                                     />

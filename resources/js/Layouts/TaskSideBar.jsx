@@ -70,7 +70,7 @@ export default function TaskSideBar({
         {
             key: "",
             label: "Active Task",
-            count: taskCounts.all - taskCounts.cancel - taskCounts.approved,
+            count: taskCounts.all - taskCounts.cancel - taskCounts.approved - taskCounts.inReview - taskCounts.rejected,
             color: "bg-blue-100 text-blue-800 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800",
             icon: <Circle className="h-4 w-4" />,
         },

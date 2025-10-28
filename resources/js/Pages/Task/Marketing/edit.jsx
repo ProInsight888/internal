@@ -255,7 +255,7 @@ export default function edit({
                                         Penanggung Jawab
                                     </label>
                                     <div
-                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2 min-h-[42px] bg-white dark:bg-gray-700"
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2  bg-white dark:bg-gray-700"
                                         onClick={() =>
                                             setResponsiblePopUp(true)
                                         }
