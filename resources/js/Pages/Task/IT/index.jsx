@@ -99,6 +99,8 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
         return colorMap[status] || colorMap.default;
     };
 
+    
+
     return (
         <div
             className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 cursor-pointer dark:shadow-gray-800 ${getCardColor(
@@ -144,6 +146,12 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                             trimmed.toLowerCase()
                                     );
 
+                                    // DEBUG: Check what we're working with
+                                    console.log("Assignee:", trimmed);
+                                    console.log("Found user:", user);
+                                    console.log({ user_avatar_url: user?.avatar_url });
+
+
                                     return (
                                         <div
                                             key={index}
@@ -155,6 +163,14 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                                     src={user.avatar_url}
                                                     alt={user.name}
                                                     className="w-8 h-8 rounded-full object-cover"
+                                                    onError={(e) => {
+                                                        console.log(
+                                                            "Image failed to load:",
+                                                            user.avatar_url
+                                                        );
+                                                        e.target.style.display =
+                                                            "none";
+                                                    }}
                                                 />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center">
@@ -507,6 +523,8 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
         uuid: "",
         link: "",
         sended_by: user.name || "User Name Not Found",
+        name: auth.user.name || "",
+        avatar: null,
     });
 
     const [selectedFilter, setSelectedFilter] = useState("");
@@ -517,6 +535,8 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const successMessage = usePage().props?.flash?.success;
+
+    console.log(user);
 
     // Filter and sort tasks
     const filteredTasks = tasks

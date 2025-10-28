@@ -39,6 +39,8 @@ export default function Index({ auth }) {
         });
     };
 
+
+
     return (
         <AuthenticatedLayout>
             <Head title="Profile" />
