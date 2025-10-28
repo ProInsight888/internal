@@ -77,21 +77,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::resource('/personal_dashboard', PersonalDashboardController::class);
     Route::resource('absen', AbsenController::class);
 
-<<<<<<< HEAD
-    Route::resource('kalender', KalenderController::class);
-    Route::put('kalender', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
-=======
     Route::resource('calendar', GoogleCalendarController::class);
     // Route::get('/calendar/{calendar}', [GoogleCalendarController::class, 'show'])->name('calendar.show');
 
 
     // Route::resource('kalender', KalenderController::class);
-<<<<<<< HEAD
     Route::put('calendar', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
-=======
-    // Route::put('kalender', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
->>>>>>> fee22df0f3a5aee6a1439b9b4ebf3e9bdad114f8
->>>>>>> 0067ed858ea3b023bda8fe14e5223dda546005f5
     Route::resource('items', ItemsController::class);
     Route::resource('data_collection', ToolDataCollectionController::class);
     Route::resource('check', CheckDataCollectionController::class);
@@ -122,6 +113,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
 });
 
+
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('add_account', [AddAccountController::class, 'index'])->name('add_account.index');
     Route::post('add_account', [AddAccountController::class, 'store'])->name('add_account.store');
@@ -130,12 +122,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('add_account/{user}', [AddAccountController::class, 'destroy'])->name('add_account.destroy');
     Route::delete('deleteCicilan/{uuid}', [deleteCicilan::class, 'destroy'])->name('deleteCicilan.destroy');
     Route::post('storeCicilan/{uuid}', [deleteCicilan::class, 'store'])->name('storeCicilan.store');
-<<<<<<< HEAD
-    
-    Route::get('media/create', [mediaController::class, 'create'])->name('media.create');
-=======
     Route::get('media/create', [MediaController::class, 'create'])->name('media.create');
->>>>>>> fee22df0f3a5aee6a1439b9b4ebf3e9bdad114f8
     Route::get('creative/create', [CreativeController::class, 'create'])->name('creative.create');
     Route::get('marketing/create', [MarketingController::class, 'create'])->name('marketing.create');
     Route::get('it/create', [ItController::class, 'create'])->name('it.create');
@@ -145,6 +132,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('result', [ResultController::class, 'index'])->name('result.index');
     Route::post('rejectedRevision', [RejectedRevisionController::class, 'store'])->name('rejectedRevision.store');
 });
+
+
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
