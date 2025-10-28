@@ -21,7 +21,6 @@ class newClient extends Model
         'status',
         'contract_end',
         'payment_month',
-        'code',
         'reference_num',
         'today',
         'contract_start',

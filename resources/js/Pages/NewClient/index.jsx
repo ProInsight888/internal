@@ -410,7 +410,12 @@ export default function ClientIndex({ clients, cicilans }) {
                                         key={client.uuid}
                                         role="button"
                                         tabIndex={0}
-                                        onClick={() => handleRowClick(client)}
+                                        onClick={() =>
+                                            (window.location.href = route(
+                                                "new_client.show",
+                                                client.uuid
+                                            ))
+                                        }
                                         className="hover:bg-blue-50 transition-colors duration-150 dark:hover:bg-blue-900/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     >
                                         {tableColumns.map(
@@ -430,9 +435,10 @@ export default function ClientIndex({ clients, cicilans }) {
                                                 </td>
                                             )
                                         )}
+
                                         <td
                                             className="px-4 py-4 text-sm font-medium"
-                                            onClick={(e) => e.stopPropagation()}
+                                            onClick={(e) => e.stopPropagation()} // prevent redirect when using dropdown
                                         >
                                             <ClientActionsDropDown
                                                 client={client}

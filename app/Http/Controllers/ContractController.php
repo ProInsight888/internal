@@ -38,7 +38,7 @@ class ContractController extends Controller
             'pic_tlp_num' => 'string|nullable',
             'pic_title' => 'string|nullable',
             'pic_position' => 'string|nullable',
-            'price' => 'string|nullable',
+            'price' => 'string|nullable',   
         ]);
 
         $today = now('Asia/Jakarta');
