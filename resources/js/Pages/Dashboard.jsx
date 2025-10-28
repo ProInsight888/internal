@@ -658,8 +658,8 @@ const TaskAssignee = ({ assignee }) => (
 export default function Dashboard({ userName, absens, clients, tasks }) {
     // State management
     const user = usePage().props.auth.user;
+    // console.log(tasks.it)
     const { data, setData, post, errors } = useForm({ absence: "Hadir" });
-
     const date = new Date();
     const today = date.toISOString().slice(0, 10);
     const [sortDate, setSortDate] = useState(today);
@@ -675,74 +675,122 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
     });
 
     let taskUserArray = [];
+    const urgent = [];
+    const soon = [];
+    const up_coming = [];
 
-    tasks.forEach((task) => {
-        if (!task.penanggung_jawab) return;
+    let countTask = 0
 
-        // Split by comma and check if userName is in the list
-        const assignees = task.penanggung_jawab
-            .split(",")
-            .map((name) => name.trim());
-        const isAssignedToUser = assignees.includes(userName);
-        const isNotApproved = task.status !== "Approved";
-        const isNotRejected = task.status !== "Rejected";
+    const teams = ["it", "marketing", "media", "creative"];
 
-        if (isAssignedToUser && isNotApproved && isNotRejected) {
-            taskUserArray.push(task);
+    const checkUrgentTask = (task) => {
+        const deadline = new Date(task.deadline);
+        const today = new Date();
+
+        deadline.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+
+        const diffTime = deadline - today;
+        const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (remainingDays < 0 && remainingDays <= 3) {
+            urgent.push(task);
+        } else if (remainingDays >= 4 && remainingDays <= 7) {
+            soon.push(task);
+        } else if (remainingDays >= 8) {
+            up_coming.push(task);
         }
+    };
+
+    teams.forEach((team) => {
+        if (!tasks[team]) return;
+        tasks[team].forEach((task) => {
+            // console.log(task);
+            if (!task.penanggung_jawab) return;
+
+            // Split by comma and check if userName is in the list
+            const assignees = task.penanggung_jawab
+                .split(",")
+                .map((name) => name.trim());
+            const isAssignedToUser = assignees.includes(userName);
+            const isNotApproved = task.status !== "Approved";
+            const isNotCancle = task.status !== "Cancel";
+            const isNotInReview = task.status !== "inReview";
+
+            if (
+                isAssignedToUser &&
+                isNotApproved &&
+                isNotCancle &&
+                isNotInReview
+            ) {
+                taskUserArray.push(task);
+                checkUrgentTask(task)
+                countTask+=1
+            }
+        });
     });
 
     // Filtered data
     const filteredAbsens = absens.filter((absen) => absen.tanggal === sortDate);
 
     // Task categorization
-    const categorizeTasks = () => {
-        const urgent = [];
-        const soon = [];
-        const up_coming = [];
+    // const categorizeTasks = () => {
+    
+    // const teams = ["it", "marketing", "media", "creative"];
 
-        tasks.forEach((task) => {
-            const deadline = new Date(task.deadline);
-            const today = new Date();
+    
 
-            deadline.setHours(0, 0, 0, 0);
-            today.setHours(0, 0, 0, 0);
+    // teams.forEach((team) => {
+    //     tasks[team].forEach((task) => {
+    //         const deadline = new Date(task.deadline);
+    //         const today = new Date();
 
-            const diffTime = deadline - today;
-            const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    //         deadline.setHours(0, 0, 0, 0);
+    //         today.setHours(0, 0, 0, 0);
 
-            if (remainingDays >= 0 && remainingDays <= 3) {
-                urgent.push(task);
-            } else if (remainingDays >= 4 && remainingDays <= 7) {
-                soon.push(task);
-            } else if (remainingDays >= 8) {
-                up_coming.push(task);
-            }
-        });
+    //         const diffTime = deadline - today;
+    //         const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-        return { urgent, soon, up_coming };
-    };
+    //         if (remainingDays < 0 && remainingDays <= 3) {
+    //             urgent.push(task);
+    //         } else if (remainingDays >= 4 && remainingDays <= 7) {
+    //             soon.push(task);
+    //         } else if (remainingDays >= 8) {
+    //             up_coming.push(task);
+    //         }
+    //     });
 
-    const { urgent, soon, up_coming } = categorizeTasks();
+        // console.log(urgent, soon, up_coming);
+
+    //     return { urgent, soon, up_coming };
+    // });
+    // }
+
+    // const { urgent, soon, up_coming } = categorizeTasks();
 
     // Task status filtering
-    const filterTasksByStatus = (status) =>
-        tasks.filter((task) => task.status === status);
 
-    const onProgressStatus = filterTasksByStatus("On Progress");
-    const pendingStatus = filterTasksByStatus("Pending");
-    const approvedStatus = filterTasksByStatus("Approved");
-    const inReviewStatus = filterTasksByStatus("In Review");
-    const rejectedStatus = filterTasksByStatus("Rejected");
-    const revisionStatus = filterTasksByStatus("Revision");
-    const idleStatus = filterTasksByStatus("Idle");
+    //TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-    const task_not_include_cancle_approved =
-        idleStatus.length +
-        rejectedStatus.length +
-        pendingStatus.length +
-        inReviewStatus.length +
-        onProgressStatus.length;
+    // const filterTasksByStatus = (status) =>
+    //     tasks.filter((task) => task.status === status);
+
+    // const onProgressStatus = filterTasksByStatus("On Progress");
+    // const pendingStatus = filterTasksByStatus("Pending");
+    // const approvedStatus = filterTasksByStatus("Approved");
+    // const inReviewStatus = filterTasksByStatus("In Review");
+    // const rejectedStatus = filterTasksByStatus("Rejected");
+    // const revisionStatus = filterTasksByStatus("Revision");
+    // const idleStatus = filterTasksByStatus("Idle");
+
+    // const task_not_include_cancle_approved =
+    //     idleStatus.length +
+    //     rejectedStatus.length +
+    //     pendingStatus.length +
+    //     inReviewStatus.length +
+    //     onProgressStatus.length;
+
+    //TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
     // Handlers
     const submit = (e) => {
@@ -816,19 +864,19 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                 <StatusCard
                                     title="Urgent Task"
                                     count={urgent.length}
-                                    total={task_not_include_cancle_approved}
+                                    total={countTask}
                                     bgColor="bg-gradient-to-br from-red-500 to-orange-500"
                                 />
                                 <StatusCard
                                     title="Soon"
                                     count={soon.length}
-                                    total={task_not_include_cancle_approved}
+                                    total={countTask}
                                     bgColor="bg-gradient-to-br from-amber-500 to-yellow-500"
                                 />
                                 <StatusCard
                                     title="Up Coming"
                                     count={up_coming.length}
-                                    total={task_not_include_cancle_approved}
+                                    total={countTask}
                                     bgColor="bg-gradient-to-br from-green-500 to-emerald-500"
                                 />
 
@@ -876,8 +924,10 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                         </div>
                     </div>
 
+                    {/* TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */}
+                    
                     {/* Tasks Section */}
-                    <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-200 dark:border-gray-700 shadow-md">
+                    {/* <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-200 dark:border-gray-700 shadow-md">
                         <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2 mb-4">
                             <span className=" text-white p-2 rounded-lg">
                                 ✅
@@ -992,7 +1042,10 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                 icon="💤"
                             />
                         </div>
-                    </div>
+                    </div> */}
+
+                    {/* TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */}
+
                 </div>
             </div>
         </AuthenticatedLayout>

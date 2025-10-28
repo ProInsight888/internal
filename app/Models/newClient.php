@@ -21,6 +21,18 @@ class newClient extends Model
         'status',
         'contract_end',
         'payment_month',
+        'code',
+        'no_surat',
+        'today',
+        'contract_start',
+        'contract_end',
+        'full_address',
+        'tlp_num',
+        'pic_tlp_num',
+        'pic_name',
+        'pic_title',
+        'pic_position',
+        'price',
     ];
 
     public function getRouteKeyName()

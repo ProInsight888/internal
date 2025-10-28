@@ -441,8 +441,12 @@ export default function edit({ clients }) {
                                                         Unpaid
                                                     </option>
                                                 </select>
-
-                                                {data.status === "Cicil" && (
+                                            </div>
+                                            {data.status === "Cicil" && (
+                                                <div>
+                                                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                                                        installments
+                                                    </span>
                                                     <div className="flex items-center gap-2">
                                                         <TextInput
                                                             id="cicil"
@@ -450,9 +454,9 @@ export default function edit({ clients }) {
                                                             value={data.cicil}
                                                             type="number"
                                                             min="1"
-                                                            max="10"
+                                                            max="12"
                                                             placeholder="1"
-                                                            className="w-20 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                                            className="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                                                             onChange={(e) =>
                                                                 setData(
                                                                     "cicil",
@@ -461,12 +465,9 @@ export default function edit({ clients }) {
                                                                 )
                                                             }
                                                         />
-                                                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                            installments
-                                                        </span>
                                                     </div>
-                                                )}
-                                            </div>
+                                                </div>
+                                            )}
                                             <InputError
                                                 message={errors.status}
                                                 className="mt-2 dark:text-red-400"

@@ -4,9 +4,11 @@ use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\AddAccountController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CheckDataCollectionController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CreativeController;
 use App\Http\Controllers\creativeReviewController;
 use App\Http\Controllers\deleteCicilan;
+use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\it_review;
 use App\Http\Controllers\ItController;
 use App\Http\Controllers\ItemsController;
@@ -29,6 +31,7 @@ use App\Http\Controllers\update_submit_media_task;
 use App\Http\Controllers\UpdateDragDropController;
 use App\Http\Controllers\UpdateTaskSubmit;
 use App\Models\absen;
+use App\Models\it;
 use App\Models\marketing;
 use App\Models\newClient;
 use App\Models\task;
@@ -40,32 +43,46 @@ use App\Http\Controllers\SpreadsheetController;
 use App\Http\Controllers\update_submit_it_task;
 use App\Http\Controllers\update_submit_marketing_task;
 use App\Models\creative;
+use App\Models\media;
 
 Route::redirect('/', '/dashboard');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         $absens = absen::all();
         $clients = newClient::all();
-        $tasks = task::all();
+        $it = it::all();
+        $media = media::all();
+        $creative = creative::all();
+        $marketing = marketing::all();
         return Inertia::render('Dashboard', [
             'userName' => Auth::user()->name,
             'absens' => $absens,
             'clients' => $clients,
-            'tasks' => $tasks,
+            'tasks' => [
+                'it' => $it,
+                'media' => $media,
+                'creative' => $creative,
+                'marketing' => $marketing,
+            ],
         ]);
     })->name('dashboard');
 
-    // Route::resource('task', TaskController::class);
+    Route::get('contract/{clientsUuid}/contract', [ContractController::class, 'clientContract'])->name('contract.export');
+    Route::resource('contract', ContractController::class);
 
     // Route::resource('/result', ResultController::class);
 
     // Route::resource('/personal_dashboard', PersonalDashboardController::class);
     Route::resource('absen', AbsenController::class);
 
+    Route::resource('calendar', GoogleCalendarController::class);
+    // Route::get('/calendar/{calendar}', [GoogleCalendarController::class, 'show'])->name('calendar.show');
 
-    Route::resource('kalender', KalenderController::class);
-    Route::put('kalender', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
+
+    // Route::resource('kalender', KalenderController::class);
+    // Route::put('kalender', [UpdateDragDropController::class, 'update'])->name('drag_and_drop_update.update');
     Route::resource('items', ItemsController::class);
     Route::resource('data_collection', ToolDataCollectionController::class);
     Route::resource('check', CheckDataCollectionController::class);
@@ -105,10 +122,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('add_account/{user}', [AddAccountController::class, 'destroy'])->name('add_account.destroy');
     Route::delete('deleteCicilan/{uuid}', [deleteCicilan::class, 'destroy'])->name('deleteCicilan.destroy');
     Route::post('storeCicilan/{uuid}', [deleteCicilan::class, 'store'])->name('storeCicilan.store');
-    Route::get('media/create', [AddAccountController::class, 'edit'])->name('media.create');
-    Route::get('creative/create', [AddAccountController::class, 'edit'])->name('creative.create');
-    Route::get('marketing/create', [AddAccountController::class, 'edit'])->name('marketing.create');
-    Route::get('it/create', [AddAccountController::class, 'edit'])->name('it.create');
+    Route::get('media/create', [MediaController::class, 'create'])->name('media.create');
+    Route::get('creative/create', [CreativeController::class, 'create'])->name('creative.create');
+    Route::get('marketing/create', [MarketingController::class, 'create'])->name('marketing.create');
+    Route::get('it/create', [ItController::class, 'create'])->name('it.create');
 
     Route::resource('new_client', NewClientController::class);
 
