@@ -22,8 +22,8 @@ class NewClientController extends Controller
      */
     public function index()
     {
-        $clients = newClient::all();
-        $cicilans = cicilan::all();
+        $clients = newClient::paginate(10);
+        $cicilans = cicilan::all(); 
         return inertia('NewClient/index', [
             'clients' => $clients,
             'cicilans' => $cicilans,

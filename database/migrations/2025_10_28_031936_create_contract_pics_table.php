@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('contract_pics', function (Blueprint $table) {
             $table->id();
-            $table->string('new_client_contract_uuid');
+            $table->string('contract_uuid');
             $table->string('pic_name');
             $table->string('pic_tlp_num');
             $table->string('pic_position');

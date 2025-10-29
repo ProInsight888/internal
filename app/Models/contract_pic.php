@@ -10,7 +10,7 @@ class contract_pic extends Model
     use HasFactory;
 
     protected $fillable = [
-        'new_client_contract_uuid',
+        'contract_uuid',
         'pic_name',
         'pic_tlp_num',
         'pic_position',
