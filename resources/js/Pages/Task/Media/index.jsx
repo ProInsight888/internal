@@ -14,7 +14,7 @@ const StatusBadge = ({ status }) => {
         Revision: "#F97316", // orange
         Idle: "#6B7280", // gray
         Lunas: "#EC4899", // pink
-        Cicil: "#14B8A6", // teal
+        Lunas: "#14B8A6", // teal
     };
 
     return (
@@ -116,12 +116,12 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                 </div>
 
                 {/* Task Company Name */}
-                <h3 className="text-sm font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1">
+                <h3 className="flex text-xl font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1 border-b border-black dark:border-white pb-0.5 justify-center">
                     {task.company}
                 </h3>
 
                 {/* Code */}
-                <h1 className="font-black text-2xl text-gray-900 dark:text-white -mb-0.5 leading-tight">
+                <h1 className="font-black text-2xl text-gray-900 dark:text-white -mb-0.5 leading-tight pt-3">
                     {task?.company_code?.code || "N/A"}
                 </h1>
 

@@ -288,7 +288,7 @@ export default function Show({ client }) {
                                             |
                                             <Link
                                                 href={route(
-                                                    "new_client.contract.edit",
+                                                    "contract.export",
                                                     client.uuid
                                                 )}
                                                 className="inline-flex items-center px-4 py-2 text-sm text-white font-medium rounded-lg transition-all duration-200"
