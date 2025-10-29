@@ -140,7 +140,6 @@ Route::prefix('new_client')->group(function () {
     Route::put('/{contract}', [ContractController::class, 'update'])->name('new_client.update');
 });
 
-
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

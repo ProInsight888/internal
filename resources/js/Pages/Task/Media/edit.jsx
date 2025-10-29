@@ -144,7 +144,7 @@ export default function edit({
                                 {/* Back to Tasks Button */}
                                 <Link
                                     href={route("media.index")}
-                                    className="inline-flex items-center text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200 bg-white/20 hover:bg-white/30 rounded-lg px-4 py-2 backdrop-blur-sm border border-white/30"
+                                    className="inline-flex items-center text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200 bg-white/20 hover:bg-white/30 rounded-lg px-4 py-2 backdrop-blur-sm border border-white/30 md:flex"
                                 >
                                     <svg 
                                         className="w-4 h-4 mr-2" 
