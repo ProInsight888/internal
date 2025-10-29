@@ -1,6 +1,34 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
+// Single, consistent InfoField component
+function InfoField({ label, value, colSpan = "col-span-1" }) {
+    return (
+        <div className={`${colSpan} space-y-1`}>
+            {/* Label */}
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 tracking-wide">
+                {label}
+            </p>
+
+            {/* Card-like container */}
+            <div className="border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-xl p-4 shadow-sm backdrop-blur-sm transition-all duration-200 hover:shadow-md">
+                <p className="text-base font-semibold text-gray-900 dark:text-white">
+                    {value || "—"}
+                </p>
+            </div>
+        </div>
+    );
+}
+
+// SectionTitle component
+function SectionTitle({ title }) {
+    return (
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            {title}
+        </h3>
+    );
+}
+
 export default function Show({ client }) {
     console.log(client);
     return (
@@ -28,18 +56,49 @@ export default function Show({ client }) {
                                 <h2 className="text-2xl font-bold text-indigo-800 dark:text-indigo-300">
                                     {client?.company_name}
                                 </h2>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    Client Code: <span className="font-semibold">{client?.code}</span>
-                                </p>
+                                <div className="mt-2 flex justify-between items-center">
+                                    <div>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                                            Client Code:{" "}
+                                            <span className="font-semibold">
+                                                {client?.code}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <Link
+                                            href={route(
+                                                "new_client.edit",
+                                                client.uuid
+                                            )}
+                                            className="inline-flex items-center px-4 py-2 text-sm text-white font-medium rounded-lg transition-all duration-200"
+                                        >
+                                            <svg
+                                                className="w-4 h-4 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                />
+                                            </svg>
+                                        </Link>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Basic Info */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <InfoField label="Company Name" value={client.company_name} />
+                                <InfoField
+                                    label="Company Name"
+                                    value={client.company_name}
+                                />
                                 <InfoField label="Code" value={client.code} />
                                 <InfoField label="Type" value={client.type} />
-                                <InfoField label="Package" value={client.package} />
-                                <InfoField label="Person In Charge (PIC)" value={client.pic} />
                                 <InfoField
                                     label="Location"
                                     value={client.location}
@@ -47,18 +106,13 @@ export default function Show({ client }) {
                                 />
                             </div>
 
-                            {/* Contract Duration */}
-                            <SectionTitle title="Contract Duration" />
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                                <InfoField label="Years" value={client.contract_tahun} />
-                                <InfoField label="Months" value={client.contract_bulan} />
-                                <InfoField label="Days" value={client.contract_hari} />
-                            </div>
-
                             {/* Payment Info */}
                             <SectionTitle title="Payment Information" />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <InfoField label="Payment Status" value={client.status} />
+                                <InfoField
+                                    label="Payment Status"
+                                    value={client.status}
+                                />
                                 {client.status === "Cicil" && (
                                     <InfoField
                                         label="Number of Installments"
@@ -77,14 +131,17 @@ export default function Show({ client }) {
                                                 (fase, index) => (
                                                     <div
                                                         key={index}
-                                                        className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg"
+                                                        className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 shadow-sm"
                                                     >
                                                         <div className="flex justify-between items-center">
                                                             <p className="text-gray-800 dark:text-gray-200">
                                                                 <span className="font-semibold">
-                                                                    Installment {index + 1} Date:
+                                                                    Installment{" "}
+                                                                    {index + 1}{" "}
+                                                                    Date:
                                                                 </span>{" "}
-                                                                {fase.tanggal || "—"}
+                                                                {fase.tanggal ||
+                                                                    "—"}
                                                             </p>
                                                             <p
                                                                 className={`font-semibold ${
@@ -105,54 +162,113 @@ export default function Show({ client }) {
                                     </div>
                                 )}
 
-                            {/* Back Button */}
-                            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                                <Link
-                                    href={route("new_client.index")}
-                                    className="inline-flex items-center px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors duration-200 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
-                                >
-                                    <svg
-                                        className="w-4 h-4 mr-2"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                                        />
-                                    </svg>
-                                    Back to Clients
-                                </Link>
+                            {/* Table Data Contract */}
+                            <SectionTitle title="Contract Details" />
+                            <div className="mb-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    <InfoField
+                                        label="Reference Number"
+                                        value={client.ref}
+                                    />
+                                    <InfoField
+                                        label="Package"
+                                        value={client.package}
+                                    />
+                                    <div className="space-y-1">
+                                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400 tracking-wide">
+                                            Contract Duration
+                                        </p>
+                                        <div className="border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-xl p-4 shadow-sm backdrop-blur-sm">
+                                            <div className="grid grid-cols-3 gap-2 text-center">
+                                                <div>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                        Years
+                                                    </p>
+                                                    <p className="text-base font-semibold text-gray-900 dark:text-white">
+                                                        {client.contract_tahun ||
+                                                            "0"}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                        Months
+                                                    </p>
+                                                    <p className="text-base font-semibold text-gray-900 dark:text-white">
+                                                        {client.contract_bulan ||
+                                                            "0"}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                        Days
+                                                    </p>
+                                                    <p className="text-base font-semibold text-gray-900 dark:text-white">
+                                                        {client.contract_hari ||
+                                                            "0"}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <InfoField
+                                        label="Person In Charge"
+                                        value={client.pic}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="inline-flex w-full justify-between items-center">
+                                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 w-full">
+                                    <div className="flex justify-between items-center">
+                                        <Link
+                                            href={route("new_client.index")}
+                                            className="inline-flex items-center px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors duration-200 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
+                                        >
+                                            <svg
+                                                className="w-4 h-4 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                                />
+                                            </svg>
+                                            Back to Clients
+                                        </Link>
+                                        <Link
+                                            href={route(
+                                                "new_client.contract.edit",
+                                                client.uuid
+                                            )}
+                                            className="inline-flex items-center px-4 py-2 text-sm bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+                                        >
+                                            <svg
+                                                className="w-4 h-4 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                />
+                                            </svg>
+                                            Edit Contract
+                                        </Link>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </AuthenticatedLayout>
-    );
-}
-
-/* Helper Components */
-function InfoField({ label, value, colSpan }) {
-    return (
-        <div className={colSpan}>
-            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                {label}
-            </p>
-            <p className="mt-1 text-base font-semibold text-gray-900 dark:text-white">
-                {value || "—"}
-            </p>
-        </div>
-    );
-}
-
-function SectionTitle({ title }) {
-    return (
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            {title}
-        </h3>
     );
 }
