@@ -92,11 +92,15 @@ export default function Show({ client }) {
                             </div>
 
                             {/* Basic Info */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <SectionTitle title="Basic Information" />
+                            <div className="mb-8">
                                 <InfoField
                                     label="Company Name"
                                     value={client.company_name}
                                 />
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                                 <InfoField label="Code" value={client.code} />
                                 <InfoField label="Type" value={client.type} />
                                 <InfoField
@@ -165,55 +169,73 @@ export default function Show({ client }) {
                             {/* Table Data Contract */}
                             <SectionTitle title="Contract Details" />
                             <div className="mb-8">
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                    <InfoField
-                                        label="Reference Number"
-                                        value={client.ref}
-                                    />
-                                    <InfoField
-                                        label="Package"
-                                        value={client.package}
-                                    />
-                                    <div className="space-y-1">
-                                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400 tracking-wide">
+                                <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
+                                    {/* Table Header */}
+                                    <div className="grid grid-cols-12 bg-gray-100 dark:bg-gray-700 border-b border-gray-300 dark:border-gray-600">
+                                        <div className="col-span-3 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600">
+                                            Reference Number
+                                        </div>
+                                        <div className="col-span-3 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600">
+                                            Package
+                                        </div>
+                                        <div className="col-span-4 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600">
                                             Contract Duration
-                                        </p>
-                                        <div className="border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-xl p-4 shadow-sm backdrop-blur-sm">
-                                            <div className="grid grid-cols-3 gap-2 text-center">
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                        </div>
+                                        <div className="col-span-2 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm">
+                                            Person In Charge
+                                        </div>
+                                    </div>
+
+                                    {/* Table Row */}
+                                    <div className="grid grid-cols-12 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
+                                        {/* Reference Number Cell */}
+                                        <div className="col-span-3 px-4 py-3 text-gray-900 dark:text-white border-r border-gray-300 dark:border-gray-600">
+                                            {client.ref || "—"}
+                                        </div>
+
+                                        {/* Package Cell */}
+                                        <div className="col-span-3 px-4 py-3 text-gray-900 dark:text-white border-r border-gray-300 dark:border-gray-600">
+                                            {client.package || "—"}
+                                        </div>
+
+                                        {/* Contract Duration Cell */}
+                                        <div className="col-span-4 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                            <div className="grid grid-cols-3 gap-2">
+                                                <div className="text-center">
+                                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                                                         Years
-                                                    </p>
-                                                    <p className="text-base font-semibold text-gray-900 dark:text-white">
+                                                    </div>
+                                                    <div className="text-sm font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 py-1 rounded border border-gray-200 dark:border-gray-600">
                                                         {client.contract_tahun ||
                                                             "0"}
-                                                    </p>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                <div className="text-center">
+                                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                                                         Months
-                                                    </p>
-                                                    <p className="text-base font-semibold text-gray-900 dark:text-white">
+                                                    </div>
+                                                    <div className="text-sm font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 py-1 rounded border border-gray-200 dark:border-gray-600">
                                                         {client.contract_bulan ||
                                                             "0"}
-                                                    </p>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                <div className="text-center">
+                                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                                                         Days
-                                                    </p>
-                                                    <p className="text-base font-semibold text-gray-900 dark:text-white">
+                                                    </div>
+                                                    <div className="text-sm font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 py-1 rounded border border-gray-200 dark:border-gray-600">
                                                         {client.contract_hari ||
                                                             "0"}
-                                                    </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        {/* PIC Cell */}
+                                        <div className="col-span-2 px-4 py-3 text-gray-900 dark:text-white">
+                                            {client.pic || "—"}
+                                        </div>
                                     </div>
-                                    <InfoField
-                                        label="Person In Charge"
-                                        value={client.pic}
-                                    />
                                 </div>
                             </div>
 
