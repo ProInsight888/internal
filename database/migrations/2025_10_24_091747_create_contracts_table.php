@@ -10,14 +10,19 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('new_clients', function (Blueprint $table) {
+        Schema::create('contracts', function (Blueprint $table) {
+            $table->uuid('uuid')->primary();
+            $table->string('uuid_new_client')->nullable();
             $table->string('reference_num')->nullable();
+            $table->string('package')->nullable();
+            $table->string('platform')->nullable();
             $table->string('today')->nullable();
             $table->string('contract_start')->nullable();
             $table->string('contract_end')->nullable();
             $table->string('full_address')->nullable();
             $table->string('tlp_num')->nullable();
             $table->string('price')->nullable();
+            $table->timestamps(); // 👈 This adds created_at & updated_at
         });
     }
 
@@ -26,14 +31,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('new_clients', function (Blueprint $table) {
-            $table->dropColumn('reference_num');
-            $table->dropColumn('today');
-            $table->dropColumn('contract_start'); //don
-            $table->dropColumn('contract_end'); //don
-            $table->dropColumn('full_address'); //don
-            $table->dropColumn('tlp_num'); //don
-            $table->dropColumn('price');
-        });
+        Schema::dropIfExists('contracts');
     }
 };
