@@ -320,7 +320,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <Dropdown.Link
                                             href={route("profile")}
                                             as="button"
-                                            className="flex items-center dark:text-black dark:hover:bg-gray-200"
+                                            className="flex items-center dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600"
                                         >
                                             <svg
                                                 className="w-4 h-4 mr-2"
@@ -341,7 +341,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                             href={route("logout")}
                                             method="post"
                                             as="button"
-                                            className="flex items-center dark:text-black dark:hover:bg-gray-200"
+                                            className="flex items-center dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600"
                                         >
                                             <svg
                                                 className="w-4 h-4 mr-2"
