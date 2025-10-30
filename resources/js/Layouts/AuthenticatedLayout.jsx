@@ -257,11 +257,9 @@ export default function AuthenticatedLayout({ header, children }) {
                         {/* Right side items */}
                         <div className="flex items-center space-x-4">
                             {/* Dark/Light mode toggle */}
-                            <div className="w-8 aspect-square bg-yellow-500">
+                            <div className="w-4 aspect-square">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    width="14"
-                                    height="14"
                                     fill="currentColor"
                                     class="bi bi-bell"
                                     viewBox="0 0 16 16"
