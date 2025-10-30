@@ -201,8 +201,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                 {/* Actions */}
                 <div className="flex justify-end items-center pt-3 border-t border-black dark:border-white">
                     {!["Cancel", "In Review"].includes(task.status) &&
-                        user_role !== "member" &&
-                        user_role !== "intern" && (
+                        user_role !== "member" && (
                             <div className="flex space-x-2">
                                 <Link
                                     href={route("it.edit", task.uuid)}
@@ -626,8 +625,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                         )}
 
                         <div className="flex justify-end mb-6">
-                            {user.role !== "intern" &&
-                                user.role !== "member" && (
+                            {user.role !== "member" && (
                                     <Link
                                         href={route("it.create")}
                                         className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
@@ -788,8 +786,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                {user.role !== "intern" &&
-                                    user.role !== "member" && (
+                                {user.role !== "member" && (
                                         <Link
                                             href={route("it.create")}
                                             className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"

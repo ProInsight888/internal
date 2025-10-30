@@ -91,7 +91,7 @@ const UserTableRow = ({
                 return 'bg-gradient-to-r from-red-500 to-pink-600 text-white dark:from-red-600 dark:to-pink-700';
             case 'member':
                 return 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white dark:from-blue-600 dark:to-cyan-700';
-            case 'intern':
+            case 'leader':
                 return 'bg-gradient-to-r from-green-500 to-emerald-600 text-white dark:from-green-600 dark:to-emerald-700';
             default:
                 return 'bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-200';
@@ -221,8 +221,8 @@ const UserListTable = ({ users, searchTerm, setSearchTerm, filterRole, setFilter
                         >
                             <option value="all">All Roles</option>
                             <option value="admin">Admin</option>
+                            <option value="leader">Leader</option>
                             <option value="member">Member</option>
-                            <option value="intern">Intern</option>
                         </select>
                     </div>
 
@@ -370,8 +370,8 @@ const UserFormField = ({
 const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
     const roleOptions = [
         { value: "admin", label: "Admin - Full access to all features" },
+        { value: "leader", label: "Leader - Some Limited access" },
         { value: "member", label: "Member - Standard user access" },
-        { value: "intern", label: "Intern - Limited access" },
     ];
     const teamOptions = [
         { value: "media", label: "Media Team - Editor, Video & Photographer" },

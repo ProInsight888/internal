@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import { Fragment, useState } from "react";
 
 // Status Card Component
@@ -679,7 +680,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
     const soon = [];
     const up_coming = [];
 
-    let countTask = 0
+    let countTask = 0;
 
     const teams = ["it", "marketing", "media", "creative"];
 
@@ -724,8 +725,8 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                 isNotInReview
             ) {
                 taskUserArray.push(task);
-                checkUrgentTask(task)
-                countTask+=1
+                checkUrgentTask(task);
+                countTask += 1;
             }
         });
     });
@@ -735,10 +736,8 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
 
     // Task categorization
     // const categorizeTasks = () => {
-    
-    // const teams = ["it", "marketing", "media", "creative"];
 
-    
+    // const teams = ["it", "marketing", "media", "creative"];
 
     // teams.forEach((team) => {
     //     tasks[team].forEach((task) => {
@@ -760,7 +759,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
     //         }
     //     });
 
-        // console.log(urgent, soon, up_coming);
+    // console.log(urgent, soon, up_coming);
 
     //     return { urgent, soon, up_coming };
     // });
@@ -851,7 +850,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                             </div>
                             <div className="flex overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-300 dark:scrollbar-thumb-amber-600 scrollbar-track-transparent">
                                 {taskUserArray.map((task) => (
-                                    <TaskCard key={task.id} task={task} />
+                                    <TaskCard task={task} />
                                 ))}
                             </div>
                         </div>
@@ -881,8 +880,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                 />
 
                                 {/* Client Table */}
-                                {user.role !== "intern" &&
-                                user.role !== "member" ? (
+                                {user.role !== "member" ? (
                                     <div className="text-gray-800 dark:text-gray-200 w-full bg-white dark:bg-gray-800 dark:border-gray-600 p-5 flex flex-col gap-3 border border-gray-200 rounded-2xl col-span-1 sm:col-span-2 lg:col-span-3 shadow-md">
                                         <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2">
                                             <span className="text-white p-2 rounded-lg">
@@ -898,7 +896,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                             </div>
 
                             {/* Attendance Section */}
-                            <div className="w-full xl:w-1/3 flex flex-col gap-4">
+                            <div className="w-full xl:w-1/3 flex flex-col gap-4 md:">
                                 <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md">
                                     <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2 mb-4">
                                         <span className="text-white p-2 rounded-lg">
@@ -925,7 +923,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                     </div>
 
                     {/* TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */}
-                    
+
                     {/* Tasks Section */}
                     {/* <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-200 dark:border-gray-700 shadow-md">
                         <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2 mb-4">
@@ -1045,7 +1043,6 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                     </div> */}
 
                     {/* TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */}
-
                 </div>
             </div>
         </AuthenticatedLayout>
