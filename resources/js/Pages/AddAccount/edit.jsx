@@ -75,8 +75,8 @@ const UserFormField = ({
 const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
     const roleOptions = [
         { value: "admin", label: "Admin - Full access" },
+        { value: "leader", label: "Leader - Some Limited access" },
         { value: "member", label: "Member - Standard access" },
-        { value: "intern", label: "Intern - Limited access" },
     ];
     const teamOptions = [
         { value: "media", label: "Media Team - Editor, Video & Photographer" },

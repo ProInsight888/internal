@@ -607,7 +607,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 )}
 
                 {/* Main content */}
-                <div className="flex-1 overflow-auto ml-20 lg:p-8">
+                <div className="flex-1 overflow-auto lg:p-8 w-full lg:ml-20 max-w-8xl mx-auto px-6 sm:px-8 sm:ml-0">
                     {header && (
                         <header className="mb-6">
                             <div className="mx-auto">

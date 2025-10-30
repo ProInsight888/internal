@@ -14,7 +14,7 @@ const StatusBadge = ({ status }) => {
         Revision: "#F97316", // orange
         Idle: "#6B7280", // gray
         Lunas: "#EC4899", // pink
-        Cicil: "#14B8A6", // teal
+        Lunas: "#14B8A6", // teal
     };
 
     return (
@@ -99,8 +99,6 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
         return colorMap[status] || colorMap.default;
     };
 
-    
-
     return (
         <div
             className={`rounded-xl border-2 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden transform hover:-translate-y-1 mb-5 cursor-pointer dark:shadow-gray-800 ${getCardColor(
@@ -118,12 +116,12 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                 </div>
 
                 {/* Task Company Name */}
-                <h3 className="text-sm font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1">
+                <h3 className="flex text-xl font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1 border-b border-black dark:border-white pb-0.5 justify-center">
                     {task.company}
                 </h3>
 
                 {/* Code */}
-                <h1 className="font-black text-2xl text-gray-900 dark:text-white -mb-0.5 leading-tight">
+                <h1 className="font-black text-2xl text-gray-900 dark:text-white -mb-0.5 leading-tight pt-3">
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
@@ -149,8 +147,9 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                     // DEBUG: Check what we're working with
                                     console.log("Assignee:", trimmed);
                                     console.log("Found user:", user);
-                                    console.log({ user_avatar_url: user?.avatar_url });
-
+                                    console.log({
+                                        user_avatar_url: user?.avatar_url,
+                                    });
 
                                     return (
                                         <div
@@ -202,8 +201,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                 {/* Actions */}
                 <div className="flex justify-end items-center pt-3 border-t border-black dark:border-white">
                     {!["Cancel", "In Review"].includes(task.status) &&
-                        user_role !== "member" &&
-                        user_role !== "intern" && (
+                        user_role !== "member" && (
                             <div className="flex space-x-2">
                                 <Link
                                     href={route("it.edit", task.uuid)}
@@ -627,8 +625,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                         )}
 
                         <div className="flex justify-end mb-6">
-                            {user.role !== "intern" &&
-                                user.role !== "member" && (
+                            {user.role !== "member" && (
                                     <Link
                                         href={route("it.create")}
                                         className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
@@ -789,8 +786,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                {user.role !== "intern" &&
-                                    user.role !== "member" && (
+                                {user.role !== "member" && (
                                         <Link
                                             href={route("it.create")}
                                             className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"

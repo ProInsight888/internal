@@ -14,13 +14,14 @@ const StatusBadge = ({ status }) => {
         Revision: "#F97316", // orange
         Idle: "#6B7280", // gray
         Lunas: "#EC4899", // pink
-        Cicil: "#14B8A6", // teal
+        Lunas: "#14B8A6", // teal
     };
 
     return (
         <div
             className={`${
-                statusColors[status] || "bg-gray-200 text-black dark:bg-gray-700 dark:text-white"
+                statusColors[status] ||
+                "bg-gray-200 text-black dark:bg-gray-700 dark:text-white"
             } font-medium py-1.5 px-3 rounded-full text-center text-xs shadow-sm dark:shadow-gray-800`}
         >
             {status}
@@ -47,16 +48,20 @@ const PriorityBadge = ({ deadline }) => {
         bgColor = "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
     } else if (remainingDays === 0) {
         priority = "Due Today";
-        bgColor = "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300";
+        bgColor =
+            "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300";
     } else if (remainingDays <= 3) {
         priority = "High";
-        bgColor = "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300";
+        bgColor =
+            "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300";
     } else if (remainingDays <= 7) {
         priority = "Medium";
-        bgColor = "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300";
+        bgColor =
+            "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300";
     } else {
         priority = "Low";
-        bgColor = "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+        bgColor =
+            "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
     }
 
     return (
@@ -73,15 +78,22 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
     // Assign different pastel colors based on task status
     const getCardColor = (status) => {
         const colorMap = {
-            "In Review": "bg-[#8B5CF6]/10 border-[#8B5CF6] shadow-xl dark:bg-[#8B5CF6]/20 dark:border-[#8B5CF6]/80",
-            Rejected: "bg-[#EF4444]/10 border-[#EF4444] shadow-xl dark:bg-[#EF4444]/20 dark:border-[#EF4444]/80",
-            Approved: "bg-[#10B981]/10 border-[#10B981] shadow-xl dark:bg-[#10B981]/20 dark:border-[#10B981]/80",
+            "In Review":
+                "bg-[#8B5CF6]/10 border-[#8B5CF6] shadow-xl dark:bg-[#8B5CF6]/20 dark:border-[#8B5CF6]/80",
+            Rejected:
+                "bg-[#EF4444]/10 border-[#EF4444] shadow-xl dark:bg-[#EF4444]/20 dark:border-[#EF4444]/80",
+            Approved:
+                "bg-[#10B981]/10 border-[#10B981] shadow-xl dark:bg-[#10B981]/20 dark:border-[#10B981]/80",
             Cancel: "bg-slate-100 border-slate-800 dark:bg-slate-800 dark:border-slate-600",
             Idle: "bg-[#d141b7]/10 border-[#d141b7] shadow-xl dark:bg-[#d141b7]/20 dark:border-[#d141b7]/80",
-            Revision: "bg-[#F97316]/10 border-[#F97316] shadow-xl dark:bg-[#F97316]/20 dark:border-[#F97316]/80",
-            Pending: "bg-[#F59E0B]/10 border-[#F59E0B] shadow-xl dark:bg-[#F59E0B]/20 dark:border-[#F59E0B]/80",
-            "On Progress": "bg-[#3B82F6]/10 border-[#3B82F6] shadow-xl dark:bg-[#3B82F6]/20 dark:border-[#3B82F6]/80",
-            default: "bg-purple-100 border-purple-200 dark:bg-purple-900/20 dark:border-purple-700",
+            Revision:
+                "bg-[#F97316]/10 border-[#F97316] shadow-xl dark:bg-[#F97316]/20 dark:border-[#F97316]/80",
+            Pending:
+                "bg-[#F59E0B]/10 border-[#F59E0B] shadow-xl dark:bg-[#F59E0B]/20 dark:border-[#F59E0B]/80",
+            "On Progress":
+                "bg-[#3B82F6]/10 border-[#3B82F6] shadow-xl dark:bg-[#3B82F6]/20 dark:border-[#3B82F6]/80",
+            default:
+                "bg-purple-100 border-purple-200 dark:bg-purple-900/20 dark:border-purple-700",
         };
 
         return colorMap[status] || colorMap.default;
@@ -104,12 +116,12 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                 </div>
 
                 {/* Task Company Name */}
-                <h3 className="text-sm font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1">
+                <h3 className="flex text-xl font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1 border-b border-black dark:border-white pb-0.5 justify-center">
                     {task.company}
                 </h3>
 
                 {/* Code */}
-                <h1 className="font-black text-2xl text-gray-900 dark:text-white -mb-0.5 leading-tight">
+                <h1 className="font-black text-2xl text-gray-900 dark:text-white -mb-0.5 leading-tight pt-3">
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
@@ -152,66 +164,70 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
 
                 {/* Actions */}
                 <div className="flex justify-end items-center pt-3 border-t border-black dark:border-white">
-                    {!["Cancel", "In Review"].includes(task.status) &&  user_role !== 'member' && user_role !== 'intern' && (
-                        <div className="flex space-x-2">
-                            <Link
-                                href={route("creative.edit", task.uuid)}
-                                onClick={(e) => e.stopPropagation()}
-                                className="p-2 text-black dark:text-white hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-lg transition-colors duration-200"
-                            >
-                                <svg
-                                    className="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                    {!["Cancel", "In Review"].includes(task.status) &&
+                        user_role !== "member" && (
+                            <div className="flex space-x-2">
+                                <Link
+                                    href={route("creative.edit", task.uuid)}
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="p-2 text-black dark:text-white hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-lg transition-colors duration-200"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                    />
-                                </svg>
-                            </Link>
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation(); // This prevents the card click
-                                    if (
-                                        confirm(
-                                            "Are you sure you want to delete this task?"
-                                        )
-                                    ) {
-                                        router.delete(
-                                            route("creative.destroy", task.uuid),
-                                            {
-                                                onSuccess: () =>
-                                                    alert(
-                                                        "Task deleted successfully!"
-                                                    ),
-                                                onError: (errors) =>
-                                                    console.error(errors),
-                                            }
-                                        );
-                                    }
-                                }}
-                                className="p-2 text-black dark:text-white hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors duration-200"
-                            >
-                                <svg
-                                    className="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                                    <svg
+                                        className="w-4 h-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                        />
+                                    </svg>
+                                </Link>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // This prevents the card click
+                                        if (
+                                            confirm(
+                                                "Are you sure you want to delete this task?"
+                                            )
+                                        ) {
+                                            router.delete(
+                                                route(
+                                                    "creative.destroy",
+                                                    task.uuid
+                                                ),
+                                                {
+                                                    onSuccess: () =>
+                                                        alert(
+                                                            "Task deleted successfully!"
+                                                        ),
+                                                    onError: (errors) =>
+                                                        console.error(errors),
+                                                }
+                                            );
+                                        }
+                                    }}
+                                    className="p-2 text-black dark:text-white hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors duration-200"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    )}
+                                    <svg
+                                        className="w-4 h-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+                        )}
                 </div>
             </div>
         </div>
@@ -232,11 +248,11 @@ const TaskModal = ({
     if (!isOpen) return null;
 
     return (
-        <div 
+        <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
             onClick={onClose} // Add this to close when clicking overlay
         >
-            <div 
+            <div
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()} // Add this to prevent closing when clicking inside
             >
@@ -280,21 +296,33 @@ const TaskModal = ({
                     {/* Task Details */}
                     <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
-                            <span className="text-gray-500 dark:text-gray-400">Assignee:</span>
+                            <span className="text-gray-500 dark:text-gray-400">
+                                Assignee:
+                            </span>
                             <p className="font-medium dark:text-white">
                                 {task.penanggung_jawab}
                             </p>
                         </div>
                         <div>
-                            <span className="text-gray-500 dark:text-gray-400">Format:</span>
-                            <p className="font-medium line-clamp-3 break-words dark:text-white">{task.task_format}</p>
+                            <span className="text-gray-500 dark:text-gray-400">
+                                Format:
+                            </span>
+                            <p className="font-medium line-clamp-3 break-words dark:text-white">
+                                {task.task_format}
+                            </p>
                         </div>
                         <div>
-                            <span className="text-gray-500 dark:text-gray-400">Category:</span>
-                            <p className="font-medium dark:text-white">{task.category}</p>
+                            <span className="text-gray-500 dark:text-gray-400">
+                                Category:
+                            </span>
+                            <p className="font-medium dark:text-white">
+                                {task.category}
+                            </p>
                         </div>
                         <div>
-                            <span className="text-gray-500 dark:text-gray-400">Deadline:</span>
+                            <span className="text-gray-500 dark:text-gray-400">
+                                Deadline:
+                            </span>
                             <p className="font-medium text-red-600 dark:text-red-400">
                                 {task.deadline}
                             </p>
@@ -560,27 +588,27 @@ export default function TaskIndex({ tasks, userName, users }) {
                         )}
 
                         <div className="flex justify-end mb-6">
-                            {user.role !== "intern" && user.role !== 'member' && (
-                                <Link
-                                    href={route("creative.create")}
-                                    className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
-                                >
-                                    <svg
-                                        className="w-5 h-5 mr-2"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
+                            {user.role !== "member" && (
+                                    <Link
+                                        href={route("creative.create")}
+                                        className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                                     >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                        />
-                                    </svg>
-                                    Add New Task
-                                </Link>
-                            )}
+                                        <svg
+                                            className="w-5 h-5 mr-2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                            />
+                                        </svg>
+                                        Add New Task
+                                    </Link>
+                                )}
                         </div>
 
                         {/* Tasks Grid */}
@@ -723,14 +751,14 @@ export default function TaskIndex({ tasks, userName, users }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                {user.role !== "intern" && user.role !== 'member' && (
-                                    <Link
-                                        href={route("creative.create")}
-                                        className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
-                                    >
-                                        Create New Task
-                                    </Link>
-                                )}
+                                {user.role !== "member" && (
+                                        <Link
+                                            href={route("creative.create")}
+                                            className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
+                                        >
+                                            Create New Task
+                                        </Link>
+                                    )}
                             </div>
                         )}
                     </div>

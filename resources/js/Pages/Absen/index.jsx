@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import { useRef, useState } from "react";
 import { router } from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel";
@@ -229,6 +229,8 @@ export default function AbsenceDashboard({ absens, user }) {
             userArray.push(name)
         );
     }
+    let personal_user = usePage().props.auth.user
+    // console.log(personal_user)
 
     // State management
     const [sortMonth, setSortMonth] = useState(currentMonth);
@@ -236,7 +238,6 @@ export default function AbsenceDashboard({ absens, user }) {
     const { data, setData, post, errors, processing } = useForm({
         from_date: "",
         end_date: "",
-
     });
 
     // Get unique users
@@ -259,7 +260,7 @@ export default function AbsenceDashboard({ absens, user }) {
             date_from: data.from_date,
             date_end: data.end_date,
             users: userArray,
-            sortName : sortName
+            sortName: sortName,
         }).toString();
 
         const url = `/api/export-data?${query}`;
@@ -310,104 +311,106 @@ export default function AbsenceDashboard({ absens, user }) {
                             </div>
 
                             {/* Export Form */}
-                            <form
-                                onSubmit={submit}
-                                ref={formRef}
-                                className="bg-white dark:bg-gray-700 p-4 rounded-xl shadow-sm border border-blue-100 dark:border-blue-800"
-                            >
-                                <div className="flex flex-col md:flex-row gap-4 items-end">
-                                    <div className="flex flex-col md:flex-row gap-4 flex-1">
-                                        <div className="w-full md:w-48">
-                                            <InputLabel
-                                                htmlFor="from_date"
-                                                className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                            >
-                                                From Date
-                                            </InputLabel>
-                                            <div className="relative">
-                                                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500 dark:text-gray-400">
-                                                    <svg
-                                                        className="w-5 h-5"
-                                                        fill="currentColor"
-                                                        viewBox="0 0 20 20"
-                                                    >
-                                                        <path
-                                                            fillRule="evenodd"
-                                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                                            clipRule="evenodd"
-                                                        ></path>
-                                                    </svg>
+                            {personal_user.role !== "member" && (
+                                <form
+                                    onSubmit={submit}
+                                    ref={formRef}
+                                    className="bg-white dark:bg-gray-700 p-4 rounded-xl shadow-sm border border-blue-100 dark:border-blue-800"
+                                >
+                                    <div className="flex flex-col md:flex-row gap-4 items-end">
+                                        <div className="flex flex-col md:flex-row gap-4 flex-1">
+                                            <div className="w-full md:w-48">
+                                                <InputLabel
+                                                    htmlFor="from_date"
+                                                    className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                >
+                                                    From Date
+                                                </InputLabel>
+                                                <div className="relative">
+                                                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500 dark:text-gray-400">
+                                                        <svg
+                                                            className="w-5 h-5"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 20 20"
+                                                        >
+                                                            <path
+                                                                fillRule="evenodd"
+                                                                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                                                clipRule="evenodd"
+                                                            ></path>
+                                                        </svg>
+                                                    </div>
+                                                    <TextInput
+                                                        name="from_date"
+                                                        type="date"
+                                                        value={data.from_date}
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                "from_date",
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className="pl-10 block w-full rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 shadow-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-white"
+                                                    />
                                                 </div>
-                                                <TextInput
-                                                    name="from_date"
-                                                    type="date"
-                                                    value={data.from_date}
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "from_date",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    className="pl-10 block w-full rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 shadow-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-white"
-                                                />
+                                            </div>
+                                            <div className="w-full md:w-48">
+                                                <InputLabel
+                                                    htmlFor="end_date"
+                                                    className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                                                >
+                                                    Until Date
+                                                </InputLabel>
+                                                <div className="relative">
+                                                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500 dark:text-gray-400">
+                                                        <svg
+                                                            className="w-5 h-5"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 20 20"
+                                                        >
+                                                            <path
+                                                                fillRule="evenodd"
+                                                                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                                                clipRule="evenodd"
+                                                            ></path>
+                                                        </svg>
+                                                    </div>
+                                                    <TextInput
+                                                        name="end_date"
+                                                        type="date"
+                                                        value={data.end_date}
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                "end_date",
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        className="pl-10 block w-full rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 shadow-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-white"
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="w-full md:w-48">
-                                            <InputLabel
-                                                htmlFor="end_date"
-                                                className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                            >
-                                                Until Date
-                                            </InputLabel>
-                                            <div className="relative">
-                                                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500 dark:text-gray-400">
-                                                    <svg
-                                                        className="w-5 h-5"
-                                                        fill="currentColor"
-                                                        viewBox="0 0 20 20"
-                                                    >
-                                                        <path
-                                                            fillRule="evenodd"
-                                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                                            clipRule="evenodd"
-                                                        ></path>
-                                                    </svg>
-                                                </div>
-                                                <TextInput
-                                                    name="end_date"
-                                                    type="date"
-                                                    value={data.end_date}
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "end_date",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    className="pl-10 block w-full rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 shadow-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-white"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <button
-                                        type="submit"
-                                        className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2.5 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg w-full md:w-auto"
-                                    >
-                                        <svg
-                                            className="w-5 h-5 mr-2"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
+                                        <button
+                                            type="submit"
+                                            className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-2.5 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg w-full md:w-auto"
                                         >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                                                clipRule="evenodd"
-                                            ></path>
-                                        </svg>
-                                        Export to Google Sheet
-                                    </button>
-                                </div>
-                            </form>
+                                            <svg
+                                                className="w-5 h-5 mr-2"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                                    clipRule="evenodd"
+                                                ></path>
+                                            </svg>
+                                            Export to Google Sheet
+                                        </button>
+                                    </div>
+                                </form>
+                            )}
                         </div>
 
                         {/* Table Section */}

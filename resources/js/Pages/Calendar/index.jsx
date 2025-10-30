@@ -124,9 +124,12 @@ export default function index({ ev }) {
 
     const { success, deleted: deleteMessage } = usePage().props.flash ?? {};
 
-    console.log(customMenu)
+    console.log(customMenu);
 
     let number_event = 1;
+
+    let main_user = usePage().props.auth.user;
+    // console.log(main_user)
 
     return (
         <AuthenticatedLayout
@@ -143,29 +146,33 @@ export default function index({ ev }) {
             }
         >
             <Head title="Calendar" />
-            <div>
-                <div className=" my-5 w-full justify-end flex">
-                    <Link
-                        href={route("calendar.create")}
-                        className="px-5 py-4 mb-10 bg-yellow-500 text-black rounded-lg"
-                    >
-                        + Add Event
-                    </Link>
-                </div>
 
+            {main_user.role !== "member" && (
                 <div>
-                    {success && (
-                        <div className="bg-green-100 text-green-800 p-3 rounded mb-4">
-                            ✅ {success}
-                        </div>
-                    )}
-                    {deleteMessage && (
-                        <div className="bg-red-100 text-red-800 p-3 rounded mb-4">
-                            ❌ {deleteMessage}
-                        </div>
-                    )}
+                    <div className=" my-5 w-full justify-end flex">
+                        <Link
+                            href={route("calendar.create")}
+                            className="px-5 py-4 mb-10 bg-yellow-500 text-black rounded-lg"
+                        >
+                            + Add Event
+                        </Link>
+                    </div>
+
+                    <div>
+                        {success && (
+                            <div className="bg-green-100 text-green-800 p-3 rounded mb-4">
+                                ✅ {success}
+                            </div>
+                        )}
+                        {deleteMessage && (
+                            <div className="bg-red-100 text-red-800 p-3 rounded mb-4">
+                                ❌ {deleteMessage}
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
+
             <div>
                 <ScheduleXCalendar calendarApp={calendar} />
                 {customMenu.visible && (
