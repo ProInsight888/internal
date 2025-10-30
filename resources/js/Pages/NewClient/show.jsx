@@ -29,8 +29,9 @@ function SectionTitle({ title }) {
     );
 }
 
-export default function Show({ client }) {
+export default function Show({ client, contracts }) {
     console.log(client);
+    console.log(contracts);
     return (
         <AuthenticatedLayout
             header={
@@ -175,67 +176,85 @@ export default function Show({ client }) {
                                         <div className="col-span-3 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
                                             Reference Number
                                         </div>
-                                        <div className="col-span-3 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
+                                        <div className="col-span-2 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
                                             Package
                                         </div>
-                                        <div className="col-span-4 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
+                                        <div className="col-span-3 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
                                             Contract Duration
                                         </div>
-                                        <div className="col-span-2 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm text-center">
-                                            PIC
+                                        <div className="col-span-3 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
+                                            Telp Num
+                                        </div>
+                                        <div className="col-span-1 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm text-center">
+                                            View
                                         </div>
                                     </div>
 
                                     {/* Table Row */}
-                                    <div className="grid grid-cols-12 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
-                                        {/* Reference Number Cell */}
-                                        <div className="flex col-span-3 px-4 py-3 text-gray-900 dark:text-white border-r border-gray-300 dark:border-gray-600 text-center justify-center items-center">
-                                            {client.ref || "—"}
-                                        </div>
+                                    {contracts.map((contract, index) => (
+                                        <div className="grid grid-cols-12 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
+                                            {/* Reference Number Cell */}
+                                            <div className="flex col-span-3 px-4 py-3 text-gray-900 dark:text-white border-r border-gray-300 dark:border-gray-600 text-center justify-center items-center">
+                                                {contract.reference_num || "—"}
+                                            </div>
 
-                                        {/* Package Cell */}
-                                        <div className="flex col-span-3 px-4 py-3 text-gray-900 dark:text-white border-r border-gray-300 dark:border-gray-600 text-center justify-center items-center">
-                                            {client.package || "—"}
-                                        </div>
+                                            {/* Package Cell */}
+                                            <div className="flex col-span-2 px-4 py-3 text-gray-900 dark:text-white border-r border-gray-300 dark:border-gray-600 text-center justify-center items-center">
+                                                {contract.package || "—"}
+                                            </div>
 
-                                        {/* Contract Duration Cell */}
-                                        <div className="col-span-4 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
-                                            <div className="grid grid-cols-3 gap-2">
-                                                <div className="text-center">
-                                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                                                        Years
-                                                    </div>
-                                                    <div className="text-sm font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 py-1 rounded border border-gray-200 dark:border-gray-600">
-                                                        {client.contract_tahun ||
-                                                            "0"}
-                                                    </div>
-                                                </div>
-                                                <div className="text-center">
-                                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                                                        Months
-                                                    </div>
-                                                    <div className="text-sm font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 py-1 rounded border border-gray-200 dark:border-gray-600">
-                                                        {client.contract_bulan ||
-                                                            "0"}
-                                                    </div>
-                                                </div>
-                                                <div className="text-center">
-                                                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                                                        Days
-                                                    </div>
-                                                    <div className="text-sm font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 py-1 rounded border border-gray-200 dark:border-gray-600">
-                                                        {client.contract_hari ||
-                                                            "0"}
-                                                    </div>
+                                            {/* Contract Duration Cell */}
+                                            <div className="col-span-3 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                                <div className="">
+                                                    {client.contract
+                                                        ?.replace(/0 Tahun\s*/g, '')
+                                                        .replace(/0 Bulan\s*/g, '')
+                                                        .replace(/0 Hari\s*/g, '')
+                                                    }
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        {/* PIC Cell */}
-                                        <div className="col-span-2 px-4 py-3 text-gray-900 dark:text-white">
-                                            {client.pic || "—"}
+                                            {/* PIC Cell */}
+                                            <div className="col-span-3 px-4 py-3 text-gray-900 dark:text-white border-r border-gray-300 dark:border-gray-600">
+                                                {contract.tlp_num || "—"}
+                                            </div>
+                                            <div className="col-span-1 flex items-center justify-center w-full text-gray-900 dark:text-white">
+                                                <button
+                                                    onClick={((e) => {
+                                                        const clientsUuid = contract.uuid;
+                                                        console.log(clientsUuid)
+                                                        window.open(
+                                                            `/newClient/${clientsUuid}/contract`,
+                                                            "_blank"
+                                                        );
+                                                    })}
+                                                    className="inline-flex w-full items-center justify-center px-4 py-2 text-sm text-black dark:text-white font-medium rounded-lg transition-all duration-200"
+                                                >
+                                                    <svg
+                                                        className="w-4 h-4
+                                                        "
+                                                        width="16"
+                                                        height="16"
+                                                        fill="currentColor"
+                                                        class="bi bi-eye"
+                                                        viewBox="0 0 16 16"
+                                                    >
+                                                        <path
+                                                            d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 
+                                                                        1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 
+                                                                        14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 
+                                                                        12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"
+                                                        />
+                                                        <path
+                                                            d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 
+                                                                        0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 
+                                                                        1-7 0"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
 
@@ -268,7 +287,7 @@ export default function Show({ client }) {
                                                     "new_client.contract.edit",
                                                     client.uuid
                                                 )}
-                                                className="inline-flex items-center px-4 py-2 text-sm text-white font-medium rounded-lg transition-all duration-200"
+                                                className="inline-flex items-center px-4 py-2 text-sm text-black dark:text-white font-medium rounded-lg transition-all duration-200"
                                             >
                                                 <svg
                                                     className="w-4 h-4 mr-2"
@@ -283,33 +302,7 @@ export default function Show({ client }) {
                                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                                                     />
                                                 </svg>
-                                                Edit Contract
-                                            </Link>
-                                            |
-                                            <Link
-                                                href={route(
-                                                    "new_client.contract.edit",
-                                                    client.uuid
-                                                )}
-                                                className="inline-flex items-center px-4 py-2 text-sm text-white font-medium rounded-lg transition-all duration-200"
-                                            >
-                                                <svg
-                                                    className="w-4 h-4 mr-2"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-eye"
-                                                    viewBox="0 0 16 16"
-                                                >
-                                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 
-                                                                    1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 
-                                                                    14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 
-                                                                    12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
-                                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 
-                                                                    0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 
-                                                                    1-7 0" />
-                                                </svg>
-                                                View Contract
+                                                Create New Contract
                                             </Link>
                                         </div>
                                     </div>

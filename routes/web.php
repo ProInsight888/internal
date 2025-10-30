@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\AddAccountController;
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CheckDataCollectionController;
 use App\Http\Controllers\ContractController;
@@ -69,8 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ]);
     })->name('dashboard');
 
-    Route::get('contract/{clientsUuid}/contract', [ContractController::class, 'clientContract'])->name('contract.export');
-    Route::resource('contract', ContractController::class);
+    
 
     // Route::resource('/result', ResultController::class);
 
@@ -111,6 +111,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('media_submit/{media}', [update_submit_media_task::class, 'update'])->name('media_submit.update');
     Route::resource('media_review', mediaReviewController::class);
     // Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
+    Route::resource('audit', AuditController::class);
 });
 
 
@@ -131,6 +132,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('result', [ResultController::class, 'index'])->name('result.index');
     Route::post('rejectedRevision', [RejectedRevisionController::class, 'store'])->name('rejectedRevision.store');
+
+    Route::get('contract/{clientsUuid}/contract', [ContractController::class, 'clientContract'])->name('contract.export');
+    Route::get('newClient/{clientsUuid}/contract', [ContractController::class, 'viewClientContract'])->name('contract.export');
+    Route::resource('contract', ContractController::class);
 });
 
 // New Client Contract Route

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\cicilan;
+use App\Models\contract;
 use App\Models\newClient;
 use App\Http\Requests\StorenewClientRequest;
 use App\Http\Requests\UpdatenewClientRequest;
@@ -195,7 +196,7 @@ class NewClientController extends Controller
     public function show(newClient $newClient)
     {
         $client = $newClient->load('cicilans');
-        
+        // dd($newClient);
         // Map internal status to display status for the frontend
         $statusMapping = [
             'lunas' => 'Paid',
@@ -203,12 +204,15 @@ class NewClientController extends Controller
             'cicil' => 'Instalments'
         ];
 
-        // dd( $client);
         
         $client->display_status = $statusMapping[$client->status] ?? $client->status;
+        $contracts = contract::where('uuid_new_client', $newClient->uuid)->get();
+        
+        // dd( $contracts);
         
         return Inertia('NewClient/show', [
             'client' => $client,
+            'contracts' => $contracts
         ]);
     }
 
