@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
-import { Fragment, useState } from "react";
+import { Fragment, use, useState } from "react";
 
 // Status Card Component
 const StatusCard = ({
