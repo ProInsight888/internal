@@ -1,41 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, router } from "@inertiajs/react";
 
 export default function Audit({ initialNotifications = [], audit }) {
     const [activeFilter, setActiveFilter] = useState("All");
-    const [notifications, setNotifications] = useState(initialNotifications);
+    const [sortBy, setSortBy] = useState("newest");
 
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            const clientState = localStorage.getItem(
-                "audit-notifications-client"
-            );
-            if (clientState) {
-                const clientNotifications = JSON.parse(clientState);
-                // Merge server data with client read status
-                setNotifications((prev) =>
-                    prev.map((serverNotif) => {
-                        const clientNotif = clientNotifications.find(
-                            (cn) => cn.id === serverNotif.id
-                        );
-                        return clientNotif
-                            ? { ...serverNotif, read: clientNotif.read }
-                            : serverNotif;
-                    })
-                );
-            }
-        }
-    }, []);
-
-    // Save client-side state
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            localStorage.setItem(
-                "audit-notifications-client",
-                JSON.stringify(notifications)
-            );
-        }
-    }, [notifications]);
+    const [notifications, setNotifications] = useState([
+        {
+            id: 1,
+            user: "John Doe",
+            action: "updated profile",
+            date: "2025-01-15 14:30",
+            read: false,
+            type: "user_action",
+        },
+        {
+            id: 2,
+            user: "Test123",
+            action: "updated profile",
+            date: "2025-01-15 14:30",
+            read: true,
+            type: "user_action",
+        },
+    ]);
 
     const filteredNotifications =
         activeFilter === "All"
@@ -46,38 +33,16 @@ export default function Audit({ initialNotifications = [], audit }) {
                       : notification.type === activeFilter
               );
 
-    const handleNotificationClick = async (notificationId) => {
-        setNotifications((prev) =>
-            prev.map((notification) =>
+    const handleNotificationClick = (notificationId) => {
+        setNotifications((prevNotifications) =>
+            prevNotifications.map((notification) =>
                 notification.id === notificationId
                     ? { ...notification, read: true }
                     : notification
             )
         );
 
-        try {
-            router.post(
-                route("audit.markRead", notificationId),
-                {},
-                {
-                    preserveScroll: true,
-                    onError: () => {
-                        // Revert on error
-                        setNotifications((prev) =>
-                            prev.map((notification) =>
-                                notification.id === notificationId
-                                    ? { ...notification, read: false }
-                                    : notification
-                            )
-                        );
-                    },
-                }
-            );
-
-            router.get(route("audit.index"));
-        } catch (error) {
-            console.error("Navigation failed:", error);
-        }
+        router.get(route("audit.index"));
     };
 
     return (
