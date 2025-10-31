@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\audit;
 use App\Models\items;
 use App\Http\Requests\StoreitemsRequest;
 use App\Http\Requests\UpdateitemsRequest;
 use App\Models\newClient;
 use App\Models\ToolDataCollection;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class ItemsController extends Controller
@@ -54,6 +57,20 @@ class ItemsController extends Controller
         $validatedData = $request->validated();
 
         // dd($validatedData);
+
+        // $uuid = Str::uuid()->toString();
+
+        // $date = Carbon::now();
+
+        // audit::create([
+        //     'uuid' => $uuid,
+        //     'action' => 'Create',
+        //     'change_section' => 'Updated Account named ' . $request->name,
+        //     'created_by' => $request->created_by,
+        //     'date' => $date->format('d F Y'),
+        //     'time' => $date->format('H:i'),
+        // ]);
+
 
         items::create([
             'name' => $validatedData['items'],
