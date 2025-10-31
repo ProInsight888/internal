@@ -284,7 +284,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {/* Show or hide the Audit component */}
                                 {auditExpanded && (
                                     <div className="absolute right-0 mt-2 z-50">
-                                        <Audit audit={audit} />
+                                        <Audit 
+                                        audits={audits}/>
                                     </div>
                                 )}
                             </div>

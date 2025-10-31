@@ -90,11 +90,12 @@ export default function AuditIndex({ audits }) {
     ];
 
     // Filter data based on search and filters
-    const filteredAudits = auditData.filter(audit => {
+    const filteredAudits = audits.filter(audit => {
         const matchesSearch = searchTerm === "" || 
-            audit.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            audit.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            audit.description.toLowerCase().includes(searchTerm.toLowerCase());
+            audit.created_by.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            audit.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            audit.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            audit.change_section.toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesUser = userFilter === "all" || audit.user.name === userFilter;
         const matchesAction = actionFilter === "all" || audit.action === actionFilter;
@@ -132,7 +133,8 @@ export default function AuditIndex({ audits }) {
                             Audit Logs
                         </h1>
                         <p className="text-xl opacity-90 max-w-2xl">
-                            Track all system activities, user actions, and security events in real-time
+                            Track all system activities, user actions, and
+                            security events in real-time
                         </p>
                     </div>
                 </div>
@@ -147,12 +149,17 @@ export default function AuditIndex({ audits }) {
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                             {/* Search */}
                             <div>
-                                <InputLabel htmlFor="search" value="Search Logs" />
+                                <InputLabel
+                                    htmlFor="search"
+                                    value="Search Logs"
+                                />
                                 <TextInput
                                     id="search"
                                     type="text"
                                     value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    onChange={(e) =>
+                                        setSearchTerm(e.target.value)
+                                    }
                                     className="mt-1 block w-full"
                                     placeholder="Search users, actions, subjects..."
                                 />
@@ -160,11 +167,16 @@ export default function AuditIndex({ audits }) {
 
                             {/* User Filter */}
                             <div>
-                                <InputLabel htmlFor="userFilter" value="Filter by User" />
+                                <InputLabel
+                                    htmlFor="userFilter"
+                                    value="Filter by User"
+                                />
                                 <select
                                     id="userFilter"
                                     value={userFilter}
-                                    onChange={(e) => setUserFilter(e.target.value)}
+                                    onChange={(e) =>
+                                        setUserFilter(e.target.value)
+                                    }
                                     className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                 >
                                     <option value="all">All Users</option>
@@ -173,11 +185,16 @@ export default function AuditIndex({ audits }) {
 
                             {/* Action Filter */}
                             <div>
-                                <InputLabel htmlFor="actionFilter" value="Filter by Action" />
+                                <InputLabel
+                                    htmlFor="actionFilter"
+                                    value="Filter by Action"
+                                />
                                 <select
                                     id="actionFilter"
                                     value={actionFilter}
-                                    onChange={(e) => setActionFilter(e.target.value)}
+                                    onChange={(e) =>
+                                        setActionFilter(e.target.value)
+                                    }
                                     className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                 >
                                     <option value="all">All Actions</option>
@@ -219,41 +236,52 @@ export default function AuditIndex({ audits }) {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                                             Date & Time
                                         </th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
-                                            Subject
-                                        </th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
-                                            Description
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                                     {filteredAudits.map((audit) => {
-                                        const { date, time } = formatDateTime(audit.date);
+                                        const { date, time } = formatDateTime(
+                                            audit.date
+                                        );
                                         return (
-                                            <tr 
-                                                key={audit.id} 
+                                            <tr
+                                                key={audit.id}
                                                 className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200"
                                             >
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
-                                                            {audit.user.name.charAt(0)}
+                                                            {audit.created_by.charAt(
+                                                                0
+                                                            )}
                                                         </div>
                                                         <div className="ml-4">
                                                             <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                                {audit.user.name}
+                                                                {
+                                                                    audit.created_by
+                                                                }
                                                             </div>
                                                             <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                                {audit.user.email}
+                                                                {
+                                                                    audit.change_section
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center space-x-2">
-                                                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getActionColor(audit.action)}`}>
-                                                            {audit.action.charAt(0).toUpperCase() + audit.action.slice(1)}
+                                                        <span
+                                                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getActionColor(
+                                                                audit.action
+                                                            )}`}
+                                                        >
+                                                            {audit.action
+                                                                .charAt(0)
+                                                                .toUpperCase() +
+                                                                audit.action.slice(
+                                                                    1
+                                                                )}
                                                         </span>
                                                     </div>
                                                 </td>
@@ -262,17 +290,7 @@ export default function AuditIndex({ audits }) {
                                                         {date}
                                                     </div>
                                                     <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                        {time}
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {audit.subject}
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="text-sm text-gray-600 dark:text-gray-300 max-w-md">
-                                                        {audit.description}
+                                                        {audit.time}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -284,10 +302,7 @@ export default function AuditIndex({ audits }) {
 
                         {/* Pagination */}
                         <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
-                            <PaginationComponent 
-                                currentPage={1} 
-                                lastPage={5} 
-                            />
+                            <PaginationComponent currentPage={1} lastPage={5} />
                         </div>
                     </div>
                 </div>
