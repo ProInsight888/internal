@@ -630,6 +630,7 @@ const AlertMessage = ({ type, message, onDismiss }) => {
 // ======================
 
 export default function UserManagement({ users, userName }) {
+    const user_create = usePage().props.auth.user;
     const form = useForm({
         name: "",
         role: "",
@@ -637,6 +638,7 @@ export default function UserManagement({ users, userName }) {
         email: "",
         password: "",
         password_confirmation: "",
+        created_by: user_create.name,
     });
 
     const [searchTerm, setSearchTerm] = useState("");

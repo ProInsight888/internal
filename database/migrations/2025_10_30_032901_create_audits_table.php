@@ -13,11 +13,8 @@ return new class extends Migration
     {
         Schema::create('audits', function (Blueprint $table) {
             $table->uuid('uuid')->primary();
-            $table->string('user_id');
             $table->string('action');
             $table->string('change_section');
-            $table->string('old_values')->nullable();
-            $table->string('new_values')->nullable();
             $table->string('created_by');
             $table->string('date');
             $table->string('time');

@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\addAccount;
 use App\Http\Requests\StoreaddAccountRequest;
 use App\Http\Requests\UpdateaddAccountRequest;
+use App\Models\audit;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
@@ -48,10 +51,11 @@ class AddAccountController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => 'required', // or default to 'user
             'team' => 'required', // or default to 'user
+            'created_by' => 'required',
         ]);
         
         // dd($request->role);
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -59,7 +63,20 @@ class AddAccountController extends Controller
             'team' => $request->team, // or just 'user'
         ]);
 
+        $uuid = Str::uuid()->toString();
 
+        $date = Carbon::now();
+
+        // dd($date->format('d F Y'));
+
+        audit::create([
+            'uuid' => $uuid,
+            'action' => 'Create',
+            'change_section' => 'Add new Account named ' . $request->name,
+            'created_by' => $request->created_by,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         // Auth::login($user); // This Line is for Automaticlly Login when make an Account
 
@@ -96,11 +113,25 @@ class AddAccountController extends Controller
                 'team' => 'required|string|max:50',
                 'email' => 'required|email',
                 'password' => 'nullable|string|max:50', 
+                'created_by' => 'nullable|string|max:50', 
                 ]
             );
             
             // dd($request, $user);  
         $id = $user->id;
+
+        $uuid = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid,
+            'action' => 'Create',
+            'change_section' => 'Updated Account named ' . $validated['name'],
+            'created_by' => $validated['created_by'],
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         $update_user = User::where('id', $id);
         $update_user->update([

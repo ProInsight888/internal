@@ -3,7 +3,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { Fragment, useState } from "react";
 import {
   Select,
@@ -192,6 +192,7 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
 };
 
 export default function edit({ user }) {
+    const user_edit = usePage().props.auth.user
     const { data, setData, put, processing, errors, reset } = useForm({
         name: user?.name || "",
         role: user?.role || "user",
@@ -199,6 +200,7 @@ export default function edit({ user }) {
         email: user?.email || "",
         password: "",
         password_confirmation: "",
+        created_by: user_edit.name,
     });
 
     const submit = (e) => {
