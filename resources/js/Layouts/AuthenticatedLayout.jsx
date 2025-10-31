@@ -1,3 +1,4 @@
+import Audit from "@/Components/Audit";
 import Dropdown from "@/Components/Dropdown";
 import { Link, usePage, router } from "@inertiajs/react";
 import { useState, useEffect } from "react";
@@ -435,6 +436,10 @@ export default function AuthenticatedLayout({ header, children }) {
                 </div>
             </div>
 
+            
+                {/* Audit Sidebar */}
+            <Audit />
+
             <div className="flex flex-1">
                 {/* Desktop Sidebar */}
                 <div className="hidden lg:flex lg:flex-col z-50">
@@ -518,6 +523,8 @@ export default function AuthenticatedLayout({ header, children }) {
                         </nav>
                     </div>
                 </div>
+
+                
 
                 {/* Mobile navigation menu */}
                 {showingNavigationDropdown && (
