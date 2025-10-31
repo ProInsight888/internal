@@ -1,13 +1,13 @@
 import Audit from "@/Components/Audit";
 import Dropdown from "@/Components/Dropdown";
 import { Link, usePage, router } from "@inertiajs/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
     const audits = usePage().props.auth.audit;
     console.log(audits);
-    const currentRoute = usePage().url; // Get current route
+    const currentRoute = usePage().url;
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     const [sidebarExpanded, setSidebarExpanded] = useState(false);
@@ -38,11 +38,16 @@ export default function AuthenticatedLayout({ header, children }) {
         }
     }, [darkMode]);
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            // Handle click outside logic here if needed
+        };
+    }, []);
+
     // Check if a route is active
     const isActiveRoute = (routeName) => {
-        // console.log()
         let checkedCurrentRoute = currentRoute;
-        // console.log(realRoute)
+
         if (currentRoute === "/creative") {
             checkedCurrentRoute = "/media";
         } else if (currentRoute === "/marketing") {
@@ -146,7 +151,7 @@ export default function AuthenticatedLayout({ header, children }) {
             ),
         },
         {
-            name: "Equipments",
+            name: "Equipment",
             href: route("items.index"),
             routeName: "/items",
             icon: (
@@ -219,22 +224,11 @@ export default function AuthenticatedLayout({ header, children }) {
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                 >
-                    {/* Clipboard outline */}
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2
-       M9 5a2 2 0 002 2h2a2 2 0 002-2
-       M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                    />
-
-                    {/* Checklist mark inside */}
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2 M9 5a2 2 0 002 2h2a2 2 0 002-2 M9 5a2 2 0 012-2h2a2 2 0 012 2 M9 12l2 2 4-4"
                     />
                 </svg>
             ),
@@ -242,7 +236,11 @@ export default function AuthenticatedLayout({ header, children }) {
     ];
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
+        <div
+            className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900"
+            onMouseDown={(e) => {e.stopPropagation();
+            }}
+        >
             {/* Top Navigation Bar */}
             <div className="bg-white dark:bg-gray-800 sticky top-0 shadow-sm z-50 border-b border-gray-200 dark:border-gray-700">
                 <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
@@ -259,12 +257,9 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         {/* Right side items */}
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center justify-center space-x-4 ">
                             {/* Notification Bell + Toggle Audit */}
-                            <div
-                                className="relative w-4 aspect-square"
-                                onClick={(e) => e.stopPropagation()}
-                            >
+                            <div className="relative w-4 aspect-square">
                                 <button
                                     onClick={() =>
                                         setAuditExpanded(!auditExpanded)
@@ -281,11 +276,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
                                     </svg>
                                 </button>
+
                                 {/* Show or hide the Audit component */}
                                 {auditExpanded && (
-                                    <div className="absolute right-0 mt-2 z-50">
-                                        <Audit 
-                                        audits={audits}/>
+                                    <div className="absolute right-0 mt-2 z-50"
+                                    onClick={() => setAuditExpanded(false)}
+                                    >
+                                        <Audit audits={audits} />
                                     </div>
                                 )}
                             </div>
@@ -319,10 +316,10 @@ export default function AuthenticatedLayout({ header, children }) {
                             </button>
 
                             {/* Desktop Profile & Logout */}
-                            <div className="hidden lg:flex items-center space-x-4 ">
+                            <div className="hidden lg:flex items-center space-x-4">
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                        <div className="flex items-center text-sm rounded-full focus:outline-none cursor-pointer ">
+                                        <div className="flex items-center text-sm rounded-full focus:outline-none cursor-pointer">
                                             <div className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 font-bold mr-2">
                                                 {user?.avatar_url ? (
                                                     <img
@@ -362,12 +359,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                         width="48"
                                         className="dark:bg-gray-700 dark:border-gray-600"
                                     >
-                                        {/* <Dropdown.Link href={route("personal_dashboard.index")} className="flex items-center dark:text-gray-300 dark:hover:bg-gray-600">
-                                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
-                                            Profile
-                                        </Dropdown.Link> */}
                                         <Dropdown.Link
                                             href={route("profile")}
                                             as="button"
@@ -593,16 +584,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </div>
                             </div>
 
-                            {/* <ResponsiveNavLink
-                                href={route("personal_dashboard.index")}
-                                active={isActiveRoute("/personal_dashboard")}
-                                className="flex items-center px-4 py-3 rounded-lg transition-colors dark:text-gray-300 dark:hover:bg-gray-700"
-                            >
-                                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                                Profile
-                            </ResponsiveNavLink> */}
                             <ResponsiveNavLink
                                 method="post"
                                 href={route("logout")}

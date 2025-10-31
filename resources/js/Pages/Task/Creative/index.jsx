@@ -250,11 +250,11 @@ const TaskModal = ({
     return (
         <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-            onClick={onClose} // Add this to close when clicking overlay
+            onClick={onClose}
         >
             <div
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-                onClick={(e) => e.stopPropagation()} // Add this to prevent closing when clicking inside
+                onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
