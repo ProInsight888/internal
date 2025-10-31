@@ -1,20 +1,84 @@
-import React, { useState } from "react";
-import { Link } from "@inertiajs/react";
+import React, { useState, useEffect } from "react";
+import { Link, router } from "@inertiajs/react";
 
-export default function Audit() {
+export default function Audit({ initialNotifications = [] }) {
     const [activeFilter, setActiveFilter] = useState("All");
-    const [sortBy, setSortBy] = useState("newest");
+    const [notifications, setNotifications] = useState(initialNotifications);
 
-    const notifications = [
-        { id: 1, user: "John Doe", action: "updated profile", date: "2025-01-15 14:30", read: false, type: "user_action" },
-        { id: 1, user: "Test123", action: "updated profile", date: "2025-01-15 14:30", read: true, type: "user_action" },
-    ];
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const clientState = localStorage.getItem(
+                "audit-notifications-client"
+            );
+            if (clientState) {
+                const clientNotifications = JSON.parse(clientState);
+                // Merge server data with client read status
+                setNotifications((prev) =>
+                    prev.map((serverNotif) => {
+                        const clientNotif = clientNotifications.find(
+                            (cn) => cn.id === serverNotif.id
+                        );
+                        return clientNotif
+                            ? { ...serverNotif, read: clientNotif.read }
+                            : serverNotif;
+                    })
+                );
+            }
+        }
+    }, []);
 
-    const filteredNotifications = activeFilter === "All" 
-        ? notifications 
-        : notifications.filter(notification => 
-            activeFilter === "Unread" ? !notification.read : notification.type === activeFilter
+    // Save client-side state
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem(
+                "audit-notifications-client",
+                JSON.stringify(notifications)
+            );
+        }
+    }, [notifications]);
+
+    const filteredNotifications =
+        activeFilter === "All"
+            ? notifications
+            : notifications.filter((notification) =>
+                  activeFilter === "Unread"
+                      ? !notification.read
+                      : notification.type === activeFilter
+              );
+
+    const handleNotificationClick = async (notificationId) => {
+        setNotifications((prev) =>
+            prev.map((notification) =>
+                notification.id === notificationId
+                    ? { ...notification, read: true }
+                    : notification
+            )
         );
+
+        try {
+            router.post(
+                route("audit.markRead", notificationId),
+                {},
+                {
+                    preserveScroll: true,
+                    onError: () => {
+                        // Revert on error
+                        setNotifications((prev) =>
+                            prev.map((notification) =>
+                                notification.id === notificationId
+                                    ? { ...notification, read: false }
+                                    : notification
+                            )
+                        );
+                    },
+                }
+            );
+
+            router.get(route("audit.index"));
+        } catch (error) {
+            console.error("Navigation failed:", error);
+        }
+    };
 
     return (
         <div className="mt-10 fixed top-1/2 right-0 transform -translate-y-1/2 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 rounded-l-xl shadow-2xl p-6 w-80 z-50 h-[90vh] overflow-hidden flex flex-col">
@@ -31,14 +95,13 @@ export default function Audit() {
                 <div className="flex items-center space-x-1">
                     <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
                     <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {notifications.filter(n => !n.read).length} unread
+                        {notifications.filter((n) => !n.read).length} unread
                     </span>
                 </div>
             </div>
 
             {/* Filters */}
             <div className="mb-6 space-y-4">
-
                 {/* Quick Filters */}
                 <div className="flex space-x-1">
                     {["All", "Unread"].map((filter) => (
@@ -62,6 +125,7 @@ export default function Audit() {
                 {filteredNotifications.map((notification) => (
                     <div
                         key={notification.id}
+                        onClick={() => handleNotificationClick(notification.id)}
                         className={`p-4 rounded-lg border-l-4 transition-all hover:shadow-md ${
                             !notification.read
                                 ? "bg-blue-50 dark:bg-blue-900/20 border-blue-500 shadow-sm"
@@ -69,45 +133,56 @@ export default function Audit() {
                         }`}
                     >
                         <div className="flex justify-between items-start mb-2">
-                            <span className={`font-semibold text-sm ${
-                                !notification.read 
-                                    ? "text-blue-800 dark:text-blue-200" 
-                                    : "text-gray-700 dark:text-gray-300"
-                            }`}>
+                            <span
+                                className={`font-semibold text-sm ${
+                                    !notification.read
+                                        ? "text-blue-800 dark:text-blue-200"
+                                        : "text-gray-700 dark:text-gray-300"
+                                }`}
+                            >
                                 {notification.user}
                             </span>
                             {!notification.read && (
                                 <span className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-1.5"></span>
                             )}
                         </div>
-                        <p className={`text-sm mb-2 ${
-                            !notification.read
-                                ? "text-blue-700 dark:text-blue-300"
-                                : "text-gray-600 dark:text-gray-400"
-                        }`}>
+                        <p
+                            className={`text-sm mb-2 ${
+                                !notification.read
+                                    ? "text-blue-700 dark:text-blue-300"
+                                    : "text-gray-600 dark:text-gray-400"
+                            }`}
+                        >
                             {notification.action}
                         </p>
                         <div className="flex justify-between items-center">
-                            <span className={`text-xs ${
-                                !notification.read
-                                    ? "text-blue-600 dark:text-blue-400"
-                                    : "text-gray-500 dark:text-gray-500"
-                            }`}>
-                                {new Date(notification.date).toLocaleDateString('en-US', {
-                                    month: 'short',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                })}
+                            <span
+                                className={`text-xs ${
+                                    !notification.read
+                                        ? "text-blue-600 dark:text-blue-400"
+                                        : "text-gray-500 dark:text-gray-500"
+                                }`}
+                            >
+                                {new Date(notification.date).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                        month: "short",
+                                        day: "numeric",
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                    }
+                                )}
                             </span>
-                            <span className={`px-2 py-1 text-xs rounded-full ${
-                                notification.type === "system" 
-                                    ? "bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300"
-                                    : notification.type === "comment"
-                                    ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300"
-                                    : "bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300"
-                            }`}>
-                                {notification.type.replace('_', ' ')}
+                            <span
+                                className={`px-2 py-1 text-xs rounded-full ${
+                                    notification.type === "system"
+                                        ? "bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300"
+                                        : notification.type === "comment"
+                                        ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300"
+                                        : "bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300"
+                                }`}
+                            >
+                                {notification.type.replace("_", " ")}
                             </span>
                         </div>
                     </div>
@@ -116,7 +191,7 @@ export default function Audit() {
 
             {/* Footer */}
             <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                <Link 
+                <Link
                     href="audit"
                     className="block w-full py-2 text-sm text-center text-blue-500 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
                 >

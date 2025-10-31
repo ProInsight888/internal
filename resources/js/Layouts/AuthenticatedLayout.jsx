@@ -9,6 +9,7 @@ export default function AuthenticatedLayout({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
     const [sidebarExpanded, setSidebarExpanded] = useState(false);
+    const [auditExpanded, setAuditExpanded] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
 
     // Update active path when route changes
@@ -38,7 +39,7 @@ export default function AuthenticatedLayout({ header, children }) {
     // Check if a route is active
     const isActiveRoute = (routeName) => {
         // console.log()
-        let checkedCurrentRoute = currentRoute
+        let checkedCurrentRoute = currentRoute;
         // console.log(realRoute)
         if (currentRoute === "/creative") {
             checkedCurrentRoute = "/media";
@@ -56,7 +57,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
         return (
             checkedCurrentRoute === routeName ||
-            checkedCurrentRoute.startsWith(routeName + "/") 
+            checkedCurrentRoute.startsWith(routeName + "/")
         );
     };
 
@@ -257,17 +258,34 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         {/* Right side items */}
                         <div className="flex items-center space-x-4">
-                            {/* Dark/Light mode toggle */}
-                            <div className="w-4 aspect-square">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    class="bi bi-bell"
-                                    viewBox="0 0 16 16"
+                            {/* Notification Bell + Toggle Audit */}
+                            <div className="relative w-4 aspect-square">
+                                <button
+                                    onClick={() =>
+                                        setAuditExpanded(!auditExpanded)
+                                    }
+                                    className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                                    aria-label="Toggle Audit"
                                 >
-                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
-                                </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        className="bi bi-bell w-5 h-5 text-gray-700 dark:text-gray-300"
+                                        viewBox="0 0 16 16"
+                                    >
+                                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
+                                    </svg>
+                                </button>
+
+                                {/* Show or hide the Audit component */}
+                                {auditExpanded && (
+                                    <div className="absolute right-0 mt-2 z-50">
+                                        <Audit />
+                                    </div>
+                                )}
                             </div>
+
+                            {/* Dark/Light mode toggle */}
                             <button
                                 onClick={() => setDarkMode(!darkMode)}
                                 className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -436,10 +454,6 @@ export default function AuthenticatedLayout({ header, children }) {
                 </div>
             </div>
 
-            
-                {/* Audit Sidebar */}
-            <Audit />
-
             <div className="flex flex-1">
                 {/* Desktop Sidebar */}
                 <div className="hidden lg:flex lg:flex-col z-50">
@@ -523,8 +537,6 @@ export default function AuthenticatedLayout({ header, children }) {
                         </nav>
                     </div>
                 </div>
-
-                
 
                 {/* Mobile navigation menu */}
                 {showingNavigationDropdown && (
