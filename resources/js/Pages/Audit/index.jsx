@@ -67,30 +67,10 @@ export default function AuditIndex({ audits }) {
     const [actionFilter, setActionFilter] = useState("all");
     const [dateFilter, setDateFilter] = useState("all");
 
-    // Mock data - replace with your actual audit data
-    const auditData = [
-        {
-            id: 1,
-            user: { name: "John Doe", email: "john@example.com" },
-            action: "updated",
-            date: "2024-01-15 14:32:00",
-            subject: "User Profile",
-            description: "Changed username from 'john_old' to 'john_doe'",
-            type: "user",
-        },
-        {
-            id: 2,
-            user: { name:"Test 123", email: "test@gmail.com"},
-            action: "created",
-            date: "2024-01-14 10:15:00",
-            subject: "New Project",
-            description: "Created project 'Website Redesign'",
-            type: "project",
-        }
-    ];
+    
 
     // Filter data based on search and filters
-    const filteredAudits = audits.filter(audit => {
+    const filteredAudits = audits.data.filter(audit => {
         const matchesSearch = searchTerm === "" || 
             audit.created_by.toLowerCase().includes(searchTerm.toLowerCase()) ||
             audit.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -244,56 +224,57 @@ export default function AuditIndex({ audits }) {
                                             audit.date
                                         );
                                         return (
-                                            <tr
-                                                key={audit.id}
-                                                className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200"
-                                            >
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="flex items-center">
-                                                        <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
-                                                            {audit.created_by.charAt(
-                                                                0
-                                                            )}
-                                                        </div>
-                                                        <div className="ml-4">
-                                                            <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                                {
-                                                                    audit.created_by
-                                                                }
-                                                            </div>
-                                                            <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                                {
-                                                                    audit.change_section
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="flex items-center space-x-2">
-                                                        <span
-                                                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getActionColor(
-                                                                audit.action
-                                                            )}`}
-                                                        >
-                                                            {audit.action
-                                                                .charAt(0)
-                                                                .toUpperCase() +
-                                                                audit.action.slice(
-                                                                    1
+                                            
+                                                <tr
+                                                    key={audit.id}
+                                                    className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200"
+                                                >
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="flex items-center">
+                                                            <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
+                                                                {audit.created_by.charAt(
+                                                                    0
                                                                 )}
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {date}
-                                                    </div>
-                                                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                        {audit.time}
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                            </div>
+                                                            <div className="ml-4">
+                                                                <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                                                    {
+                                                                        audit.created_by
+                                                                    }
+                                                                </div>
+                                                                <div className="text-sm text-gray-500 dark:text-gray-400">
+                                                                    {
+                                                                        audit.change_section
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="flex items-center space-x-2">
+                                                            <span
+                                                                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getActionColor(
+                                                                    audit.action
+                                                                )}`}
+                                                            >
+                                                                {audit.action
+                                                                    .charAt(0)
+                                                                    .toUpperCase() +
+                                                                    audit.action.slice(
+                                                                        1
+                                                                    )}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {date}
+                                                        </div>
+                                                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                                                            {audit.time}
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                         );
                                     })}
                                 </tbody>
@@ -302,11 +283,14 @@ export default function AuditIndex({ audits }) {
 
                         {/* Pagination */}
                         <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
-                            <PaginationComponent currentPage={1} lastPage={5} />
+                            <PaginationComponent
+                                currentPage={audits.current_page}
+                                lastPage={audits.last_page}
+                            />
                         </div>
                     </div>
                 </div>
             </div>
         </AuthenticatedLayout>
-    );
+    ); 
 }
