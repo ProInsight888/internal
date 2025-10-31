@@ -23,6 +23,9 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <div className="grid grid-cols-12">
+
+            <Head title="Sign In" />
+            
             <div
                 id="login-bg-left"
                 className="col-span-7 h-screen bg-cover bg-red-500"

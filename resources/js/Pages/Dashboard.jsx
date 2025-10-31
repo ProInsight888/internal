@@ -251,7 +251,7 @@ const AttendanceForm = ({
                         <select
                             value={data.absence}
                             onChange={(e) => setData("absence", e.target.value)}
-                            className="pl-10 p-2.5 w-full border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-transparent shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="flex justify-center pl-10 p-2.5 w-full border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-transparent shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         >
                             <option value="Hadir">Hadir</option>
                             <option value="Balek">Pulang</option>
@@ -283,9 +283,9 @@ const AttendanceTable = ({ absens }) => {
 
     return (
         <div className="overflow-x-auto w-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
-            <table className="w-full table-fixed border-collapse">
+            <table className="w-full border-collapse">
                 <thead className="w-full bg-gradient-to-r from-blue-500 to-blue-400 text-white">
-                    <tr className="text-xs md:text-sm text-left">
+                    <tr className="text-xs md:text-sm text-center lg:table-fixed sm:table-auto">
                         <th className="px-4 py-3">No</th>
                         <th className="px-4 py-3">Nama</th>
                         <th className="px-4 py-3">Status</th>
@@ -343,7 +343,7 @@ const ClientTable = ({ clients }) => (
     <div className="overflow-x-auto h-64 border border-gray-200 dark:border-gray-700 rounded-2xl bg-white dark:bg-gray-800 shadow-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
             <thead>
-                <tr className="sticky top-0 text-xs md:text-sm bg-gradient-to-r from-pink-500 to-pink-400 text-white">
+                <tr className="sticky top-0 text-xs md:text-sm bg-gradient-to-r from-pink-500 to-pink-400 text-white text-center">
                     <th className="p-4 sticky top-0">No</th>
                     <th className="p-4 sticky top-0">Nama</th>
                     <th className="p-4 sticky top-0">Type</th>
