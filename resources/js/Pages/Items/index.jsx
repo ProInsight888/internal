@@ -66,11 +66,11 @@ export default function EquipmentInventory({
     return (
         <AuthenticatedLayout
             header={
-                <div className="bg-gradient-to-r from-blue-600 to-purple-700 p-6 rounded-2xl text-white shadow-lg">
-                    <h1 className="text-3xl sm:text-4xl font-bold mb-3">
+                <div className="bg-gradient-to-r from-blue-600 to-purple-700 p-4 md:p-6 rounded-xl md:rounded-2xl text-white shadow-lg">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 md:mb-3">
                         Hi, {userName}! 👋
                     </h1>
-                    <p className="text-lg opacity-90">
+                    <p className="text-sm md:text-lg opacity-90">
                         Manage your equipment inventory with our comprehensive
                         dashboard.
                     </p>
@@ -79,17 +79,17 @@ export default function EquipmentInventory({
         >
             <Head title="Equipment Inventory" />
 
-            <div className="py-6">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="py-4 md:py-6">
+                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
                     {/* Action Buttons */}
-                    <div className="flex flex-wrap gap-4 mb-6">
+                    <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 mb-4 md:mb-6">
                         {user.role !== "member" && (
                             <Link
                                 href={route("items.create")}
-                                className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                                className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-medium py-2.5 md:py-3 px-4 md:px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg text-sm md:text-base w-full sm:w-auto"
                             >
                                 <svg
-                                    className="w-5 h-5 mr-2"
+                                    className="w-4 h-4 md:w-5 md:h-5 mr-2"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -106,10 +106,10 @@ export default function EquipmentInventory({
                         )}
                         <Link
                             href={route("data_collection.create")}
-                            className="flex items-center justify-center bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                            className="flex items-center justify-center bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white font-medium py-2.5 md:py-3 px-4 md:px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg text-sm md:text-base w-full sm:w-auto"
                         >
                             <svg
-                                className="w-5 h-5 mr-2"
+                                className="w-4 h-4 md:w-5 md:h-5 mr-2"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -127,9 +127,9 @@ export default function EquipmentInventory({
 
                     {/* Success Message */}
                     {successMessage && (
-                        <div className="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 text-green-800 dark:text-green-300 p-4 rounded-lg border border-green-200 dark:border-green-800 flex items-center mb-6">
+                        <div className="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 text-green-800 dark:text-green-300 p-3 md:p-4 rounded-lg border border-green-200 dark:border-green-800 flex items-center mb-4 md:mb-6 text-sm md:text-base">
                             <svg
-                                className="w-5 h-5 mr-3"
+                                className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                             >
@@ -144,14 +144,14 @@ export default function EquipmentInventory({
                     )}
 
                     {/* Equipment Inventory */}
-                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-8 border border-gray-200 dark:border-gray-700">
-                        <div className="bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-700 dark:to-blue-900/20 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-lg overflow-hidden mb-6 md:mb-8 border border-gray-200 dark:border-gray-700">
+                        <div className="bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-700 dark:to-blue-900/20 px-4 md:px-6 py-3 md:py-4 border-b border-gray-200 dark:border-gray-600">
+                            <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">
                                 Equipment Inventory
                             </h2>
                         </div>
-                        <div className="p-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="p-4 md:p-6">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
                                 {categoryOrder.map(
                                     (category) =>
                                         itemsByCategory[category] &&
@@ -159,52 +159,52 @@ export default function EquipmentInventory({
                                             0 && (
                                             <div
                                                 key={category}
-                                                className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600"
+                                                className="bg-gray-50 dark:bg-gray-700 rounded-lg md:rounded-xl p-3 md:p-4 border border-gray-200 dark:border-gray-600"
                                             >
                                                 <div
-                                                    className={`flex items-center p-3 rounded-lg mb-4 ${categoryColors[category]} text-white`}
+                                                    className={`flex items-center p-2 md:p-3 rounded-lg mb-3 md:mb-4 ${categoryColors[category]} text-white`}
                                                 >
-                                                    <span className="text-2xl mr-3">
+                                                    <span className="text-xl md:text-2xl mr-2 md:mr-3">
                                                         {
                                                             categoryIcons[
                                                                 category
                                                             ]
                                                         }
                                                     </span>
-                                                    <h3 className="text-xl font-bold capitalize">
+                                                    <h3 className="text-lg md:text-xl font-bold capitalize">
                                                         {category}
                                                     </h3>
                                                 </div>
-                                                <div className="space-y-3">
+                                                <div className="space-y-2 md:space-y-3">
                                                     {itemsByCategory[
                                                         category
                                                     ].map((item) => (
                                                         <div
                                                             key={item.id}
-                                                            className="flex items-center justify-between bg-white dark:bg-gray-600 p-3 rounded-lg border border-gray-200 dark:border-gray-500 hover:shadow-md dark:hover:shadow-gray-900 transition-shadow duration-200"
+                                                            className="flex items-center justify-between bg-white dark:bg-gray-600 p-2 md:p-3 rounded-lg border border-gray-200 dark:border-gray-500 hover:shadow-md dark:hover:shadow-gray-900 transition-shadow duration-200"
                                                         >
-                                                            <div className="flex items-center">
-                                                                <span className="text-lg font-medium text-gray-900 dark:text-white">
+                                                            <div className="flex items-center min-w-0 flex-1">
+                                                                <span className="text-sm md:text-lg font-medium text-gray-900 dark:text-white truncate">
                                                                     {item.name}
                                                                 </span>
-                                                                <span className="ml-2 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-bold px-2 py-1 rounded-full">
+                                                                <span className="ml-2 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-bold px-2 py-1 rounded-full flex-shrink-0">
                                                                     {
                                                                         item.quantity
                                                                     }
                                                                 </span>
                                                             </div>
                                                             {user.role !== 'member' && (
-                                                                <div className="flex gap-2">
+                                                                <div className="flex gap-1 md:gap-2 ml-2 flex-shrink-0">
                                                                     <Link
                                                                         href={route(
                                                                             "items.edit",
                                                                             item
                                                                         )}
-                                                                        className="flex items-center justify-center w-8 h-8 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors duration-200"
+                                                                        className="flex items-center justify-center w-7 h-7 md:w-8 md:h-8 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors duration-200"
                                                                         title="Edit"
                                                                     >
                                                                         <svg
-                                                                            className="w-4 h-4"
+                                                                            className="w-3 h-3 md:w-4 md:h-4"
                                                                             fill="none"
                                                                             stroke="currentColor"
                                                                             viewBox="0 0 24 24"
@@ -248,11 +248,11 @@ export default function EquipmentInventory({
                                                                                 );
                                                                             }
                                                                         }}
-                                                                        className="flex items-center justify-center w-8 h-8 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200"
+                                                                        className="flex items-center justify-center w-7 h-7 md:w-8 md:h-8 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200"
                                                                         title="Delete"
                                                                     >
                                                                         <svg
-                                                                            className="w-4 h-4"
+                                                                            className="w-3 h-3 md:w-4 md:h-4"
                                                                             fill="none"
                                                                             stroke="currentColor"
                                                                             viewBox="0 0 24 24"
@@ -281,24 +281,24 @@ export default function EquipmentInventory({
 
                     {/* Tool Data Collections */}
                     {events_name && events_name.length > 0 && (
-                        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                            <div className="bg-gradient-to-r from-gray-50 to-green-50 dark:from-gray-700 dark:to-green-900/20 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
-                                <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                            <div className="bg-gradient-to-r from-gray-50 to-green-50 dark:from-gray-700 dark:to-green-900/20 px-4 md:px-6 py-3 md:py-4 border-b border-gray-200 dark:border-gray-600">
+                                <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">
                                     Tool Data Collections
                                 </h2>
                             </div>
-                            <div className="p-6">
-                                <div className="space-y-6">
+                            <div className="p-4 md:p-6">
+                                <div className="space-y-4 md:space-y-6">
                                     {events_name.map((event, index) => (
                                         <div
                                             key={index}
-                                            className="bg-gray-50 dark:bg-gray-700 rounded-xl p-5 border border-gray-200 dark:border-gray-600"
+                                            className="bg-gray-50 dark:bg-gray-700 rounded-lg md:rounded-xl p-4 md:p-5 border border-gray-200 dark:border-gray-600"
                                         >
-                                            <div className="flex items-center justify-between mb-4">
-                                                <h3 className="text-xl font-bold text-gray-800 dark:text-white bg-white dark:bg-gray-600 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-500">
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 md:mb-4">
+                                                <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white bg-white dark:bg-gray-600 px-3 md:px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-500 break-words">
                                                     {event}
                                                 </h3>
-                                                <div className="flex gap-2">
+                                                <div className="flex gap-2 self-end sm:self-auto">
                                                     <button
                                                         onClick={() => {
                                                             if (
@@ -328,11 +328,11 @@ export default function EquipmentInventory({
                                                                 );
                                                             }
                                                         }}
-                                                        className="flex items-center justify-center px-4 py-2 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200"
+                                                        className="flex items-center justify-center px-3 py-2 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200 text-sm md:text-base"
                                                         title="Delete Collection"
                                                     >
                                                         <svg
-                                                            className="w-4 h-4 mr-1"
+                                                            className="w-3 h-3 md:w-4 md:h-4 mr-1"
                                                             fill="none"
                                                             stroke="currentColor"
                                                             viewBox="0 0 24 24"
@@ -344,18 +344,18 @@ export default function EquipmentInventory({
                                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                                                             />
                                                         </svg>
-                                                        Delete
+                                                        <span className="hidden sm:inline">Delete</span>
                                                     </button>
                                                     <Link
                                                         href={route(
                                                             "check.edit",
                                                             event
                                                         )}
-                                                        className="flex items-center justify-center px-4 py-2 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors duration-200"
+                                                        className="flex items-center justify-center px-3 py-2 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors duration-200 text-sm md:text-base"
                                                         title="Check Collection"
                                                     >
                                                         <svg
-                                                            className="w-4 h-4 mr-1"
+                                                            className="w-3 h-3 md:w-4 md:h-4 mr-1"
                                                             fill="none"
                                                             stroke="currentColor"
                                                             viewBox="0 0 24 24"
@@ -367,11 +367,11 @@ export default function EquipmentInventory({
                                                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                                                             />
                                                         </svg>
-                                                        Check
+                                                        <span className="hidden sm:inline">Check</span>
                                                     </Link>
                                                 </div>
                                             </div>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
                                                 {tool_data_collection
                                                     .filter(
                                                         (data) =>
@@ -381,12 +381,12 @@ export default function EquipmentInventory({
                                                     .map((data, idx) => (
                                                         <div
                                                             key={idx}
-                                                            className="bg-white dark:bg-gray-600 p-3 rounded-lg border border-gray-200 dark:border-gray-500 flex justify-between items-center"
+                                                            className="bg-white dark:bg-gray-600 p-2 md:p-3 rounded-lg border border-gray-200 dark:border-gray-500 flex justify-between items-center"
                                                         >
-                                                            <span className="font-medium text-gray-900 dark:text-white">
+                                                            <span className="font-medium text-gray-900 dark:text-white text-sm md:text-base truncate mr-2">
                                                                 {data.items}
                                                             </span>
-                                                            <span className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-bold px-2 py-1 rounded-full">
+                                                            <span className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-bold px-2 py-1 rounded-full flex-shrink-0">
                                                                 {data.quantity}
                                                             </span>
                                                         </div>

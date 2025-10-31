@@ -848,7 +848,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                     Your Upcoming Tasks
                                 </h2>
                             </div>
-                            <div className="flex overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-300 dark:scrollbar-thumb-amber-600 scrollbar-track-transparent">
+                            <div className="flex overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-300 dark:scrollbar-thumb-amber-600 scrollbar-track-transparent sm:">
                                 {taskUserArray.map((task) => (
                                     <TaskCard task={task} />
                                 ))}

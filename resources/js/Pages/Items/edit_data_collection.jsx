@@ -232,7 +232,7 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
                                                                 }`}
                                                             >
                                                                 <div className="flex items-start justify-between">
-                                                                    <div className="flex items-start space-x-3">
+                                                                    <div className="flex items-start space-x-3 justify-center">
                                                                         <Checkbox
                                                                             id={item.id}
                                                                             checked={data.items?.[item.id]?.checked || false}
