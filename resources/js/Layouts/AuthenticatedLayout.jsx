@@ -12,6 +12,7 @@ export default function AuthenticatedLayout({ header, children }) {
         useState(false);
     const [sidebarExpanded, setSidebarExpanded] = useState(false);
     const [auditExpanded, setAuditExpanded] = useState(false);
+    const [closeExpanded, setCloseExpanded] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
 
     // Update active path when route changes
@@ -263,8 +264,10 @@ export default function AuthenticatedLayout({ header, children }) {
                             {/* Notification Bell + Toggle Audit */}
                             <div className="relative w-4 aspect-square">
                                 <button
-                                    onClick={() =>
-                                        setAuditExpanded(!auditExpanded)
+                                    onClick={() =>{
+                                        setAuditExpanded(!auditExpanded),
+                                        setCloseExpanded(true)
+                                    }
                                     }
                                     className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                                     aria-label="Toggle Audit"
@@ -282,8 +285,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {/* Show or hide the Audit component */}
                                 {auditExpanded && (
                                     <div className="absolute right-0 mt-2 z-50">
-                                        <Audit 
-                                        audits={audits}/>
+                                        <Audit audits={audits} />
                                     </div>
                                 )}
                             </div>
@@ -464,8 +466,10 @@ export default function AuthenticatedLayout({ header, children }) {
                         {/* Logo and Toggle */}
                         <div className="flex items-center justify-center mb-6 px-2">
                             <button
-                                onClick={() =>
-                                    setSidebarExpanded(!sidebarExpanded)
+                                onClick={() =>{
+                                    setSidebarExpanded(!sidebarExpanded),
+                                    setCloseExpanded(true)
+                                ;}
                                 }
                                 className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                             >
@@ -645,9 +649,12 @@ export default function AuthenticatedLayout({ header, children }) {
             {/* Overlay for expanded sidebar */}
             <div
                 className={`w-screen h-screen fixed bg-gray-900/30 ${
-                    sidebarExpanded ? "block" : "hidden"
+                    closeExpanded ? "block" : "hidden" 
                 } transition-all z-40`}
-                onClick={() => setSidebarExpanded(false)}
+                onClick={() => {setSidebarExpanded(false),
+                    setAuditExpanded(false),
+                    setCloseExpanded(false);
+                }}
             ></div>
         </div>
     );

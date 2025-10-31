@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class AuditController extends Controller
 {
     public function index(){
-        $audits = audit::all();
+        $audits = audit::paginate(50);
         return inertia('Audit/index', [
             'audits' => $audits,
         ]);
