@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\audit;
 use App\Models\cicilan;
 use App\Models\contract;
 use App\Models\newClient;
@@ -10,6 +11,7 @@ use App\Http\Requests\UpdatenewClientRequest;
 use App\Models\task;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redirect;
@@ -53,6 +55,8 @@ class NewClientController extends Controller
             'Instalments' => 'cicil'
         ];
 
+
+
         $validated = $request->validate([
             'company_name' => 'string|required',
             'code' => 'required|string|max:4|unique:new_clients,code',
@@ -95,6 +99,21 @@ class NewClientController extends Controller
                 'tanggal' => $fase['tanggal'],
             ]);
         };
+
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid_new = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid_new,
+            'action' => 'Created',
+            'change_section' => "Created New Client.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
         
         newClient::create([
             'uuid' => $clientUuid,
@@ -177,6 +196,22 @@ class NewClientController extends Controller
 
         $uuid = $newClient->uuid;
 
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid_new = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid_new,
+            'action' => 'Updated',
+            'change_section' => "Updated New Client.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
+
+
         $update_client = newClient::where('uuid', $uuid);
         $update_client->update([
             'company_name' => $validated['company_name'],
@@ -222,6 +257,22 @@ class NewClientController extends Controller
     public function destroy(newClient $newClient)
     {
         $uuid = $newClient->uuid;
+
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid_new = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid_new,
+            'action' => 'Deleted',
+            'change_section' => "Deleted New Client.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
+
         $newClient = newClient::where('uuid', $uuid);
         $cicilan = cicilan::where('client_uuid', $uuid);
         $newClient->delete();

@@ -115,7 +115,7 @@ class ItemsController extends Controller
 
         audit::create([
             'uuid' => $uuid,
-            'action' => 'Create',
+            'action' => 'Edited',
             'change_section' => "New item '{$request->items}' added to category '{$request->category}' (Qty: {$request->quantity}).",
             'created_by' => $request->created_by,
             'date' => $date->format('d F Y'),
@@ -141,6 +141,21 @@ class ItemsController extends Controller
     public function destroy(items $items, $id)
     {
         // dd($items, $id);
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid,
+            'action' => 'Deleted',
+            'change_section' => "Data Tool Collections checked.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
+
         $del_data_collection = items::where('id', $id);
         // $del_status= task_status::where('task_uuid', $uuid);
         $del_data_collection->delete();

@@ -90,14 +90,14 @@ class ToolDataCollectionController extends Controller
     {
         
         $user = Auth::user();
-        // dd($dataCollection, $user);
+        // dd( $user);
         $uuid = Str::uuid()->toString();
         
         $date = Carbon::now();
         
         audit::create([
             'uuid' => $uuid,
-            'action' => 'Delete',
+            'action' => 'Deleted',
             'change_section' => "Deleted Collections.",
             'created_by' => $user->name,
             'date' => $date->format('d F Y'),

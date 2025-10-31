@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    const audits = usePage().props.auth.audit;
+    console.log(audits)
     const currentRoute = usePage().url; // Get current route
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -280,7 +282,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {/* Show or hide the Audit component */}
                                 {auditExpanded && (
                                     <div className="absolute right-0 mt-2 z-50">
-                                        <Audit />
+                                        <Audit 
+                                        audit={audit}/>
                                     </div>
                                 )}
                             </div>

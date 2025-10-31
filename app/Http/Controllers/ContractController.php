@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\audit;
 use App\Models\cicilan;
 use App\Models\contract;
 use App\Models\contract_pic;
@@ -10,6 +11,7 @@ use App\Models\newClient;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -18,8 +20,8 @@ class ContractController extends Controller
 {
     public function edit(newclient $contract)
     {
-        $client = newClient::where('uuid', $contract);
-        // dd($client);
+        // $client = newClient::where('uuid', $contract->uuid)->get();
+        // dd($client, $contract->uuid);
         return Inertia::render('NewClient/Contract/edit', [
             'clients' => $contract,
         ]);
@@ -61,6 +63,21 @@ class ContractController extends Controller
         };
 
         // dd($uuid);
+
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid_new = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid_new,
+            'action' => 'Deleted',
+            'change_section' => "Contract Created.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         // $update_client = newClient::where('uuid', $uuid);
         contract::create([

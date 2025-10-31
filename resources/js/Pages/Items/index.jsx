@@ -308,7 +308,7 @@ export default function EquipmentInventory({
                                                             ) {
                                                                 router.delete(
                                                                     route(
-                                                                        "check.destroy",
+                                                                        "data_collection.destroy",
                                                                         event
                                                                     ),
                                                                     {

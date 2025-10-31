@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\audit;
 use App\Models\it;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class itReviewController extends Controller
@@ -34,6 +36,21 @@ class itReviewController extends Controller
 
         $uuid = $request->uuid;
         // dd($uuid);
+
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid_new = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid_new,
+            'action' => 'Updated',
+            'change_section' => "Updated IT Task.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         $date = Carbon::now()->toDateString();
         $time = Carbon::now()->toTimeString();

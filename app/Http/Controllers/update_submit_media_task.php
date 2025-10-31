@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\audit;
 use App\Models\media;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class update_submit_media_task extends Controller
 {
@@ -22,6 +25,21 @@ class update_submit_media_task extends Controller
 
         $date = Carbon::now()->toDateString();
         $time = Carbon::now()->toTimeString();
+
+        $user = Auth::user();
+
+        $uuid_new = Str::uuid()->toString();
+
+        $date_audit = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid_new,
+            'action' => 'Submit',
+            'change_section' => "Submitted " . $media->task_title . " Task from Creative Task.",
+            'created_by' => $user->name,
+            'date' => $date_audit->format('d F Y'),
+            'time' => $date_audit->format('H:i'),
+        ]);
 
         $update_task = media::where('uuid', $uuid);
         $update_task->update([

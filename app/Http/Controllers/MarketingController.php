@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\audit;
 use App\Models\marketing;
 use App\Models\newClient;
 use App\Models\task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -63,6 +65,21 @@ class MarketingController extends Controller
             'deadline' => 'string|required',
         ]);
         // dd($request);
+
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid,
+            'action' => 'Create',
+            'change_section' => "Created Marketing Task.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
 
         $formUuid = Str::uuid()->toString();
@@ -125,6 +142,21 @@ class MarketingController extends Controller
             'deadline' => 'nullable|date',
         ]);
 
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid_new = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid_new,
+            'action' => 'Updated',
+            'change_section' => "Updated Marketing Task.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
+
         $uuid = $marketing->uuid;
         // dd($uuid);
 
@@ -138,6 +170,21 @@ class MarketingController extends Controller
     {
         $uuid = $marketing->uuid;
         // dd($uuid);
+
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid_new = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid_new,
+            'action' => 'Delete',
+            'change_section' => "Delete Marketing Task.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         $del_task = marketing::where('uuid', $uuid);
         // $del_status= task_status::where('task_uuid', $uuid);

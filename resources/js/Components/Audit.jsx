@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, router } from "@inertiajs/react";
 
-export default function Audit({ initialNotifications = [] }) {
+export default function Audit({ initialNotifications = [], audit }) {
     const [activeFilter, setActiveFilter] = useState("All");
     const [notifications, setNotifications] = useState(initialNotifications);
 
