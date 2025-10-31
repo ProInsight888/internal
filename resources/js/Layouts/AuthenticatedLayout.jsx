@@ -283,7 +283,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {auditExpanded && (
                                     <div className="absolute right-0 mt-2 z-50">
                                         <Audit 
-                                        audit={audit}/>
+                                        audits={audits}/>
                                     </div>
                                 )}
                             </div>
