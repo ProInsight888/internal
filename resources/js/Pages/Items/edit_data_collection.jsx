@@ -2,10 +2,11 @@ import Checkbox from "@/Components/Checkbox";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router, useForm } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import { useState, useRef, useEffect } from "react";
 
 export default function create({ userName, dataEvent, event, tanggal, items }) {
+    const user_create = usePage().props.auth.user
     const { data, setData, post, errors, processing } = useForm({
         event_name: event || "",
         tanggal_event: tanggal || "",
@@ -19,6 +20,7 @@ export default function create({ userName, dataEvent, event, tanggal, items }) {
             };
             return acc;
         }, {}),
+        created_by: user_create.user
     });
 
     const [activeCategory, setActiveCategory] = useState("camera");

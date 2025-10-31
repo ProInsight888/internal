@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\audit;
 use App\Models\items;
 use App\Models\ToolDataCollection;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CheckDataCollectionController extends Controller
 {
@@ -18,7 +21,7 @@ class CheckDataCollectionController extends Controller
         //     'tanggal_event' => 'string',
         // ]);
 
-        // dd($request->tanggal_event[0], $request);
+        dd($request);
         $items = $request->items;
         foreach ($items as $index => $item) {
             // dd($item['checked']);
@@ -62,7 +65,20 @@ class CheckDataCollectionController extends Controller
 
     public function destroy($dataCollection)
     {
-        // dd($dataCollection);
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid,
+            'action' => 'Checked',
+            'change_section' => "Data Tool Collections checked.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         $del_data_collection = ToolDataCollection::where('event_name', $dataCollection);
         // $del_status= task_status::where('task_uuid', $uuid);

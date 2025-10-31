@@ -3,14 +3,16 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Combobox } from "@headlessui/react";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, usePage } from "@inertiajs/react";
 import { useState, useRef, useEffect } from "react";
 
 export default function create({ users, companies }) {
+    const user_create = usePage().props.auth.user
     const { data, setData, post, errors, processing } = useForm({
         items: "",
         category: "",
         quantity: "",
+        created_by: user_create.name,
     });
 
     const formRef = useRef();

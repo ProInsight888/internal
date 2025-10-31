@@ -58,18 +58,18 @@ class ItemsController extends Controller
 
         // dd($validatedData);
 
-        // $uuid = Str::uuid()->toString();
+        $uuid = Str::uuid()->toString();
 
-        // $date = Carbon::now();
+        $date = Carbon::now();
 
-        // audit::create([
-        //     'uuid' => $uuid,
-        //     'action' => 'Create',
-        //     'change_section' => 'Updated Account named ' . $request->name,
-        //     'created_by' => $request->created_by,
-        //     'date' => $date->format('d F Y'),
-        //     'time' => $date->format('H:i'),
-        // ]);
+        audit::create([
+            'uuid' => $uuid,
+            'action' => 'Create',
+            'change_section' => "New item '{$request->items}' added to category '{$request->category}' (Qty: {$request->quantity}).",
+            'created_by' => $request->created_by,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
 
         items::create([
@@ -108,6 +108,19 @@ class ItemsController extends Controller
 
         $validatedData = $request->validated();
         // dd($items->toArray(), $id);
+
+        $uuid = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid,
+            'action' => 'Create',
+            'change_section' => "New item '{$request->items}' added to category '{$request->category}' (Qty: {$request->quantity}).",
+            'created_by' => $request->created_by,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         $items = items::where('id', $id);
         // Update existing record

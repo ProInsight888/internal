@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\audit;
 use App\Models\items;
 use App\Models\newClient;
 use App\Models\ToolDataCollection;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ToolDataCollectionController extends Controller
 {
@@ -28,6 +31,20 @@ class ToolDataCollectionController extends Controller
         ]);
         
         $items = $request->items;
+
+        $uuid = Str::uuid()->toString();
+
+        $date = Carbon::now();
+
+        audit::create([
+            'uuid' => $uuid,
+            'action' => 'Create',
+            'change_section' => "Add New Tool Data Collections.",
+            'created_by' => $request->created_by,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
+        
         // dd($items, $request);
         foreach ($items as $index => $item) {
             // dd($item['checked']);
@@ -71,7 +88,21 @@ class ToolDataCollectionController extends Controller
     
     public function destroy($dataCollection)
     {
-        // dd($dataCollection);
+        
+        $user = Auth::user();
+        // dd($dataCollection, $user);
+        $uuid = Str::uuid()->toString();
+        
+        $date = Carbon::now();
+        
+        audit::create([
+            'uuid' => $uuid,
+            'action' => 'Delete',
+            'change_section' => "Deleted Collections.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         $del_daat_collection = ToolDataCollection::where('event_name', $dataCollection);
         // $del_status= task_status::where('task_uuid', $uuid);
