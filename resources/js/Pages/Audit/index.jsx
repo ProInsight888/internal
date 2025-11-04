@@ -234,57 +234,64 @@ export default function AuditIndex({ audits }) {
                                             audit.date
                                         );
                                         return (
-                                            
-                                                <tr
-                                                    key={audit.id}
-                                                    className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200"
-                                                >
-                                                    <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="flex items-center">
-                                                            <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
-                                                                {audit.created_by.charAt(
-                                                                    0
+                                            <tr
+                                                key={audit.id}
+                                                className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200"
+                                            >
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center">
+                                                        <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
+                                                            {audit.created_by.charAt(
+                                                                0
+                                                            )}
+                                                        </div>
+                                                        <div className="ml-4">
+                                                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                                                {
+                                                                    audit.created_by
+                                                                }
+                                                            </div>
+                                                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                                                                {
+                                                                    audit.change_section
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center space-x-2">
+                                                        <span
+                                                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getActionColor(
+                                                                audit.action
+                                                            )}`}
+                                                        >
+                                                            {audit.action
+                                                                .charAt(0)
+                                                                .toUpperCase() +
+                                                                audit.action.slice(
+                                                                    1
                                                                 )}
-                                                            </div>
-                                                            <div className="ml-4">
-                                                                <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                                    {
-                                                                        audit.created_by
-                                                                    }
-                                                                </div>
-                                                                <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                                    {
-                                                                        audit.change_section
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="flex items-center space-x-2">
-                                                            <span
-                                                                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getActionColor(
-                                                                    audit.action
-                                                                )}`}
-                                                            >
-                                                                {audit.action
-                                                                    .charAt(0)
-                                                                    .toUpperCase() +
-                                                                    audit.action.slice(
-                                                                        1
-                                                                    )}
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                            {date}
-                                                        </div>
-                                                        <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                            {audit.time}
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                                        {date}
+                                                    </div>
+                                                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                                                        {new Date(
+                                                            audit.time
+                                                        ).toLocaleDateString(
+                                                            "en-ID",
+                                                            {
+                                                                hour: "numeric",
+                                                                minute: "numeric",
+                                                            }
+                                                        )}
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         );
                                     })}
                                 </tbody>
