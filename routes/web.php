@@ -121,8 +121,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('add_account/{user}/edit', [AddAccountController::class, 'edit'])->name('add_account.edit');
     Route::put('add_account/{user}', [AddAccountController::class, 'update'])->name('add_account.update');
     Route::delete('add_account/{user}', [AddAccountController::class, 'destroy'])->name('add_account.destroy');
+
     Route::delete('deleteCicilan/{uuid}', [deleteCicilan::class, 'destroy'])->name('deleteCicilan.destroy');
     Route::post('storeCicilan/{uuid}', [deleteCicilan::class, 'store'])->name('storeCicilan.store');
+    
     Route::get('media/create', [MediaController::class, 'create'])->name('media.create');
     Route::get('creative/create', [CreativeController::class, 'create'])->name('creative.create');
     Route::get('marketing/create', [MarketingController::class, 'create'])->name('marketing.create');

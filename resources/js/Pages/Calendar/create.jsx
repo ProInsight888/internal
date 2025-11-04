@@ -49,10 +49,10 @@ export default function create({}) {
         <AuthenticatedLayout
             header={
                 <>
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl mt-8 font-semibold leading-tight text-black dark:text-white mb-4">
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl mt-8 font-semibold leading-tight text-gray-900 dark:text-gray-100 mb-4">
                         Add Your New Event 👋
                     </h1>
-                    <p className="text-lg sm:text-xl lg:text-2xl text-black dark:text-gray-300 leading-relaxed max-w-4xl">
+                    <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-4xl">
                         Another day to chase your goals! We're here to make sure
                         your stay is smooth, smart, and stress-free. You've got
                         this 💪
@@ -60,16 +60,16 @@ export default function create({}) {
                 </>
             }
         >
-            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-8 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 py-8 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-4xl mx-auto">
-                    <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
+                    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border border-gray-200 dark:border-gray-700/50 rounded-2xl shadow-lg dark:shadow-2xl shadow-gray-200/50 dark:shadow-black/30 overflow-hidden">
                         {/* Header Section */}
-                        <div className="px-6 py-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-amber-500/30">
+                        <div className="px-6 py-6 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900/80 dark:to-gray-800/80 border-b border-amber-500/50 dark:border-amber-500/40 backdrop-blur-sm">
                             <Head title="Create Event" />
                             <div className="flex items-center space-x-3">
-                                <div className="p-2 bg-amber-500/10 rounded-lg">
+                                <div className="p-2 bg-amber-100 dark:bg-amber-500/15 rounded-lg backdrop-blur-sm">
                                     <svg 
-                                        className="w-6 h-6 dark:text-amber-400" 
+                                        className="w-6 h-6 text-amber-600 dark:text-amber-400" 
                                         fill="none" 
                                         stroke="currentColor" 
                                         viewBox="0 0 24 24"
@@ -82,7 +82,7 @@ export default function create({}) {
                                         />
                                     </svg>
                                 </div>
-                                <h2 className="text-2xl sm:text-3xl font-bold text-amber-400">
+                                <h2 className="text-2xl sm:text-3xl font-bold text-amber-600 dark:text-amber-400">
                                     Create New Event
                                 </h2>
                             </div>
@@ -94,14 +94,14 @@ export default function create({}) {
                                 <InputLabel
                                     htmlFor="title"
                                     value="Event Title"
-                                    className="text-gray-200 font-medium mb-3 text-lg"
+                                    className="text-gray-800 dark:text-gray-100 font-medium mb-3 text-lg"
                                 />
 
                                 <TextInput
                                     id="title"
                                     name="title"
                                     value={data.title}
-                                    className="mt-1 block w-full bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 focus:bg-gray-700 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-lg transition-all duration-200 py-3 px-4 text-base"
+                                    className="mt-1 block w-full bg-white dark:bg-gray-700/70 border-gray-300 dark:border-gray-600/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-700/90 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 rounded-lg transition-all duration-200 py-3 px-4 text-base backdrop-blur-sm"
                                     placeholder="Enter event title..."
                                     onChange={(e) =>
                                         setData("title", e.target.value)
@@ -122,7 +122,7 @@ export default function create({}) {
                                     <InputLabel
                                         htmlFor="start"
                                         value="Start Date"
-                                        className="text-gray-200 font-medium mb-3"
+                                        className="text-gray-800 dark:text-gray-100 font-medium mb-3"
                                     />
 
                                     <div className="relative">
@@ -131,14 +131,14 @@ export default function create({}) {
                                             type="date"
                                             name="start"
                                             value={data.start}
-                                            className="mt-1 block w-full bg-gray-700/50 border-gray-600 text-white focus:bg-gray-700 focus:purple-600 focus:ring-2 focus:ring-amber-500/20 rounded-lg transition-all duration-200 py-3 px-4"
+                                            className="mt-1 block w-full bg-white dark:bg-gray-700/70 border-gray-300 dark:border-gray-600/50 text-gray-900 dark:text-white focus:bg-white dark:focus:bg-gray-700/90 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 rounded-lg transition-all duration-200 py-3 px-4 backdrop-blur-sm"
                                             onChange={(e) =>
                                                 setData("start", e.target.value)
                                             }
                                             required
                                         />
                                         <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                                 <path
                                                     fillRule="evenodd"
                                                     d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
@@ -159,7 +159,7 @@ export default function create({}) {
                                     <InputLabel
                                         htmlFor="start_time"
                                         value="Start Time"
-                                        className="text-gray-200 font-medium mb-3"
+                                        className="text-gray-800 dark:text-gray-100 font-medium mb-3"
                                     />
 
                                     <div className="relative">
@@ -168,7 +168,7 @@ export default function create({}) {
                                             type="time"
                                             name="start_time"
                                             value={data.start_time}
-                                            className="mt-1 block w-full bg-gray-700/50 border-gray-600 text-white focus:bg-gray-700 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-lg transition-all duration-200 py-3 px-4"
+                                            className="mt-1 block w-full bg-white dark:bg-gray-700/70 border-gray-300 dark:border-gray-600/50 text-gray-900 dark:text-white focus:bg-white dark:focus:bg-gray-700/90 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 rounded-lg transition-all duration-200 py-3 px-4 backdrop-blur-sm"
                                             onChange={(e) =>
                                                 setData(
                                                     "start_time",
@@ -178,7 +178,7 @@ export default function create({}) {
                                             required
                                         />
                                         <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                                 <path
                                                     fillRule="evenodd"
                                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
@@ -199,7 +199,7 @@ export default function create({}) {
                                     <InputLabel
                                         htmlFor="end"
                                         value="End Date"
-                                        className="text-gray-200 font-medium mb-3"
+                                        className="text-gray-800 dark:text-gray-100 font-medium mb-3"
                                     />
 
                                     <div className="relative">
@@ -208,14 +208,14 @@ export default function create({}) {
                                             type="date"
                                             name="end"
                                             value={data.end}
-                                            className="mt-1 block w-full bg-gray-700/50 border-gray-600 text-white focus:bg-gray-700 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-lg transition-all duration-200 py-3 px-4"
+                                            className="mt-1 block w-full bg-white dark:bg-gray-700/70 border-gray-300 dark:border-gray-600/50 text-gray-900 dark:text-white focus:bg-white dark:focus:bg-gray-700/90 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 rounded-lg transition-all duration-200 py-3 px-4 backdrop-blur-sm"
                                             onChange={(e) =>
                                                 setData("end", e.target.value)
                                             }
                                             required
                                         />
                                         <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                                 <path
                                                     fillRule="evenodd"
                                                     d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
@@ -236,7 +236,7 @@ export default function create({}) {
                                     <InputLabel
                                         htmlFor="end_time"
                                         value="End Time"
-                                        className="text-gray-200 font-medium mb-3"
+                                        className="text-gray-800 dark:text-gray-100 font-medium mb-3"
                                     />
 
                                     <div className="relative">
@@ -245,14 +245,14 @@ export default function create({}) {
                                             type="time"
                                             name="end_time"
                                             value={data.end_time}
-                                            className="mt-1 block w-full bg-gray-700/50 border-gray-600 text-white focus:bg-gray-700 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-lg transition-all duration-200 py-3 px-4"
+                                            className="mt-1 block w-full bg-white dark:bg-gray-700/70 border-gray-300 dark:border-gray-600/50 text-gray-900 dark:text-white focus:bg-white dark:focus:bg-gray-700/90 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 rounded-lg transition-all duration-200 py-3 px-4 backdrop-blur-sm"
                                             onChange={(e) =>
                                                 setData("end_time", e.target.value)
                                             }
                                             required
                                         />
                                         <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                                 <path
                                                     fillRule="evenodd"
                                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
@@ -274,7 +274,7 @@ export default function create({}) {
                                 <InputLabel
                                     htmlFor="description"
                                     value="Description"
-                                    className="text-gray-200 font-medium mb-3 text-lg"
+                                    className="text-gray-800 dark:text-gray-100 font-medium mb-3 text-lg"
                                 />
 
                                 <textarea
@@ -282,7 +282,7 @@ export default function create({}) {
                                     name="description"
                                     value={data.description}
                                     rows="5"
-                                    className="mt-1 block w-full bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 rounded-lg focus:bg-gray-700 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all duration-200 py-3 px-4 resize-none text-base"
+                                    className="mt-1 block w-full bg-white dark:bg-gray-700/70 border border-gray-300 dark:border-gray-600/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:bg-white dark:focus:bg-gray-700/90 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all duration-200 py-3 px-4 resize-none text-base backdrop-blur-sm"
                                     placeholder="Describe your event details..."
                                     onChange={(e) =>
                                         setData("description", e.target.value)
@@ -297,9 +297,9 @@ export default function create({}) {
                             </div>
 
                             {/* Submit Button */}
-                            <div className="flex items-center justify-end pt-6 border-t border-gray-700">
+                            <div className="flex items-center justify-end pt-6 border-t border-gray-200 dark:border-gray-700/50">
                                 <PrimaryButton
-                                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:to-purple-500 text-gray-900 font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-purple-500/25 transition-all duration-200 transform hover:scale-105 text-lg"
+                                    className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-amber-500/20 transition-all duration-200 transform hover:scale-105 text-lg backdrop-blur-sm"
                                     disabled={processing}
                                 >
                                     <div className="flex items-center space-x-2">

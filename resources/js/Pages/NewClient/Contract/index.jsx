@@ -435,7 +435,7 @@
 //                                                         Paid
 //                                                     </option>
 //                                                     <option value="Cicil">
-//                                                         Instalments
+//                                                         Installments
 //                                                     </option>
 //                                                     <option value="Belum Bayar">
 //                                                         Unpaid

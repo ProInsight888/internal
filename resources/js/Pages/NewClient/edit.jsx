@@ -59,29 +59,7 @@ export default function edit({ clients }) {
         put(route("new_client.update", clients.uuid), {
             preserveScroll: true,
             onSuccess: () => {
-                // handle cicilan updates
-                if (data.status === "Cicil") {
-                    // delete old cicilan first
-                    router.delete(
-                        route("deleteCicilan.destroy", clients.uuid),
-                        {
-                            onSuccess: () => {
-                                // then post new ones
-                                post(
-                                    route("storeCicilan.store", clients.uuid),
-                                    {
-                                        onSuccess: () => {
-                                            window.location.reload();
-                                        },
-                                        onError: (errors) =>
-                                            console.error(errors),
-                                    }
-                                );
-                            },
-                            onError: (errors) => console.error(errors),
-                        }
-                    );
-                }
+                // window.location.reload();
             },
             onError: (errors) => console.error(errors),
         });
@@ -441,7 +419,7 @@ export default function edit({ clients }) {
                                                         Paid
                                                     </option>
                                                     <option value="Cicil">
-                                                        Instalments
+                                                        Installments
                                                     </option>
                                                     <option value="Belum Bayar">
                                                         Unpaid

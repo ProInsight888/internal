@@ -90,7 +90,7 @@ export default function ClientIndex({ clients, cicilans }) {
 
     // Flash messages with auto-dismiss
     const { success: successMessage, deleted: deletedMessage } =
-        usePage().props.flash;
+        usePage().props.flash;  
 
     useEffect(() => {
         if (successMessage || deletedMessage) {
@@ -101,7 +101,7 @@ export default function ClientIndex({ clients, cicilans }) {
                     {},
                     { preserveState: true }
                 );
-            }, 5000);
+            }, 500000);
             return () => clearTimeout(timer);
         }
     }, [successMessage, deletedMessage]);
