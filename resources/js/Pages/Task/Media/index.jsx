@@ -121,12 +121,12 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                 </h3>
 
                 {/* Code */}
-                <h1 className="font-black text-2xl text-gray-900 dark:text-white -mb-0.5 leading-tight pt-3">
+                <h1 className="font-black text-2xl text-gray-900 dark:text-white mb-1 leading-tight pt-3">
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
                 {/* Task Title */}
-                <h3 className="text-md text-black dark:text-white font-medium mb-1 line-clamp-2 break-words">
+                <h3 className="text-md text-black dark:text-white font-medium mb-2 line-clamp-2 break-words">
                     {task.task_title}
                 </h3>
 
