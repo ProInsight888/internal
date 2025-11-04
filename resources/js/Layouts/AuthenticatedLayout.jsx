@@ -470,9 +470,8 @@ export default function AuthenticatedLayout({ header, children }) {
                             <button
                                 onClick={() =>{
                                     setSidebarExpanded(!sidebarExpanded),
-                                    setCloseExpanded(true)
-                                ;}
-                                }
+                                    setCloseExpanded(true);
+                                }}
                                 className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                             >
                                 {sidebarExpanded ? (
