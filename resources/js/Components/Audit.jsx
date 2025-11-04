@@ -35,7 +35,7 @@ export default function Audit({ audits }) {
         const bRead = readAudits.includes(b.uuid);
 
         if (aRead !== bRead) return aRead ? 1 : -1; // unread first
-        return new Date(b.date) - new Date(a.date); // newest first
+        return new Date(a.date) - new Date(a.date); // newest first
     });;
 
     return (

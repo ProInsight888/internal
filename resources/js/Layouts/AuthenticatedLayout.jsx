@@ -264,7 +264,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <button
                                     onClick={() =>{
                                         setAuditExpanded(!auditExpanded),
-                                        setCloseExpanded(true)
+                                        setCloseExpanded(!closeExpanded)
                                     }
                                     }
                                     className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
@@ -460,7 +460,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             <button
                                 onClick={() =>{
                                     setSidebarExpanded(!sidebarExpanded),
-                                    setCloseExpanded(true);
+                                    setCloseExpanded(!closeExpanded);
                                 }}
                                 className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                             >

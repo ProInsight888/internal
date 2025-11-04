@@ -70,18 +70,27 @@ export default function AuditIndex({ audits }) {
     
 
     // Filter data based on search and filters
-    const filteredAudits = audits.data.filter(audit => {
-        const matchesSearch = searchTerm === "" || 
-            audit.created_by.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            audit.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            audit.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            audit.change_section.toLowerCase().includes(searchTerm.toLowerCase());
+    const filteredAudits = audits.data
+        .filter((audit) => {
+            const matchesSearch =
+                searchTerm === "" ||
+                audit.created_by
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()) ||
+                audit.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                audit.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                audit.change_section
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase());
 
-        const matchesUser = userFilter === "all" || audit.user.name === userFilter;
-        const matchesAction = actionFilter === "all" || audit.action === actionFilter;
+            const matchesUser =
+                userFilter === "all" || audit.user.name === userFilter;
+            const matchesAction =
+                actionFilter === "all" || audit.action === actionFilter;
 
-        return matchesSearch && matchesUser && matchesAction;
-    });
+            return matchesSearch && matchesUser && matchesAction;
+        })
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const getActionColor = (action) => {
         switch (action) {

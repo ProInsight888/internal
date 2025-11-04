@@ -22,4 +22,9 @@ class contract extends Model
         'tlp_num',
         'price',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 }

@@ -54,15 +54,17 @@ export default function edit({ clients }) {
         }
     }, [data.pic_num, data.pics]);
 
-    console.log(data.status);
-
+    
     const submit = (e) => {
         e.preventDefault();
-        put(route("contract.update", clients.uuid), {
+        console.log(clients.uuid)
+        post(route("contract.store", data), {
             onSuccess: () => {
+                console.log(data.uuid);
                 const clientsUuid = clients.uuid;
                 window.open(`/contract/${clientsUuid}/contract`, "_blank");
             },
+            
         });
     };
 

@@ -284,8 +284,8 @@ export default function Show({ client, contracts }) {
                                         <div className="flex items-center">
                                             <Link
                                                 href={route(
-                                                    "new_client.contract.edit",
-                                                    client.uuid
+                                                    "contract.edit",
+                                                    {contract : client.uuid}
                                                 )}
                                                 className="inline-flex items-center px-4 py-2 text-sm text-black dark:text-white font-medium rounded-lg transition-all duration-200"
                                             >

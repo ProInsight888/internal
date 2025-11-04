@@ -33,7 +33,7 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
-                'audit' => fn() => audit::paginate(10),
+                'audit' => fn() => audit::orderBy('created_at', 'desc')->paginate(10),
             ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
