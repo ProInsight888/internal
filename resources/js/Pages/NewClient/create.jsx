@@ -197,6 +197,8 @@ export default function create({}) {
 
                                     <optgroup label="Event Documentation" className="dark:text-gray-300">
                                         <option value="Photo & Video">Photo & Video</option>
+                                        <option value="Drone">Add Ons Drone</option>
+                                        <option value="Production">Add Ons Production</option>
                                     </optgroup>
                                 </select>
 

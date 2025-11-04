@@ -58,13 +58,13 @@ const TeamBadge = ({ team }) => {
     const getTeamDisplayName = (team) => {
         switch (team?.toLowerCase()) {
             case "media":
-                return "Media Team";
+                return "Media";
             case "creative":
-                return "Creative Team";
+                return "Creative";
             case "marketing":
                 return "Marketing";
             case "it":
-                return "IT Team";
+                return "IT";
             default:
                 return team || "No Team";
         }
@@ -243,7 +243,7 @@ const UserListTable = ({
                         </div>
                         <input
                             type="text"
-                            placeholder="Search users by name or email..."
+                            placeholder="Search for users"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:ring-blue-400 dark:focus:border-blue-400"
