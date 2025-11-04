@@ -130,30 +130,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('marketing/create', [MarketingController::class, 'create'])->name('marketing.create');
     Route::get('it/create', [ItController::class, 'create'])->name('it.create');
 
-    Route::resource('new_client', NewClientController::class);
-
+    
     Route::get('result', [ResultController::class, 'index'])->name('result.index');
     Route::post('rejectedRevision', [RejectedRevisionController::class, 'store'])->name('rejectedRevision.store');
-
+    
     Route::get('contract/{clientsUuid}/contract', [ContractController::class, 'clientContract'])->name('contract.export');
-    Route::get('newClient/{clientsUuid}/contract', [ContractController::class, 'viewClientContract'])->name('contract.export');
+    Route::get('newClient/{clientsUuid}/contract', [ContractController::class, 'viewClientContract'])->name('viewContract.export');
     Route::resource('contract', ContractController::class);
-});
 
-// New Client Contract Route
-Route::prefix('new_client')->group(function () {
-    Route::get('/{contract}/edit', [ContractController::class, 'edit'])->name('new_client.edit');
-    Route::get('/NewClient/Contract/edit', [ContractController::class, 'edit'])->name('new_client.contract.edit');
-    Route::put('/{contract}', [ContractController::class, 'update'])->name('new_client.update');
+    Route::resource('new_client', NewClientController::class);
 });
 
 // Audit Routes
     Route::get('pages/audit', [AuditController::class, 'index'])->name('audit.index');
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
 
 require __DIR__ . '/auth.php';

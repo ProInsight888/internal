@@ -126,7 +126,7 @@ class AddAccountController extends Controller
 
         audit::create([
             'uuid' => $uuid,
-            'action' => 'Create',
+            'action' => 'Updated',
             'change_section' => 'Updated Account named ' . $validated['name'],
             'created_by' => $validated['created_by'],
             'date' => $date->format('d F Y'),

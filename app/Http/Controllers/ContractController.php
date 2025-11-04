@@ -20,17 +20,15 @@ class ContractController extends Controller
 {
     public function edit(newclient $contract)
     {
-        // $client = newClient::where('uuid', $contract->uuid)->get();
+        $client = newClient::where('uuid', $contract->uuid)->first();
         // dd($client, $contract->uuid);
         return Inertia::render('NewClient/Contract/edit', [
-            'clients' => $contract,
+            'clients' => $client,
         ]);
     }
 
-    public function update(Request $request, newClient $newClient)
+    public function store(Request $request)
     {
-        // dd($request->uuid);
-
         $validated = $request->validate([
             // 'company_name' => 'string|nullable',
             'reference_num' => 'string|nullable',
@@ -43,7 +41,7 @@ class ContractController extends Controller
             'pic_tlp_num' => 'string|nullable',
             // 'pic_title' => 'string|nullable',
             'pic_position' => 'string|nullable',
-            'price' => 'string|nullable',   
+            'price' => 'string|nullable',
         ]);
 
         $today = now('Asia/Jakarta');
@@ -60,7 +58,8 @@ class ContractController extends Controller
                 'pic_tlp_num' => $pic['pic_tlp_num'],
                 'pic_position' => $pic['pic_position'],
             ]);
-        };
+        }
+        ;
 
         // dd($uuid);
 
