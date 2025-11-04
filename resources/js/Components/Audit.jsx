@@ -28,9 +28,15 @@ export default function Audit({ audits }) {
             ? audits.data
             : audits.data.filter((audit) =>
                 activeFilter === "Unread"
-                    ? !readAudits.includes(audit.id)
+                    ? !readAudits.includes(audit.uuid)
                     : audit.type === activeFilter
-            );
+            ).sort((a, b) => {
+        const aRead = readAudits.includes(a.uuid);
+        const bRead = readAudits.includes(b.uuid);
+
+        if (aRead !== bRead) return aRead ? 1 : -1; // unread first
+        return new Date(b.date) - new Date(a.date); // newest first
+    });;
 
     return (
         <div className="mt-10 fixed top-1/2 right-0 transform -translate-y-1/2 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 rounded-l-xl shadow-2xl p-6 w-80 z-50 h-[90vh] overflow-hidden flex flex-col">
