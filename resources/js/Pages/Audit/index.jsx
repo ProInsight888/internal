@@ -141,6 +141,7 @@ export default function AuditIndex({ audits }) {
                                 <InputLabel
                                     htmlFor="search"
                                     value="Search Logs"
+                                    className="dark:text-white"
                                 />
                                 <TextInput
                                     id="search"
@@ -149,7 +150,7 @@ export default function AuditIndex({ audits }) {
                                     onChange={(e) =>
                                         setSearchTerm(e.target.value)
                                     }
-                                    className="mt-1 block w-full"
+                                    className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                     placeholder="Search users, actions, subjects..."
                                 />
                             </div>
@@ -159,6 +160,7 @@ export default function AuditIndex({ audits }) {
                                 <InputLabel
                                     htmlFor="userFilter"
                                     value="Filter by User"
+                                    className="dark:text-white"
                                 />
                                 <select
                                     id="userFilter"
@@ -177,6 +179,7 @@ export default function AuditIndex({ audits }) {
                                 <InputLabel
                                     htmlFor="actionFilter"
                                     value="Filter by Action"
+                                    className="dark:text-white"
                                 />
                                 <select
                                     id="actionFilter"
