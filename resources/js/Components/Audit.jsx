@@ -128,7 +128,21 @@ export default function Audit({ audits }) {
                                             : "text-gray-500 dark:text-gray-500"
                                     }`}
                                 >
-                                    {audit.time}
+                                    {new Date(audit.date).toLocaleDateString(
+                                        "en-ID",
+                                        {
+                                            month: "short",
+                                            day: "numeric",
+                                        }
+                                    )}
+                                    {new Date(audit.time).toLocaleDateString(
+                                        "en-ID",
+                                        {
+                                            hour: "numeric",
+                                            minute: "numeric",
+                                    }
+                                    )}
+
                                 </span>
                                 <span
                                     className={`px-2 py-1 text-xs rounded-full ${
