@@ -128,7 +128,7 @@ export default function Audit({ audits }) {
                                             : "text-gray-500 dark:text-gray-500"
                                     }`}
                                 >
-                                    {new Date(audit.date).toLocaleDateString(
+                                    {new Date(audit.time).toLocaleDateString(
                                         "en-US",
                                         {
                                             month: "short",
