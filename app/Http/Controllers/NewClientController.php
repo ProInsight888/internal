@@ -52,7 +52,7 @@ class NewClientController extends Controller
         $statusMapping = [
             'Paid' => 'lunas',
             'Unpaid' => 'belum bayar', 
-            'Instalments' => 'cicil'
+            'Installments' => 'cicil'
         ];
 
 
@@ -142,7 +142,7 @@ class NewClientController extends Controller
         $statusMapping = [
             'lunas' => 'Paid',
             'belum bayar' => 'Unpaid',
-            'cicil' => 'Instalments'
+            'cicil' => 'Installments'
         ];
         
         $client->display_status = $statusMapping[$client->status] ?? $client->status;
@@ -161,7 +161,7 @@ class NewClientController extends Controller
         $statusMapping = [
             'Paid' => 'lunas',
             'Unpaid' => 'belum bayar',
-            'Instalments' => 'cicil'
+            'Installments' => 'cicil'
         ];
 
         $validated = $request->validate([
@@ -211,6 +211,24 @@ class NewClientController extends Controller
             'time' => $date->format('H:i'),
         ]);
 
+        cicilan::where('client_uuid', $uuid)->delete();;
+
+        $array = [];
+        foreach ($request->fase_pembayaran as $fase) {
+            array_push($array, $fase);
+        }
+        ;
+
+
+        foreach ($array as $index => $fase) {
+            cicilan::create([
+                'client_uuid' => $uuid,
+                'cicilan' => $fase['cicilan'],
+                'tanggal' => $fase['tanggal'],
+                'status_cicilan' => $fase['status_cicilan'],
+            ]);
+        }
+
 
         $update_client = newClient::where('uuid', $uuid);
         $update_client->update([
@@ -236,7 +254,7 @@ class NewClientController extends Controller
         $statusMapping = [
             'lunas' => 'Paid',
             'belum bayar' => 'Unpaid',
-            'cicil' => 'Instalments'
+            'cicil' => 'Installments'
         ];
 
         

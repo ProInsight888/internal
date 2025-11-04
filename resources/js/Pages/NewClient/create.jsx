@@ -333,9 +333,9 @@ export default function create({}) {
                                             setData("status", e.target.value)
                                         }
                                     >
-                                        <option value="Lunas">Paid</option>
-                                        <option value="Cicil">Instalments</option>
-                                        <option value="Belum Bayar">Unpaid</option>
+                                        <option value="Lunas" className="dark:bg-gray-700">Paid</option>
+                                        <option value="Cicil " className="dark:bg-gray-700">Installments</option>
+                                        <option value="Belum Bayar" className="dark:bg-gray-700">Unpaid</option>
                                     </select>
                                     <div
                                         className={`${
@@ -405,7 +405,7 @@ export default function create({}) {
                                     onSubmit={(e) => submit(e)}
                                     disabled={processing}
                                 >
-                                    {processing ? "Creating..." : "New Account"}
+                                    {processing ? "Creating..." : "New Client"}
                                 </PrimaryButton>
                             </div>
                         </form>
