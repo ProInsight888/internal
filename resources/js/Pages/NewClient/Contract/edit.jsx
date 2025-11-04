@@ -28,11 +28,13 @@ export default function edit({ clients }) {
         contract_end: clients?.contract_end ?? "",
         full_address: clients?.full_address ?? "",
         pic_num: 1,
-        pics: [{ 
-            pic_name: "",
-            pic_tlp_num: "",
-            pic_position: "",
-         }],
+        pics: [
+            {
+                pic_name: "",
+                pic_tlp_num: "",
+                pic_position: "",
+            },
+        ],
         price: clients?.price ?? "",
     });
 
@@ -302,14 +304,17 @@ export default function edit({ clients }) {
                                             />
                                         </div>
 
-                                        {data.pic_num >= 1 && data.pic_num <=10 &&
+                                        {data.pic_num >= 1 &&
+                                            data.pic_num <= 10 &&
                                             data.pics.map((pic, index) => (
                                                 <div className="w-full">
                                                     <div className="grid lg:grid-cols-2 grid-cols-1 w-full gap-8">
                                                         <div className="">
                                                             <InputLabel
                                                                 htmlFor={`pic_name_${index}`}
-                                                                value={`PIC Name (${index + 1})`}
+                                                                value={`PIC Name (${
+                                                                    index + 1
+                                                                })`}
                                                                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                                             />
 
@@ -317,19 +322,34 @@ export default function edit({ clients }) {
                                                                 id={`pic_name_${index}`}
                                                                 name={`pic_name_${index}`}
                                                                 value={
-                                                                    data.pics[index]?.pic_name
+                                                                    data.pics[
+                                                                        index
+                                                                    ]?.pic_name
                                                                 }
                                                                 className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                                                                 autoComplete="pic_name"
-                                                                onChange={(e) => {
-                                                                    const updatedPics = [
-                                                                        ...data.pics,
-                                                                    ];
-                                                                    updatedPics[index] = {
-                                                                        ...updatedPics[index],
-                                                                        pic_name: e.target.value,
+                                                                onChange={(
+                                                                    e
+                                                                ) => {
+                                                                    const updatedPics =
+                                                                        [
+                                                                            ...data.pics,
+                                                                        ];
+                                                                    updatedPics[
+                                                                        index
+                                                                    ] = {
+                                                                        ...updatedPics[
+                                                                            index
+                                                                        ],
+                                                                        pic_name:
+                                                                            e
+                                                                                .target
+                                                                                .value,
                                                                     };
-                                                                    setData("pics", updatedPics)
+                                                                    setData(
+                                                                        "pics",
+                                                                        updatedPics
+                                                                    );
                                                                 }}
                                                                 required
                                                             />
@@ -344,7 +364,9 @@ export default function edit({ clients }) {
                                                         <div>
                                                             <InputLabel
                                                                 htmlFor={`pic_tlp_num_${index}`}
-                                                                value={`PIC Telp Num (${index + 1})`}
+                                                                value={`PIC Telp Num (${
+                                                                    index + 1
+                                                                })`}
                                                                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                                             />
 
@@ -352,22 +374,35 @@ export default function edit({ clients }) {
                                                                 id={`pic_tlp_num_${index}`}
                                                                 name={`pic_tlp_num_${index}`}
                                                                 value={
-                                                                    data.pics[index].pic_tlp_num
+                                                                    data.pics[
+                                                                        index
+                                                                    ]
+                                                                        .pic_tlp_num
                                                                 }
                                                                 className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                                                                 autoComplete={`pic_tlp_num_${index}`}
-                                                                onChange={(e) =>{
-                                                                    const updatedPics = [
-                                                                        ...data.pics,
-                                                                    ];
-                                                                    updatedPics[index] = {
-                                                                        ...updatedPics[index],
-                                                                        pic_tlp_num: e.target.value,
-                                                                    }
+                                                                onChange={(
+                                                                    e
+                                                                ) => {
+                                                                    const updatedPics =
+                                                                        [
+                                                                            ...data.pics,
+                                                                        ];
+                                                                    updatedPics[
+                                                                        index
+                                                                    ] = {
+                                                                        ...updatedPics[
+                                                                            index
+                                                                        ],
+                                                                        pic_tlp_num:
+                                                                            e
+                                                                                .target
+                                                                                .value,
+                                                                    };
                                                                     setData(
-                                                                        'pics',
+                                                                        "pics",
                                                                         updatedPics
-                                                                    )
+                                                                    );
                                                                 }}
                                                                 required
                                                             />
@@ -386,7 +421,9 @@ export default function edit({ clients }) {
                                                     <div className="mt-5">
                                                         <InputLabel
                                                             htmlFor={`pic_position_${index}`}
-                                                            value={`PIC Position (${index + 1})`}
+                                                            value={`PIC Position (${
+                                                                index + 1
+                                                            })`}
                                                             className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                                         />
 
@@ -394,24 +431,31 @@ export default function edit({ clients }) {
                                                             id={`pic_position_${index}`}
                                                             name={`pic_position_${index}`}
                                                             value={
-                                                                data.pics[index]?.pic_position
+                                                                data.pics[index]
+                                                                    ?.pic_position
                                                             }
                                                             className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                                                             autoComplete={`pic_position_${index}`}
                                                             onChange={(e) => {
-                                                                const updatedPics = [
-                                                                    ...data.pics
-                                                                ]
-                                                                updatedPics[index] = {
-                                                                    ...updatedPics[index],
-                                                                    pic_position: e.target.value
-                                                                }
+                                                                const updatedPics =
+                                                                    [
+                                                                        ...data.pics,
+                                                                    ];
+                                                                updatedPics[
+                                                                    index
+                                                                ] = {
+                                                                    ...updatedPics[
+                                                                        index
+                                                                    ],
+                                                                    pic_position:
+                                                                        e.target
+                                                                            .value,
+                                                                };
                                                                 setData(
                                                                     "pics",
                                                                     updatedPics
-                                                                )
-                                                            }
-                                                            }
+                                                                );
+                                                            }}
                                                             required
                                                         />
 
@@ -585,6 +629,12 @@ export default function edit({ clients }) {
                                                 >
                                                     <option value="Photo & Video">
                                                         Photo & Video
+                                                    </option>
+                                                    <option value="Drone">
+                                                        Add Ons Drone
+                                                    </option>
+                                                    <option value="Production">
+                                                        Add Ons Production
                                                     </option>
                                                 </optgroup>
                                             </select>

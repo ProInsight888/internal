@@ -49,10 +49,10 @@ export default function create({}) {
         <AuthenticatedLayout
             header={
                 <>
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl mt-8 font-semibold leading-tight text-gray-100 mb-4">
+                    <h1 className="text-4xl sm:text-5xl lg:text-6xl mt-8 font-semibold leading-tight text-black dark:text-white mb-4">
                         Add Your New Event 👋
                     </h1>
-                    <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-4xl">
+                    <p className="text-lg sm:text-xl lg:text-2xl text-black dark:text-gray-300 leading-relaxed max-w-4xl">
                         Another day to chase your goals! We're here to make sure
                         your stay is smooth, smart, and stress-free. You've got
                         this 💪
@@ -69,7 +69,7 @@ export default function create({}) {
                             <div className="flex items-center space-x-3">
                                 <div className="p-2 bg-amber-500/10 rounded-lg">
                                     <svg 
-                                        className="w-6 h-6 text-amber-400" 
+                                        className="w-6 h-6 dark:text-amber-400" 
                                         fill="none" 
                                         stroke="currentColor" 
                                         viewBox="0 0 24 24"

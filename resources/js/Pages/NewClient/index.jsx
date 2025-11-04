@@ -15,7 +15,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 
-const PaginationComponent = ({currentPage, lastPage}) => {
+const PaginationComponent = ({ currentPage, lastPage }) => {
     const windowSize = 5;
     const halfWindow = Math.floor(windowSize / 2);
 
@@ -61,7 +61,7 @@ const PaginationComponent = ({currentPage, lastPage}) => {
             </PaginationContent>
         </Pagination>
     );
-}
+};
 
 export default function ClientIndex({ clients, cicilans }) {
     const [activeDropdownIndex, setActiveDropdownIndex] = useState(null);
@@ -222,7 +222,7 @@ export default function ClientIndex({ clients, cicilans }) {
         return statusColors[status] || "from-slate-400 to-gray-600";
     };
 
-    console.log(clients)
+    console.log(clients);
 
     // Filter clients with debounce (could be implemented)
     const filteredClients = clients.data.filter((client) => {
@@ -407,8 +407,8 @@ export default function ClientIndex({ clients, cicilans }) {
     // const pagination = ref({
     //     pageIndex: props.data.current_page - 1,
     //     pageSize: props.data.per_page,
-    // }) 
-    
+    // })
+
     return (
         <AuthenticatedLayout
             header={
@@ -533,7 +533,7 @@ export default function ClientIndex({ clients, cicilans }) {
                             </div>
                             <input
                                 type="text"
-                                placeholder="Search clients by name, location, or type..."
+                                placeholder="Search for clients"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="block w-full pl-12 pr-4 py-4 border-2 border-blue-100 rounded-2xl focus:ring-4 focus:ring-blue-200 focus:border-blue-500 bg-white/80 backdrop-blur-sm transition-all duration-300 group-hover:border-blue-200 dark:bg-gray-700/80 dark:border-blue-800 dark:text-white dark:placeholder-gray-400 dark:focus:ring-blue-900 dark:focus:border-blue-400"
@@ -565,25 +565,12 @@ export default function ClientIndex({ clients, cicilans }) {
                             >
                                 <option value="all">All Statuses</option>
                                 <option value="Lunas">Paid</option>
-                                <option value="Cicil">Instalments</option>
+                                <option value="Cicil">Installments</option>
                                 <option value="Belum Bayar">Unpaid</option>
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
                                 <option value="Pending">Pending</option>
                             </select>
-                            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                <svg
-                                    className="h-5 w-5 text-purple-500"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </div>
                         </div>
 
                         {/* Stats Card */}

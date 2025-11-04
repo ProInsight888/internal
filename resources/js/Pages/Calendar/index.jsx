@@ -139,7 +139,7 @@ export default function index({ ev }) {
                         Calendar 📆
                     </h1>
                     <p className="text-2xl">
-                        Finally , you have completed the task. You can now
+                        Finally, you have completed the task. You can now
                         proceed to the next task.
                     </p>
                 </>
@@ -225,32 +225,32 @@ export default function index({ ev }) {
             <div className="mt-10 overflow-x-auto w-full">
                 <table className="w-full pb-8 border-collapse">
                     <thead>
-                        <tr className="border-b-2 border-gray-200 bg-gray-50">
-                            <th className="px-3 py-2 min-w-12 text-left text-sm font-medium text-gray-700">
+                        <tr className="border-b-2 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-300">
+                            <th className="flex items-center justify-middle px-3 py-2 min-w-12 text-left text-sm font-medium text-gray-700 dark:text-white">
                                 No
                             </th>
-                            <th className="px-3 py-2 min-w-48 text-left text-sm font-medium text-gray-700">
+                            <th className="px-3 py-2 min-w-48 text-left text-sm font-medium text-gray-700 dark:text-white">
                                 Event Name
                             </th>
-                            <th className="px-3 py-2 min-w-24 text-left text-sm font-medium text-gray-700">
+                            <th className="px-3 py-2 min-w-24 text-left text-sm font-medium text-gray-700 dark:text-white">
                                 Date
                             </th>
-                            <th className="px-3 py-2 min-w-24 text-left text-sm font-medium text-gray-700">
+                            <th className="px-3 py-2 min-w-24 text-left text-sm font-medium text-gray-700 dark:text-white">
                                 Time
                             </th>
-                            <th className="px-3 py-2 min-w-48 text-left text-sm font-medium text-gray-700">
+                            <th className="px-3 py-2 min-w-48 text-left text-sm font-medium text-gray-700 dark:text-white">
                                 Description
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         {ev.map((e) => (
-                            <tr className=" border-b relative bg-gray-100 border-gray-100 hover:bg-gray-50">
-                                <td>{number_event++}</td>
+                            <tr className=" border-b relative bg-gray-100 border-black dark:border-gray-300 dark:bg-gray-800 hover:bg-gray-50 hover:dark:bg-gray-700">
+                                <td className="text-black dark:text-white">{number_event++}</td>
                                 <td>{e?.googleEvent.summary}</td>
                                 <td>
                                     {e?.googleEvent.start.dateTime.slice(0, 10)}{" "}
-                                    ------{" "}
+                                    -{" "}
                                     {e?.googleEvent.end.dateTime.slice(0, 10)}
                                 </td>
                                 <td>
@@ -258,7 +258,7 @@ export default function index({ ev }) {
                                         11,
                                         16
                                     )}{" "}
-                                    ------{" "}
+                                    -{" "}
                                     {e?.googleEvent.end.dateTime.slice(11, 16)}
                                 </td>
                                 <td>{e?.googleEvent.description}</td>

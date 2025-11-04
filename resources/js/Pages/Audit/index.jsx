@@ -181,7 +181,6 @@ export default function AuditIndex({ audits }) {
                                     <option value="created">Created</option>
                                     <option value="updated">Updated</option>
                                     <option value="deleted">Deleted</option>
-                                    <option value="login">Login</option>
                                 </select>
                             </div>
 
@@ -193,7 +192,7 @@ export default function AuditIndex({ audits }) {
                                         setUserFilter("all");
                                         setActionFilter("all");
                                     }}
-                                    className="w-full bg-gray-600 hover:bg-gray-700 focus:bg-gray-700"
+                                    className="w-full"
                                 >
                                     Clear Filters
                                 </PrimaryButton>
