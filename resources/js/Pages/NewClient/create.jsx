@@ -11,8 +11,9 @@ export default function create({}) {
         company_name: "",
         type: "",
         location: "",
-        contract_start: "",
-        contract_end: "",
+        contract_tahun: "0",
+        contract_bulan: "0",
+        contract_hari: "0",
         package: "",
         status: "Lunas",
         cicil: "",
@@ -170,71 +171,22 @@ export default function create({}) {
                                     value={data.package}
                                     className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
                                     autoComplete="package"
-                                    onChange={(e) =>
-                                        setData("package", e.target.value)
-                                    }
+                                    onChange={(e) => setData("package", e.target.value)}
                                     required
                                 >
-                                    <option
-                                        value=""
-                                        disabled
-                                        hidden
-                                        className="dark:text-gray-400"
-                                    >
+                                    <option value="" disabled hidden className="dark:text-gray-400">
                                         Select Package
                                     </option>
 
                                     <optgroup label="Social Media Management" className="dark:text-white dark:bg-gray-700">
                                         <option value="Protall">Protall</option>
-                                        <option value="Progrand">
-                                            Progrand
-                                        </option>
-                                        <option value="Proventi">
-                                            Proventi
-                                        </option>
+                                        <option value="Progrand">Progrand</option>
+                                        <option value="Proventi">Proventi</option>
                                         <option value="Promax">Promax</option>
-                                        <option value="Feeds">
-                                            Add Ons Feeds
-                                        </option>
-                                        <option value="Reels">
-                                            Add Ons Reels
-                                        </option>
+                                        <option value="Feeds">Add Ons Feeds</option>
+                                        <option value="Reels">Add Ons Reels</option>
                                     </optgroup>
 
-                                    <optgroup
-                                        label="Digital Branding"
-                                        className="dark:text-gray-300"
-                                    >
-                                        <option value="Company Profile">
-                                            Company Profile
-                                        </option>
-                                        <option value="HR System">
-                                            HR System
-                                        </option>
-                                        <option value="Invitation Link">
-                                            Invitation Link
-                                        </option>
-                                        <option value="Application">
-                                            Application
-                                        </option>
-                                        <option value="Design">
-                                            Package Design
-                                        </option>
-                                    </optgroup>
-
-                                    <optgroup
-                                        label="Event Documentation"
-                                        className="dark:text-gray-300"
-                                    >
-                                        <option value="Photo & Video">
-                                            Photo & Video
-                                        </option>
-                                        <option value="Drone">
-                                            Add Ons Drone
-                                        </option>
-                                        <option value="Production">
-                                            Add Ons Production
-                                        </option>
                                     <optgroup label="Digital Branding" className="dark:text-white dark:bg-gray-700">
                                         <option value="Company Profile">Company Profile</option>
                                         <option value="HR System">HR System</option>
@@ -281,36 +233,60 @@ export default function create({}) {
                                 />
                             </div>
 
-                            <div className="mb-6 w-full">
+                            <div className="mb-6">
                                 <InputLabel
                                     htmlFor="contract"
                                     value="Contract"
                                     className="dark:text-gray-300"
                                 />
 
-                                <div className="flex gap-4 items-end justify-between dark:text-gray-300">
+                                <div className="flex items-end justify-between dark:text-gray-300">
                                     <input
-                                        type="date"
+                                        id="contract"
+                                        name="contract"
+                                        value={data.contract_tahun}
+                                        className="mt-1 w-4/12 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
+                                        type="number"
                                         onChange={(e) =>
                                             setData(
-                                                "contract_start",
+                                                "contract_tahun",
                                                 e.target.value
                                             )
                                         }
-                                        className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400 "
-                                        value={data.contract_start}
                                     />
+                                    Tahun
                                     <input
-                                        type="date"
+                                        id="contract"
+                                        name="contract"
+                                        value={data.contract_bulan}
+                                        className="mt-1 w-4/12 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
+                                        autoComplete="contract"
+                                        type="number"
+                                        max="11"
                                         onChange={(e) =>
                                             setData(
-                                                "contract_end",
+                                                "contract_bulan",
                                                 e.target.value
                                             )
                                         }
-                                        className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400 "
-                                        value={data.contract_end}
                                     />
+                                    Bulan
+                                    <input
+                                        id="contract"
+                                        name="contract"
+                                        value={data.contract_hari}
+                                        className="mt-1 w-4/12 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
+                                        autoComplete="contract"
+                                        type="number"
+                                        max="31"
+                                        onChange={(e) =>
+                                            setData(
+                                                "contract_hari",
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                    Hari
                                 </div>
 
                                 <InputError
@@ -344,11 +320,7 @@ export default function create({}) {
                                 />
                             </div>
                             <div className="mb-6">
-                                <InputLabel
-                                    htmlFor="status"
-                                    value="Status"
-                                    className="dark:text-gray-300"
-                                />
+                                <InputLabel htmlFor="status" value="Status" className="dark:text-gray-300" />
 
                                 <div className="flex items-center gap-10">
                                     <select
@@ -361,24 +333,9 @@ export default function create({}) {
                                             setData("status", e.target.value)
                                         }
                                     >
-                                        <option
-                                            value="Lunas"
-                                            className="dark:bg-gray-700"
-                                        >
-                                            Paid
-                                        </option>
-                                        <option
-                                            value="Cicil "
-                                            className="dark:bg-gray-700"
-                                        >
-                                            Installments
-                                        </option>
-                                        <option
-                                            value="Belum Bayar"
-                                            className="dark:bg-gray-700"
-                                        >
-                                            Unpaid
-                                        </option>
+                                        <option value="Lunas" className="dark:bg-gray-700">Paid</option>
+                                        <option value="Cicil " className="dark:bg-gray-700">Installments</option>
+                                        <option value="Belum Bayar" className="dark:bg-gray-700">Unpaid</option>
                                     </select>
                                     <div
                                         className={`${
