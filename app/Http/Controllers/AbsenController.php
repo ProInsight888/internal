@@ -116,10 +116,8 @@ class AbsenController extends Controller
             ]);
         }
 
-
         return Redirect::to('');
     }
-
 
     /**
      * Display the specified resource.

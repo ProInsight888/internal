@@ -1,6 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
-import { Link } from "@inertiajs/react";
+import { Head, useForm, usePage, Link } from "@inertiajs/react";
 import { Fragment, use, useState } from "react";
 
 // Status Card Component
@@ -26,179 +25,6 @@ const StatusCard = ({
         </div>
     </div>
 );
-
-// Task Section Component
-const TaskSection = ({
-    title,
-    tasks,
-    borderColor,
-    bgColor,
-    textColor = "text-white",
-    isHidden,
-    toggleHidden,
-    showDescriptionIndex,
-    setShowDescriptionIndex,
-    icon,
-}) => {
-    return (
-        <div className="w-full pb-4 border-b-2 border-gray-100 dark:border-gray-700">
-            <div
-                className="flex items-center p-4 gap-3 rounded-t-xl cursor-pointer"
-                style={{ backgroundColor: `${borderColor}20` }}
-                onClick={toggleHidden}
-            >
-                <div
-                    className={`${
-                        isHidden ? "rotate-0" : "rotate-90"
-                    } w-8 h-8 flex items-center justify-center rounded-lg cursor-pointer transition-all duration-200 hover:scale-110`}
-                    style={{ color: textColor }}
-                >
-                    {icon || (
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            className="fill-current"
-                        >
-                            <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                        </svg>
-                    )}
-                </div>
-                <div
-                    className="text-xl font-bold flex items-center"
-                    style={{ color: borderColor }}
-                >
-                    {title}
-                </div>
-                <div
-                    className="ml-2 text-sm bg-white px-2 py-1 rounded-full font-bold shadow-sm dark:bg-gray-800"
-                    style={{ color: borderColor }}
-                >
-                    {tasks.length}
-                </div>
-            </div>
-            <div
-                className={`${
-                    isHidden ? "hidden" : ""
-                } bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-700 rounded-b-xl w-full overflow-x-auto mt-0 shadow-md`}
-            >
-                <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
-                    <thead>
-                        <tr className="text-sm border-b-2 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
-                                No
-                            </th>
-                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
-                                Task
-                            </th>
-                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
-                                Penanggung Jawab
-                            </th>
-                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
-                                Task Format
-                            </th>
-                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
-                                Status
-                            </th>
-                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
-                                Company
-                            </th>
-                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
-                                Category
-                            </th>
-                            <th className="py-3 px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300 sticky top-0">
-                                Deadline
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tasks.map((task, index) => (
-                            <Fragment key={task.uuid}>
-                                <tr
-                                    className="text-sm text-left cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 even:bg-gray-50/30 dark:even:bg-gray-700/50 transition-colors duration-150 dark:text-gray-300"
-                                    onClick={() =>
-                                        setShowDescriptionIndex(
-                                            showDescriptionIndex === index
-                                                ? null
-                                                : index
-                                        )
-                                    }
-                                >
-                                    <td className="px-4 py-3 font-medium">
-                                        {index + 1}
-                                    </td>
-                                    <td className="px-4 py-3 font-semibold">
-                                        {task.task_title}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <span className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                            {task.penanggung_jawab}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        {task.task_format}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <span
-                                            className="px-3 py-1.5 rounded-full text-xs font-bold shadow-sm"
-                                            style={{
-                                                backgroundColor: `${getStatusColor(
-                                                    task.status
-                                                )}20`,
-                                                color: getStatusColor(
-                                                    task.status
-                                                ),
-                                            }}
-                                        >
-                                            {task.status}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-3 font-medium">
-                                        {task.company}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        <span className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                            {task.category}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-3 font-semibold">
-                                        {task.deadline}
-                                    </td>
-                                </tr>
-                                {showDescriptionIndex === index && (
-                                    <tr>
-                                        <td colSpan={8}>
-                                            <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-gray-200 dark:border-gray-600 rounded-xl p-4 my-2 shadow-inner">
-                                                <div className="text-md font-bold text-gray-900 dark:text-gray-100 mb-2 flex items-center">
-                                                    <svg
-                                                        className="w-4 h-4 mr-2 text-blue-500"
-                                                        fill="currentColor"
-                                                        viewBox="0 0 20 20"
-                                                    >
-                                                        <path
-                                                            fillRule="evenodd"
-                                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                                            clipRule="evenodd"
-                                                        ></path>
-                                                    </svg>
-                                                    {task.company} - Task
-                                                    Description
-                                                </div>
-                                                <div className="text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 p-3 rounded-lg border dark:border-gray-600">
-                                                    {task.description}
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )}
-                            </Fragment>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
-};
 
 // Attendance Form Component
 const AttendanceForm = ({
@@ -734,63 +560,6 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
     // Filtered data
     const filteredAbsens = absens.filter((absen) => absen.tanggal === sortDate);
 
-    // Task categorization
-    // const categorizeTasks = () => {
-
-    // const teams = ["it", "marketing", "media", "creative"];
-
-    // teams.forEach((team) => {
-    //     tasks[team].forEach((task) => {
-    //         const deadline = new Date(task.deadline);
-    //         const today = new Date();
-
-    //         deadline.setHours(0, 0, 0, 0);
-    //         today.setHours(0, 0, 0, 0);
-
-    //         const diffTime = deadline - today;
-    //         const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    //         if (remainingDays < 0 && remainingDays <= 3) {
-    //             urgent.push(task);
-    //         } else if (remainingDays >= 4 && remainingDays <= 7) {
-    //             soon.push(task);
-    //         } else if (remainingDays >= 8) {
-    //             up_coming.push(task);
-    //         }
-    //     });
-
-    // console.log(urgent, soon, up_coming);
-
-    //     return { urgent, soon, up_coming };
-    // });
-    // }
-
-    // const { urgent, soon, up_coming } = categorizeTasks();
-
-    // Task status filtering
-
-    //TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-    // const filterTasksByStatus = (status) =>
-    //     tasks.filter((task) => task.status === status);
-
-    // const onProgressStatus = filterTasksByStatus("On Progress");
-    // const pendingStatus = filterTasksByStatus("Pending");
-    // const approvedStatus = filterTasksByStatus("Approved");
-    // const inReviewStatus = filterTasksByStatus("In Review");
-    // const rejectedStatus = filterTasksByStatus("Rejected");
-    // const revisionStatus = filterTasksByStatus("Revision");
-    // const idleStatus = filterTasksByStatus("Idle");
-
-    // const task_not_include_cancle_approved =
-    //     idleStatus.length +
-    //     rejectedStatus.length +
-    //     pendingStatus.length +
-    //     inReviewStatus.length +
-    //     onProgressStatus.length;
-
-    //TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
     // Handlers
     const submit = (e) => {
         e.preventDefault();
@@ -825,41 +594,11 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
 
             <div className="py-2 sm:py-3">
                 <div className="mx-auto w-full px-2 sm:px-3">
-                    {/* Task Alert */}
-                    {taskUserArray.length > 0 && (
-                        <div className="w-full p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl border border-amber-200 dark:border-amber-700 shadow-sm mb-6">
-                            <div className="flex items-center mb-4">
-                                <div className="bg-amber-500 p-2 rounded-lg mr-3">
-                                    <svg
-                                        className="w-6 h-6 text-white"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                                        />
-                                    </svg>
-                                </div>
-                                <h2 className="text-xl font-bold text-amber-800 dark:text-amber-300">
-                                    Your Upcoming Tasks
-                                </h2>
-                            </div>
-                            <div className="flex overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-amber-300 dark:scrollbar-thumb-amber-600 scrollbar-track-transparent sm:">
-                                {taskUserArray.map((task) => (
-                                    <TaskCard task={task} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Summary Cards Section */}
-                    <div className="rounded-2xl flex flex-col gap-5 mb-6">
-                        <div className="w-full flex flex-col xl:flex-row gap-5">
-                            <div className="w-full xl:w-2/3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        {/* LEFT COLUMN (Status Cards + Attendance) */}
+                        <div className="flex flex-col gap-6">
+                            {/* Status Cards */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 <StatusCard
                                     title="Urgent Task"
                                     count={urgent.length}
@@ -878,32 +617,17 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                     total={countTask}
                                     bgColor="bg-gradient-to-br from-green-500 to-emerald-500"
                                 />
-
-                                {/* Client Table */}
-                                {user.role !== "member" ? (
-                                    <div className="text-gray-800 dark:text-gray-200 w-full bg-white dark:bg-gray-800 dark:border-gray-600 p-5 flex flex-col gap-3 border border-gray-200 rounded-2xl col-span-1 sm:col-span-2 lg:col-span-3 shadow-md">
-                                        <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2">
-                                            <span className="text-white p-2 rounded-lg">
-                                                👥
-                                            </span>
-                                            Client Management
-                                        </div>
-                                        <ClientTable clients={clients} />
-                                    </div>
-                                ) : (
-                                    <div></div>
-                                )}
                             </div>
 
-                            {/* Attendance Section */}
-                            <div className="w-full xl:w-1/3 flex flex-col gap-4 md:">
-                                <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md">
-                                    <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2 mb-4">
-                                        <span className="text-white p-2 rounded-lg">
-                                            📅
-                                        </span>
-                                        Attendance
-                                    </div>
+                            {/* Attendance */}
+                            <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md">
+                                <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2 mb-4">
+                                    <span className="text-white p-2 rounded-lg">
+                                        📅
+                                    </span>
+                                    Attendance
+                                </div>
+                                <div className="space-y-3">
                                     <AttendanceForm
                                         onSubmit={submit}
                                         data={data}
@@ -912,7 +636,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                         sortDate={sortDate}
                                         setSortDate={setSortDate}
                                     />
-                                    <div className="mt-4">
+                                    <div className="max-h-64 overflow-y-auto">
                                         <AttendanceTable
                                             absens={filteredAbsens}
                                         />
@@ -920,12 +644,70 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                 </div>
                             </div>
                         </div>
+
+                        {/* RIGHT COLUMN (Upcoming Tasks) */}
+                        <div className="flex justify-center items-center">
+                            {taskUserArray.length > 0 && (
+                                <div className="w-full p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl border border-amber-200 dark:border-amber-700 shadow-sm">
+                                    <div className="flex items-center mb-3">
+                                        <div className="bg-amber-500 p-2 rounded-lg mr-3">
+                                            <svg
+                                                className="w-6 h-6 text-white"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <h2 className="text-lg font-semibold text-amber-800 dark:text-amber-300">
+                                            Your Upcoming Tasks
+                                        </h2>
+                                    </div>
+                                    <div className="flex flex-col gap-4">
+                                        {taskUserArray.map((task) => (
+                                            <div
+                                                key={task.id}
+                                                className="min-w-[200px] sm:min-w-[240px]"
+                                            >
+                                                <TaskCard task={task} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
-                    {/* TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */}
+                    {/* Client Table (below everything) */}
+                    {user.role !== "member" && (
+                        <div className="mt-6 text-gray-800 dark:text-gray-200 w-full bg-white dark:bg-gray-800 dark:border-gray-600 p-5 flex flex-col gap-3 border border-gray-200 rounded-2xl shadow-md">
+                            <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2">
+                                <span className="text-white p-2 rounded-lg">
+                                    👥
+                                </span>
+                                Client Management
+                            </div>
+                            <ClientTable clients={clients} />
+                        </div>
+                    )}
+                </div>
+            </div>
+        </AuthenticatedLayout>
+    );
+}
 
-                    {/* Tasks Section */}
-                    {/* <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-200 dark:border-gray-700 shadow-md">
+// THROWABLES
+{
+    /* Tasks Section */
+}
+{
+    /* <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-200 dark:border-gray-700 shadow-md">
                         <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2 mb-4">
                             <span className=" text-white p-2 rounded-lg">
                                 ✅
@@ -1040,11 +822,61 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                 icon="💤"
                             />
                         </div>
-                    </div> */}
-
-                    {/* TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */}
-                </div>
-            </div>
-        </AuthenticatedLayout>
-    );
+                    </div> */
 }
+
+// Task categorization
+// const categorizeTasks = () => {
+
+// const teams = ["it", "marketing", "media", "creative"];
+
+// teams.forEach((team) => {
+//     tasks[team].forEach((task) => {
+//         const deadline = new Date(task.deadline);
+//         const today = new Date();
+
+//         deadline.setHours(0, 0, 0, 0);
+//         today.setHours(0, 0, 0, 0);
+
+//         const diffTime = deadline - today;
+//         const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+//         if (remainingDays < 0 && remainingDays <= 3) {
+//             urgent.push(task);
+//         } else if (remainingDays >= 4 && remainingDays <= 7) {
+//             soon.push(task);
+//         } else if (remainingDays >= 8) {
+//             up_coming.push(task);
+//         }
+//     });
+
+// console.log(urgent, soon, up_coming);
+
+//     return { urgent, soon, up_coming };
+// });
+// }
+
+// const { urgent, soon, up_coming } = categorizeTasks();
+
+// Task status filtering
+
+//TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+// const filterTasksByStatus = (status) =>
+//     tasks.filter((task) => task.status === status);
+
+// const onProgressStatus = filterTasksByStatus("On Progress");
+// const pendingStatus = filterTasksByStatus("Pending");
+// const approvedStatus = filterTasksByStatus("Approved");
+// const inReviewStatus = filterTasksByStatus("In Review");
+// const rejectedStatus = filterTasksByStatus("Rejected");
+// const revisionStatus = filterTasksByStatus("Revision");
+// const idleStatus = filterTasksByStatus("Idle");
+
+// const task_not_include_cancle_approved =
+//     idleStatus.length +
+//     rejectedStatus.length +
+//     pendingStatus.length +
+//     inReviewStatus.length +
+//     onProgressStatus.length;
+

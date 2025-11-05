@@ -65,7 +65,7 @@ class AddAccountController extends Controller
 
         $uuid = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         // dd($date->format('d F Y'));
 
@@ -122,7 +122,7 @@ class AddAccountController extends Controller
 
         $uuid = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
             'uuid' => $uuid,

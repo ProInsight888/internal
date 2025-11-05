@@ -22,10 +22,8 @@ class update_submit_it_task extends Controller
             // 'revision' => 'required|max:255',
         ]);
 
-        
-        
         $uuid = $it->uuid;
-        // dd($uuid);
+        // dd($uuid);.
 
         $date = Carbon::now()->toDateString();
         $time = Carbon::now()->toTimeString();

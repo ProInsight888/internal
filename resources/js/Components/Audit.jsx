@@ -26,17 +26,19 @@ export default function Audit({ audits }) {
     const filteredAudits =
         activeFilter === "All"
             ? audits.data
-            : audits.data.filter((audit) =>
-                activeFilter === "Unread"
-                    ? !readAudits.includes(audit.uuid)
-                    : audit.type === activeFilter
-            ).sort((a, b) => {
-        const aRead = readAudits.includes(a.uuid);
-        const bRead = readAudits.includes(b.uuid);
+            : audits.data
+                  .filter((audit) =>
+                      activeFilter === "Unread"
+                          ? !readAudits.includes(audit.uuid)
+                          : audit.type === activeFilter
+                  )
+                  .sort((a, b) => {
+                      const aRead = readAudits.includes(a.uuid);
+                      const bRead = readAudits.includes(b.uuid);
 
-        if (aRead !== bRead) return aRead ? 1 : -1; // unread first
-        return new Date(a.date) - new Date(a.date); // newest first
-    });;
+                      if (aRead !== bRead) return aRead ? 1 : -1; // unread first
+                      return new Date(a.date) - new Date(a.date); // newest first
+                  });
 
     return (
         <div className="mt-10 fixed top-1/2 right-0 transform -translate-y-1/2 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 rounded-l-xl shadow-2xl p-6 w-80 z-50 h-[90vh] overflow-hidden flex flex-col">
@@ -129,20 +131,19 @@ export default function Audit({ audits }) {
                                     }`}
                                 >
                                     {new Date(audit.date).toLocaleDateString(
-                                        "en-ID",
+                                        "id-ID",
                                         {
                                             month: "short",
                                             day: "numeric",
                                         }
-                                    )}
-                                    {new Date(audit.time).toLocaleDateString(
-                                        "en-ID",
-                                        {
-                                            hour: "numeric",
-                                            minute: "numeric",
-                                    }
-                                    )}
-
+                                    )}{" "}
+                                    {new Date(
+                                        `${audit.date} ${audit.time}`
+                                    ).toLocaleTimeString("id-ID", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        timeZone: "Asia/Jakarta"
+                                    })}
                                 </span>
                                 <span
                                     className={`px-2 py-1 text-xs rounded-full ${
