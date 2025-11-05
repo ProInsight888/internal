@@ -93,7 +93,6 @@ For internal company use only.
 Please contact the development lead or read the internal documentation before operating or modifying the system.
 
 https://docs.google.com/document/d/1dQALWWxEW7GibQDJXBhzI60QHxfdpEixhuvUbLN7ZhE/edit?usp=sharing
-
 ---
 
 ## 🔒 License
