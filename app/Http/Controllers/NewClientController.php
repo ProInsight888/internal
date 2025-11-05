@@ -158,25 +158,19 @@ class NewClientController extends Controller
             'code' => 'string|required',
             'type' => 'string|required',
             'location' => 'string|required',
-            'contract_tahun' => 'string|nullable',
-            'contract_bulan' => 'string|required',
-            'contract_hari' => 'string|required',
+            'contract_start' => 'string|required',
+            'contract_end' => 'string|required',
             'package' => 'string|required',
             'status' => 'string|required',
         ]);
 
         $today = now('Asia/Jakarta');
 
-        $contract = $validated['contract_tahun'] . ' Tahun ' . $validated['contract_bulan'] . ' Bulan ' . $validated['contract_hari'] . ' Hari';
+        $contract_start = \Carbon\Carbon::parse($validated['contract_start']);
+        $contract_end = \Carbon\Carbon::parse($validated['contract_end']);
 
-        $month = (int) $validated['contract_bulan'];
-        $year = (int) $validated['contract_tahun'];
-
-        $extraYears = intdiv($month, 12);
-        $remainingMonths = $month % 12;
-        $totalYears = $year + $extraYears;
-
-        $contractEnd = now()->addYears($totalYears)->addMonths($remainingMonths);
+        $contract = $contract_start->format('d F Y') . ' ---- ' . $contract_end->format('d F Y');
+        // dd($contract);
 
         // Map the status for internal storage
         $internalStatus = $statusMapping[$validated['status']] ?? $validated['status'];
@@ -225,7 +219,6 @@ class NewClientController extends Controller
             'contract' => $contract,
             'package' => $validated['package'],
             'status' => $internalStatus, // Store the internal status
-            'contract_end' => $contractEnd->toDateString(),
             'payment_month' => $payment_month,
         ]);
 

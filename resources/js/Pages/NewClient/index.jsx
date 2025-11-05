@@ -360,14 +360,9 @@ export default function ClientIndex({ clients, cicilans }) {
                         client.status
                     )} transition-all duration-300 hover:scale-105 hover:shadow-xl`}
                 >
-                    {client.status}
+                    {client.status === "Belum Bayar" ? 'Unpaid' : client.status === 'Cicil' ? 'Installment' : 'Paid'}
                 </span>
             ),
-            className: "",
-        },
-        {
-            header: "Contract Ends",
-            accessor: "contract_end",
             className: "",
         },
         {
@@ -616,50 +611,59 @@ export default function ClientIndex({ clients, cicilans }) {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                                {filteredClients.map((client, index) => (
-                                    <tr
-                                        key={client.uuid}
-                                        role="button"
-                                        tabIndex={0}
-                                        onClick={() =>
-                                            router.get(
-                                                route(
-                                                    "new_client.show",
-                                                    client.uuid
+                                {filteredClients
+                                    .sort(
+                                        (a, b) =>
+                                            new Date(b.created_at) -
+                                            new Date(a.created_at)
+                                    )
+                                    .map((client, index) => (
+                                        <tr
+                                            key={client.uuid}
+                                            role="button"
+                                            tabIndex={0}
+                                            onClick={() =>
+                                                router.get(
+                                                    route(
+                                                        "new_client.show",
+                                                        client.uuid
+                                                    )
                                                 )
-                                            )
-                                        }
-                                        className="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    >
-                                        {tableColumns.map(
-                                            (column, colIndex) => (
-                                                <td
-                                                    key={colIndex}
-                                                    className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors"
-                                                >
-                                                    {column.render
-                                                        ? column.render(
-                                                              client,
-                                                              index
-                                                          )
-                                                        : client[
-                                                              column.accessor
-                                                          ]}
-                                                </td>
-                                            )
-                                        )}
-
-                                        <td
-                                            className="px-6 py-4 text-sm font-medium"
-                                            onClick={(e) => e.stopPropagation()}
+                                            }
+                                            className="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
                                         >
-                                            <ClientActionsDropDown
-                                                client={client}
-                                                index={index}
-                                            />
-                                        </td>
-                                    </tr>
-                                ))}
+                                            {tableColumns.map(
+                                                (column, colIndex) => (
+                                                    <td
+                                                        key={colIndex}
+                                                        className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors"
+                                                    >
+                                                        {column.render
+                                                            ? column.render(
+                                                                  client,
+                                                                  index
+                                                              )
+                                                            : client[
+                                                                  column
+                                                                      .accessor
+                                                              ]}
+                                                    </td>
+                                                )
+                                            )}
+
+                                            <td
+                                                className="px-6 py-4 text-sm font-medium"
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                            >
+                                                <ClientActionsDropDown
+                                                    client={client}
+                                                    index={index}
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                         <PaginationComponent

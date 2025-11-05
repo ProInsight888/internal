@@ -30,8 +30,8 @@ function SectionTitle({ title }) {
 }
 
 export default function Show({ client, contracts }) {
-    console.log(client);
-    console.log(contracts);
+
+    console.log(client)
     return (
         <AuthenticatedLayout
             header={
@@ -121,7 +121,7 @@ export default function Show({ client, contracts }) {
                                 {client.status === "Cicil" && (
                                     <InfoField
                                         label="Number of Installments"
-                                        value={client.cicil}
+                                        value={client.cicilans.length}
                                     />
                                 )}
                             </div>

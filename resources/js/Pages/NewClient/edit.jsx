@@ -8,21 +8,21 @@ import { useEffect } from "react";
 
 export default function edit({ clients }) {
     const contractParts = (clients?.contract || "").split(" ---- ");
-    const formattedDates = dates.map((dateStr) => {
+    const formattedDates = contractParts.map((dateStr) => {
         const date = new Date(dateStr);
         // Convert to YYYY-MM-DD
         return date.toISOString().split("T")[0];
     });
 
-    console.log(contractParts);
+    console.log(formattedDates);
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
         company_name: clients?.company_name || "",
         code: clients?.code || "",
         type: clients?.type || "",
         location: clients?.location || "",
-        contract_start: contractParts[0] || "",
-        contract_end: contractParts[0] || "",
+        contract_start: formattedDates[0] || "",
+        contract_end: formattedDates[1] || "",
         package: clients?.package || "",
         status: clients?.status || "",
         cicil: clients?.cicilans.length || "",
