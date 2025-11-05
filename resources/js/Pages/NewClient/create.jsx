@@ -178,7 +178,7 @@ export default function create({}) {
                                         Select Package
                                     </option>
 
-                                    <optgroup label="Social Media Management" className="dark:text-gray-300">
+                                    <optgroup label="Social Media Management" className="dark:text-white dark:bg-gray-700">
                                         <option value="Protall">Protall</option>
                                         <option value="Progrand">Progrand</option>
                                         <option value="Proventi">Proventi</option>
@@ -187,7 +187,7 @@ export default function create({}) {
                                         <option value="Reels">Add Ons Reels</option>
                                     </optgroup>
 
-                                    <optgroup label="Digital Branding" className="dark:text-gray-300">
+                                    <optgroup label="Digital Branding" className="dark:text-white dark:bg-gray-700">
                                         <option value="Company Profile">Company Profile</option>
                                         <option value="HR System">HR System</option>
                                         <option value="Invitation Link">Invitation Link</option>
@@ -195,7 +195,7 @@ export default function create({}) {
                                         <option value="Design">Package Design</option>
                                     </optgroup>
 
-                                    <optgroup label="Event Documentation" className="dark:text-gray-300">
+                                    <optgroup label="Event Documentation" className="dark:text-white dark:bg-gray-700">
                                         <option value="Photo & Video">Photo & Video</option>
                                         <option value="Drone">Add Ons Drone</option>
                                         <option value="Production">Add Ons Production</option>
