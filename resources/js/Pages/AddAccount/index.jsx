@@ -51,7 +51,7 @@ const TeamBadge = ({ team }) => {
             case "it":
                 return "bg-gradient-to-r from-blue-500 to-indigo-600 text-white dark:from-blue-600 dark:to-indigo-700";
             default:
-                return "bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-200";
+                return "bg-gradient-to-r from-yellow-500 to-orange-600 text-white dark:from-yellow-500 dark:to-orange-600";
         }
     };
 
