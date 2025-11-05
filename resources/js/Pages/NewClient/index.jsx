@@ -90,7 +90,7 @@ export default function ClientIndex({ clients, cicilans }) {
 
     // Flash messages with auto-dismiss
     const { success: successMessage, deleted: deletedMessage } =
-        usePage().props.flash;  
+        usePage().props.flash;
 
     useEffect(() => {
         if (successMessage || deletedMessage) {
@@ -398,7 +398,7 @@ export default function ClientIndex({ clients, cicilans }) {
                     <div className="absolute bottom-0 right-0 w-24 h-24 bg-white/10 rounded-full translate-x-1/2 translate-y-1/2 blur-lg"></div>
 
                     <div className="relative z-10">
-                        <h1 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                        <h1 className="text-4xl sm:text-5xl font-bold mb-4">
                             Client Management
                         </h1>
                         <p className="text-xl opacity-90 max-w-2xl">
@@ -414,38 +414,33 @@ export default function ClientIndex({ clients, cicilans }) {
             <div className="max-w-[2000px] mx-auto px-4 py-8">
                 {/* Header Section */}
                 <div className="flex flex-col lg:flex-row justify-between items-center mb-8 gap-6">
-                    <Link href="/" className="group">
-                        <div className="relative">
-                            <img
-                                className="w-64 lg:w-80 transform group-hover:scale-105 transition-transform duration-300"
-                                src="/logo/Logo Pro Insight.png"
-                                alt="Pro Insight Logo"
-                            />
+                    <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg w-full max-w-[300px]">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-blue-100 text-sm">
+                                    Total Clients
+                                </p>
+                                <p className="text-3xl font-bold">
+                                    {filteredClients.length}
+                                </p>
+                            </div>
+                            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                <svg
+                                    className="w-6 h-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                                    />
+                                </svg>
+                            </div>
                         </div>
-                    </Link>
-
-                    <Link
-                        href={route("new_client.create")}
-                        className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-semibold py-4 px-8 rounded-2xl shadow-2xl transition-all duration-500 hover:shadow-3xl hover:scale-105"
-                    >
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                        <div className="flex items-center justify-center relative z-10">
-                            <svg
-                                className="w-6 h-6 mr-3 transform group-hover:rotate-90 transition-transform"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                />
-                            </svg>
-                            Add New Client
-                        </div>
-                    </Link>
+                    </div>
                 </div>
 
                 {/* Enhanced Flash Messages */}
@@ -554,33 +549,28 @@ export default function ClientIndex({ clients, cicilans }) {
                         </div>
 
                         {/* Stats Card */}
-                        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="text-blue-100 text-sm">
-                                        Total Clients
-                                    </p>
-                                    <p className="text-3xl font-bold">
-                                        {filteredClients.length}
-                                    </p>
-                                </div>
-                                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                                    <svg
-                                        className="w-6 h-6"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                                        />
-                                    </svg>
-                                </div>
+                        <Link
+                            href={route("new_client.create")}
+                            className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-semibold py-4 px-8 rounded-2xl shadow-2xl transition-all duration-500 hover:shadow-3xl hover:scale-105"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                            <div className="flex items-center justify-center relative z-10">
+                                <svg
+                                    className="w-6 h-6 mr-3 transform group-hover:rotate-90 transition-transform"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                    />
+                                </svg>
+                                Add New Client
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 </div>
 

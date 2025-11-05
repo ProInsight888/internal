@@ -177,6 +177,7 @@ export default function Create({
                                                     onChange={titleChange}
                                                     id="task_title"
                                                     onFocus={() => setShowOptionTitle(true)}
+                                                    onBlur={() => setShowOptionTitle(false)}
                                                     placeholder="Enter task title"
                                                     className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
                                                                 focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
@@ -382,6 +383,9 @@ export default function Create({
                                                     onFocus={() =>
                                                         setShowOptionFormat(true)
                                                     }
+                                                    onBlur={() =>
+                                                        setShowOptionFormat(false)
+                                                    }
                                                     className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
                                                                 focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
                                                                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
@@ -509,6 +513,9 @@ export default function Create({
                                                     onFocus={() =>
                                                         setShowOptionDescription(true)
                                                     }
+                                                    onBlur={() =>
+                                                        setShowOptionDescription(false)
+                                                    }
                                                     className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
                                                                 focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
                                                                 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none"
@@ -612,7 +619,7 @@ export default function Create({
                                                                 d="M5 13l4 4L19 7"
                                                             />
                                                         </svg>
-                                                        Update IT Task
+                                                        Create Creative Task
                                                     </span>
                                                 )}
                                             </button>
