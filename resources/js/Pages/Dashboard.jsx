@@ -296,7 +296,7 @@ const TaskCard = ({ task }) => {
 
     return (
         <div
-            className={`flex-none w-72 rounded-xl border-2 ${borderColor} ${bgColor} p-4 m-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] dark:shadow-gray-800`}
+            className={`flex-none w-full rounded-xl border-2 ${borderColor} ${bgColor} p-4 m-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] dark:shadow-gray-800`}
         >
             <TaskStatusBadge status={status} remainingDays={remainingDays} />
             <TaskTitle title={task.task_title} />
@@ -594,9 +594,10 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
 
             <div className="py-2 sm:py-3">
                 <div className="mx-auto w-full px-2 sm:px-3">
-                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                        {/* LEFT COLUMN (Status Cards + Attendance) */}
-                        <div className="flex flex-col gap-6">
+                    {/* PARENT GRID: make both columns equal height */}
+                    <div className="grid grid-cols-3 gap-6 items-stretch">
+                        {/* LEFT COLUMN */}
+                        <div className="flex flex-col gap-6 col-span-2 h-full">
                             {/* Status Cards */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 <StatusCard
@@ -620,7 +621,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                             </div>
 
                             {/* Attendance */}
-                            <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md">
+                            <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md flex-1">
                                 <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2 mb-4">
                                     <span className="text-white p-2 rounded-lg">
                                         📅
@@ -645,11 +646,12 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                             </div>
                         </div>
 
-                        {/* RIGHT COLUMN (Upcoming Tasks) */}
-                        <div className="flex justify-center items-center">
+                        {/* RIGHT COLUMN (Your Upcoming Tasks) */}
+                        <div className="flex flex-col h-full">
                             {taskUserArray.length > 0 && (
-                                <div className="w-full p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl border border-amber-200 dark:border-amber-700 shadow-sm">
-                                    <div className="flex items-center mb-3">
+                                <div className="flex flex-col flex-1 p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl border border-amber-200 dark:border-amber-700 shadow-sm overflow-y-auto overflow-x-hidden">
+                                    {/* Header */}
+                                    <div className="flex items-center mb-3 flex-shrink-0">
                                         <div className="bg-amber-500 p-2 rounded-lg mr-3">
                                             <svg
                                                 className="w-6 h-6 text-white"
@@ -669,15 +671,19 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                             Your Upcoming Tasks
                                         </h2>
                                     </div>
-                                    <div className="flex flex-col gap-4">
-                                        {taskUserArray.map((task) => (
-                                            <div
-                                                key={task.id}
-                                                className="min-w-[200px] sm:min-w-[240px]"
-                                            >
-                                                <TaskCard task={task} />
-                                            </div>
-                                        ))}
+
+                                    {/* Scrollable content */}
+                                    <div className="flex-1 overflow-y-auto">
+                                        <div className="flex h-96 flex-col gap-4 pr-9">
+                                            {taskUserArray.map((task) => (
+                                                <div
+                                                    key={task.id}
+                                                    className="min-w-[200px] sm:min-w-[240px] w-full"
+                                                >
+                                                    <TaskCard task={task} />
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             )}

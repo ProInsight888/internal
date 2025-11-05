@@ -45,7 +45,7 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[Active Logic](https://activelogic.com)**
 
 ## Contributing
-
+a
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
 ## Code of Conduct
@@ -54,7 +54,7 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mail to:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
