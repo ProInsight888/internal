@@ -56,15 +56,10 @@ class ItemsController extends Controller
         // dd($request);
         $validatedData = $request->validated();
 
-        // dd($validatedData);
-
-        $uuid = Str::uuid()->toString();
-
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid,
-            'action' => 'Create',
+            'action' => 'Created',
             'change_section' => "New item '{$request->items}' added to category '{$request->category}' (Qty: {$request->quantity}).",
             'created_by' => $request->created_by,
             'date' => $date->format('d F Y'),
@@ -107,15 +102,11 @@ class ItemsController extends Controller
     {
 
         $validatedData = $request->validated();
-        // dd($items->toArray(), $id);
 
-        $uuid = Str::uuid()->toString();
-
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid,
-            'action' => 'Edited',
+            'action' => 'Updated',
             'change_section' => "New item '{$request->items}' added to category '{$request->category}' (Qty: {$request->quantity}).",
             'created_by' => $request->created_by,
             'date' => $date->format('d F Y'),
@@ -142,13 +133,10 @@ class ItemsController extends Controller
     {
         // dd($items, $id);
         $user = Auth::user();
-        // dd($dataCollection, $user->name);
-        $uuid = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid,
             'action' => 'Deleted',
             'change_section' => "Data Tool Collections checked.",
             'created_by' => $user->name,

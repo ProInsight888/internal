@@ -130,26 +130,6 @@ export default function ClientIndex({ clients, cicilans }) {
         });
     };
 
-    // Format contract duration
-    const formatContractDuration = (contract) => {
-        if (!contract) return "N/A";
-
-        try {
-            const parts = contract.split(" ");
-            const [tahun, bulan, hari] = [parts[0], parts[2], parts[4]];
-
-            return [
-                tahun !== "0" && `${tahun} Tahun`,
-                bulan !== "0" && `${bulan} Bulan`,
-                hari !== "0" && `${hari} Hari`,
-            ]
-                .filter(Boolean)
-                .join(" ");
-        } catch (error) {
-            return "Invalid format";
-        }
-    };
-
     // Format payment dates with security validation
     const formatPaymentDates = (clientUuid) => {
         if (!clientUuid || !cicilans) return null;
@@ -367,7 +347,7 @@ export default function ClientIndex({ clients, cicilans }) {
                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                     </svg>
-                    {formatContractDuration(client.contract)}
+                    {client.contract}
                 </div>
             ),
             className: "min-w-[150px]",

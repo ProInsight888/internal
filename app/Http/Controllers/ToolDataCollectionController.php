@@ -32,13 +32,11 @@ class ToolDataCollectionController extends Controller
         
         $items = $request->items;
 
-        $uuid = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid,
-            'action' => 'Create',
+            'action' => 'Created',
             'change_section' => "Add New Tool Data Collections.",
             'created_by' => $request->created_by,
             'date' => $date->format('d F Y'),
@@ -91,12 +89,10 @@ class ToolDataCollectionController extends Controller
         
         $user = Auth::user();
         // dd( $user);
-        $uuid = Str::uuid()->toString();
         
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
         
         audit::create([
-            'uuid' => $uuid,
             'action' => 'Deleted',
             'change_section' => "Deleted Collections.",
             'created_by' => $user->name,

@@ -63,15 +63,14 @@ class AddAccountController extends Controller
             'team' => $request->team, // or just 'user'
         ]);
 
-        $uuid = Str::uuid()->toString();
+        
 
         $date = Carbon::now('Asia/Jakarta');
 
         // dd($date->format('d F Y'));
 
         audit::create([
-            'uuid' => $uuid,
-            'action' => 'Create',
+            'action' => 'Created',
             'change_section' => 'Add new Account named ' . $request->name,
             'created_by' => $request->created_by,
             'date' => $date->format('d F Y'),
@@ -120,12 +119,10 @@ class AddAccountController extends Controller
             // dd($request, $user);  
         $id = $user->id;
 
-        $uuid = Str::uuid()->toString();
 
         $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid,
             'action' => 'Updated',
             'change_section' => 'Updated Account named ' . $validated['name'],
             'created_by' => $validated['created_by'],

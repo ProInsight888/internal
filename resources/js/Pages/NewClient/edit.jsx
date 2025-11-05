@@ -7,21 +7,22 @@ import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useEffect } from "react";
 
 export default function edit({ clients }) {
-    const contractParts = (clients?.contract || "").split(" ");
-    const contract_tahun = contractParts[0] || "";
-    const contract_bulan = contractParts[2] || "";
-    const contract_hari = contractParts[4] || "";
+    const contractParts = (clients?.contract || "").split(" ---- ");
+    const formattedDates = dates.map((dateStr) => {
+        const date = new Date(dateStr);
+        // Convert to YYYY-MM-DD
+        return date.toISOString().split("T")[0];
+    });
 
-    console.log(clients.cicilans.length);
+    console.log(contractParts);
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
         company_name: clients?.company_name || "",
         code: clients?.code || "",
         type: clients?.type || "",
         location: clients?.location || "",
-        contract_tahun: contract_tahun,
-        contract_bulan: contract_bulan,
-        contract_hari: contract_hari,
+        contract_start: contractParts[0] || "",
+        contract_end: contractParts[0] || "",
         package: clients?.package || "",
         status: clients?.status || "",
         cicil: clients?.cicilans.length || "",
@@ -321,72 +322,29 @@ export default function edit({ clients }) {
                                                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                             />
 
-                                            <div className="grid grid-cols-3 gap-4 mt-1">
-                                                <div>
-                                                    <TextInput
-                                                        id="contract_tahun"
-                                                        name="contract_tahun"
-                                                        value={
-                                                            data.contract_tahun
-                                                        }
-                                                        type="number"
-                                                        placeholder="0"
-                                                        className="block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                        onChange={(e) =>
-                                                            setData(
-                                                                "contract_tahun",
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                    />
-                                                    <label className="block text-xs text-gray-500 mt-1 text-center dark:text-gray-400">
-                                                        Tahun
-                                                    </label>
-                                                </div>
-                                                <div>
-                                                    <TextInput
-                                                        id="contract_bulan"
-                                                        name="contract_bulan"
-                                                        value={
-                                                            data.contract_bulan
-                                                        }
-                                                        type="number"
-                                                        max="11"
-                                                        placeholder="0"
-                                                        className="block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                        onChange={(e) =>
-                                                            setData(
-                                                                "contract_bulan",
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                    />
-                                                    <label className="block text-xs text-gray-500 mt-1 text-center dark:text-gray-400">
-                                                        Bulan
-                                                    </label>
-                                                </div>
-                                                <div>
-                                                    <TextInput
-                                                        id="contract_hari"
-                                                        name="contract_hari"
-                                                        value={
-                                                            data.contract_hari
-                                                        }
-                                                        type="number"
-                                                        max="31"
-                                                        placeholder="0"
-                                                        className="block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                        onChange={(e) =>
-                                                            setData(
-                                                                "contract_hari",
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                    />
-                                                    <label className="block text-xs text-gray-500 mt-1 text-center dark:text-gray-400">
-                                                        Hari
-                                                    </label>
-                                                </div>
+                                            <div className="flex flex-col gap-4 mt-1">
+                                                <input
+                                                    type="date"
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "contract_start",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400 "
+                                                    value={data.contract_start}
+                                                />
+                                                <input
+                                                    type="date"
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "contract_end",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400 "
+                                                    value={data.contract_end}
+                                                />
                                             </div>
 
                                             <InputError

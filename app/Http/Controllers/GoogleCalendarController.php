@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\audit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\GoogleCalendar\Event;
 
 // use Illuminate\Support\Facades\Event;
@@ -58,6 +60,18 @@ class GoogleCalendarController extends Controller
             'endDateTime' => $event->endDateTime,
             'description' => $event->description,
         ], $calendarId);
+
+        $user = Auth::user();
+
+        $date = Carbon::now('Asia/Jakarta');
+
+        audit::create([
+            'action' => 'Created',
+            'change_section' => "Add New Event.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         return redirect()->route('calendar.index')->with('success', 'Event Noted!');
     }
@@ -136,6 +150,18 @@ class GoogleCalendarController extends Controller
 
         $event->save(); // ✅ Save back to Google Calendar
 
+        $user = Auth::user();
+
+        $date = Carbon::now('Asia/Jakarta');
+
+        audit::create([
+            'action' => 'Updated',
+            'change_section' => "Updated A Event.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
+
         return redirect()->route('calendar.index', 'proinsight888@gmail.com')->with('success', 'Event updated!');
     }
 
@@ -144,6 +170,18 @@ class GoogleCalendarController extends Controller
     public function destroy($eventId)
     {
         $event = Event::find($eventId);
+
+        $user = Auth::user();
+
+        $date = Carbon::now('Asia/Jakarta');
+
+        audit::create([
+            'action' => 'Deleted',
+            'change_section' => "Deleted a Event.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         if ($event) {
             $event->delete();

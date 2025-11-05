@@ -68,14 +68,11 @@ class MediaController extends Controller
         // dd($request);
 
         $user = Auth::user();
-        // dd($dataCollection, $user->name);
-        $uuid = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid,
-            'action' => 'Create',
+            'action' => 'Created',
             'change_section' => "Created Media Task.",
             'created_by' => $user->name,
             'date' => $date->format('d F Y'),
@@ -143,13 +140,10 @@ class MediaController extends Controller
         ]);
 
         $user = Auth::user();
-        // dd($dataCollection, $user->name);
-        $uuid_new = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid_new,
             'action' => 'Updated',
             'change_section' => "Updated Media Task.",
             'created_by' => $user->name,
@@ -172,15 +166,12 @@ class MediaController extends Controller
         // dd($uuid);  
 
         $user = Auth::user();
-        // dd($dataCollection, $user->name);
-        $uuid_new = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid_new,
-            'action' => 'Delete',
-            'change_section' => "Delete Media Task.",
+            'action' => 'Deleted',
+            'change_section' => "Deleted Media Task.",
             'created_by' => $user->name,
             'date' => $date->format('d F Y'),
             'time' => $date->format('H:i'),

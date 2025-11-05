@@ -40,13 +40,10 @@ class marketingReviewController extends Controller
         $time = Carbon::now()->toTimeString();
 
         $user = Auth::user();
-        // dd($dataCollection, $user->name);
-        $uuid_new = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid_new,
             'action' => 'Updated',
             'change_section' => "Updated Marketing Task.",
             'created_by' => $user->name,
