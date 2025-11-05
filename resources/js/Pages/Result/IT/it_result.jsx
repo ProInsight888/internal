@@ -50,6 +50,8 @@ export default function TaskResult({ tasks, users, userName }) {
 
     // Open review modal
     const openReviewModal = (task) => {
+        console.log(task);
+
         setSelectedTask(task);
         setData("uuid", task.uuid);
         setIsReviewModalOpen(true);
@@ -91,14 +93,13 @@ export default function TaskResult({ tasks, users, userName }) {
         return diffDays;
     };
 
-    
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
 
         put(route("it_review.update", { it_review: data.uuid }), {
             onSuccess: () => {
-                window.location.reload()
+                window.location.reload();
             },
             onError: (errors) => console.error(errors),
         });
@@ -159,7 +160,9 @@ export default function TaskResult({ tasks, users, userName }) {
                                 <div className="bg-blue-50 px-4 py-2 rounded-lg border border-blue-200 dark:bg-blue-900/20 dark:border-blue-800">
                                     <span className="text-blue-700 font-semibold dark:text-blue-300">
                                         {filteredTasks.length} task
-                                        {filteredTasks.length !== 1 ? "s" : ""}{" "}
+                                        {filteredTasks.length !== 1
+                                            ? "s"
+                                            : ""}{" "}
                                         awaiting review
                                     </span>
                                 </div>
@@ -327,7 +330,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                                     </p>
                                                 </div>
                                             </div>
-{/* 
+                                            {/* 
                                             <div className="bg-blue-50 p-3 rounded-lg mb-4 dark:bg-blue-900/20">
                                                 <p className="text-xs text-blue-700 uppercase font-medium mb-1 dark:text-blue-300">
                                                     Submission Link
@@ -403,8 +406,15 @@ export default function TaskResult({ tasks, users, userName }) {
                         <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:shadow-gray-900/30">
                             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 rounded-t-2xl flex justify-between items-center dark:bg-gray-800 dark:border-gray-700">
                                 <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">
-                                    Review Submission
+                                    Review Submission ({selectedTask?.sended_by ||
+                                        "Unknown Sender"})
                                 </h3>
+
+                                <span className="text-gray-600 dark:text-gray-300">
+                                    
+                                    
+                                </span>
+
                                 <button
                                     onClick={closeReviewModal}
                                     className="text-gray-400 hover:text-gray-600 transition-colors dark:hover:text-gray-300"
@@ -479,7 +489,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                         Submission Link
                                     </h4> */}
                                     <a
-                                        href={selectedTask.result?.link}
+                                        href={selectedTask.result_link}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-blue-600 hover:underline break-all inline-flex items-center justiify-center dark:text-blue-400"
@@ -497,7 +507,8 @@ export default function TaskResult({ tasks, users, userName }) {
                                                 d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                                             />
                                         </svg>
-                                        {selectedTask.result?.link}
+                                        {selectedTask.result_link ||
+                                            "No Link Provided"}
                                     </a>
                                 </div>
 
