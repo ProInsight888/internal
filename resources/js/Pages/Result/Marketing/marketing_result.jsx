@@ -96,7 +96,7 @@ export default function TaskResult({ tasks, users, userName }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        put(route("marketing_review.update", { marketing_review: data.uuid }), {
+        put(route("marketing_review.update", {marketing_review: data.uuid }), {
             onSuccess: () => {
                 window.location.reload()
             },
@@ -256,7 +256,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                         {/* Card Header */}
                                         <div className="p-4 border-b border-gray-100 dark:border-gray-600">
                                             <div className="flex justify-between items-start">
-                                                <h3 className="font-bold text-gray-800 text-lg line-clamp-2 dark:text-gray-200">
+                                                <h3 className="font-bold text-gray-800 break-all text-lg line-clamp-1 dark:text-gray-200 w-[10rem]">
                                                     {task.task_title}
                                                 </h3>
                                                 <span
@@ -295,7 +295,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                                     <p className="text-xs text-gray-500 uppercase dark:text-gray-400">
                                                         Format
                                                     </p>
-                                                    <p className="font-medium text-gray-800 dark:text-gray-200">
+                                                    <p className="font-medium text-gray-800 dark:text-gray-200 line-clamp-2">
                                                         {task.task_format}
                                                     </p>
                                                 </div>
@@ -327,7 +327,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                                     </p>
                                                 </div>
                                             </div>
-
+{/* 
                                             <div className="bg-blue-50 p-3 rounded-lg mb-4 dark:bg-blue-900/20">
                                                 <p className="text-xs text-blue-700 uppercase font-medium mb-1 dark:text-blue-300">
                                                     Submission Link
@@ -336,7 +336,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                                     href={task.result?.link}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="text-blue-600 hover:underline text-sm break-all inline-flex items-center dark:text-blue-400"
+                                                    className="text-blue-600 text-sm break-all inline-flex items-center dark:text-blue-400"
                                                 >
                                                     <svg
                                                         className="w-4 h-4 mr-1"
@@ -353,7 +353,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                                     </svg>
                                                     View Submission
                                                 </a>
-                                            </div>
+                                            </div> */}
                                         </div>
 
                                         {/* Card Footer */}
@@ -431,7 +431,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                         <h4 className="font-semibold text-gray-700 mb-2 dark:text-gray-300">
                                             Task Details
                                         </h4>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 break-all">
                                             {selectedTask.task_title}
                                         </p>
                                     </div>
@@ -462,7 +462,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                 </div>
 
                                 <div className="bg-blue-50 p-4 rounded-xl border border-blue-200 dark:bg-blue-900/20 dark:border-blue-800">
-                                    <h4 className="font-semibold text-blue-700 mb-2 flex items-center dark:text-blue-300">
+                                    {/* <h4 className="font-semibold text-blue-700 mb-2 flex items-center dark:text-blue-300">
                                         <svg
                                             className="w-4 h-4 mr-2"
                                             fill="none"
@@ -477,12 +477,12 @@ export default function TaskResult({ tasks, users, userName }) {
                                             />
                                         </svg>
                                         Submission Link
-                                    </h4>
+                                    </h4> */}
                                     <a
                                         href={selectedTask.result?.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-blue-600 hover:underline break-all inline-flex items-center dark:text-blue-400"
+                                        className="text-blue-600 hover:underline break-all inline-flex items-center justiify-center dark:text-blue-400"
                                     >
                                         <svg
                                             className="w-4 h-4 mr-1"

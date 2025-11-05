@@ -66,7 +66,7 @@ const TeamBadge = ({ team }) => {
             case "it":
                 return "IT";
             default:
-                return team || "No Team";
+                return team || "Core";
         }
     };
 
