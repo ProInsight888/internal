@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdatekalenderRequest;
+use App\Models\audit;
 use App\Models\kalender;
 use Carbon\Carbon;
 use Google\Service\Calendar\Calendar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 // use Illuminate\Support\Facades\Event;
 use Spatie\GoogleCalendar\Event as GoogleCalendarEvent;
 
@@ -30,6 +32,18 @@ class UpdateDragDropController extends Controller
         }
 
         $timezone = 'Asia/Jakarta';
+
+        $user = Auth::user();
+
+        $date = Carbon::now('Asia/Jakarta');
+
+        audit::create([
+            'action' => 'Updated',
+            'change_section' => "Updated A Event.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
 
         // Update fields
         $event->name = $request->title;

@@ -28,13 +28,10 @@ class update_submit_media_task extends Controller
 
         $user = Auth::user();
 
-        $uuid_new = Str::uuid()->toString();
-
-        $date_audit = Carbon::now();
+        $date_audit = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid_new,
-            'action' => 'Submit',
+            'action' => 'Submitted',
             'change_section' => "Submitted " . $media->task_title . " Task from Creative Task.",
             'created_by' => $user->name,
             'date' => $date_audit->format('d F Y'),

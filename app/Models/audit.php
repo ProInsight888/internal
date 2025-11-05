@@ -10,8 +10,6 @@ class audit extends Model
     use HasFactory;
 
     protected $fillable = [
-        'uuid',
-        'user_id',
         'action',
         'change_section',
         'old_values',

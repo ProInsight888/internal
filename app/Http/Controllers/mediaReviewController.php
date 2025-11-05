@@ -37,13 +37,10 @@ class mediaReviewController extends Controller
         // dd($uuid);
 
         $user = Auth::user();
-        // dd($dataCollection, $user->name);
-        $uuid_new = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid_new,
             'action' => 'Updated',
             'change_section' => "Updated Media Task.",
             'created_by' => $user->name,

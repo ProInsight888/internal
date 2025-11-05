@@ -222,7 +222,6 @@ const ClientTable = ({ clients }) => (
                                     backgroundColor: `${getClientStatusColor(
                                         client.status
                                     )}20`,
-                                    color: getClientStatusColor(client.code),
                                 }}
                             >
                                 {client.code}

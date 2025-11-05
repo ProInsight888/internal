@@ -67,14 +67,11 @@ class MarketingController extends Controller
         // dd($request);
 
         $user = Auth::user();
-        // dd($dataCollection, $user->name);
-        $uuid = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid,
-            'action' => 'Create',
+            'action' => 'Created',
             'change_section' => "Created Marketing Task.",
             'created_by' => $user->name,
             'date' => $date->format('d F Y'),
@@ -143,13 +140,10 @@ class MarketingController extends Controller
         ]);
 
         $user = Auth::user();
-        // dd($dataCollection, $user->name);
-        $uuid_new = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid_new,
             'action' => 'Updated',
             'change_section' => "Updated Marketing Task.",
             'created_by' => $user->name,
@@ -172,14 +166,11 @@ class MarketingController extends Controller
         // dd($uuid);
 
         $user = Auth::user();
-        // dd($dataCollection, $user->name);
-        $uuid_new = Str::uuid()->toString();
 
-        $date = Carbon::now();
+        $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
-            'uuid' => $uuid_new,
-            'action' => 'Delete',
+            'action' => 'Deleted',
             'change_section' => "Delete Marketing Task.",
             'created_by' => $user->name,
             'date' => $date->format('d F Y'),
