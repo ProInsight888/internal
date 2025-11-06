@@ -84,8 +84,6 @@ class AddAccountController extends Controller
             'avatar' => $user->avatar,
         ]);
 
-
-
         $date = Carbon::now('Asia/Jakarta');
 
         // dd($date->format('d F Y'));
