@@ -206,14 +206,11 @@ export default function Show({ client, contracts }) {
                                         <div className="col-span-2 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
                                             Package
                                         </div>
-                                        <div className="col-span-3 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
+                                        <div className="col-span-5 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
                                             Contract Duration
                                         </div>
-                                        <div className="col-span-3 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
-                                            Telp Num
-                                        </div>
-                                        <div className="col-span-1 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm text-center">
-                                            View
+                                        <div className="col-span-2 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm text-center">
+                                            Actions
                                         </div>
                                     </div>
 
@@ -231,29 +228,13 @@ export default function Show({ client, contracts }) {
                                             </div>
 
                                             {/* Contract Duration Cell */}
-                                            <div className="col-span-3 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                            <div className="col-span-5 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
                                                 <div className="">
-                                                    {client.contract
-                                                        ?.replace(
-                                                            /0 Tahun\s*/g,
-                                                            ""
-                                                        )
-                                                        .replace(
-                                                            /0 Bulan\s*/g,
-                                                            ""
-                                                        )
-                                                        .replace(
-                                                            /0 Hari\s*/g,
-                                                            ""
-                                                        )}
+                                                    {client.contract}
                                                 </div>
                                             </div>
 
-                                            {/* PIC Cell */}
-                                            <div className="col-span-3 px-4 py-3 text-gray-900 dark:text-white border-r border-gray-300 dark:border-gray-600">
-                                                {contract.tlp_num || "—"}
-                                            </div>
-                                            <div className="col-span-1 flex items-center justify-center w-full text-gray-900 dark:text-white">
+                                            <div className="col-span-2  inline-flex w-full items-center justify-center px-4 py-2 text-sm text-black dark:text-white font-medium rounded-lg transition-all duration-200 gap-5">
                                                 <button
                                                     onClick={(e) => {
                                                         const clientsUuid =
@@ -264,7 +245,7 @@ export default function Show({ client, contracts }) {
                                                             "_blank"
                                                         );
                                                     }}
-                                                    className="inline-flex w-full items-center justify-center px-4 py-2 text-sm text-black dark:text-white font-medium rounded-lg transition-all duration-200"
+                                                    className=""
                                                 >
                                                     <svg
                                                         className="w-4 h-4
@@ -290,7 +271,9 @@ export default function Show({ client, contracts }) {
                                                 </button>
                                                 <button
                                                     onClick={() =>
-                                                        handleDelete(contract.uuid)
+                                                        handleDelete(
+                                                            contract.uuid
+                                                        )
                                                     }
                                                     disabled={isLoading}
                                                     className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300 hover:scale-110 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-900/30 group"
