@@ -6,12 +6,12 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { Fragment, useState } from "react";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 const UserFormField = ({
     label,
@@ -24,13 +24,17 @@ const UserFormField = ({
     as = "input",
     options,
     placeholder = "",
-    helpText = ""
+    helpText = "",
 }) => {
     const InputComponent = as === "input" ? TextInput : "select";
-    
+
     return (
         <div className="mb-5">
-            <InputLabel htmlFor={id} value={label} className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300" />
+            <InputLabel
+                htmlFor={id}
+                value={label}
+                className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300"
+            />
             {as === "input" ? (
                 <TextInput
                     id={id}
@@ -44,17 +48,14 @@ const UserFormField = ({
                     placeholder={placeholder}
                 />
             ) : (
-                <Select
-                    value={value}
-                    onValueChange={onChange}
-                >
+                <Select value={value} onValueChange={onChange}>
                     <SelectTrigger className="w-full border-gray-300 rounded-[0.5rem] dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <SelectValue placeholder={placeholder} />
                     </SelectTrigger>
                     <SelectContent className="dark:bg-gray-700 dark:border-gray-600">
                         {options?.map((option, index) => (
-                            <SelectItem 
-                                key={index} 
+                            <SelectItem
+                                key={index}
                                 value={option.value}
                                 className="dark:focus:bg-gray-600 dark:text-white"
                             >
@@ -65,9 +66,14 @@ const UserFormField = ({
                 </Select>
             )}
             {helpText && (
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{helpText}</p>
+                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    {helpText}
+                </p>
             )}
-            <InputError message={error} className="mt-1 text-sm dark:text-red-400" />
+            <InputError
+                message={error}
+                className="mt-1 text-sm dark:text-red-400"
+            />
         </div>
     );
 };
@@ -85,11 +91,89 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
         { value: "it", label: "IT Team" },
     ];
 
+    const [preview, setPreview] = useState(formProps.data.avatar || null);
+    console.log(preview);
+    console.log(formProps);
+    
+    const handleAvatarChange = (e) => {
+        const file = e.target.files[0];
+        formProps.setData("avatar", file);
+        if (file) {
+            setPreview(URL.createObjectURL(file));
+        }
+    };
+
+    const handleRemoveAvatar = () => {
+        formProps.setData("avatar", null);
+        setPreview(null);
+        const fileInput = document.getElementById("avatar");
+        if (fileInput) fileInput.value = "";
+    };
+    
+
     return (
         <form onSubmit={onSubmit} className="space-y-5">
             <div className="bg-blue-50 p-4 rounded-lg mb-4 dark:bg-blue-900/20 dark:border dark:border-blue-800/30">
-                <h3 className="font-medium text-blue-800 dark:text-blue-300">Update User Account</h3>
-                <p className="text-sm text-blue-600 dark:text-blue-400">Modify the user's details and permissions below</p>
+                <h3 className="font-medium text-blue-800 dark:text-blue-300">
+                    Update User Account
+                </h3>
+                <p className="text-sm text-blue-600 dark:text-blue-400">
+                    Modify the user's details and permissions below
+                </p>
+            </div>
+
+            <div className="flex flex-col items-center">
+                <div className="relative">
+                    <img
+                        src={
+                            preview
+                            ? preview.startsWith("blob:")
+                                ? preview // Local uploaded file preview
+                                : `/storage/${preview}` // Existing image from storage
+                            : "/default-avatar.png" // Optional fallback
+                        }
+                        alt="Profile"
+                        className={`w-32 h-32 rounded-full object-cover border-4 ${
+                            preview
+                            ? "border-gray-300 dark:border-gray-600"
+                            : "border-dashed border-gray-400 opacity-50"
+                        }`}
+                        />
+
+
+                    <label
+                        htmlFor="avatar"
+                        className="absolute bottom-0 right-0 bg-gray-800 dark:bg-gray-700 text-white px-2 py-1 text-xs rounded cursor-pointer"
+                    >
+                        {preview ? "Change" : "Upload"}
+                    </label>
+
+                    <input
+                        id="avatar"
+                        name="avatar"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleAvatarChange}
+                    />
+
+                    {/* Remove Avatar Button */}
+                    {preview && (
+                        <button
+                            type="button"
+                            onClick={handleRemoveAvatar}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                            title="Remove avatar"
+                        >
+                            ×
+                        </button>
+                    )}
+                </div>
+
+                {/* Optional helper text */}
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                    Upload a profile picture (optional)
+                </p>
             </div>
 
             <UserFormField
@@ -164,23 +248,48 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
             />
 
             <div className="flex justify-end pt-4">
-                <PrimaryButton 
-                    type="submit" 
+                <PrimaryButton
+                    type="submit"
                     disabled={processing}
                     className="bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-medium py-2.5 px-6 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg disabled:opacity-50 dark:from-blue-700 dark:to-purple-800 dark:hover:from-blue-800 dark:hover:to-purple-900"
                 >
                     {processing ? (
                         <span className="flex items-center">
-                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            <svg
+                                className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                ></circle>
+                                <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
                             </svg>
                             Updating Account...
                         </span>
                     ) : (
                         <span className="flex items-center">
-                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            <svg
+                                className="w-4 h-4 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                />
                             </svg>
                             Update Account
                         </span>
@@ -192,7 +301,7 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
 };
 
 export default function edit({ user }) {
-    const user_edit = usePage().props.auth.user
+    const user_edit = usePage().props.auth.user;
     const { data, setData, put, processing, errors, reset } = useForm({
         name: user?.name || "",
         role: user?.role || "user",
@@ -201,7 +310,10 @@ export default function edit({ user }) {
         password: "",
         password_confirmation: "",
         created_by: user_edit.name,
+        avatar: user?.avatar || "",
     });
+
+   
 
     const submit = (e) => {
         e.preventDefault();
@@ -215,7 +327,7 @@ export default function edit({ user }) {
             header={
                 <div className="text-center py-8 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg dark:from-indigo-800 dark:to-purple-900">
                     <h1 className="text-3xl md:text-4xl font-bold mb-4">
-                        Update  a ✏️
+                        Update An Account ✏️
                     </h1>
                     <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
                         Edit {user?.name}'s account details and permissions
@@ -230,8 +342,12 @@ export default function edit({ user }) {
                     <div className="bg-white overflow-hidden shadow-xl rounded-2xl border border-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:shadow-gray-900/30">
                         <div className="p-6 md:p-8">
                             <div className="mb-8 p-5 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100 dark:from-indigo-900/20 dark:to-purple-900/20 dark:border-indigo-800">
-                                <h2 className="text-2xl font-bold text-indigo-800 dark:text-indigo-300">Editing: {user?.name}</h2>
-                                <p className="text-indigo-600 mt-1 dark:text-indigo-400">Update account details below</p>
+                                <h2 className="text-2xl font-bold text-indigo-800 dark:text-indigo-300">
+                                    Editing: {user?.name}
+                                </h2>
+                                <p className="text-indigo-600 mt-1 dark:text-indigo-400">
+                                    Update account details below
+                                </p>
                                 <div className="mt-3 flex flex-wrap gap-2">
                                     <span className="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-indigo-900 dark:text-indigo-300">
                                         Role: {user?.role}
@@ -257,21 +373,36 @@ export default function edit({ user }) {
                             <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                     <div>
-                                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Quick Actions</h4>
+                                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Quick Actions
+                                        </h4>
                                         <div className="flex gap-2">
                                             <Link
-                                                href={route("add_account.index")}
+                                                href={route(
+                                                    "add_account.index"
+                                                )}
                                                 className="inline-flex items-center px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors duration-200 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
                                             >
-                                                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                                <svg
+                                                    className="w-4 h-4 mr-1"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                                    />
                                                 </svg>
                                                 Back to Users
                                             </Link>
                                         </div>
                                     </div>
                                     <div className="text-xs text-gray-500 dark:text-gray-400">
-                                        Last updated: {new Date().toLocaleDateString()}
+                                        Last updated:{" "}
+                                        {new Date().toLocaleDateString()}
                                     </div>
                                 </div>
                             </div>

@@ -400,7 +400,7 @@ const UserFormField = ({
                     placeholder={placeholder}
                 />
             ) : (
-                <Select value={value} onValueChange={onChange} >
+                <Select value={value} onValueChange={onChange}>
                     <SelectTrigger className="w-full border-gray-300 rounded-[0.5rem] dark:bg-gray-700 dark:border-gray-600 dark:text-white ">
                         <SelectValue placeholder={placeholder} />
                     </SelectTrigger>
@@ -436,12 +436,34 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
         { value: "leader", label: "Leader - Some Limited access" },
         { value: "member", label: "Member - Standard user access" },
     ];
+
     const teamOptions = [
-        { value: "media", label: "Media Team", className: "text-black" },
+        { value: "media", label: "Media Team" },
         { value: "creative", label: "Creative Team" },
         { value: "marketing", label: "Marketing" },
         { value: "it", label: "IT Team" },
     ];
+
+    const { auth } = usePage().props;
+    const [preview, setPreview] = useState(null);
+
+    const handleAvatarChange = (e) => {
+        const file = e.target.files[0];
+        console.log(formProps, file)
+        formProps.setData("avatar", file);
+        if (file) {
+            setPreview(URL.createObjectURL(file));
+        }
+    };
+
+    console.log(formProps.data)
+
+    const handleRemoveAvatar = () => {
+        formProps.setData("avatar", null);
+        setPreview(null);
+        const fileInput = document.getElementById("avatar");
+        if (fileInput) fileInput.value = "";
+    };
 
     return (
         <form onSubmit={onSubmit} className="space-y-5">
@@ -451,6 +473,56 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
                 </h3>
                 <p className="text-sm text-blue-600 dark:text-blue-400">
                     Fill in the details below to add a new team member
+                </p>
+            </div>
+
+            {/* Profile Picture */}
+            <div className="flex flex-col items-center">
+                <div className="relative">
+                    <img
+                        src={
+                            preview || "https://ui-avatars.com/api/?name=+"
+                        }
+                        alt="Profile"
+                        className={`w-32 h-32 rounded-full object-cover border-4 ${
+                            preview
+                                ? "border-gray-300 dark:border-gray-600"
+                                : "border-dashed border-gray-400 opacity-50"
+                        }`}
+                    />
+
+                    <label
+                        htmlFor="avatar"
+                        className="absolute bottom-0 right-0 bg-gray-800 dark:bg-gray-700 text-white px-2 py-1 text-xs rounded cursor-pointer"
+                    >
+                        {preview ? "Change" : "Upload"}
+                    </label>
+
+                    <input
+                        id="avatar"
+                        name="avatar"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleAvatarChange}
+                    />
+
+                    {/* Remove Avatar Button */}
+                    {preview && (
+                        <button
+                            type="button"
+                            onClick={handleRemoveAvatar}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                            title="Remove avatar"
+                        >
+                            ×
+                        </button>
+                    )}
+                </div>
+
+                {/* Optional helper text */}
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                    Upload a profile picture (optional)
                 </p>
             </div>
 
@@ -639,6 +711,7 @@ export default function UserManagement({ users, userName }) {
         password: "",
         password_confirmation: "",
         created_by: user_create.name,
+        avatar: null,
     });
 
     const [searchTerm, setSearchTerm] = useState("");

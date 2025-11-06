@@ -13,6 +13,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -33,10 +34,7 @@ class AddAccountController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -52,8 +50,30 @@ class AddAccountController extends Controller
             'role' => 'required', // or default to 'user
             'team' => 'required', // or default to 'user
             'created_by' => 'required',
+            'avatar' => 'nullable|file|image|max:8192',
         ]);
+
+        $user = $request->user();
         
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+
+            $path = $request->file('avatar')->store('avatars', 'public');
+
+            // Debug line — check if file exists in disk
+            // dd([
+            //     'stored_path' => $path,
+            //     'exists_in_storage' => Storage::disk('public')->exists($path),
+            //     'full_path' => Storage::disk('public')->path($path),
+            // ]);
+
+            $user->avatar = $path;
+        }
+
+        // dd($user,$request->avatar, $user->avatar,$request->user()->avatar);
+
         // dd($request->role);
         User::create([
             'name' => $request->name,
@@ -61,9 +81,10 @@ class AddAccountController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role, // or just 'user'
             'team' => $request->team, // or just 'user'
+            'avatar' => $user->avatar,
         ]);
 
-        
+
 
         $date = Carbon::now('Asia/Jakarta');
 
@@ -105,18 +126,20 @@ class AddAccountController extends Controller
      */
     public function update(UpdateaddAccountRequest $request, user $user)
     {
+        dd($request, $user);
         $validated = $request->validate(
             [
                 'name' => 'required|string|max:50',
                 'role' => 'required|string|max:50',
                 'team' => 'required|string|max:50',
                 'email' => 'required|email',
-                'password' => 'nullable|string|max:50', 
-                'created_by' => 'nullable|string|max:50', 
-                ]
-            );
-            
-            // dd($request, $user);  
+                'password' => 'nullable|string|max:50',
+                'created_by' => 'nullable|string|max:50',
+                'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',   
+            ]
+        );
+
+        // dd($request, $user);  
         $id = $user->id;
 
 

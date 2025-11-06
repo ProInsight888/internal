@@ -26,9 +26,10 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-
+        
         \Log::info('ProfileController@update hit');
         // dd('controller hit', $request->all(), $request->file('avatar'));
+
         $user = $request->user();
 
         $validated = $request->validate([
@@ -89,4 +90,5 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Avatar removed.');
     }
+    
 }
