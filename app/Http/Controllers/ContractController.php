@@ -175,4 +175,38 @@ class ContractController extends Controller
 
         return $pdf->stream('client_contract.pdf');
     }
+
+    public function destroy(Request $request, $contract_del_uuid)
+    {
+        $uuid = $contract_del_uuid;
+        // dd($uuid, $contract_del_uuid);
+
+        $user = Auth::user();
+        // dd($dataCollection, $user->name);
+        $uuid_new = Str::uuid()->toString();
+        
+        $del_task = contract::where('uuid', $uuid)->first();
+        $del_pics = contract_pic::where('contract_uuid', $uuid)->get();
+        
+        // dd($del_task, $uuid, $del_pics);
+
+        $date = Carbon::now('Asia/Jakarta');
+
+        audit::create([
+            'uuid' => $uuid_new,
+            'action' => 'Deleted',
+            'change_section' => "Delete contract .",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
+        $del_task->forceDelete();
+        foreach ($del_pics as $pic){
+            $pic->delete();
+        };
+
+        // $del_status= task_status::where('task_uuid', $uuid);
+        // $del_status->delete();
+        return redirect()->route('new_client.index')->with('message', 'Task deleted successfully.');
+    }
 }
