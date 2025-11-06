@@ -282,12 +282,14 @@ export default function AuditIndex({ audits }) {
                                                     </div>
                                                     <div className="text-sm text-gray-500 dark:text-gray-400">
                                                         {new Date(
-                                                            audit.time
-                                                        ).toLocaleDateString(
-                                                            "en-ID",
+                                                            `${audit.date} ${audit.time}`
+                                                        ).toLocaleTimeString(
+                                                            "id-ID",
                                                             {
-                                                                hour: "numeric",
-                                                                minute: "numeric",
+                                                                hour: "2-digit",
+                                                                minute: "2-digit",
+                                                                timeZone:
+                                                                    "Asia/Jakarta",
                                                             }
                                                         )}
                                                     </div>
