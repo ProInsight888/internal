@@ -7,14 +7,17 @@ import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useEffect } from "react";
 
 export default function edit({ clients }) {
-    const contractParts = (clients?.contract || "").split(" ---- ");
-    const formattedDates = contractParts.map((dateStr) => {
-        const date = new Date(dateStr);
-        // Convert to YYYY-MM-DD
-        return date.toISOString().split("T")[0];
-    });
+    const contractParts =
+        typeof clients?.contract === "string"
+            ? clients.contract.split(" ---- ")
+            : [];
 
-    // console.log(formattedDates);
+    const safeDate = (value) => {
+        const date = new Date(value);
+        return isNaN(date.getTime())
+            ? ""
+            : date.toISOString().split("T")[0];
+    };
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
         company_name: clients?.company_name || "",
@@ -33,7 +36,7 @@ export default function edit({ clients }) {
         })) || [{ cicilan: "", tanggal: "", checked: "false" }],
     });
 
-    // console.log(data);
+    console.log(data);
 
     useEffect(() => {
         const jumlah = parseInt(data.cicil || 0);
@@ -52,7 +55,7 @@ export default function edit({ clients }) {
         }
     }, [data.cicil, data.status]);
 
-    // console.log(data.status);
+    console.log(data.status);
 
     const submit = (e) => {
         e.preventDefault();
