@@ -96,7 +96,7 @@ export function ExampleCombobox({ value, onChange }) {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-full justify-between"
+                    className="w-full justify-between dark:bg-gray-700"
                 >
                     {value
                         ? frameworks.find(
@@ -121,7 +121,7 @@ export function ExampleCombobox({ value, onChange }) {
                                             currentValue === value
                                                 ? ""
                                                 : currentValue;
-                                        onChange(newValue); // ✅ Pass back to parent
+                                        onChange(newValue);
                                         setOpen(false);
                                     }}
                                 >
