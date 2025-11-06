@@ -360,7 +360,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         width="48"
                                         className="dark:bg-gray-700 dark:border-gray-600"
                                     >
-                                        <Dropdown.Link
+                                        {/* <Dropdown.Link
                                             href={route("profile")}
                                             as="button"
                                             className="flex items-center dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600"
@@ -379,7 +379,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 />
                                             </svg>
                                             Profile
-                                        </Dropdown.Link>
+                                        </Dropdown.Link> */}
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"
