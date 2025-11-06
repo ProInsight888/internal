@@ -11,7 +11,7 @@ export default function create({ users, dataEvent, event, tanggal }) {
         items: {},
     });
 
-    console.log(data);
+    // console.log(data);
 
     const [activeCategory, setActiveCategory] = useState("camera");
     const [searchTerm, setSearchTerm] = useState("");

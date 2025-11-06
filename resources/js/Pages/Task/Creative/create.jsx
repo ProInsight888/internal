@@ -86,7 +86,7 @@ export default function Create({
         };
     }, []);
 
-    console.log(data)
+    // console.log(data)
 
     const textAreaAdjust = (element) => {
         element.style.height = "1px";

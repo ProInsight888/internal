@@ -202,7 +202,7 @@ export default function ClientIndex({ clients, cicilans }) {
         return statusColors[status] || "from-slate-400 to-gray-600";
     };
 
-    console.log(clients);
+    // console.log(clients);
 
     // Filter clients with debounce (could be implemented)
     const filteredClients = clients.data.filter((client) => {

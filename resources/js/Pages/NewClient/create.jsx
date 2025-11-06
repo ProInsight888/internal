@@ -20,7 +20,7 @@ export default function create({}) {
         fase_pembayaran: [{ cicilan: "", tanggal: "" }],
     });
 
-    console.log(data)
+    // console.log(data)
 
     useEffect(() => {
         const jumlah = parseInt(data.cicil || 0);
@@ -32,14 +32,14 @@ export default function create({}) {
                     cicilan: `Cicilan ${i + 1}`,
                     tanggal: data.fase_pembayaran[i]?.tanggal || "",
                 }));
-                console.log("CICIL:", data.cicil);
-                console.log("Jumlah yang akan dibuat:", jumlah);
-                console.log(
-                    "Sebelum Update fase_pembayaran:",
-                    data.fase_pembayaran
-                );
-                console.log("Setelah Update fase_pembayaran:", fase);
-                setData("fase_pembayaran", fase);
+                // console.log("CICIL:", data.cicil);
+                // console.log("Jumlah yang akan dibuat:", jumlah);
+                // console.log(
+                //     "Sebelum Update fase_pembayaran:",
+                //     data.fase_pembayaran
+                // );
+                // console.log("Setelah Update fase_pembayaran:", fase);
+                // setData("fase_pembayaran", fase);
             }
         }
 
@@ -69,7 +69,7 @@ export default function create({}) {
         }
     }, [data.company_name]);
 
-    console.log(data);
+    // console.log(data);
 
     const submit = (e) => {
         e.preventDefault();

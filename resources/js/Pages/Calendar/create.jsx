@@ -18,7 +18,7 @@ export default function create({}) {
         user: usePage().props.auth.user,
     });
 
-    console.log(data);
+    // console.log(data);
 
     const [showDeleteEdit, setShowDeleteEdit] = useState(false);
 

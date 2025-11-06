@@ -17,7 +17,7 @@ export default function Register({ users }) {
 
     const [showDeleteEdit, setShowDeleteEdit] = useState(false);
 
-    console.log(users.password);
+    // console.log(users.password);
 
     const submit = (e) => {
         e.preventDefault();
