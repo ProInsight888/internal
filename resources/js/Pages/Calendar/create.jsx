@@ -137,7 +137,7 @@ export default function create({}) {
                                             }
                                             required
                                         />
-                                        <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                                        {/* <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                                             <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                                 <path
                                                     fillRule="evenodd"
@@ -145,7 +145,7 @@ export default function create({}) {
                                                     clipRule="evenodd"
                                                 ></path>
                                             </svg>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     <InputError
@@ -177,7 +177,7 @@ export default function create({}) {
                                             }
                                             required
                                         />
-                                        <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                                        {/* <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                                             <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                                 <path
                                                     fillRule="evenodd"
@@ -185,7 +185,7 @@ export default function create({}) {
                                                     clipRule="evenodd"
                                                 ></path>
                                             </svg>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     <InputError
@@ -214,7 +214,7 @@ export default function create({}) {
                                             }
                                             required
                                         />
-                                        <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                                        {/* <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                                             <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                                 <path
                                                     fillRule="evenodd"
@@ -222,7 +222,7 @@ export default function create({}) {
                                                     clipRule="evenodd"
                                                 ></path>
                                             </svg>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     <InputError
@@ -251,7 +251,7 @@ export default function create({}) {
                                             }
                                             required
                                         />
-                                        <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                                        {/* <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                                             <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                                 <path
                                                     fillRule="evenodd"
@@ -259,7 +259,7 @@ export default function create({}) {
                                                     clipRule="evenodd"
                                                 ></path>
                                             </svg>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     <InputError

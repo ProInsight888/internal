@@ -13,7 +13,7 @@ const StatusBadge = ({ status }) => {
         Rejected: "#EF4444", // red
         Revision: "#F97316", // orange
         Idle: "#6B7280", // gray
-        Lunas: "#EC4899", // pink
+        // Lunas: "#EC4899", // pink
         Lunas: "#14B8A6", // teal
     };
 

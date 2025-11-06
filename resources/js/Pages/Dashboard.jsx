@@ -212,7 +212,7 @@ const ClientTable = ({ clients }) => (
                                     color: getClientStatusColor(client.status),
                                 }}
                             >
-                                {client.status}
+                                {client.status === "Belum Bayar" ? 'Unpaid' : client.status === 'Cicil' ? 'Installment' : 'Paid'}
                             </span>
                         </td>
                         <td>
