@@ -126,7 +126,7 @@ class AddAccountController extends Controller
      */
     public function update(UpdateaddAccountRequest $request, user $user)
     {
-        dd($request, $user);
+        // dd($request, $user);mn
         $validated = $request->validate(
             [
                 'name' => 'required|string|max:50',
