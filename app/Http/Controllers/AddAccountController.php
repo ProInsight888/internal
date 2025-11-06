@@ -42,7 +42,7 @@ class AddAccountController extends Controller
     public function store(StoreaddAccountRequest $request)
     {
 
-        // dd($request);
+        // dd($request->avatar);
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
@@ -126,7 +126,7 @@ class AddAccountController extends Controller
      */
     public function update(UpdateaddAccountRequest $request, user $user)
     {
-        // dd($request, $user);mn
+        $data = $request->validated();
         $validated = $request->validate(
             [
                 'name' => 'required|string|max:50',
@@ -135,14 +135,33 @@ class AddAccountController extends Controller
                 'email' => 'required|email',
                 'password' => 'nullable|string|max:50',
                 'created_by' => 'nullable|string|max:50',
-                'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',   
+                'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             ]
         );
 
-        // dd($request, $user);  
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = $path;
+        }
+
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+
+            $path = $request->file('avatar')->store('avatars', 'public');
+
+            $user->avatar = $path;
+        }
+
+
+        // dd($data, $user->avatar);
+        
+
         $id = $user->id;
 
 
+        // dd($validated['avatar'], $user);  
         $date = Carbon::now('Asia/Jakarta');
 
         audit::create([
@@ -161,7 +180,8 @@ class AddAccountController extends Controller
             'email' => $validated['email'],
             'password' => $validated['password']
                 ? Hash::make($validated['password'])
-                : $user->password
+                : $user->password,
+            'avatar' => $user->avatar
         ]);
 
         // dd($update_user);

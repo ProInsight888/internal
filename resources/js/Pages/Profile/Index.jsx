@@ -14,7 +14,6 @@ export default function Index({ auth }) {
 
     const [preview, setPreview] = useState(auth.user.avatar_url || null);
 
-
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
         setData("avatar", file);
