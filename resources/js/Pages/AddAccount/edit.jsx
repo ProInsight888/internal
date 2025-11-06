@@ -79,8 +79,8 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
         { value: "member", label: "Member - Standard access" },
     ];
     const teamOptions = [
-        { value: "media", label: "Media Team - Editor, Video & Photographer" },
-        { value: "creative", label: "Creative Team - Design" },
+        { value: "media", label: "Media Team" },
+        { value: "creative", label: "Creative Team" },
         { value: "marketing", label: "Marketing" },
         { value: "it", label: "IT Team" },
     ];
