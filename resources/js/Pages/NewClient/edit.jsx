@@ -14,7 +14,7 @@ export default function edit({ clients }) {
         return date.toISOString().split("T")[0];
     });
 
-    console.log(formattedDates);
+    // console.log(formattedDates);
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
         company_name: clients?.company_name || "",
@@ -33,7 +33,7 @@ export default function edit({ clients }) {
         })) || [{ cicilan: "", tanggal: "", checked: "false" }],
     });
 
-    console.log(data);
+    // console.log(data);
 
     useEffect(() => {
         const jumlah = parseInt(data.cicil || 0);
@@ -52,7 +52,7 @@ export default function edit({ clients }) {
         }
     }, [data.cicil, data.status]);
 
-    console.log(data.status);
+    // console.log(data.status);
 
     const submit = (e) => {
         e.preventDefault();

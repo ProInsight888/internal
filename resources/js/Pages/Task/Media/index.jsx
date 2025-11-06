@@ -563,7 +563,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     // Submit task
     const submitTask = (e) => {
         e.preventDefault();
-        console.log(data.uuid);
+        // console.log(data.uuid);
         put(route("media_submit.update", { media: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),

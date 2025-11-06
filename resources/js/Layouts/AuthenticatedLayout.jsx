@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
     const audits = usePage().props.auth.audit;
-    console.log(audits);
+    // console.log(audits);
     const currentRoute = usePage().url;
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);

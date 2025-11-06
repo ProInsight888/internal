@@ -12,7 +12,7 @@ export default function TaskResult({ tasks, users, userName }) {
     const [selectedTask, setSelectedTask] = useState(null);
     const [statusFilter, setStatusFilter] = useState("In Review");
     const revisionRef = useRef(null);
-    console.log(user);
+    // console.log(user);
 
     // Form handling
     const { data, setData, put, post, processing, errors, reset } = useForm({
@@ -50,7 +50,7 @@ export default function TaskResult({ tasks, users, userName }) {
 
     // Open review modal
     const openReviewModal = (task) => {
-        console.log(task);
+        // console.log(task);
 
         setSelectedTask(task);
         setData("uuid", task.uuid);

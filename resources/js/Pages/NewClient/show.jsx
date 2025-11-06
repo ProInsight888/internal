@@ -31,7 +31,7 @@ function SectionTitle({ title }) {
 
 export default function Show({ client, contracts }) {
 
-    console.log(client)
+    // console.log(client)
     return (
         <AuthenticatedLayout
             header={
@@ -222,7 +222,7 @@ export default function Show({ client, contracts }) {
                                                 <button
                                                     onClick={((e) => {
                                                         const clientsUuid = contract.uuid;
-                                                        console.log(clientsUuid)
+                                                        // console.log(clientsUuid)
                                                         window.open(
                                                             `/newClient/${clientsUuid}/contract`,
                                                             "_blank"

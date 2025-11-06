@@ -19,7 +19,7 @@ import { createDragAndDropPlugin } from "@schedule-x/drag-and-drop";
 
 export default function index({ ev }) {
     const date = new Date();
-    console.log(ev);
+    // console.log(ev);
 
     const yyyy = date.getFullYear();
     const mm = String(date.getMonth() + 1).padStart(2, "0"); // bulan dimulai dari 0
@@ -54,7 +54,7 @@ export default function index({ ev }) {
         plugins: [createEventModalPlugin(), createDragAndDropPlugin()],
         callbacks: {
             onEventUpdate(updatedEvent) {
-                console.log(updatedEvent);
+                // console.log(updatedEvent);
                 router.visit(
                     route("drag_and_drop_update.update", updatedEvent.id),
                     {
@@ -73,7 +73,7 @@ export default function index({ ev }) {
         },
     });
 
-    console.log(calendar);
+    // console.log(calendar);
 
     const [customMenu, setCustomMenu] = useState({
         visible: false,
@@ -85,11 +85,11 @@ export default function index({ ev }) {
     useEffect(() => {
         const handleContextMenu = (e) => {
             const eventEl = e.target.closest(".sx__time-grid-event-inner");
-            console.log(eventEl);
+            // console.log(eventEl);
             const eventId =
                 e.target.closest(".sx__time-grid-event.sx__event") ||
                 e.target.closest("[data-event-id]");
-            console.log(eventId);
+            // console.log(eventId);
             if (eventEl) {
                 e.preventDefault(); // Disable browser context menu
 
@@ -98,7 +98,7 @@ export default function index({ ev }) {
                     top: e.pageY,
                     left: e.pageX,
                 };
-                console.log(id);
+                // console.log(id);
 
                 setCustomMenu({
                     visible: true,
@@ -124,7 +124,7 @@ export default function index({ ev }) {
 
     const { success, deleted: deleteMessage } = usePage().props.flash ?? {};
 
-    console.log(customMenu);
+    // console.log(customMenu);
 
     let number_event = 1;
 

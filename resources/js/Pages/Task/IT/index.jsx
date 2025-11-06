@@ -144,12 +144,11 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                             trimmed.toLowerCase()
                                     );
 
-                                    // DEBUG: Check what we're working with
-                                    console.log("Assignee:", trimmed);
-                                    console.log("Found user:", user);
-                                    console.log({
-                                        user_avatar_url: user?.avatar_url,
-                                    });
+                                    // console.log("Assignee:", trimmed);
+                                    // console.log("Found user:", user);
+                                    // console.log({
+                                    //     user_avatar_url: user?.avatar_url,
+                                    // });
 
                                     return (
                                         <div
@@ -162,14 +161,14 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                                     src={user.avatar_url}
                                                     alt={user.name}
                                                     className="w-8 h-8 rounded-full object-cover"
-                                                    onError={(e) => {
-                                                        console.log(
-                                                            "Image failed to load:",
-                                                            user.avatar_url
-                                                        );
-                                                        e.target.style.display =
-                                                            "none";
-                                                    }}
+                                                    // onError={(e) => {
+                                                    //     console.log(
+                                                    //         "Image failed to load:",
+                                                    //         user.avatar_url
+                                                    //     );
+                                                    //     e.target.style.display =
+                                                    //         "none";
+                                                    // }}
                                                 />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center">
@@ -534,7 +533,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
 
     const successMessage = usePage().props?.flash?.success;
 
-    console.log(user);
+    // console.log(user);
 
     // Filter and sort tasks
     const filteredTasks = tasks
@@ -582,7 +581,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
     // Submit task
     const submitTask = (e) => {
         e.preventDefault();
-        console.log(data.uuid);
+        // console.log(data.uuid);
         put(route("it_submit.update", { it: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),

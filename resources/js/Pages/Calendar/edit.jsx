@@ -7,8 +7,8 @@ import { Head, Link, router, useForm } from "@inertiajs/react";
 import { Fragment, useState, useRef, useEffect } from "react";
 
 export default function index({ event }) {
-    console.log(event.googleEvent.id);
-    console.log(event.googleEvent.start.dateTime.slice(11, 16));
+    // console.log(event.googleEvent.id);
+    // console.log(event.googleEvent.start.dateTime.slice(11, 16));
 
     // const start = event.start.split(' ');
     // const end = event.end.split(' ');
@@ -49,7 +49,7 @@ export default function index({ event }) {
 
     const submit = (e) => {
         e.preventDefault();
-        console.log(event);
+        // console.log(event);
         put(
             route("calendar.update", {
                 // calendar: calendarEmail,
