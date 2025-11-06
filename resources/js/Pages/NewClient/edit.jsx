@@ -7,22 +7,25 @@ import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useEffect } from "react";
 
 export default function edit({ clients }) {
-    const contractParts = (clients?.contract || "").split(" ---- ");
-    const formattedDates = contractParts.map((dateStr) => {
-        const date = new Date(dateStr);
-        // Convert to YYYY-MM-DD
-        return date.toISOString().split("T")[0];
-    });
+    const contractParts =
+        typeof clients?.contract === "string"
+            ? clients.contract.split(" ---- ")
+            : [];
 
-    console.log(formattedDates);
+    const safeDate = (value) => {
+        const date = new Date(value);
+        return isNaN(date.getTime())
+            ? ""
+            : date.toISOString().split("T")[0];
+    };
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
         company_name: clients?.company_name || "",
         code: clients?.code || "",
         type: clients?.type || "",
         location: clients?.location || "",
-        contract_start: formattedDates[0] || "",
-        contract_end: formattedDates[1] || "",
+     contract_start: safeDate(contractParts[0]) || '',
+  contract_end: safeDate(contractParts[1]) || '',
         package: clients?.package || "",
         status: clients?.status || "",
         cicil: clients?.cicilans.length || "",
