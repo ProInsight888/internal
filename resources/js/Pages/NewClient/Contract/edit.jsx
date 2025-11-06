@@ -16,7 +16,7 @@ import {
 export default function edit({ clients }) {
     const contractParts = (clients?.contract || "").split(" ");
 
-    // console.log(clients);
+    console.log(clients);
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
         uuid: clients.uuid ?? "",
@@ -38,7 +38,7 @@ export default function edit({ clients }) {
         price: clients?.price ?? "",
     });
 
-    // console.log(data.pics);
+    console.log(data.pics);
 
     useEffect(() => {
         const jumlah = parseInt(data.pic_num || 0);
@@ -59,10 +59,10 @@ export default function edit({ clients }) {
     
     const submit = (e) => {
         e.preventDefault();
-        // console.log(clients.uuid)
+        console.log(clients.uuid)
         post(route("contract.store", data), {
             onSuccess: () => {
-                // console.log(data.uuid);
+                console.log(data.uuid);
                 const clientsUuid = clients.uuid;
                 window.open(`/contract/${clientsUuid}/contract`, "_blank");
             },
