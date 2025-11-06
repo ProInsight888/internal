@@ -93,7 +93,7 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
     ];
 
     const { auth } = usePage().props;
-    const [preview, setPreview] = useState(formProps.data.avatar || null);
+    const [preview, setPreview] = useState(null);
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
@@ -104,7 +104,7 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
         }
     };
 
-    console.log(formProps.data, preview)
+    console.log(formProps.data)
 
     const handleRemoveAvatar = () => {
         formProps.setData("avatar", null);
@@ -129,11 +129,7 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
                 <div className="relative">
                     <img
                         src={
-                            preview
-                                ? preview.startsWith("blob:")
-                                    ? preview
-                                    : `/storage/${preview}` // ✅ wrapped with backticks
-                                : "/default-avatar.png"
+                            preview || "https://ui-avatars.com/api/?name=+"
                         }
                         alt="Profile"
                         className={`w-32 h-32 rounded-full object-cover border-4 ${
@@ -309,7 +305,7 @@ export default function edit({ user }) {
         email: user?.email || "",
         password: "",
         password_confirmation: "",
-        created_by: user_edit.name,
+        created_by: user_create.name,
         avatar: user?.avatar || null,
     });
 
