@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
+import { useState } from "react";
 
 // Single, consistent InfoField component
 function InfoField({ label, value, colSpan = "col-span-1" }) {
@@ -30,6 +31,32 @@ function SectionTitle({ title }) {
 }
 
 export default function Show({ client, contracts }) {
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleDelete = (contract_del_uuid) => {
+            if (
+                !confirm(
+                    `Are you sure you want to delete "${contract_del_uuid}"? This action cannot be undone and all associated data will be permanently lost.`
+                )
+            ) {
+                return;
+            }
+    
+            setIsLoading(true);
+            router.delete(route("contract.destroy", contract_del_uuid), {
+                onSuccess: () => {
+                    setIsLoading(false);
+                },
+                onError: (errors) => {
+                    console.error("Delete error:", errors);
+                    setIsLoading(false);
+                    alert("Failed to delete client. Please try again.");
+                },
+                preserveScroll: true,
+            });
+        };
+    
 
     // console.log(client)
     return (
@@ -207,10 +234,18 @@ export default function Show({ client, contracts }) {
                                             <div className="col-span-3 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
                                                 <div className="">
                                                     {client.contract
-                                                        ?.replace(/0 Tahun\s*/g, '')
-                                                        .replace(/0 Bulan\s*/g, '')
-                                                        .replace(/0 Hari\s*/g, '')
-                                                    }
+                                                        ?.replace(
+                                                            /0 Tahun\s*/g,
+                                                            ""
+                                                        )
+                                                        .replace(
+                                                            /0 Bulan\s*/g,
+                                                            ""
+                                                        )
+                                                        .replace(
+                                                            /0 Hari\s*/g,
+                                                            ""
+                                                        )}
                                                 </div>
                                             </div>
 
@@ -220,14 +255,15 @@ export default function Show({ client, contracts }) {
                                             </div>
                                             <div className="col-span-1 flex items-center justify-center w-full text-gray-900 dark:text-white">
                                                 <button
-                                                    onClick={((e) => {
-                                                        const clientsUuid = contract.uuid;
+                                                    onClick={(e) => {
+                                                        const clientsUuid =
+                                                            contract.uuid;
                                                         // console.log(clientsUuid)
                                                         window.open(
                                                             `/newClient/${clientsUuid}/contract`,
                                                             "_blank"
                                                         );
-                                                    })}
+                                                    }}
                                                     className="inline-flex w-full items-center justify-center px-4 py-2 text-sm text-black dark:text-white font-medium rounded-lg transition-all duration-200"
                                                 >
                                                     <svg
@@ -249,6 +285,28 @@ export default function Show({ client, contracts }) {
                                                             d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 
                                                                         0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 
                                                                         1-7 0"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleDelete(contract.uuid)
+                                                    }
+                                                    disabled={isLoading}
+                                                    className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300 hover:scale-110 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-900/30 group"
+                                                    title="Delete Client"
+                                                >
+                                                    <svg
+                                                        className="w-4 h-4 group-hover:shake transition-transform"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                                                         />
                                                     </svg>
                                                 </button>
@@ -283,10 +341,9 @@ export default function Show({ client, contracts }) {
                                         </Link>
                                         <div className="flex items-center">
                                             <Link
-                                                href={route(
-                                                    "contract.edit",
-                                                    {contract : client.uuid}
-                                                )}
+                                                href={route("contract.edit", {
+                                                    contract: client.uuid,
+                                                })}
                                                 className="inline-flex items-center px-4 py-2 text-sm text-black dark:text-white font-medium rounded-lg transition-all duration-200"
                                             >
                                                 <svg
