@@ -208,7 +208,7 @@ const ClientTable = ({ clients }) => (
                                 style={{
                                     backgroundColor: `${getClientStatusColor(
                                         client.status
-                                    )}20`,
+                                    )}50`,
                                     color: getClientStatusColor(client.status),
                                 }}
                             >
@@ -221,7 +221,7 @@ const ClientTable = ({ clients }) => (
                                 style={{
                                     backgroundColor: `${getClientStatusColor(
                                         client.status
-                                    )}20`,
+                                    )}50`,
                                 }}
                             >
                                 {client.code}
@@ -267,9 +267,9 @@ const getAttendanceStatusColor = (status) => {
 const getClientStatusColor = (status) => {
     const statusColors = {
         Lunas: "#10B981", // emerald
-        Cicil: "#3B82F6", // blue
+        Cicil: "#3B82F6", // blue: "#00ffff"
     };
-    return statusColors[status] || "#6B7280";
+    return statusColors[status] || "#ff6868";
 };
 
 const TaskCard = ({ task }) => {
