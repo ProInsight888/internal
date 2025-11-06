@@ -22,6 +22,10 @@ class contract extends Model
         'tlp_num',
         'price',
     ];
+    
+    protected $primaryKey = 'uuid';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     public function getRouteKeyName()
     {
