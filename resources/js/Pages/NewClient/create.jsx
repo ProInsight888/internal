@@ -20,8 +20,6 @@ export default function create({}) {
         fase_pembayaran: [{ cicilan: "", tanggal: "" }],
     });
 
-
-
     useEffect(() => {
         const jumlah = parseInt(data.cicil || 0);
 
@@ -42,31 +40,26 @@ export default function create({}) {
         }
     }, [data.cicil, data.status]);
 
-
-
     // Optional: Auto-generate code when company name changes
     useEffect(() => {
-        console.log(data.company_name)
+        console.log(data.company_name);
         // const companyName = data.company_name
-        
+
         // console.log(companyName[randomIndex])
         const companyName = data.company_name.replace(/[^A-Za-z]/g, "");
-        let code = ''
+        let code = "";
         if (data.company_name) {
-        code += companyName[0]
-            for(let i = 1; i < 4; i++){
+            code += companyName[0];
+            for (let i = 1; i < 4; i++) {
                 const randomIndex = Math.floor(
                     Math.random() * companyName.length
                 );
-                code += companyName[randomIndex]
+                code += companyName[randomIndex];
             }
-            console.log(code)
+            console.log(code);
         }
         setData("code", code.toUpperCase());
     }, [data.company_name]);
-
-
-    
 
     const submit = (e) => {
         e.preventDefault();
@@ -207,6 +200,9 @@ export default function create({}) {
                                         label="Digital Branding"
                                         className="dark:text-gray-300 dark:bg-gray-700"
                                     >
+                                        <option value="Management System">
+                                            Management System
+                                        </option>
                                         <option value="Company Profile">
                                             Company Profile
                                         </option>
@@ -438,7 +434,9 @@ export default function create({}) {
                                     onSubmit={(e) => submit(e)}
                                     disabled={processing}
                                 >
-                                    {processing ? "Creating..." : "Add New Client"}
+                                    {processing
+                                        ? "Creating..."
+                                        : "Add New Client"}
                                 </PrimaryButton>
                             </div>
                         </form>
