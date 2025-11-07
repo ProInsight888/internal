@@ -110,10 +110,10 @@
         <div class=""><b><u>SURAT PERJANJIAN KERJASAMA</u></b></div>
         <div>
             <div>Nomor Surat : {{ $contract->reference_num }}</div>
-            <div>Berlaku: <b>{{ \Carbon\Carbon::parse($contract->contract_start)->format('d F Y') }}</b> sampai <b>{{ \Carbon\Carbon::parse($contract->contract_end)->format('d F Y') }}</b></div>
+            <div>Berlaku: {{ \Carbon\Carbon::parse($contract->contract_start)->format('d F Y') }} sampai {{ \Carbon\Carbon::parse($contract->contract_end)->format('d F Y') }}</div>
             <br>
             <div>Pada hari ini, <b>{{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('l') }}
-</b>, Tanggal <b>{{ \Carbon\Carbon::parse($contract->contract_start)->format('d F Y') }}</b>
+</b>, Tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->format('d F Y') }}
 , yang bertanda tangan di bawah ini</div>
             <div class=""><b>1. {{ $client->company_name }}</b></div>
             <div class="tab-1">
@@ -140,7 +140,7 @@
         <br>
         <div class="text-center"><b>Pasal 1</b></div>
         <div class="text-center"><b>Tujuan Kerjasama</b></div>
-        <div>Perjanjian ini dibuat dengan tujuan untuk menjalin kerjasama dalam bidang social media dimana, Pihak Pertama memberikan pekerjaan kepada Pihak Kedua, dan Pihak Kedua menerima pekerjaan dari Pihak Pertama untuk mengelola akun media sosial Pihak Pertama (seperti 
+        <div>Perjanjian ini dibuat dengan tujuan untuk menjalin kerjasama dalam bidang media sosial dimana, Pihak Pertama memberikan pekerjaan kepada Pihak Kedua, dan Pihak Kedua menerima pekerjaan dari Pihak Pertama untuk mengelola akun media sosial Pihak Pertama (seperti 
         Instagram, Tiktok dan Facebook) dengan kebijakan dan persyaratan yang akan dibahas lebih lanjut. 
         </div>
         <br>
@@ -150,21 +150,21 @@
             <div>Kewajiban : </div>
             <div class="tab-1">
                 <ol>
-                    <li><b>Pihak Pertama</b> berkewajiban menyerahkan akses berupa <b>username</b> dan <b>password</b> akun media sosial kepada <b>Pihak Kedua</b> untuk keperluan operasional. </li>
-                    <li><b>Pihak Kedua</b> berkewajiban menjaga kerahasiaan dan tidak menyebarluaskan informasi terkait <b>username</b> dan <b>password</b> akun media sosial milik <b>Pihak Pertama</b> kepada pihak ketiga tanpa persetujuan tertulis. </li>
+                    <li><b>Pihak Pertama</b> berkewajiban menyerahkan akses berupa <b><i>username</i></b> dan <b><i>password</i></b> akun media sosial kepada <b>Pihak Kedua</b> untuk keperluan operasional. </li>
+                    <li><b>Pihak Kedua</b> berkewajiban menjaga kerahasiaan dan tidak menyebarluaskan informasi terkait <b><i>username</i></b> dan <b><i>password</i></b> akun media sosial milik <b>Pihak Pertama</b> kepada pihak ketiga tanpa persetujuan tertulis. </li>
                     <li><b>Pihak Kedua</b> bertanggung jawab dalam penyusunan konsep dan pembuatan konten media sosial milik <b>Pihak Pertama.</b> </li>
                     <li><b>Pihak Kedua</b> akan melakukan pembaruan atau unggahan konten media sosial di platform <b>Instagram</b> dan <b>Tiktok</b> sebanyak: 
                         <div class="tab-2">
                             <ol>
-                                <li><b>{{ $package[$contract->package]['feeds'] }} Design Feeds, dan {{ $package[$contract->package]['x_per_minggu'] }} kali dalam seminggu</b> untuk <b>feed</b>, lengkap dengan <b>caption</b> dan <b>hashtag</b> yang dilakukan setiap hari <b>{{ $package[$contract->package]['hari'] }};</b> </li>
-                                <li><b>{{ $package[$contract->package]['story'] }} Design Story</b>, yang dilakukan setiap hari secara <b>repetisi</b> untuk jumlah story yang telah ditentukan <b>Pihak Pertama;</b> </li>
-                                <li><b>{{ $package[$contract->package]['reel'] }} Reels</b>, lengkap dengan <b>caption</b> dan <b>hashtag</b> yang dilakukan <b>{{ $package[$contract->package]['reel_post'] }}</b>; atau pada hari-hari lain sesuai kesepakatan kedua belah pihak.</li>
+                                <li><b>{{ $package[$contract->package]['feeds'] }} <i>Design Feeds</i>, dan {{ $package[$contract->package]['x_per_minggu'] }} kali dalam seminggu</b> untuk <b><i>feed</i></b>, lengkap dengan <b><i>caption</i></b> dan <b><i>hashtag</i></b> yang dilakukan setiap hari <b>{{ $package[$contract->package]['hari'] }};</b> </li>
+                                <li><b>{{ $package[$contract->package]['story'] }} <i>Design Story</i></b>, yang dilakukan setiap hari secara <b>repetisi</b> untuk jumlah <i>story</i> yang telah ditentukan <b>Pihak Pertama;</b> </li>
+                                <li><b>{{ $package[$contract->package]['reel'] }} <i>Reels</i></b>, lengkap dengan <b>caption</b> dan <b>hashtag</b> yang dilakukan <b>{{ $package[$contract->package]['reel_post'] }}</b>; atau pada hari-hari lain sesuai kesepakatan kedua belah pihak.</li>
                             </ol>
                         </div>
                     </li>
-                    <li><b>Pihak Pertama</b> dapat memberikan informasi dan pengetahuan produk <b>(product knowledge)</b> yang dibutuhkan <b>Pihak Kedua</b> dalam menyusun konten dan setelah telah selesai <b>Pihak Pertama</b> dapat melalukan pengecekan dan revisi. </li>
-                    <li><b>Pihak Pertama</b> juga berkewajiban memberikan informasi terbaru yang akan dijadikan materi promosi, seperti diskon, giveaway, serta kegiatan perusahaan (misalnya pameran), guna menghindari kekeliruan informasi di media sosial. </li>
-                    <li><b>Pihak Kedua</b> tidak bertanggung jawab terhadap biaya iklan berbayar (misalnya endorse, paid promote, dan sebagainya), kecuali terdapat pembayaran terpisah dari <b>Pihak Pertama</b> kepada <b>Pihak Kedua</b> untuk pelaksanaan iklan tersebut. Dan akan dikenakan fee jasa sekali selama sebulan sebesar Rp 50.000. </li>
+                    <li><b>Pihak Pertama</b> dapat memberikan informasi dan pengetahuan produk <b><i>(product knowledge)</i></b> yang dibutuhkan <b>Pihak Kedua</b> dalam menyusun konten dan setelah telah selesai <b>Pihak Pertama</b> dapat melalukan pengecekan dan revisi. </li>
+                    <li><b>Pihak Pertama</b> juga berkewajiban memberikan informasi terbaru yang akan dijadikan materi promosi, seperti diskon, <i>giveaway</i>, serta kegiatan perusahaan (misalnya pameran), guna menghindari kekeliruan informasi di media sosial. </li>
+                    <li><b>Pihak Kedua</b> tidak bertanggung jawab terhadap biaya iklan berbayar (misalnya <i>endorse, paid promote,</i> dan sebagainya), kecuali terdapat pembayaran terpisah dari <b>Pihak Pertama</b> kepada <b>Pihak Kedua</b> untuk pelaksanaan iklan tersebut. Dan akan dikenakan <i>fee</i> jasa sekali selama sebulan sebesar Rp 50.000. </li>
                     <li>Apabila <b>Para Pihak</b> menghentikan perjanjian kerjasama secara sepihak tanpa kesepakatan bersama, maka <b>Pihak yang menghentikan perjanjian kerjasama secara sepihak</b> wajib membayarkan kompensasi sebesar nilai sisa kontrak yang telah disepakati dalam perjanjian ini. </li>
                 </ol>
             </div>
@@ -174,12 +174,12 @@
             <div class="tab-1">
                 <ol>
                     <li><b>Pihak Pertama</b> berhak memperoleh pembaruan konten media sosial sesuai ketentuan yang telah disebutkan di atas. </li>
-                    <li><b>Pihak Pertama</b> berhak menerima 1 (satu) video motion graphic selama 1 (satu) bulan, dengan ketentuan bahwa <b>Pihak Pertama</b> menyediakan materi atau bahan yang akan dijadikan isi dari video tersebut. </li>
-                    <li><b>Pihak Pertama</b> berhak menerima Feedback Reports setiap tanggal 30 setiap bulan. </li>
-                    <li><b>Pihak Pertama</b> berhak menerima Design Hari Besar untuk tahun 2025.</li>
+                    <li><b>Pihak Pertama</b> berhak menerima <b>1 (satu) <i>motion graphicvideo </i></b> selama <b>1 (satu) bulan</b>, dengan ketentuan bahwa <b>Pihak Pertama</b> menyediakan materi atau bahan yang akan dijadikan isi dari video tersebut. </li>
+                    <li><b>Pihak Pertama</b> berhak menerima <b><i>Feedback Reports</i></b> setiap tanggal 30 setiap bulan. </li>
+                    <li><b>Pihak Pertama</b> berhak menerima <b><i>Design</i> Hari Besar</b> untuk tahun 2025.</li>
                     <li><b>Pihak Pertama</b> berhak memberikan masukan, arahan, atau pendapat kepada <b>Pihak Kedua</b> sehubungan dengan strategi promosi usaha yang dimilikinya. </li>
                     <li>Kedua belah pihak memiliki hak untuk mengakhiri kontrak apabila salah satu pihak tidak menjalankan kewajibannya sebagaimana mestinya. </li>
-                    <li>Seluruh hasil karya desain, foto, dan video yang telah dipublikasikan selama masa kerjasama merupakan hak milik penuh dari <b>Pihak Pertama</b>. </li>
+                    <li>Seluruh hasil karya <i>disign</i>, foto, dan video yang telah dipublikasikan selama masa kerjasama merupakan hak milik penuh dari <b>Pihak Pertama</b>. </li>
                 </ol>
             </div>
         </div>
@@ -189,15 +189,15 @@
         <div>
             <ol>
                 <li>Durasi paket yang diambil selama {{ $client->duration }} terhitung sejak tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->format('d F Y') }} hingga {{ \Carbon\Carbon::parse($contract->contract_end)->format('d F Y') }}.</li>
-                <li>Untuk Video Shooting proses pengerjaan membutuhkan 3-5 hari kerja.</li>
-                <li>Untuk Design Post membutuhkan 1-3 hari kerja.</li>
+                <li>Untuk <b><i>Video Shooting</i></b> proses pengerjaan membutuhkan 3-5 hari kerja.</li>
+                <li>Untuk <b><i>Design Post</i></b> membutuhkan 1-3 hari kerja.</li>
             </ol>
         </div>
         <br>
         <div class="text-center"><b>Pasal 4</b></div>
         <div class="text-center"><b>Biaya</b></div>
         <div>
-           Pihak Kedua telah menyetujui untuk mengambil paket “{{ $contract->package }}”, dengan total biaya sebesar Rp {{ number_format($contract->price, 0, ',', '.') }}, yang mencakup seluruh komponen layanan sebagaimana tercantum dalam perjanjian ini. Pembayaran atas biaya tersebut wajib diselesaikan oleh Pihak Kedua sesuai dengan ketentuan dan jadwal pembayaran yang telah ditentukan dalam kontrak ini.
+           Pihak Kedua telah menyetujui untuk mengambil paket <b>“{{ $contract->package }}”</b>, dengan total biaya sebesar Rp {{ number_format($contract->price, 0, ',', '.') }}, yang mencakup seluruh komponen layanan sebagaimana tercantum dalam perjanjian ini. Pembayaran atas biaya tersebut wajib diselesaikan oleh Pihak Kedua sesuai dengan ketentuan dan jadwal pembayaran yang telah ditentukan dalam kontrak ini.
         </div>
         
         <br>
@@ -206,12 +206,12 @@
         <div class="text-center"><b>Cara Pembayaran</b></div>
         <div>
             <ol>
-                <li>Pembayaran awal wajib dilakukan paling lambat 1 (satu) hari kalender setelah penandatanganan surat perjanjian kerjasama ini. </li>
-                <li>Sistem pembayaran dilakukan secara lunas di muka (pembayaran penuh di awal) sebelum pelaksanaan pekerjaan dimulai. </li>
+                <li><b>Pembayaran awal</b> wajib dilakukan paling lambat <b>1 (satu) hari kalender</b> setelah penandatanganan surat perjanjian kerjasama ini. </li>
+                <li>Sistem pembayaran dilakukan secara <b>lunas di muka</b> (pembayaran penuh di awal) sebelum pelaksanaan pekerjaan dimulai. </li>
                 <li>Pembayaran ditransfer ke rekening berikut: 
-                    <div>Bank BCA</div>
-                    <div>a.n. Phygital Kreatif Konsultindo</div>
-                    <div>No. Rekening: 8211-028-866 </div>
+                    <div><b>Bank BCA</b></div>
+                    <div>a.n. <b>Phygital Kreatif Konsultindo</b></div>
+                    <div>No. Rekening: <b>8211-028-866</b> </div>
                 </li>
 
             </ol>
@@ -226,7 +226,7 @@
         <div class="text-center"><b>Pasal 7</b></div>
         <div class="text-center"><b>Penutup</b></div>
         <div>
-            Perjanjian ini dibuat dalam 2 (dua) rangkap asli, yang masing-masing memiliki kekuatan hukum yang sama, dimana 1 (satu) rangkap disimpan oleh <b>Pihak Pertama</b> dan 1 (satu) rangkap disimpan oleh <b>Pihak Kedua</b>. 
+            Perjanjian ini dibuat dalam <b>2 (dua) rangkap asli</b>, yang masing-masing memiliki kekuatan hukum yang sama, dimana <b>1 (satu) rangkap</b> disimpan oleh <b>Pihak Pertama</b> dan <b>1 (satu) rangkap</b> disimpan oleh <b>Pihak Kedua</b>. 
         </div>
         
         <div style="page-break-after: always;"></div>
@@ -243,14 +243,14 @@
         <table>
             <thead>
                 <tr>
-                    <th>PIHAK PERTAMA</th>
-                    <th>PIHAK KEDUA</th>
+                    <td>PIHAK PERTAMA</td>
+                    <td>PIHAK KEDUA</td>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ $client->company_name }}</td>
-                    <td>PRO INSIGHT</td>
+                    <td><b>{{ $client->company_name }}</b></td>
+                    <td><b>PRO INSIGHT</b></td>
                 </tr>
                 <tr>
                     <td class="font_white">a</td>
@@ -261,32 +261,32 @@
                     <td class="font_white">a</td>
                 </tr>
                 <tr>
-                    <td>{{ $pics[0]->pic_name }}</td>
-                    <td>Felix Zeng, B. CS</td>
+                    <td><b>{{ $pics[0]->pic_name }}</b></td>
+                    <td><b>Felix Zeng, B. CS</b></td>
                 </tr>
                 <tr>
-                    <td>{{ $pics[0]->pic_position }}</td>
-                    <td>Creative Agency Coordinator</td>
+                    <td><b>{{ $pics[0]->pic_position }}</b></td>
+                    <td><b>Creative Agency Coordinator</b></td>
                 </tr>
                 @foreach ($pics->skip(1) as $key => $pic)
                     <>
                         <tr>
-                            <td class="font_white">{{ $client->company_name }}</td>
+                            <td class="font_white"><b>{{ $client->company_name }}</b></td>
                         </tr>
                         <tr>
-                            <td>{{ $client->company_name }}</td>
-                        </tr>
-                        <tr>
-                            <td class="font_white">a</td>
+                            <td><b>{{ $client->company_name }}</b></td>
                         </tr>
                         <tr>
                             <td class="font_white">a</td>
                         </tr>
                         <tr>
-                            <td>{{ $pic->pic_name }}</td>
+                            <td class="font_white">a</td>
                         </tr>
                         <tr>
-                            <td>{{ $pic->pic_position }}</td>
+                            <td><b>{{ $pic->pic_name }}</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>{{ $pic->pic_position }}</b></td>
                         </tr>
                     </>
                 @endforeach
