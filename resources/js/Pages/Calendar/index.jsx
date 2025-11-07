@@ -19,13 +19,41 @@ import { createDragAndDropPlugin } from "@schedule-x/drag-and-drop";
 
 export default function index({ ev }) {
     const date = new Date();
-    // console.log(ev);
+    console.log(ev);
 
     const yyyy = date.getFullYear();
     const mm = String(date.getMonth() + 1).padStart(2, "0"); // bulan dimulai dari 0
     const dd = String(date.getDate()).padStart(2, "0");
 
     const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+    const formatEventDate = (dateTimeString) => {
+        const date = new Date(dateTimeString);
+        const months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ];
+        return `${date.getDate()} ${
+            months[date.getMonth()]
+        } ${date.getFullYear()}`;
+    };
+
+    // Function to format date range
+    const formatDateRange = (startDateTime, endDateTime) => {
+        const startFormatted = formatEventDate(startDateTime);
+        const endFormatted = formatEventDate(endDateTime);
+        return `${startFormatted} - ${endFormatted}`;
+    };
 
     const calendar = useCalendarApp({
         views: [
@@ -48,6 +76,11 @@ export default function index({ ev }) {
                     .replace("T", " "),
                 end: e.googleEvent.end.dateTime.slice(0, 16).replace("T", " "),
                 description: e.googleEvent.description,
+                // Add formatted date range to description or custom property
+                formattedDateRange: formatDateRange(
+                    e.googleEvent.start.dateTime,
+                    e.googleEvent.end.dateTime
+                ),
             })),
         ],
         selectedDate: formattedDate,
@@ -246,13 +279,20 @@ export default function index({ ev }) {
                     <tbody>
                         {ev.map((e) => (
                             <tr className=" border-b relative bg-gray-100 border-black dark:border-gray-300 dark:bg-gray-800 hover:bg-gray-50 hover:dark:bg-gray-700">
-                                <td className="text-black dark:text-white">{number_event++}</td>
+                                <td className="text-black dark:text-white">
+                                    {number_event++}
+                                </td>
                                 <td>{e?.googleEvent.summary}</td>
                                 <td>
-                                    {e?.googleEvent.start.dateTime.slice(0, 10)}{" "}
+                                    {formatEventDate(
+                                        e?.googleEvent.start.dateTime
+                                    )}{" "}
                                     -{" "}
-                                    {e?.googleEvent.end.dateTime.slice(0, 10)}
+                                    {formatEventDate(
+                                        e?.googleEvent.end.dateTime
+                                    )}
                                 </td>
+
                                 <td>
                                     {e?.googleEvent.start.dateTime.slice(
                                         11,
