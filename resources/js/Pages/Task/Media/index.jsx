@@ -74,7 +74,7 @@ const PriorityBadge = ({ deadline }) => {
 };
 
 // Task Card Component
-const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
+const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
     // Assign different pastel colors based on task status
     const getCardColor = (status) => {
         const colorMap = {
@@ -138,33 +138,40 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                 ?.split(",")
                                 .map((assignee, index) => {
                                     const trimmed = assignee.trim();
-                                    const user = task.users?.find(
-                                        (u) => u.name === trimmed
-                                    ); // optional: match user if available
+                                    const user = users?.find(
+                                        (u) => u.id === parseInt(trimmed)
+                                    );
+
+                                    if (!user)
+                                        return (
+                                            <div
+                                                key={index}
+                                                className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border border-black dark:border-white shadow-sm overflow-hidden relative"
+                                                title={trimmed}
+                                            >
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    {trimmed
+                                                        .substring(0, 2)
+                                                        .toUpperCase()}
+                                                </div>
+                                            </div>
+                                        );
 
                                     return (
                                         <div
                                             key={index}
-                                            className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border-[1px] border-black dark:border-white shadow-sm overflow-hidden"
-                                            title={trimmed}
+                                            className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border border-black dark:border-white shadow-sm overflow-hidden relative"
+                                            title={user.name}
                                         >
-                                            {user?.avatar ? (
+                                            {user.avatar ? (
                                                 <img
                                                     src={`/storage/${user.avatar}`}
                                                     alt={user.name}
                                                     className="w-8 h-8 rounded-full object-cover"
-                                                    // onError={(e) => {
-                                                    //     console.log(
-                                                    //         "Image failed to load:",
-                                                    //         user.avatar_url
-                                                    //     );
-                                                    //     e.target.style.display =
-                                                    //         "none";
-                                                    // }}
                                                 />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center">
-                                                    {trimmed
+                                                    {user.name
                                                         .substring(0, 2)
                                                         .toUpperCase()}
                                                 </div>
@@ -674,6 +681,9 @@ export default function TaskIndex({ tasks, userName, users }) {
                                                                     }
                                                                     user_role={
                                                                         user.role
+                                                                    }
+                                                                    users={
+                                                                        users
                                                                     }
                                                                 />
                                                             </>

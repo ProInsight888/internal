@@ -62,7 +62,7 @@ export default function Create({
 
     // Apply selected users to form data
     const applySelectedUsers = () => {
-        const dataSelectUser = selectedUsers.map(user => user.name).join(",");
+        const dataSelectUser = selectedUsers.map(user => user.id).join(",");
         setData("penanggung_jawab", dataSelectUser);
         setResponsiblePopUp(false);
     };

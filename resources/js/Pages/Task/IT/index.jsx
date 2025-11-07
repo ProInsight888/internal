@@ -139,22 +139,30 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                 .map((assignee, index) => {
                                     const trimmed = assignee.trim();
                                     const user = users?.find(
-                                        (u) =>
-                                            u.name.toLowerCase() ===
-                                            trimmed.toLowerCase()
+                                        (u) => u.id === parseInt(trimmed)
                                     );
-                                    // console.log("Assignee:", trimmed);
-                                    // console.log("Found user:", user);
-                                    // console.log({
-                                    //     user_avatar_url: user?.avatar_url,
-                                    // });
+
+                                    if (!user) return (
+                                        <div
+                                            key={index}
+                                            className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border border-black dark:border-white shadow-sm overflow-hidden relative"
+                                            title={trimmed}
+                                        >
+                                            <div className="w-full h-full flex items-center justify-center">
+                                                {trimmed
+                                                    .substring(0, 2)
+                                                    .toUpperCase()}
+                                            </div>
+                                        </div>
+                                    );
+
                                     return (
                                         <div
                                             key={index}
-                                            className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border-[1px] border-black dark:border-white shadow-sm overflow-hidden relative"
-                                            title={trimmed}
+                                            className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border border-black dark:border-white shadow-sm overflow-hidden relative"
+                                            title={user.name}
                                         >
-                                            {user?.avatar ? (
+                                            {user.avatar ? (
                                                 <img
                                                     src={`/storage/${user.avatar}`}
                                                     alt={user.name}
@@ -162,7 +170,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                                 />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center">
-                                                    {trimmed
+                                                    {user.name
                                                         .substring(0, 2)
                                                         .toUpperCase()}
                                                 </div>

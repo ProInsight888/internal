@@ -75,7 +75,7 @@ class ItController extends Controller
         audit::create([
             'action' => 'Created',
             'change_section' => "Created IT Task.",
-            'created_by' => $user->uuid,
+            'created_by' => $user->name,
             'date' => $date->format('d F Y'),
             'time' => $date->format('H:i'),
         ]);
@@ -129,19 +129,13 @@ class ItController extends Controller
     public function update(Request $request, it $it)
     {
         // dd( $request);
+        
 
         $user = Auth::user();
 
         $date = Carbon::now('Asia/Jakarta');
 
-        audit::create([
-            'action' => 'Updated',
-            'change_section' => "Updated IT Task.",
-            'created_by' => $user->name,
-            'date' => $date->format('d F Y'),
-            'time' => $date->format('H:i'),
-        ]);
-
+        
         $validated = $request->validate([
             'task_title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -154,8 +148,17 @@ class ItController extends Controller
         ]);
         
         $uuid = $it->uuid;
-        // dd($uuid);
 
+
+        // dd($uuid);
+        audit::create([
+            'action' => 'Updated',
+            'change_section' => "Updated IT Task.",
+            'created_by' => $user->name,
+            'date' => $date->format('d F Y'),
+            'time' => $date->format('H:i'),
+        ]);
+        
         $update_task = it::where('uuid', $uuid);
         $update_task->update($validated);
         // dd($update_task->update($validated));
