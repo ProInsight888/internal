@@ -622,35 +622,12 @@ export default function ClientIndex({ clients, cicilans }) {
                                             role="button"
                                             tabIndex={0}
                                             onClick={() => {
-                                                setClickCounts((prev) => {
-                                                    const lastClick =
-                                                        prev[client.uuid]
-                                                            ?.time || 0;
+                                                setClickCounts(prev => {
                                                     const now = Date.now();
-
-                                                    if (now - lastClick < 500) {
-                                                        router.get(
-                                                            route(
-                                                                "new_client.show",
-                                                                client.uuid
-                                                            )
-                                                        );
-                                                        return {
-                                                            ...prev,
-                                                            [client.uuid]: {
-                                                                count: 0,
-                                                                time: 0,
-                                                            },
-                                                        };
-                                                    }
-
-                                                    return {
-                                                        ...prev,
-                                                        [client.uuid]: {
-                                                            count: 1,
-                                                            time: now,
-                                                        },
-                                                    };
+                                                    const last = prev[client.uuid]?.time || 0;
+                                                    if (now - last < 500)
+                                                        return router.get(route("new_client.show", client.uuid)), { ...prev, [client.uuid]: { time: 0 } };
+                                                    return { ...prev, [client.uuid]: { time: now } };
                                                 });
                                             }}
                                             className="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
