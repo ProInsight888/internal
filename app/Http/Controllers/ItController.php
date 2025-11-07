@@ -67,6 +67,7 @@ class ItController extends Controller
         ]);
         // dd($request);
 
+
         $user = Auth::user();
 
         $date = Carbon::now('Asia/Jakarta');
@@ -74,7 +75,7 @@ class ItController extends Controller
         audit::create([
             'action' => 'Created',
             'change_section' => "Created IT Task.",
-            'created_by' => $user->name,
+            'created_by' => $user->uuid,
             'date' => $date->format('d F Y'),
             'time' => $date->format('H:i'),
         ]);
