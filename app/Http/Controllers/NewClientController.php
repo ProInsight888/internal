@@ -75,7 +75,7 @@ class NewClientController extends Controller
         $contract_start = \Carbon\Carbon::parse($validated['contract_start']);
         $contract_end = \Carbon\Carbon::parse($validated['contract_end']);
 
-        $contract = $contract_start->format('d F Y') . ' ---- ' . $contract_end->format('d F Y');
+        $contract = $contract_start->format('j M Y') . ' - ' . $contract_end->format('j M Y');
         // dd($contract);
 
         // Map the status for internal storage
@@ -169,7 +169,7 @@ class NewClientController extends Controller
         $contract_start = \Carbon\Carbon::parse($validated['contract_start']);
         $contract_end = \Carbon\Carbon::parse($validated['contract_end']);
 
-        $contract = $contract_start->format('d F Y') . ' ---- ' . $contract_end->format('d F Y');
+        $contract = $contract_start->format('j M Y') . ' - ' . $contract_end->format('j M Y');
         // dd($contract);
 
         // Map the status for internal storage

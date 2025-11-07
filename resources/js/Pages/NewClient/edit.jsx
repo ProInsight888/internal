@@ -9,14 +9,12 @@ import { useEffect } from "react";
 export default function edit({ clients }) {
     const contractParts =
         typeof clients?.contract === "string"
-            ? clients.contract.split(" ---- ")
+            ? clients.contract.split(" - ")
             : [];
 
     const safeDate = (value) => {
         const date = new Date(value);
-        return isNaN(date.getTime())
-            ? ""
-            : date.toISOString().split("T")[0];
+        return isNaN(date.getTime()) ? "" : date.toISOString().split("T")[0];
     };
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
@@ -24,8 +22,8 @@ export default function edit({ clients }) {
         code: clients?.code || "",
         type: clients?.type || "",
         location: clients?.location || "",
-     contract_start: safeDate(contractParts[0]) || '',
-  contract_end: safeDate(contractParts[1]) || '',
+        contract_start: safeDate(contractParts[0]) || "",
+        contract_end: safeDate(contractParts[1]) || "",
         package: clients?.package || "",
         status: clients?.status || "",
         cicil: clients?.cicilans.length || "",
@@ -62,9 +60,6 @@ export default function edit({ clients }) {
 
         put(route("new_client.update", clients.uuid), {
             preserveScroll: true,
-            onSuccess: () => {
-                // window.location.reload();
-            },
             onError: (errors) => console.error(errors),
         });
     };
@@ -114,7 +109,7 @@ export default function edit({ clients }) {
                             <form onSubmit={submit}>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {/* Company Information */}
-                                    <div className="space-y-6">
+                                    <div className="space-y-5">
                                         <div>
                                             <InputLabel
                                                 htmlFor="company_name"
