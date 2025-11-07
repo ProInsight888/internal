@@ -20,7 +20,7 @@ export default function create({}) {
         fase_pembayaran: [{ cicilan: "", tanggal: "" }],
     });
 
-    // console.log(data)
+
 
     useEffect(() => {
         const jumlah = parseInt(data.cicil || 0);
@@ -32,14 +32,6 @@ export default function create({}) {
                     cicilan: `Cicilan ${i + 1}`,
                     tanggal: data.fase_pembayaran[i]?.tanggal || "",
                 }));
-                // console.log("CICIL:", data.cicil);
-                // console.log("Jumlah yang akan dibuat:", jumlah);
-                // console.log(
-                //     "Sebelum Update fase_pembayaran:",
-                //     data.fase_pembayaran
-                // );
-                // console.log("Setelah Update fase_pembayaran:", fase);
-                // setData("fase_pembayaran", fase);
             }
         }
 
@@ -50,26 +42,31 @@ export default function create({}) {
         }
     }, [data.cicil, data.status]);
 
+
+
     // Optional: Auto-generate code when company name changes
     useEffect(() => {
-        if (data.company_name && !data.code) {
-            const generateCode = (companyName) => {
-                if (!companyName) return "";
-                const words = companyName.split(" ");
-                const firstWord = words[0] || "";
-                const secondWord = words[1] || "";
-
-                let code = firstWord.charAt(0).toUpperCase();
-                code += secondWord.substring(0, 3).toUpperCase().padEnd(3, "A");
-
-                return code;
-            };
-
-            setData("code", generateCode(data.company_name));
+        console.log(data.company_name)
+        // const companyName = data.company_name
+        
+        // console.log(companyName[randomIndex])
+        const companyName = data.company_name.replace(/[^A-Za-z]/g, "");
+        let code = ''
+        if (data.company_name) {
+        code += companyName[0]
+            for(let i = 1; i < 4; i++){
+                const randomIndex = Math.floor(
+                    Math.random() * companyName.length
+                );
+                code += companyName[randomIndex]
+            }
+            console.log(code)
         }
+        setData("code", code.toUpperCase());
     }, [data.company_name]);
 
-    // console.log(data);
+
+    
 
     const submit = (e) => {
         e.preventDefault();
