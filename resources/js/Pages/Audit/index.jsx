@@ -73,6 +73,8 @@ export default function AuditIndex({ audits }) {
     const filteredAudits = audits.data
         .filter((audit) => {
             const matchesSearch =
+
+            console.log(audit)
                 searchTerm === "" ||
                 audit.created_by
                     .toLowerCase()

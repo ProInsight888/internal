@@ -779,7 +779,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                {user.role !== "member" && (
+                                {user.role !== "member" && user.role !== "leader" && (
                                         <Link
                                             href={route("media.create")}
                                             className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
