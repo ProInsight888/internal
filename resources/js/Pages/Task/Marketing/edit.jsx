@@ -121,7 +121,7 @@ export default function edit({
     function submit(e) {
         e.preventDefault();
 
-        const dataSelectUser = selectedUsers.map((user) => user.name).join(",");
+        const dataSelectUser = selectedUsers.map((user) => user.id).join(",");
         setData("penanggung_jawab", dataSelectUser);
 
         put(route("marketing.update", { marketing: task.uuid }), {
