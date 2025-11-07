@@ -222,6 +222,9 @@ export default function edit({ clients }) {
                                                 label="Digital Branding"
                                                 className="dark:text-gray-300"
                                             >
+                                                <option value="Management System">
+                                                    Management System
+                                                </option>
                                                 <option value="Company Profile">
                                                     Company Profile
                                                 </option>
