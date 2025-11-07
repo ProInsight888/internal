@@ -120,7 +120,7 @@ export default function ResultSideBar({ header, children, users, tasks, selected
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto md:ml-0 transition-margin duration-300">
-        <div className="p-6">{children}</div>
+        <div className="p-6 pt-0">{children}</div>
       </div>
     </div>
   );

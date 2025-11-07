@@ -97,7 +97,7 @@ export default function TaskResult({ tasks, users, userName }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        put(route("it_review.update", { it_review: data.uuid }), {
+        put(route("marketing_review.update", { marketing_review: data.uuid }), {
             onSuccess: () => {
                 window.location.reload();
             },
@@ -126,7 +126,7 @@ export default function TaskResult({ tasks, users, userName }) {
                 selectedFilter={selectedFilter}
                 setSelectedFilter={setSelectedFilter}
             >
-                <div className="max-w-[2000px] mx-auto px-4 py-8 dark:bg-gray-900">
+                <div className="max-w-[2000px] mx-auto dark:bg-gray-900">
                     {/* Search and Stats Section */}
                     <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 dark:bg-gray-800 dark:shadow-gray-900/30">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

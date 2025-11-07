@@ -69,9 +69,11 @@ export default function ClientIndex({ clients, cicilans }) {
     const [statusFilter, setStatusFilter] = useState("all");
     const [isLoading, setIsLoading] = useState(false);
 
+    const [clickCounts, setClickCounts] = useState({});
+    const timeoutRef = useRef({});
+
     const dropdownRefs = useRef([]);
 
-    // Security: Handle click outside dropdown
     useEffect(() => {
         function handleClickOutside(e) {
             if (
@@ -360,7 +362,11 @@ export default function ClientIndex({ clients, cicilans }) {
                         client.status
                     )} transition-all duration-300 hover:scale-105 hover:shadow-xl`}
                 >
-                    {client.status === "Belum Bayar" ? 'Unpaid' : client.status === 'Cicil' ? 'Installment' : 'Paid'}
+                    {client.status === "Belum Bayar"
+                        ? "Unpaid"
+                        : client.status === "Cicil"
+                        ? "Installment"
+                        : "Paid"}
                 </span>
             ),
             className: "",
@@ -377,12 +383,6 @@ export default function ClientIndex({ clients, cicilans }) {
             className: "min-w-[180px]",
         },
     ];
-
-    // const pageSized = [1,2,3,5,10,15,30,40,50,100];
-    // const pagination = ref({
-    //     pageIndex: props.data.current_page - 1,
-    //     pageSize: props.data.per_page,
-    // })
 
     return (
         <AuthenticatedLayout
@@ -488,17 +488,16 @@ export default function ClientIndex({ clients, cicilans }) {
                 <div className="bg-gradient-to-br from-white to-blue-50 rounded-3xl shadow-2xl p-8 mb-8 border border-blue-100 dark:from-gray-800 dark:to-blue-900/20 dark:border-blue-800/30">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div className="relative group">
-                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10 text-blue-500">
                                 <svg
-                                    className="h-5 w-5 text-blue-500 group-hover:text-blue-600 transition-colors"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
                                     fill="currentColor"
-                                    viewBox="0 0 20 20"
+                                    class="bi bi-search"
+                                    viewBox="0 0 16 16"
                                 >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                        clipRule="evenodd"
-                                    />
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                                 </svg>
                             </div>
                             <input
@@ -511,7 +510,7 @@ export default function ClientIndex({ clients, cicilans }) {
                         </div>
 
                         <div className="relative group">
-                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
                                 <svg
                                     className="h-5 w-5 text-purple-500"
                                     fill="none"
@@ -622,14 +621,38 @@ export default function ClientIndex({ clients, cicilans }) {
                                             key={client.uuid}
                                             role="button"
                                             tabIndex={0}
-                                            onClick={() =>
-                                                router.get(
-                                                    route(
-                                                        "new_client.show",
-                                                        client.uuid
-                                                    )
-                                                )
-                                            }
+                                            onClick={() => {
+                                                setClickCounts((prev) => {
+                                                    const lastClick =
+                                                        prev[client.uuid]
+                                                            ?.time || 0;
+                                                    const now = Date.now();
+
+                                                    if (now - lastClick < 500) {
+                                                        router.get(
+                                                            route(
+                                                                "new_client.show",
+                                                                client.uuid
+                                                            )
+                                                        );
+                                                        return {
+                                                            ...prev,
+                                                            [client.uuid]: {
+                                                                count: 0,
+                                                                time: 0,
+                                                            },
+                                                        };
+                                                    }
+
+                                                    return {
+                                                        ...prev,
+                                                        [client.uuid]: {
+                                                            count: 1,
+                                                            time: now,
+                                                        },
+                                                    };
+                                                });
+                                            }}
                                             className="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
                                         >
                                             {tableColumns.map(
