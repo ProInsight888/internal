@@ -2,6 +2,278 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage, Link } from "@inertiajs/react";
 import { Fragment, use, useState } from "react";
 
+const StatusBadge = ({ status }) => {
+    const statusColors = {
+        "On Progress": "#3B82F6", // blue
+        Pending: "#F59E0B", // amber
+        Approved: "#10B981", // emerald
+        "In Review": "#8B5CF6", // violet
+        Rejected: "#EF4444", // red
+        Revision: "#F97316", // orange
+        Idle: "#6B7280", // gray
+        // Lunas: "#EC4899", // pink
+        Lunas: "#14B8A6", // teal
+    };
+
+    return (
+        <div
+            className={`${
+                statusColors[status] ||
+                "bg-gray-200 text-black dark:bg-gray-700 dark:text-white"
+            } font-medium py-1.5 px-3 rounded-full text-center text-xs shadow-sm dark:shadow-gray-800`}
+        >
+            {status}
+        </div>
+    );
+};
+
+const TaskModal = ({
+    task,
+    isOpen,
+    onClose,
+    data,
+    setData,
+    onSubmit,
+    userName,
+    processing,
+}) => {
+    if (!isOpen) return null;
+
+    return (
+        <div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={onClose} // Add this to close when clicking overlay
+        >
+            <div
+                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()} // Add this to prevent closing when clicking inside
+            >
+                {/* Header */}
+                <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <h2 className="text-2xl font-bold mb-2 max-w-xl break-words">
+                                {task.task_title}
+                            </h2>
+                            <div className="flex items-center gap-3">
+                                <StatusBadge status={task.status} />
+                                <span className="text-blue-100">
+                                    {task.company}
+                                </span>
+                            </div>
+                        </div>
+                        <button
+                            onClick={onClose}
+                            className="text-white hover:text-blue-200 transition-colors"
+                        >
+                            <svg
+                                className="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 space-y-6">
+                    {/* Task Details */}
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span className="text-gray-500 dark:text-gray-400">
+                                Assignee:
+                            </span>
+                            <p className="font-medium dark:text-white">
+                                {task.penanggung_jawab}
+                            </p>
+                        </div>
+                        <div>
+                            <span className="text-gray-500 dark:text-gray-400">
+                                Format:
+                            </span>
+                            <p className="font-medium line-clamp-3 break-words dark:text-white">
+                                {task.task_format}
+                            </p>
+                        </div>
+                        <div>
+                            <span className="text-gray-500 dark:text-gray-400">
+                                Category:
+                            </span>
+                            <p className="font-medium dark:text-white">
+                                {task.category}
+                            </p>
+                        </div>
+                        <div>
+                            <span className="text-gray-500 dark:text-gray-400">
+                                Deadline:
+                            </span>
+                            <p className="font-medium text-red-600 dark:text-red-400">
+                                {task.deadline}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                        <h3 className="text-lg font-semibold mb-3 flex items-center dark:text-white">
+                            <svg
+                                className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                    clipRule="evenodd"
+                                ></path>
+                            </svg>
+                            Description
+                        </h3>
+                        <p className="text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
+                            {task.description}
+                        </p>
+                    </div>
+
+                    {/* Revision Notice (if rejected) */}
+                    {task.status === "Rejected" &&
+                        task.rejected_revision?.revision && (
+                            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                                <h4 className="text-red-800 dark:text-red-300 font-semibold mb-2 flex items-center">
+                                    <svg
+                                        className="w-5 h-5 mr-2"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clipRule="evenodd"
+                                        ></path>
+                                    </svg>
+                                    Revision Required
+                                </h4>
+                                <p className="text-red-700 dark:text-red-300">
+                                    {task.rejected_revision.revision}
+                                </p>
+                            </div>
+                        )}
+
+                    {/* Submission Form */}
+                    {task.status !== "Cancel" && (
+                        <div>
+                            <h3 className="text-lg font-semibold mb-3 flex items-center dark:text-white">
+                                <svg
+                                    className="w-5 h-5 mr-2 text-green-600 dark:text-green-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                </svg>
+                                Submit Your Work
+                            </h3>
+
+                            {["In Review", "Approved"].includes(task.status) ? (
+                                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                                    <p className="text-green-800 dark:text-green-300 font-medium">
+                                        {task.status === "Approved"
+                                            ? "Approved"
+                                            : "Under Review"}{" "}
+                                        - {task.result?.link}
+                                    </p>
+                                </div>
+                            ) : (
+                                <form onSubmit={onSubmit}>
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500 dark:text-gray-400">
+                                            <svg
+                                                className="w-5 h-5"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
+                                                    clipRule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            className="w-full pl-10 p-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-600 shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                            value={data.link}
+                                            onChange={(e) =>
+                                                setData("link", e.target.value)
+                                            }
+                                            placeholder="https://example.com/your-work"
+                                            required
+                                            disabled={
+                                                !(task.penanggung_jawab ?? "")
+                                                    ?.split(",")
+                                                    .map((s) =>
+                                                        s.trim().toLowerCase()
+                                                    )
+                                                    .includes(
+                                                        userName
+                                                            .trim()
+                                                            .toLowerCase()
+                                                    )
+                                            }
+                                        />
+                                    </div>
+                                    <div className="mt-4 flex justify-end space-x-3">
+                                        <button
+                                            type="button"
+                                            onClick={onClose}
+                                            className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg shadow-md transition-all duration-300 disabled:opacity-50"
+                                            disabled={processing}
+                                        >
+                                            <svg
+                                                className="w-5 h-5 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                                                />
+                                            </svg>
+                                            Submit Task
+                                        </button>
+                                    </div>
+                                </form>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+
 // Status Card Component
 const StatusCard = ({
     title,
@@ -76,7 +348,9 @@ const AttendanceForm = ({
                         </div>
                         <select
                             value={data.absence}
-                            onChange={(e) => setData("absence", e.target.value)}
+                            onChange={(e) =>
+                                setAbsenceData("absence", e.target.value)
+                            }
                             className="flex justify-center pl-10 p-2.5 w-full border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-transparent shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         >
                             <option value="Hadir">Hadir</option>
@@ -272,7 +546,7 @@ const getClientStatusColor = (status) => {
     return statusColors[status] || "#ff6868";
 };
 
-const TaskCard = ({ task }) => {
+const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
     const deadline = new Date(task.deadline);
     const today = new Date();
 
@@ -296,6 +570,10 @@ const TaskCard = ({ task }) => {
     return (
         <div
             className={`flex-none w-full rounded-xl border-2 ${borderColor} ${bgColor} p-4 m-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] dark:shadow-gray-800`}
+            onClick={() => {
+                onOpenDetails(task, index), 
+                setTaskData('team', )
+            }}
         >
             <TaskStatusBadge status={status} remainingDays={remainingDays} />
             <TaskTitle title={task.task_title} />
@@ -485,11 +763,42 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
     // State management
     const user = usePage().props.auth.user;
     // console.log(tasks.it)
-    const { data, setData, post, errors } = useForm({ absence: "Hadir" });
+    const {
+        data: absenceData,
+        setData: setAbsenceData,
+        post: postAbsence,
+        errors: absenceErrors,
+    } = useForm({ absence: "Hadir" });
+
+    const {
+        data: taskData,
+        setData: setTaskData,
+        post: postTask,
+        put: putTask,
+        processing: taskProcessing,
+        errors: taskErrors,
+    } = useForm({
+        uuid: "",
+        link: "",
+        sended_by: user.name || "User Name Not Found",
+        team: "",
+        name: user.name || "",
+    });
+
+    console.log(tasks)
+
+
     const date = new Date();
     const today = date.toISOString().slice(0, 10);
     const [sortDate, setSortDate] = useState(today);
     const [showDescriptionIndex, setShowDescriptionIndex] = useState(null);
+    const [selectedFilter, setSelectedFilter] = useState("");
+    const [selectedUser, setSelectedUser] = useState("");
+    const [selectedCompany, setSelectedCompany] = useState("");
+    const [sortDeadline, setSortDeadline] = useState("Desc");
+    const [selectedTask, setSelectedTask] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const [hiddenSections, setHiddenSections] = useState({
         "on-progress": true,
         pending: true,
@@ -500,10 +809,14 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         idle: true,
     });
 
+    
+
     let taskUserArray = [];
     const urgent = [];
     const soon = [];
     const up_coming = [];
+
+    console.log(taskUserArray)
 
     let countTask = 0;
 
@@ -531,7 +844,8 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
     teams.forEach((team) => {
         if (!tasks[team]) return;
         tasks[team].forEach((task) => {
-            // console.log(task);
+            task = {...task, team: team}
+            
             if (!task.penanggung_jawab) return;
 
             // Split by comma and check if userName is in the list
@@ -556,13 +870,27 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         });
     });
 
+    const openTaskDetails = (task, index) => {
+        setSelectedTask(task);
+        setTaskData("uuid", task.uuid);
+        setTaskData("link", task.result?.link || "");
+        setTaskData("team", task?.team || "")
+        setIsModalOpen(true);
+    };
+
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedTask(null);
+    };
+
     // Filtered data
     const filteredAbsens = absens.filter((absen) => absen.tanggal === sortDate);
 
     // Handlers
     const submit = (e) => {
         e.preventDefault();
-        post(route("absen.store"), {
+        postAbsence(route("absen.store"), {
             onSuccess: () => window.location.reload(),
         });
     };
@@ -572,6 +900,15 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
             ...prev,
             [section]: !prev[section],
         }));
+    };
+
+    const submitTask = (e) => {
+        e.preventDefault();
+        // console.log(data.uuid);
+        putTask(route(`${taskData.team}_submit.update`, taskData.uuid), {
+            onSuccess: () => window.location.reload(),
+            onError: (e) => console.error("PUT error", e),
+        });
     };
 
     return (
@@ -630,9 +967,9 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                 <div className="space-y-3">
                                     <AttendanceForm
                                         onSubmit={submit}
-                                        data={data}
-                                        setData={setData}
-                                        errors={errors}
+                                        data={absenceData}
+                                        setData={setAbsenceData}
+                                        errors={absenceErrors}
                                         sortDate={sortDate}
                                         setSortDate={setSortDate}
                                     />
@@ -674,14 +1011,27 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                     {/* Scrollable content */}
                                     <div className="flex-1 overflow-y-auto">
                                         <div className="flex h-96 flex-col gap-4 pr-9">
-                                            {taskUserArray.map((task) => (
-                                                <div
-                                                    key={task.id}
-                                                    className="min-w-[200px] sm:min-w-[240px] w-full"
-                                                >
-                                                    <TaskCard task={task} />
-                                                </div>
-                                            ))}
+                                            {taskUserArray.map(
+                                                (task, index) => (
+                                                    <div
+                                                        key={task.id}
+                                                        className="min-w-[200px] sm:min-w-[240px] w-full"
+                                                    >
+                                                        <TaskCard
+                                                            key={task.uuid}
+                                                            task={task}
+                                                            onOpenDetails={
+                                                                openTaskDetails
+                                                            }
+                                                            index={index}
+                                                            user_role={
+                                                                user.role
+                                                            }
+                                                            // users={users}
+                                                        />
+                                                    </div>
+                                                )
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -700,6 +1050,19 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                             </div>
                             <ClientTable clients={clients} />
                         </div>
+                    )}
+
+                    {selectedTask && (
+                        <TaskModal
+                            task={selectedTask}
+                            isOpen={isModalOpen}
+                            onClose={closeModal}
+                            data={taskData}
+                            userName={userName}
+                            setData={setTaskData}
+                            onSubmit={submitTask}
+                            processing={taskProcessing}
+                        />
                     )}
                 </div>
             </div>
