@@ -143,13 +143,11 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                             u.name.toLowerCase() ===
                                             trimmed.toLowerCase()
                                     );
-
                                     // console.log("Assignee:", trimmed);
                                     // console.log("Found user:", user);
                                     // console.log({
                                     //     user_avatar_url: user?.avatar_url,
                                     // });
-
                                     return (
                                         <div
                                             key={index}

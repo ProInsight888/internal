@@ -72,6 +72,8 @@ export default function ClientIndex({ clients, cicilans }) {
     const [clickCounts, setClickCounts] = useState({});
     const timeoutRef = useRef({});
 
+    console.log(clickCounts)
+
     const dropdownRefs = useRef([]);
 
     useEffect(() => {
@@ -624,7 +626,9 @@ export default function ClientIndex({ clients, cicilans }) {
                                             onClick={() => {
                                                 setClickCounts(prev => {
                                                     const now = Date.now();
+                                                    console.log(now)
                                                     const last = prev[client.uuid]?.time || 0;
+                                                    console.log(last)
                                                     if (now - last < 500)
                                                         return router.get(route("new_client.show", client.uuid)), { ...prev, [client.uuid]: { time: 0 } };
                                                     return { ...prev, [client.uuid]: { time: now } };
