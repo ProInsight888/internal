@@ -148,16 +148,26 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                             className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border-[1px] border-black dark:border-white shadow-sm overflow-hidden"
                                             title={trimmed}
                                         >
-                                            {user?.avatar_url ? (
+                                            {user?.avatar ? (
                                                 <img
-                                                    src={user.avatar_url}
+                                                    src={`/storage/${user.avatar}`}
                                                     alt={user.name}
-                                                    className="w-full h-full object-cover"
+                                                    className="w-8 h-8 rounded-full object-cover"
+                                                    // onError={(e) => {
+                                                    //     console.log(
+                                                    //         "Image failed to load:",
+                                                    //         user.avatar_url
+                                                    //     );
+                                                    //     e.target.style.display =
+                                                    //         "none";
+                                                    // }}
                                                 />
                                             ) : (
-                                                trimmed
-                                                    .substring(0, 2)
-                                                    .toUpperCase()
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    {trimmed
+                                                        .substring(0, 2)
+                                                        .toUpperCase()}
+                                                </div>
                                             )}
                                         </div>
                                     );

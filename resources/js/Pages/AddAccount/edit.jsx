@@ -20,7 +20,6 @@ const UserFormField = ({
     value,
     onChange,
     error,
-    required = true,
     as = "input",
     options,
     placeholder = "",
@@ -44,7 +43,6 @@ const UserFormField = ({
                     className={`w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400 ${
                         error ? "border-red-500 dark:border-red-400" : ""
                     }`}
-                    required={required}
                     placeholder={placeholder}
                 />
             ) : (

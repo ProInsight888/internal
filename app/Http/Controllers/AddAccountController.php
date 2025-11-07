@@ -135,7 +135,7 @@ class AddAccountController extends Controller
                 'email' => 'required|email',
                 'password' => 'nullable|string|max:50',
                 'created_by' => 'nullable|string|max:50',
-                'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                // 'avatar' => 'nullable|image|max:2048',
             ]
         );
 

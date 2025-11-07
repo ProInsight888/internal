@@ -322,7 +322,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <Dropdown.Trigger>
                                         <div className="flex items-center text-sm rounded-full focus:outline-none cursor-pointer">
                                             <div className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 font-bold mr-2">
-                                                {user?.avatar_url ? (
+                                                {user?.avatar ? (
                                                     <img
                                                         src={`/storage/${user.avatar}`}
                                                         alt={user.name}
