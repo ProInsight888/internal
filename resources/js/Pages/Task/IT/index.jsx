@@ -156,9 +156,9 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                             className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border-[1px] border-black dark:border-white shadow-sm overflow-hidden relative"
                                             title={trimmed}
                                         >
-                                            {user?.avatar_url ? (
+                                            {user?.avatar ? (
                                                 <img
-                                                    src={user.avatar_url}
+                                                    src={user.avatar}
                                                     alt={user.name}
                                                     className="w-8 h-8 rounded-full object-cover"
                                                     // onError={(e) => {
@@ -533,7 +533,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
 
     const successMessage = usePage().props?.flash?.success;
 
-    // console.log(user);
+    console.log(user);
 
     // Filter and sort tasks
     const filteredTasks = tasks
@@ -785,7 +785,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                {user.role !== "member" && (
+                                {user.role !== "member" && user.role !== "leader" && (
                                         <Link
                                             href={route("it.create")}
                                             className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
