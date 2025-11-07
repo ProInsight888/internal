@@ -115,9 +115,9 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                     <StatusBadge status={task.status} />
                 </div>
 
-                {/* Task Company Name */}
+                {/* Task Title */}
                 <h3 className="flex text-xl font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1 border-b border-black dark:border-white pb-0.5 justify-center">
-                    {task.company}
+                    {task.task_title}
                 </h3>
 
                 {/* Code */}
@@ -125,9 +125,9 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
-                {/* Task Title */}
+                {/* Task Company Name */}
                 <h3 className="text-md text-black dark:text-white font-medium mb-2 line-clamp-2 break-words">
-                    {task.task_title}
+                    {task.company}
                 </h3>
 
                 {/* Assignee and Format */}
@@ -593,7 +593,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <AuthenticatedLayout>
-                <Head title="Media Team Task Management" />
+                <Head title="Marketing Team Task Management" />
                 <TaskSideBar
                     users={users}
                     tasks={tasks}
@@ -787,7 +787,8 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                {user.role !== "member" && user.role !== "leader" && (
+                                {user.role !== "member" &&
+                                    user.role !== "leader" && (
                                         <Link
                                             href={route("marketing.create")}
                                             className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"

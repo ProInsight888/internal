@@ -56,17 +56,15 @@ export default function edit({ clients }) {
         }
     }, [data.pic_num, data.pics]);
 
-    
     const submit = (e) => {
         e.preventDefault();
-        console.log(clients.uuid)
+        console.log(clients.uuid);
         post(route("contract.store", data), {
             onSuccess: () => {
                 console.log(data.uuid);
                 const clientsUuid = clients.uuid;
                 window.open(`/contract/${clientsUuid}/contract`, "_blank");
             },
-            
         });
     };
 
@@ -608,6 +606,9 @@ export default function edit({ clients }) {
                                                     label="Digital Branding"
                                                     className="dark:text-gray-300"
                                                 >
+                                                    <option value="Management System">
+                                                        Management System
+                                                    </option>
                                                     <option value="Company Profile">
                                                         Company Profile
                                                     </option>
