@@ -13,8 +13,16 @@ export default function edit({ clients }) {
             : [];
 
     const safeDate = (value) => {
+        if (!value) return "";
+
         const date = new Date(value);
-        return isNaN(date.getTime()) ? "" : date.toISOString().split("T")[0];
+        if (isNaN(date.getTime())) return "";
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
     };
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
@@ -52,8 +60,6 @@ export default function edit({ clients }) {
             setData("fase_pembayaran", []);
         }
     }, [data.cicil, data.status]);
-
-    console.log(data.status);
 
     const submit = (e) => {
         e.preventDefault();
@@ -108,311 +114,349 @@ export default function edit({ clients }) {
 
                             <form onSubmit={submit}>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {/* Company Information */}
-                                    <div className="space-y-5">
-                                        <div>
-                                            <InputLabel
-                                                htmlFor="company_name"
-                                                value="Company Name"
-                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                            />
+                                    {/* Company Name - Full Width */}
+                                    <div className="md:col-span-2">
+                                        <InputLabel
+                                            htmlFor="company_name"
+                                            value="Company Name"
+                                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        />
 
-                                            <TextInput
-                                                id="company_name"
-                                                name="company_name"
-                                                value={data.company_name}
-                                                className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                autoComplete="company_name"
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "company_name",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                required
-                                            />
+                                        <TextInput
+                                            id="company_name"
+                                            name="company_name"
+                                            value={data.company_name}
+                                            className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                            autoComplete="company_name"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "company_name",
+                                                    e.target.value
+                                                )
+                                            }
+                                            required
+                                        />
 
-                                            <InputError
-                                                message={errors.company_name}
-                                                className="mt-2 dark:text-red-400"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <InputLabel
-                                                htmlFor="code"
-                                                value="Client Code"
-                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                            />
-
-                                            <TextInput
-                                                id="code"
-                                                name="code"
-                                                value={data.code}
-                                                maxLength={4}
-                                                className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "code",
-                                                        e.target.value.toUpperCase()
-                                                    )
-                                                }
-                                                required
-                                            />
-
-                                            <InputError
-                                                message={errors.code}
-                                                className="mt-2 dark:text-red-400"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <InputLabel
-                                                htmlFor="type"
-                                                value="Type Of Business"
-                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                            />
-
-                                            <TextInput
-                                                id="type"
-                                                name="type"
-                                                value={data.type}
-                                                className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                autoComplete="type"
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "type",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                required
-                                            />
-
-                                            <InputError
-                                                message={errors.type}
-                                                className="mt-2 dark:text-red-400"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <InputLabel
-                                                htmlFor="location"
-                                                value="Business Location"
-                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                            />
-
-                                            <TextInput
-                                                id="location"
-                                                name="location"
-                                                value={data.location}
-                                                className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                autoComplete="location"
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "location",
-                                                        e.target.value
-                                                    )
-                                                }
-                                                required
-                                            />
-
-                                            <InputError
-                                                message={errors.location}
-                                                className="mt-2 dark:text-red-400"
-                                            />
-                                        </div>
+                                        <InputError
+                                            message={errors.company_name}
+                                            className="mt-2 dark:text-red-400"
+                                        />
                                     </div>
 
-                                    {/* Contract & Package Information */}
-                                    <div className="space-y-6">
-                                        <div>
-                                            <InputLabel
-                                                htmlFor="package"
-                                                value="Package"
-                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                            />
+                                    {/* Client Code - Left Column */}
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="code"
+                                            value="Client Code"
+                                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        />
 
+                                        <TextInput
+                                            id="code"
+                                            name="code"
+                                            value={data.code}
+                                            maxLength={4}
+                                            className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "code",
+                                                    e.target.value.toUpperCase()
+                                                )
+                                            }
+                                            required
+                                        />
+
+                                        <InputError
+                                            message={errors.code}
+                                            className="mt-2 dark:text-red-400"
+                                        />
+                                    </div>
+
+                                    {/* Package - Right Column */}
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="package"
+                                            value="Package"
+                                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        />
+
+                                        <select
+                                            id="package"
+                                            name="package"
+                                            value={data.package}
+                                            className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                            autoComplete="package"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "package",
+                                                    e.target.value
+                                                )
+                                            }
+                                            required
+                                        >
+                                            <optgroup
+                                                label="Social Media Management"
+                                                className="dark:text-gray-300"
+                                            >
+                                                <option value="Protall">
+                                                    Protall
+                                                </option>
+                                                <option value="Progrand">
+                                                    Progrand
+                                                </option>
+                                                <option value="Proventi">
+                                                    Proventi
+                                                </option>
+                                                <option value="Promax">
+                                                    Promax
+                                                </option>
+                                                <option value="Feeds">
+                                                    Add Ons Feeds
+                                                </option>
+                                                <option value="Reels">
+                                                    Add Ons Reels
+                                                </option>
+                                            </optgroup>
+
+                                            <optgroup
+                                                label="Digital Branding"
+                                                className="dark:text-gray-300"
+                                            >
+                                                <option value="Company Profile">
+                                                    Company Profile
+                                                </option>
+                                                <option value="HR System">
+                                                    HR System
+                                                </option>
+                                                <option value="Invitation Link">
+                                                    Invitation Link
+                                                </option>
+                                                <option value="Application">
+                                                    Application
+                                                </option>
+                                                <option value="Design">
+                                                    Package Design
+                                                </option>
+                                            </optgroup>
+
+                                            <optgroup
+                                                label="Event Documentation"
+                                                className="dark:text-gray-300"
+                                            >
+                                                <option value="Photo & Video">
+                                                    Photo & Video
+                                                </option>
+                                                <option value="Drone">
+                                                    Add Ons Drone
+                                                </option>
+                                                <option value="Production">
+                                                    Add Ons Production
+                                                </option>
+                                            </optgroup>
+                                        </select>
+
+                                        <InputError
+                                            message={errors.package}
+                                            className="mt-2 dark:text-red-400"
+                                        />
+                                    </div>
+
+                                    {/* Add more fields here as needed */}
+                                    {/* Example: Location field - also full width if needed */}
+                                    <div className="md:col-span-2">
+                                        <InputLabel
+                                            htmlFor="location"
+                                            value="Location"
+                                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        />
+
+                                        <TextInput
+                                            id="location"
+                                            name="location"
+                                            value={data.location}
+                                            className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                            autoComplete="location"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "location",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+
+                                        <InputError
+                                            message={errors.location}
+                                            className="mt-2 dark:text-red-400"
+                                        />
+                                    </div>
+
+                                    {/* Contract Dates - Side by side */}
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="contract_start"
+                                            value="Contract Start Date"
+                                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        />
+
+                                        <TextInput
+                                            type="date"
+                                            id="contract_start"
+                                            name="contract_start"
+                                            value={data.contract_start}
+                                            className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "contract_start",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+
+                                        <InputError
+                                            message={errors.contract_start}
+                                            className="mt-2 dark:text-red-400"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="contract_end"
+                                            value="Contract End Date"
+                                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        />
+
+                                        <TextInput
+                                            type="date"
+                                            id="contract_end"
+                                            name="contract_end"
+                                            value={data.contract_end}
+                                            className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "contract_end",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+
+                                        <InputError
+                                            message={errors.contract_end}
+                                            className="mt-2 dark:text-red-400"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="status"
+                                            value="Payment Status"
+                                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        />
+                                        <div className="flex items-center gap-4">
                                             <select
-                                                id="package"
-                                                name="package"
-                                                value={data.package}
+                                                id="status"
+                                                name="status"
+                                                value={data.status}
                                                 className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                autoComplete="package"
+                                                autoComplete="status"
                                                 onChange={(e) =>
                                                     setData(
-                                                        "package",
+                                                        "status",
                                                         e.target.value
                                                     )
                                                 }
-                                                required
                                             >
-                                                <optgroup
-                                                    label="Social Media Management"
-                                                    className="dark:text-gray-300"
-                                                >
-                                                    <option value="Protall">
-                                                        Protall
-                                                    </option>
-                                                    <option value="Progrand">
-                                                        Progrand
-                                                    </option>
-                                                    <option value="Proventi">
-                                                        Proventi
-                                                    </option>
-                                                    <option value="Promax">
-                                                        Promax
-                                                    </option>
-                                                    <option value="Feeds">
-                                                        Add Ons Feeds
-                                                    </option>
-                                                    <option value="Reels">
-                                                        Add Ons Reels
-                                                    </option>
-                                                </optgroup>
-
-                                                <optgroup
-                                                    label="Digital Branding"
-                                                    className="dark:text-gray-300"
-                                                >
-                                                    <option value="Company Profile">
-                                                        Company Profile
-                                                    </option>
-                                                    <option value="HR System">
-                                                        HR System
-                                                    </option>
-                                                    <option value="Invitation Link">
-                                                        Invitation Link
-                                                    </option>
-                                                    <option value="Application">
-                                                        Application
-                                                    </option>
-                                                    <option value="Design">
-                                                        Package Design
-                                                    </option>
-                                                </optgroup>
-
-                                                <optgroup
-                                                    label="Event Documentation"
-                                                    className="dark:text-gray-300"
-                                                >
-                                                    <option value="Photo & Video">
-                                                        Photo & Video
-                                                    </option>
-                                                    <option value="Drone">
-                                                        Add Ons Drone
-                                                    </option>
-                                                    <option value="Production">
-                                                        Add Ons Production
-                                                    </option>
-                                                </optgroup>
+                                                <option value="Lunas">
+                                                    Paid
+                                                </option>
+                                                <option value="Cicil">
+                                                    Installments
+                                                </option>
+                                                <option value="Belum Bayar">
+                                                    Unpaid
+                                                </option>
                                             </select>
-
-                                            <InputError
-                                                message={errors.package}
-                                                className="mt-2 dark:text-red-400"
-                                            />
                                         </div>
-
-                                        <div>
-                                            <InputLabel
-                                                htmlFor="contract"
-                                                value="Contract Duration"
-                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                            />
-
-                                            <div className="flex flex-col gap-4 mt-1">
-                                                <input
-                                                    type="date"
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "contract_start",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400 "
-                                                    value={data.contract_start}
-                                                />
-                                                <input
-                                                    type="date"
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "contract_end",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400 "
-                                                    value={data.contract_end}
-                                                />
-                                            </div>
-
-                                            <InputError
-                                                message={errors.contract}
-                                                className="mt-2 dark:text-red-400"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <InputLabel
-                                                htmlFor="status"
-                                                value="Payment Status"
-                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                            />
-                                            <div className="flex items-center gap-4">
-                                                <select
-                                                    id="status"
-                                                    name="status"
-                                                    value={data.status}
-                                                    className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                    autoComplete="status"
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "status",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                >
-                                                    <option value="Lunas">
-                                                        Paid
-                                                    </option>
-                                                    <option value="Cicil">
-                                                        Installments
-                                                    </option>
-                                                    <option value="Belum Bayar">
-                                                        Unpaid
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            {data.status === "Cicil" && (
-                                                <div>
-                                                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                        installments
-                                                    </span>
-                                                    <div className="flex items-center gap-2">
-                                                        <TextInput
-                                                            id="cicil"
-                                                            name="cicil"
-                                                            value={data.cicil}
-                                                            type="number"
-                                                            min="1"
-                                                            max="12"
-                                                            placeholder="1"
-                                                            className="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                                            onChange={(e) =>
-                                                                setData(
-                                                                    "cicil",
-                                                                    e.target
-                                                                        .value
-                                                                )
-                                                            }
-                                                        />
-                                                    </div>
+                                        {data.status === "Cicil" && (
+                                            <div>
+                                                <span className="text-sm text-gray-600 dark:text-gray-400">
+                                                    installments
+                                                </span>
+                                                <div className="flex items-center gap-2">
+                                                    <TextInput
+                                                        id="cicil"
+                                                        name="cicil"
+                                                        value={data.cicil}
+                                                        type="number"
+                                                        min="1"
+                                                        max="12"
+                                                        placeholder="1"
+                                                        className="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                "cicil",
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                    />
                                                 </div>
-                                            )}
-                                            <InputError
-                                                message={errors.status}
-                                                className="mt-2 dark:text-red-400"
-                                            />
-                                        </div>
+                                            </div>
+                                        )}
+                                        <InputError
+                                            message={errors.status}
+                                            className="mt-2 dark:text-red-400"
+                                        />
+                                    </div>
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="type"
+                                            value="Type Of Business"
+                                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        />
+
+                                        <TextInput
+                                            id="type"
+                                            name="type"
+                                            value={data.type}
+                                            className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                            autoComplete="type"
+                                            onChange={(e) =>
+                                                setData("type", e.target.value)
+                                            }
+                                            required
+                                        />
+
+                                        <InputError
+                                            message={errors.type}
+                                            className="mt-2 dark:text-red-400"
+                                        />
+                                    </div>
+
+                                    <div className=" md:col-span-2">
+                                        <InputLabel
+                                            htmlFor="location"
+                                            value="Business Location"
+                                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                        />
+
+                                        <TextInput
+                                            id="location"
+                                            name="location"
+                                            value={data.location}
+                                            className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                            autoComplete="location"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "location",
+                                                    e.target.value
+                                                )
+                                            }
+                                            required
+                                        />
+
+                                        <InputError
+                                            message={errors.location}
+                                            className="mt-2 dark:text-red-400"
+                                        />
                                     </div>
                                 </div>
 
