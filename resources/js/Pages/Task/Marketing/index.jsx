@@ -74,7 +74,7 @@ const PriorityBadge = ({ deadline }) => {
 };
 
 // Task Card Component
-const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
+const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
     // Assign different pastel colors based on task status
     const getCardColor = (status) => {
         const colorMap = {
@@ -136,15 +136,50 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                         <div className="flex -space-x-3 mr-3">
                             {task.penanggung_jawab
                                 ?.split(",")
-                                .map((assignee, index) => (
-                                    <div
-                                        key={index}
-                                        className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border-[1px] border-black dark:border-white shadow-sm"
-                                        title={assignee.trim()} // Show full name on hover
-                                    >
-                                        {assignee.trim().charAt(0)}
-                                    </div>
-                                ))}
+                                .map((assignee, index) => {
+                                    const trimmed = assignee.trim();
+                                    const user = users?.find(
+                                        (u) =>
+                                            u.name.toLowerCase() ===
+                                            trimmed.toLowerCase()
+                                    );
+
+                                    // console.log("Assignee:", trimmed);
+                                    // console.log("Found user:", user);
+                                    // console.log({
+                                    //     user_avatar_url: user?.avatar_url,
+                                    // });
+
+                                    return (
+                                        <div
+                                            key={index}
+                                            className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border-[1px] border-black dark:border-white shadow-sm overflow-hidden relative"
+                                            title={trimmed}
+                                        >
+                                            {user?.avatar ? (
+                                                <img
+                                                    src={`/storage/${user.avatar}`}
+                                                    alt={user.name}
+                                                    className="w-8 h-8 rounded-full object-cover"
+                                                    // onError={(e) => {
+                                                    //     console.log(
+                                                    //         "Image failed to load:",
+                                                    //         user.avatar_url
+                                                    //     );
+                                                    //     e.target.style.display =
+                                                    //         "none";
+                                                    // }}
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    {trimmed
+                                                        .substring(0, 2)
+                                                        .toUpperCase()}
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                         </div>
                     </div>
                     <span className="font-medium text-black dark:text-white text-xs line-clamp-2 break-words">
@@ -195,10 +230,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role }) => {
                                             )
                                         ) {
                                             router.delete(
-                                                route(
-                                                    "marketing.destroy",
-                                                    task.uuid
-                                                ),
+                                                route("marketing.destroy", task.uuid),
                                                 {
                                                     onSuccess: () =>
                                                         alert(
@@ -481,13 +513,15 @@ const TaskModal = ({
     );
 };
 
-export default function TaskIndex({ tasks, userName, users }) {
+export default function TaskIndex({ tasks, userName, users, auth }) {
     const user = usePage().props.auth.user;
 
     const { data, setData, post, put, processing, errors } = useForm({
         uuid: "",
         link: "",
         sended_by: user.name || "User Name Not Found",
+        name: auth.user.name || "",
+        avatar: null,
     });
 
     const [selectedFilter, setSelectedFilter] = useState("");
@@ -498,6 +532,8 @@ export default function TaskIndex({ tasks, userName, users }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const successMessage = usePage().props?.flash?.success;
+
+    // console.log(user);
 
     // Filter and sort tasks
     const filteredTasks = tasks
@@ -546,7 +582,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     const submitTask = (e) => {
         e.preventDefault();
         // console.log(data.uuid);
-        put(route("marketing_submit.update", { marketing: data.uuid }), {
+        put(route("it_submit.update", { marketing: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),
         });
@@ -589,26 +625,26 @@ export default function TaskIndex({ tasks, userName, users }) {
 
                         <div className="flex justify-end mb-6">
                             {user.role !== "member" && (
-                                    <Link
-                                        href={route("marketing.create")}
-                                        className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                                <Link
+                                    href={route("marketing.create")}
+                                    className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                                >
+                                    <svg
+                                        className="w-5 h-5 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
                                     >
-                                        <svg
-                                            className="w-5 h-5 mr-2"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                            />
-                                        </svg>
-                                        Add New Task
-                                    </Link>
-                                )}
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                        />
+                                    </svg>
+                                    Add New Task
+                                </Link>
+                            )}
                         </div>
 
                         {/* Tasks Grid */}
@@ -632,23 +668,18 @@ export default function TaskIndex({ tasks, userName, users }) {
                                                     )
                                                     .map((task, index) => {
                                                         return (
-                                                            <>
-                                                                <TaskCard
-                                                                    key={
-                                                                        task.uuid
-                                                                    }
-                                                                    task={task}
-                                                                    onOpenDetails={
-                                                                        openTaskDetails
-                                                                    }
-                                                                    index={
-                                                                        index
-                                                                    }
-                                                                    user_role={
-                                                                        user.role
-                                                                    }
-                                                                />
-                                                            </>
+                                                            <TaskCard
+                                                                key={task.uuid}
+                                                                task={task}
+                                                                onOpenDetails={
+                                                                    openTaskDetails
+                                                                }
+                                                                index={index}
+                                                                user_role={
+                                                                    user.role
+                                                                }
+                                                                users={users} // Pass users data here
+                                                            />
                                                         );
                                                     })}
                                             </div>
@@ -677,6 +708,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                                                                 user_role={
                                                                     user.role
                                                                 }
+                                                                users={users} // Pass users data here
                                                             />
                                                         );
                                                     })}
@@ -706,6 +738,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                                                                 user_role={
                                                                     user.role
                                                                 }
+                                                                users={users} // Pass users data here
                                                             />
                                                         );
                                                     })}
@@ -722,6 +755,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                                             onOpenDetails={openTaskDetails}
                                             index={index}
                                             user_role={user.role}
+                                            users={users} // Pass users data here
                                         />
                                     );
                                 })
@@ -752,13 +786,13 @@ export default function TaskIndex({ tasks, userName, users }) {
                                     task.
                                 </p>
                                 {user.role !== "member" && (
-                                        <Link
-                                            href={route("marketing.create")}
-                                            className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
-                                        >
-                                            Create New Task
-                                        </Link>
-                                    )}
+                                    <Link
+                                        href={route("marketing.create")}
+                                        className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
+                                    >
+                                        Create New Task
+                                    </Link>
+                                )}
                             </div>
                         )}
                     </div>
