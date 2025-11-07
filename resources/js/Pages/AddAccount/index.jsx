@@ -449,14 +449,14 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
-        console.log(formProps, file)
+        console.log(formProps, file);
         formProps.setData("avatar", file);
         if (file) {
             setPreview(URL.createObjectURL(file));
         }
     };
 
-    console.log(formProps.data)
+    console.log(formProps.data);
 
     const handleRemoveAvatar = () => {
         formProps.setData("avatar", null);
@@ -480,9 +480,7 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
             <div className="flex flex-col items-center">
                 <div className="relative">
                     <img
-                        src={
-                            preview || "https://ui-avatars.com/api/?name=+"
-                        }
+                        src={preview || "https://ui-avatars.com/api/?name=+"}
                         alt="Profile"
                         className={`w-32 h-32 rounded-full object-cover border-4 ${
                             preview
@@ -770,7 +768,7 @@ export default function UserManagement({ users, userName }) {
                             )}
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="flex flex-col gap-6">
                         {/* User List Section */}
                         <div className="lg:col-span-1">
                             <UserListTable
@@ -782,11 +780,8 @@ export default function UserManagement({ users, userName }) {
                                 filterTeam={filterTeam}
                                 setFilterTeam={setFilterTeam}
                             />
-                        </div>
 
-                        {/* Add New User Section */}
-                        <div className="lg:col-span-1">
-                            <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-full dark:bg-gray-800 dark:shadow-gray-900/30">
+                            <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-full dark:bg-gray-800 dark:shadow-gray-900/30 mt-5">
                                 <div className="p-6">
                                     <UserRegistrationForm
                                         onSubmit={submit}

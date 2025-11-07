@@ -115,9 +115,9 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                     <StatusBadge status={task.status} />
                 </div>
 
-                {/* Task Company Name */}
+                {/* Task Title */}
                 <h3 className="flex text-xl font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1 border-b border-black dark:border-white pb-0.5 justify-center">
-                    {task.company}
+                    {task.task_title}
                 </h3>
 
                 {/* Code */}
@@ -125,9 +125,9 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
-                {/* Task Title */}
+                {/* Task Company Name */}
                 <h3 className="text-md text-black dark:text-white font-medium mb-2 line-clamp-2 break-words">
-                    {task.task_title}
+                    {task.company}
                 </h3>
 
                 {/* Assignee and Format */}
@@ -142,19 +142,20 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                         (u) => u.id === parseInt(trimmed)
                                     );
 
-                                    if (!user) return (
-                                        <div
-                                            key={index}
-                                            className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border border-black dark:border-white shadow-sm overflow-hidden relative"
-                                            title={trimmed}
-                                        >
-                                            <div className="w-full h-full flex items-center justify-center">
-                                                {trimmed
-                                                    .substring(0, 2)
-                                                    .toUpperCase()}
+                                    if (!user)
+                                        return (
+                                            <div
+                                                key={index}
+                                                className="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300 font-bold border border-black dark:border-white shadow-sm overflow-hidden relative"
+                                                title={trimmed}
+                                            >
+                                                <div className="w-full h-full flex items-center justify-center">
+                                                    {trimmed
+                                                        .substring(0, 2)
+                                                        .toUpperCase()}
+                                                </div>
                                             </div>
-                                        </div>
-                                    );
+                                        );
 
                                     return (
                                         <div
@@ -587,7 +588,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <AuthenticatedLayout>
-                <Head title="Media Team Task Management" />
+                <Head title="IT Team Task Management" />
                 <TaskSideBar
                     users={users}
                     tasks={tasks}
@@ -621,26 +622,26 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
 
                         <div className="flex justify-end mb-6">
                             {user.role !== "member" && (
-                                    <Link
-                                        href={route("it.create")}
-                                        className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                                <Link
+                                    href={route("it.create")}
+                                    className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                                >
+                                    <svg
+                                        className="w-5 h-5 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
                                     >
-                                        <svg
-                                            className="w-5 h-5 mr-2"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                            />
-                                        </svg>
-                                        Add New Task
-                                    </Link>
-                                )}
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                        />
+                                    </svg>
+                                    Add New Task
+                                </Link>
+                            )}
                         </div>
 
                         {/* Tasks Grid */}
@@ -781,7 +782,8 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                {user.role !== "member" && user.role !== "leader" && (
+                                {user.role !== "member" &&
+                                    user.role !== "leader" && (
                                         <Link
                                             href={route("it.create")}
                                             className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"

@@ -117,7 +117,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
 
                 {/* Task Company Name */}
                 <h3 className="flex text-xl font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1 border-b border-black dark:border-white pb-0.5 justify-center">
-                    {task.company}
+                    {task.task_title}
                 </h3>
 
                 {/* Code */}
@@ -127,7 +127,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
 
                 {/* Task Title */}
                 <h3 className="text-md text-black dark:text-white font-medium mb-2 line-clamp-2 break-words">
-                    {task.task_title}
+                    {task.company}
                 </h3>
 
                 {/* Assignee and Format */}
@@ -622,26 +622,26 @@ export default function TaskIndex({ tasks, userName, users }) {
 
                         <div className="flex justify-end mb-6">
                             {user.role !== "member" && (
-                                    <Link
-                                        href={route("media.create")}
-                                        className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                                <Link
+                                    href={route("media.create")}
+                                    className="flex items-center justify-center px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                                >
+                                    <svg
+                                        className="w-5 h-5 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
                                     >
-                                        <svg
-                                            className="w-5 h-5 mr-2"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                            />
-                                        </svg>
-                                        Add New Task
-                                    </Link>
-                                )}
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                        />
+                                    </svg>
+                                    Add New Task
+                                </Link>
+                            )}
                         </div>
 
                         {/* Tasks Grid */}
@@ -787,7 +787,8 @@ export default function TaskIndex({ tasks, userName, users }) {
                                     Try adjusting your filters or create a new
                                     task.
                                 </p>
-                                {user.role !== "member" && user.role !== "leader" && (
+                                {user.role !== "member" &&
+                                    user.role !== "leader" && (
                                         <Link
                                             href={route("media.create")}
                                             className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"

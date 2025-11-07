@@ -50,7 +50,7 @@ export default function TaskResult({ tasks, users, userName }) {
 
     // Open review modal
     const openReviewModal = (task) => {
-        // console.log(task);
+        console.log(task);
 
         setSelectedTask(task);
         setData("uuid", task.uuid);
@@ -110,7 +110,7 @@ export default function TaskResult({ tasks, users, userName }) {
             header={
                 <div className="bg-gradient-to-r from-blue-600 to-purple-700 p-6 rounded-2xl text-white shadow-lg mb-8 dark:from-blue-800 dark:to-purple-900">
                     <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-                        Media Task Results Review 🎯
+                        IT Task Results Review 🎯
                     </h1>
                     <p className="text-lg opacity-90">
                         Review completed tasks and provide feedback to your team
@@ -406,14 +406,8 @@ export default function TaskResult({ tasks, users, userName }) {
                         <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:shadow-gray-900/30">
                             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 rounded-t-2xl flex justify-between items-center dark:bg-gray-800 dark:border-gray-700">
                                 <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">
-                                    Review Submission ({selectedTask?.sended_by ||
-                                        "Unknown Sender"})
+                                    Review Submission
                                 </h3>
-
-                                <span className="text-gray-600 dark:text-gray-300">
-                                    
-                                    
-                                </span>
 
                                 <button
                                     onClick={closeReviewModal}
@@ -469,25 +463,26 @@ export default function TaskResult({ tasks, users, userName }) {
                                             {formatDate(selectedTask.deadline)}
                                         </p>
                                     </div>
+                                    <div className="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">
+                                        <h4 className="font-semibold text-gray-700 mb-2 dark:text-gray-300">
+                                            Submitter
+                                        </h4>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                                            {selectedTask?.sended_by ||
+                                                "Unknown Sender"}
+                                        </p>
+                                    </div>
+                                    <div className="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">
+                                        <h4 className="font-semibold text-gray-700 mb-2 dark:text-gray-300">
+                                            Date Submitted
+                                        </h4>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                                            {selectedTask.send_date}
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <div className="bg-blue-50 p-4 rounded-xl border border-blue-200 dark:bg-blue-900/20 dark:border-blue-800">
-                                    {/* <h4 className="font-semibold text-blue-700 mb-2 flex items-center dark:text-blue-300">
-                                        <svg
-                                            className="w-4 h-4 mr-2"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                                            />
-                                        </svg>
-                                        Submission Link
-                                    </h4> */}
                                     <a
                                         href={selectedTask.result_link}
                                         target="_blank"

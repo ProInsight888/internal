@@ -63,7 +63,7 @@ export default function ResultSideBar({ header, children, users, tasks, selected
           ${isMobileOpen ? "translate-x-0" : "-translate-x-full"} 
           md:translate-x-0 fixed md:static inset-y-0 left-0 z-40 bg-white shadow-lg md:shadow-none dark:bg-gray-800 dark:shadow-gray-900/30`}
       >
-        <div className="absolute inset-0 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex flex-col h-full bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
           {/* Collapse Toggle */}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -83,7 +83,7 @@ export default function ResultSideBar({ header, children, users, tasks, selected
           </button>
 
           {/* Sidebar Content */}
-          <div className="overflow-y-auto h-[calc(100vh-4rem)] py-4">
+          <div className="flex-1 overflow-y-auto py-4">
             {/* Team Navigation */}
             <div className="px-4 mb-6">
               <div className={`flex items-center ${isCollapsed ? 'justify-center' : ""} text-gray-500 mb-3 dark:text-gray-400`}>
@@ -119,8 +119,8 @@ export default function ResultSideBar({ header, children, users, tasks, selected
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto md:ml-0 transition-margin duration-300">
-        <div className="p-6 pt-0">{children}</div>
+      <div className="flex-1 flex flex-col min-h-0 md:ml-0 transition-margin duration-300">
+        <div className="flex-1 overflow-auto p-6 pt-0">{children}</div>
       </div>
     </div>
   );
