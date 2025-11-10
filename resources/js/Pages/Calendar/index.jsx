@@ -177,7 +177,7 @@ export default function index({ ev }) {
                 <ScheduleXCalendar calendarApp={calendar} />
                 {customMenu.visible && (
                     <div
-                        className="absolute bg-white dark:bg-gray-700 border border-gray-300 rounded-md shadow-lg z-[9999]"
+                        className="absolute bg-black dark:bg-gray-700 border border-gray-300 rounded-md shadow-lg z-[9999]"
                         style={{ top: customMenu.top, left: customMenu.left }}
                         onClick={() =>
                             setCustomMenu({ ...customMenu, visible: false })
