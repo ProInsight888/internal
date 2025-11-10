@@ -32,6 +32,7 @@ export default function Create({
     const [showOptionTitle, setShowOptionTitle] = useState(false);
     const [showOptionFormat, setShowOptionFormat] = useState(false);
     const [showOptionDescription, setShowOptionDescription] = useState(false);
+    const [showOptionCompany, setShowOptionCompany] = useState(false);
     const [responsiblePopUp, setResponsiblePopUp] = useState(false);
     const [searchUser, setSearchUser] = useState("");
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -408,37 +409,132 @@ export default function Create({
                                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                 />
                                 <div className="relative w-full">
-                                    <Select
-                                        onValueChange={(value) =>
-                                            setData("company", value)
-                                        }
-                                        value={data.company}
-                                    >
-                                        <SelectTrigger className="w-full border-gray-300 dark:border-gray-600 rounded-[0.5rem] bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                            <SelectValue
-                                                placeholder="Company"
-                                                className="text-gray-400 dark:text-gray-500"
-                                            />
-                                        </SelectTrigger>
-                                        <SelectContent className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
-                                            {Array.from(
-                                                new Set(
-                                                    companies.map(
-                                                        (company) =>
-                                                            company.company_name
-                                                    )
+                                    <div className="relative">
+                                        <TextInput
+                                            type="text"
+                                            name="company" // Changed from "task_company" to "company" to match your form data
+                                            value={data.company}
+                                            autoComplete="off"
+                                            placeholder="Enter Company Name"
+                                            onChange={(e) => {
+                                                setData(
+                                                    "company",
+                                                    e.target.value
+                                                );
+                                                setShowOptionCompany(true);
+                                            }}
+                                            onFocus={() =>
+                                                setShowOptionCompany(true)
+                                            }
+                                            onBlur={() =>
+                                                setTimeout(
+                                                    () =>
+                                                        setShowOptionCompany(
+                                                            false
+                                                        ),
+                                                    150
                                                 )
-                                            ).map((name, idx) => (
-                                                <SelectItem
-                                                    key={idx}
-                                                    value={name}
-                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
-                                                >
-                                                    {name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                            }
+                                            className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
+                            focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                        />
+
+                                        {/* Company Dropdown Options */}
+                                        {showOptionCompany &&
+                                            data.company.length > 0 && (
+                                                <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg overflow-y-auto animate-fadeIn">
+                                                    {Array.from(
+                                                        new Set(
+                                                            companies.map(
+                                                                (company) =>
+                                                                    company.company_name
+                                                            )
+                                                        )
+                                                    )
+                                                        .filter((name) =>
+                                                            name
+                                                                .toLowerCase()
+                                                                .includes(
+                                                                    data.company.toLowerCase()
+                                                                )
+                                                        )
+                                                        .map((name, idx) => (
+                                                            <div
+                                                                key={idx}
+                                                                onMouseDown={(
+                                                                    e
+                                                                ) => {
+                                                                    e.preventDefault();
+                                                                    e.stopPropagation();
+                                                                    setData(
+                                                                        "company",
+                                                                        name
+                                                                    );
+                                                                    setShowOptionCompany(
+                                                                        false
+                                                                    );
+                                                                }}
+                                                                className="px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                        hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white"
+                                                            >
+                                                                {/* Highlight matching text */}
+                                                                <span className="text-gray-900 dark:text-white">
+                                                                    {name
+                                                                        .split(
+                                                                            new RegExp(
+                                                                                `(${data.company})`,
+                                                                                "gi"
+                                                                            )
+                                                                        )
+                                                                        .map(
+                                                                            (
+                                                                                part,
+                                                                                index
+                                                                            ) =>
+                                                                                part.toLowerCase() ===
+                                                                                data.company.toLowerCase() ? (
+                                                                                    <span
+                                                                                        key={
+                                                                                            index
+                                                                                        }
+                                                                                        className="bg-yellow-200 dark:bg-yellow-800 font-medium"
+                                                                                    >
+                                                                                        {
+                                                                                            part
+                                                                                        }
+                                                                                    </span>
+                                                                                ) : (
+                                                                                    part
+                                                                                )
+                                                                        )}
+                                                                </span>
+                                                            </div>
+                                                        ))}
+
+                                                    {/* No results message */}
+                                                    {Array.from(
+                                                        new Set(
+                                                            companies.map(
+                                                                (company) =>
+                                                                    company.company_name
+                                                            )
+                                                        )
+                                                    ).filter((name) =>
+                                                        name
+                                                            .toLowerCase()
+                                                            .includes(
+                                                                data.company.toLowerCase()
+                                                            )
+                                                    ).length === 0 && (
+                                                        <div className="px-6 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
+                                                            No matching
+                                                            companies found
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+                                    </div>
 
                                     {errors.company && (
                                         <p className="text-red-500 text-sm mt-1">
