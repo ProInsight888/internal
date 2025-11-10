@@ -205,8 +205,6 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
         return statusColors[status] || "from-slate-400 to-gray-600";
     };
 
-    // console.log(clients);
-
     const filteredClients = clients.data.filter((client) => {
         const matchesSearch =
             client.company_name
