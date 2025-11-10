@@ -72,7 +72,7 @@ export default function ClientIndex({ clients, cicilans }) {
     const [clickCounts, setClickCounts] = useState({});
     const timeoutRef = useRef({});
 
-    console.log(clickCounts)
+    console.log(clickCounts);
 
     const dropdownRefs = useRef([]);
 
@@ -189,7 +189,6 @@ export default function ClientIndex({ clients, cicilans }) {
         });
     };
 
-    // Enhanced status badge with animations
     const getStatusColor = (status) => {
         const statusColors = {
             Lunas: "from-emerald-400 to-green-600 shadow-lg shadow-emerald-500/25",
@@ -208,7 +207,6 @@ export default function ClientIndex({ clients, cicilans }) {
 
     // console.log(clients);
 
-    // Filter clients with debounce (could be implemented)
     const filteredClients = clients.data.filter((client) => {
         const matchesSearch =
             client.company_name
@@ -624,14 +622,34 @@ export default function ClientIndex({ clients, cicilans }) {
                                             role="button"
                                             tabIndex={0}
                                             onClick={() => {
-                                                setClickCounts(prev => {
+                                                setClickCounts((prev) => {
                                                     const now = Date.now();
-                                                    console.log(now)
-                                                    const last = prev[client.uuid]?.time || 0;
-                                                    console.log(last)
+                                                    console.log(now);
+                                                    const last =
+                                                        prev[client.uuid]
+                                                            ?.time || 0;
+                                                    console.log(last);
                                                     if (now - last < 500)
-                                                        return router.get(route("new_client.show", client.uuid)), { ...prev, [client.uuid]: { time: 0 } };
-                                                    return { ...prev, [client.uuid]: { time: now } };
+                                                        return (
+                                                            router.get(
+                                                                route(
+                                                                    "new_client.show",
+                                                                    client.uuid
+                                                                )
+                                                            ),
+                                                            {
+                                                                ...prev,
+                                                                [client.uuid]: {
+                                                                    time: 0,
+                                                                },
+                                                            }
+                                                        );
+                                                    return {
+                                                        ...prev,
+                                                        [client.uuid]: {
+                                                            time: now,
+                                                        },
+                                                    };
                                                 });
                                             }}
                                             className="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400"
