@@ -43,8 +43,15 @@ class ItemsController extends Controller
     {
         $users = User::all();
         $companies = newClient::all();
+        $category = items::pluck('category')
+            ->unique()
+            ->sort()
+            ->values()
+            ->toArray();
+        // dd($category);
         return inertia('Items/create', [
             'users' => $users,
+            'category' => $category,
         ]);
     }
 

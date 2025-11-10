@@ -14,6 +14,8 @@ export default function Create({ users, items }) {
         created_by: user_create.name,
     });
 
+    console.log(items)
+
     const [activeCategory, setActiveCategory] = useState("camera");
     const [searchTerm, setSearchTerm] = useState("");
     const categories = [
@@ -302,12 +304,7 @@ export default function Create({ users, items }) {
                                                                 </span>
                                                             </label>
 
-                                                            {(item.category ===
-                                                                "battery drone" ||
-                                                                item.category ===
-                                                                    "tripod lighting" ||
-                                                                item.category ===
-                                                                    "battery camera") && (
+                                                            {(item.quantity > 1) && (
                                                                 <div className="flex items-center">
                                                                     <span className="text-sm text-gray-500 dark:text-gray-400 mr-2">
                                                                         Qty:
