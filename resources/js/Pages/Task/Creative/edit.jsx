@@ -42,6 +42,7 @@ export default function edit({
     const [showOptionTitle, setShowOptionTitle] = useState(false);
     const [showOptionFormat, setShowOptionFormat] = useState(false);
     const [showOptionDescription, setShowOptionDescription] = useState(false);
+    const [showOptionCompany, setShowOptionCompany] = useState(false);
     const [responsiblePopUp, setResponsiblePopUp] = useState(false);
     const [searchUser, setSearchUser] = useState("");
     const [selectedUsers, setSelectedUsers] = useState(arr);
@@ -146,24 +147,27 @@ export default function edit({
                                     href={route("creative.index")}
                                     className="inline-flex items-center text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200 bg-white/20 hover:bg-white/30 rounded-lg px-4 py-2 backdrop-blur-sm border border-white/30"
                                 >
-                                    <svg 
-                                        className="w-4 h-4 mr-2" 
-                                        fill="none" 
-                                        stroke="currentColor" 
+                                    <svg
+                                        className="w-4 h-4 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
                                         viewBox="0 0 24 24"
                                     >
-                                        <path 
-                                            strokeLinecap="round" 
-                                            strokeLinejoin="round" 
-                                            strokeWidth={2} 
-                                            d="M10 19l-7-7m0 0l7-7m-7 7h18" 
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
                                         />
                                     </svg>
                                     Back to Tasks
                                 </Link>
                             </div>
-                            <h2 className="text-xl font-bold text-white">Edit Creative Task Details</h2>
-                            <div className="w-20"></div> {/* Spacer for balance */}
+                            <h2 className="text-xl font-bold text-white">
+                                Edit Creative Task Details
+                            </h2>
+                            <div className="w-20"></div>{" "}
+                            {/* Spacer for balance */}
                         </div>
                     </div>
 
@@ -204,37 +208,49 @@ export default function edit({
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
                                                         overflow-y-auto animate-fadeIn"
                                             >
-                                                {task_title.map((option, i) => (
-                                                    <div
-                                                        key={i}
-                                                        onMouseDown={(e) => {
-                                                            e.stopPropagation();
-                                                            setData(
-                                                                "task_title",
-                                                                option.task_title
-                                                            );
-                                                            setShowOptionTitle(
-                                                                false
-                                                            );
-                                                        }}
-                                                        onMouseEnter={() =>
-                                                            setHighlightedIndex(
-                                                                i
+                                                {task_title
+                                                    .filter((option) =>
+                                                        option.task_title
+                                                            .toLowerCase()
+                                                            .includes(
+                                                                data.task_title.toLowerCase()
                                                             )
-                                                        }
-                                                        className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                                    )
+                                                    .map((option, i) => (
+                                                        <div
+                                                            key={i}
+                                                            onMouseDown={(
+                                                                e
+                                                            ) => {
+                                                                e.stopPropagation();
+                                                                setData(
+                                                                    "task_title",
+                                                                    option.task_title
+                                                                );
+                                                                setShowOptionTitle(
+                                                                    false
+                                                                );
+                                                            }}
+                                                            onMouseEnter={() =>
+                                                                setHighlightedIndex(
+                                                                    i
+                                                                )
+                                                            }
+                                                            className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
                                                                 ${
                                                                     highlightedIndex ===
                                                                     i
                                                                         ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
                                                                         : "hover:bg-gray-50 dark:hover:bg-gray-600"
                                                                 }`}
-                                                    >
-                                                        <span className="truncate text-gray-900 dark:text-white">
-                                                            {option.task_title}
-                                                        </span>
-                                                    </div>
-                                                ))}
+                                                        >
+                                                            <span className="truncate text-gray-900 dark:text-white">
+                                                                {
+                                                                    option.task_title
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                    ))}
                                             </div>
                                         )}
                                 </div>
@@ -248,201 +264,331 @@ export default function edit({
 
                             {/* Assignee and Status */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label
-                                        htmlFor="penanggung_jawab"
-                                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                    >
-                                        Penanggung Jawab
-                                    </label>
-                                    <div
-                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2 min-h-[42px] bg-white dark:bg-gray-700"
-                                        onClick={() =>
-                                            setResponsiblePopUp(true)
-                                        }
-                                    >
-                                        {selectedUsers.length > 0 ? (
-                                            selectedUsers.map((user) => (
-                                                <span
-                                                    key={user.id}
-                                                    className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded flex items-center"
-                                                >
-                                                    {user.name}
-                                                    <button
-                                                        type="button"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            removeUser(user.id);
-                                                        }}
-                                                        className="ml-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200"
-                                                    >
-                                                        &times;
-                                                    </button>
-                                                </span>
-                                            ))
-                                        ) : (
-                                            <span className="text-gray-400 dark:text-gray-500 text-sm">
-                                                Select Penanggung Jawab
-                                            </span>
-                                        )}
-                                    </div>
-                                    {errors.penanggung_jawab && (
-                                        <p className="text-red-500 text-sm mt-1">
-                                            {errors.penanggung_jawab}
-                                        </p>
-                                    )}
-                                </div>
-
-                                <div>
-                                    <InputLabel
-                                        htmlFor="status"
-                                        value="Status"
-                                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                    />
-                                    <div className="relative w-full">
-                                        <Select
-                                            onValueChange={(value) =>
-                                                setData("status", value)
-                                            }
-                                            value={data.status}
-                                        >
-                                            <SelectTrigger className="w-full border-gray-300 dark:border-gray-600 rounded-[0.5rem] bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                                <SelectValue
-                                                    placeholder="Status"
-                                                    className="text-gray-400 dark:text-gray-500"
-                                                />
-                                            </SelectTrigger>
-                                            <SelectContent className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
-                                                <SelectItem value="Idle" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Idle</SelectItem>
-                                                <SelectItem value="On Progress" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">On Progress</SelectItem>
-                                                <SelectItem value="Pending" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Pending</SelectItem>
-                                                <SelectItem value="In Review" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">In Review</SelectItem>
-                                                <SelectItem value="Completed" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Completed</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-
-                                        {errors.status && (
-                                            <p className="text-red-500 text-sm mt-1">
-                                                {errors.status}
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
+                                                            <div>
+                                                                <label
+                                                                    htmlFor="penanggung_jawab"
+                                                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                                                >
+                                                                    Penanggung Jawab
+                                                                </label>
+                                                                <div
+                                                                    className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2 bg-white dark:bg-gray-700"
+                                                                    onClick={() =>
+                                                                        setResponsiblePopUp(true)
+                                                                    }
+                                                                >
+                                                                    {selectedUsers.length > 0 ? (
+                                                                        selectedUsers.map((user) => (
+                                                                            <span
+                                                                                key={user.id}
+                                                                                className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded flex items-center"
+                                                                            >
+                                                                                {user.name}
+                                                                                <button
+                                                                                    type="button"
+                                                                                    onClick={(e) => {
+                                                                                        e.stopPropagation();
+                                                                                        removeUser(user.id);
+                                                                                    }}
+                                                                                    className="ml-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200"
+                                                                                >
+                                                                                    &times;
+                                                                                </button>
+                                                                            </span>
+                                                                        ))
+                                                                    ) : (
+                                                                        <span className="text-gray-400 dark:text-gray-500 text-sm">
+                                                                            Select Penanggung Jawab
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                                {errors.penanggung_jawab && (
+                                                                    <p className="text-red-500 text-sm mt-1">
+                                                                        {errors.penanggung_jawab}
+                                                                    </p>
+                                                                )}
+                                                            </div>
+                            
+                                                            <div>
+                                                                <InputLabel
+                                                                    htmlFor="status"
+                                                                    value="Status"
+                                                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                                                />
+                                                                <div className="relative w-full">
+                                                                    <Select
+                                                                        onValueChange={(value) =>
+                                                                            setData("status", value)
+                                                                        }
+                                                                        value={data.status}
+                                                                    >
+                                                                        <SelectTrigger className="w-full border-gray-300 dark:border-gray-600 rounded-[0.5rem] bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                                                            <SelectValue
+                                                                                placeholder="Status"
+                                                                                className="text-gray-400 dark:text-gray-500"
+                                                                            />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                                                                            <SelectItem
+                                                                                value="Idle"
+                                                                                className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                                            >
+                                                                                Idle
+                                                                            </SelectItem>
+                                                                            <SelectItem
+                                                                                value="On Progress"
+                                                                                className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                                            >
+                                                                                On Progress
+                                                                            </SelectItem>
+                                                                            <SelectItem
+                                                                                value="Pending"
+                                                                                className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                                            >
+                                                                                Pending
+                                                                            </SelectItem>
+                                                                            <SelectItem
+                                                                                value="In Review"
+                                                                                className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                                            >
+                                                                                In Review
+                                                                            </SelectItem>
+                                                                            <SelectItem
+                                                                                value="Completed"
+                                                                                className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                                            >
+                                                                                Completed
+                                                                            </SelectItem>
+                                                                        </SelectContent>
+                                                                    </Select>
+                            
+                                                                    {errors.status && (
+                                                                        <p className="text-red-500 text-sm mt-1">
+                                                                            {errors.status}
+                                                                        </p>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
                             {/* Company */}
                             <div>
-                                <InputLabel
-                                    htmlFor="company"
-                                    value="Company"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                />
-                                <div className="relative w-full">
-                                    <Select
-                                        onValueChange={(value) =>
-                                            setData("company", value)
-                                        }
-                                        value={data.company}
-                                    >
-                                        <SelectTrigger className="w-full border-gray-300 dark:border-gray-600 rounded-[0.5rem] bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                            <SelectValue
-                                                placeholder="Company"
-                                                className="text-gray-400 dark:text-gray-500"
-                                            />
-                                        </SelectTrigger>
-                                        <SelectContent className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
-                                            {Array.from(
-                                                new Set(
-                                                    companies.map(
-                                                        (company) =>
-                                                            company.company_name
-                                                    )
-                                                )
-                                            ).map((name, idx) => (
-                                                <SelectItem
-                                                    key={idx}
-                                                    value={name}
-                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
-                                                >
-                                                    {name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-
-                                    {errors.company && (
-                                        <p className="text-red-500 text-sm mt-1">
-                                            {errors.company}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
+                                                            <InputLabel
+                                                                htmlFor="company"
+                                                                value="Company"
+                                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                                            />
+                                                            <div className="relative w-full">
+                                                                <div className="relative">
+                                                                    <TextInput
+                                                                        type="text"
+                                                                        name="company" // Changed from "task_company" to "company" to match your form data
+                                                                        value={data.company}
+                                                                        autoComplete="off"
+                                                                        placeholder="Enter Company Name"
+                                                                        onChange={(e) => {
+                                                                            setData(
+                                                                                "company",
+                                                                                e.target.value
+                                                                            );
+                                                                            setShowOptionCompany(true);
+                                                                        }}
+                                                                        onFocus={() =>
+                                                                            setShowOptionCompany(true)
+                                                                        }
+                                                                        onBlur={() =>
+                                                                            setTimeout(
+                                                                                () =>
+                                                                                    setShowOptionCompany(
+                                                                                        false
+                                                                                    ),
+                                                                                150
+                                                                            )
+                                                                        }
+                                                                        className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
+                                                                                    focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                                                    bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                                                    />
+                            
+                                                                    {/* Company Dropdown Options */}
+                                                                    {showOptionCompany &&
+                                                                        companies.length > 0 && (
+                                                                            <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg overflow-y-auto animate-fadeIn">
+                                                                                {Array.from(
+                                                                                    new Set(
+                                                                                        companies.map(
+                                                                                            (company) =>
+                                                                                                company.company_name
+                                                                                        )
+                                                                                    )
+                                                                                )
+                                                                                    .filter((name) =>
+                                                                                        name
+                                                                                            .toLowerCase()
+                                                                                            .includes(
+                                                                                                data.company.toLowerCase()
+                                                                                            )
+                                                                                    )
+                                                                                    .map((name, idx) => (
+                                                                                        <div
+                                                                                            key={idx}
+                                                                                            onMouseDown={(
+                                                                                                e
+                                                                                            ) => {
+                                                                                                e.preventDefault();
+                                                                                                e.stopPropagation();
+                                                                                                setData(
+                                                                                                    "company",
+                                                                                                    name
+                                                                                                );
+                                                                                                setShowOptionCompany(
+                                                                                                    false
+                                                                                                );
+                                                                                            }}
+                                                                                            className="px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                                                                                hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white"
+                                                                                        >
+                                                                                            {/* Highlight matching text */}
+                                                                                            <span className="text-gray-900 dark:text-white">
+                                                                                                {name
+                                                                                                    .split(
+                                                                                                        new RegExp(
+                                                                                                            `(${data.company})`,
+                                                                                                            "gi"
+                                                                                                        )
+                                                                                                    )
+                                                                                                    .map(
+                                                                                                        (
+                                                                                                            part,
+                                                                                                            index
+                                                                                                        ) =>
+                                                                                                            part.toLowerCase() ===
+                                                                                                            data.company.toLowerCase() ? (
+                                                                                                                <span
+                                                                                                                    key={
+                                                                                                                        index
+                                                                                                                    }
+                                                                                                                    className="bg-yellow-200 dark:bg-yellow-800 font-medium"
+                                                                                                                >
+                                                                                                                    {
+                                                                                                                        part
+                                                                                                                    }
+                                                                                                                </span>
+                                                                                                            ) : (
+                                                                                                                part
+                                                                                                            )
+                                                                                                    )}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    ))}
+                            
+                                                                                {/* No results message */}
+                                                                                {Array.from(
+                                                                                    new Set(
+                                                                                        companies.map(
+                                                                                            (company) =>
+                                                                                                company.company_name
+                                                                                        )
+                                                                                    )
+                                                                                ).filter((name) =>
+                                                                                    name
+                                                                                        .toLowerCase()
+                                                                                        .includes(
+                                                                                            data.company.toLowerCase()
+                                                                                        )
+                                                                                ).length === 0 && (
+                                                                                    <div className="px-6 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
+                                                                                        No matching
+                                                                                        companies found
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        )}
+                                                                </div>
+                            
+                                                                {errors.company && (
+                                                                    <p className="text-red-500 text-sm mt-1">
+                                                                        {errors.company}
+                                                                    </p>
+                                                                )}
+                                                            </div>
+                                                        </div>
 
                             {/* Task Format */}
                             <div ref={dropdownRef}>
-                                <InputLabel
-                                    htmlFor="task_format"
-                                    value="Task Format"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                />
-                                <div className="relative">
-                                    <TextInput
-                                        type="text"
-                                        name="task_format"
-                                        value={data.task_format}
-                                        autoComplete="off"
-                                        placeholder="Enter task format"
-                                        onChange={formatChange}
-                                        onFocus={() =>
-                                            setShowOptionFormat(true)
-                                        }
-                                        onBlur={() =>
-                                            setShowOptionFormat(false)
-                                        }
-                                        className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                                    focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                                                    bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                                    />
-                                    {showOptionFormat &&
-                                        task_format.length > 0 && (
-                                            <div
-                                                className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
-                                                        overflow-y-auto animate-fadeIn"
-                                            >
-                                                {task_format.map(
-                                                    (option, i) => (
-                                                        <div
-                                                            key={i}
-                                                            onMouseDown={() => {
-                                                                setData(
-                                                                    "task_format",
-                                                                    option.task_format
-                                                                );
-                                                                setShowOptionFormat(
-                                                                    false
-                                                                );
-                                                            }}
-                                                            className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                ${
-                                                                    highlightedIndex ===
-                                                                    i
-                                                                        ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
-                                                                        : "hover:bg-gray-50 dark:hover:bg-gray-600"
-                                                                }`}
-                                                        >
-                                                            <span className="text-gray-900 dark:text-white">{option.task_format}</span>
+                                                            <InputLabel
+                                                                htmlFor="task_format"
+                                                                value="Task Format"
+                                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                                            />
+                                                            <div className="relative">
+                                                                <TextInput
+                                                                    type="text"
+                                                                    name="task_format"
+                                                                    value={data.task_format}
+                                                                    autoComplete="off"
+                                                                    placeholder="Enter task format"
+                                                                    onChange={formatChange}
+                                                                    onFocus={() =>
+                                                                        setShowOptionFormat(true)
+                                                                    }
+                                                                    onBlur={() =>
+                                                                        setShowOptionFormat(false)
+                                                                    }
+                                                                    className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
+                                                                                focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                                                bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                                                />
+                                                                {showOptionFormat &&
+                                                                    task_format.length > 0 && (
+                                                                        <div
+                                                                            className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
+                                                                                    overflow-y-auto animate-fadeIn"
+                                                                        >
+                                                                            {task_format
+                                                                                .filter((option) =>
+                                                                                    option.task_format
+                                                                                        .toLowerCase()
+                                                                                        .includes(
+                                                                                            data.task_format.toLowerCase()
+                                                                                        )
+                                                                                )
+                                                                                .map((option, i) => (
+                                                                                    <div
+                                                                                        key={i}
+                                                                                        onMouseDown={() => {
+                                                                                            setData(
+                                                                                                "task_format",
+                                                                                                option.task_format
+                                                                                            );
+                                                                                            setShowOptionFormat(
+                                                                                                false
+                                                                                            );
+                                                                                        }}
+                                                                                        className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                                                                            ${
+                                                                                                highlightedIndex ===
+                                                                                                i
+                                                                                                    ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
+                                                                                                    : "hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                                                            }`}
+                                                                                    >
+                                                                                        <span className="text-gray-900 dark:text-white">
+                                                                                            {
+                                                                                                option.task_format
+                                                                                            }
+                                                                                        </span>
+                                                                                    </div>
+                                                                                ))}
+                                                                        </div>
+                                                                    )}
+                                                            </div>
+                                                            {errors.task_format && (
+                                                                <p className="text-red-500 text-sm mt-1">
+                                                                    {errors.task_format}
+                                                                </p>
+                                                            )}
                                                         </div>
-                                                    )
-                                                )}
-                                            </div>
-                                        )}
-                                </div>
-                                {errors.task_format && (
-                                    <p className="text-red-500 text-sm mt-1">
-                                        {errors.task_format}
-                                    </p>
-                                )}
-                            </div>
 
                             {/* Category and Deadline */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -466,9 +612,24 @@ export default function edit({
                                                 />
                                             </SelectTrigger>
                                             <SelectContent className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
-                                                <SelectItem value="Monthly" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">📅 Monthly</SelectItem>
-                                                <SelectItem value="By Request" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">📝 By Request</SelectItem>
-                                                <SelectItem value="Urgent" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">⚡ Urgent</SelectItem>
+                                                <SelectItem
+                                                    value="Monthly"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    📅 Monthly
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="By Request"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    📝 By Request
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="Urgent"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    ⚡ Urgent
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
 
@@ -510,82 +671,88 @@ export default function edit({
 
                             {/* Description */}
                             <div ref={dropdownRef}>
-                                <InputLabel
-                                    htmlFor="description"
-                                    value="Description"
-                                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                                />
-                                <div className="relative">
-                                    <textarea
-                                        ref={descriptionRef}
-                                        value={data.description}
-                                        onChange={descriptionChange}
-                                        id="description"
-                                        name="description"
-                                        placeholder="Enter task description"
-                                        onFocus={() =>
-                                            setShowOptionDescription(true)
-                                        }
-                                        onBlur={() =>
-                                            setShowOptionDescription(false)
-                                        }
-                                        className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                                    focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                                                    bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none"
-                                        rows={4}
-                                    />
-                                    {showOptionDescription &&
-                                        description.length > 0 && (
-                                            <div
-                                                className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
-                                                        overflow-y-auto animate-fadeIn"
-                                            >
-                                                {description.map(
-                                                    (option, i) => (
-                                                        <div
-                                                            key={i}
-                                                            onMouseDown={(
-                                                                e
-                                                            ) => {
-                                                                e.stopPropagation();
-                                                                setData(
-                                                                    "description",
-                                                                    option.description
-                                                                );
-                                                                setShowOptionDescription(
-                                                                    false
-                                                                );
-                                                            }}
-                                                            onMouseEnter={() =>
-                                                                setHighlightedIndex(
-                                                                    i
-                                                                )
-                                                            }
-                                                            className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                ${
-                                                                    highlightedIndex ===
-                                                                    i
-                                                                        ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
-                                                                        : "hover:bg-gray-50 dark:hover:bg-gray-600"
-                                                                }`}
-                                                        >
-                                                            <span className="truncate text-gray-900 dark:text-white">
-                                                                {
-                                                                    option.description
-                                                                }
-                                                            </span>
+                                                            <InputLabel
+                                                                htmlFor="description"
+                                                                value="Description"
+                                                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                                            />
+                                                            <div className="relative">
+                                                                <textarea
+                                                                    ref={descriptionRef}
+                                                                    value={data.description}
+                                                                    onChange={descriptionChange}
+                                                                    id="description"
+                                                                    name="description"
+                                                                    placeholder="Enter task description"
+                                                                    onFocus={() =>
+                                                                        setShowOptionDescription(true)
+                                                                    }
+                                                                    onBlur={() =>
+                                                                        setShowOptionDescription(false)
+                                                                    }
+                                                                    className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
+                                                                                focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                                                bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none"
+                                                                    rows={4}
+                                                                />
+                                                                {showOptionDescription &&
+                                                                    description.length > 0 && (
+                                                                        <div
+                                                                            className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
+                                                                                    overflow-y-auto animate-fadeIn"
+                                                                        >
+                                                                            {description
+                                                                                .filter((option) =>
+                                                                                    option.description
+                                                                                        .toLowerCase()
+                                                                                        .includes(
+                                                                                            data.description.toLowerCase()
+                                                                                        )
+                                                                                )
+                                                                                .map((option, i) => (
+                                                                                    <div
+                                                                                        key={i}
+                                                                                        onMouseDown={(
+                                                                                            e
+                                                                                        ) => {
+                                                                                            e.stopPropagation();
+                                                                                            setData(
+                                                                                                "description",
+                                                                                                option.description
+                                                                                            );
+                                                                                            setShowOptionDescription(
+                                                                                                false
+                                                                                            );
+                                                                                        }}
+                                                                                        onMouseEnter={() =>
+                                                                                            setHighlightedIndex(
+                                                                                                i
+                                                                                            )
+                                                                                        }
+                                                                                        className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                                                                            ${
+                                                                                                highlightedIndex ===
+                                                                                                i
+                                                                                                    ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
+                                                                                                    : "hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                                                            }`}
+                                                                                    >
+                                                                                        <span className="truncate text-gray-900 dark:text-white">
+                                                                                            {
+                                                                                                option.description
+                                                                                            }
+                                                                                        </span>
+                                                                                    </div>
+                                                                                ))}
+                                                                        </div>
+                                                                    )}
+                                                            </div>
+                                                            {errors.description && (
+                                                                <p className="text-red-500 text-sm mt-1">
+                                                                    {errors.description}
+                                                                </p>
+                                                            )}
                                                         </div>
-                                                    )
-                                                )}
-                                            </div>
-                                        )}
-                                </div>
-                                {errors.description && (
-                                    <p className="text-red-500 text-sm mt-1">
-                                        {errors.description}
-                                    </p>
-                                )}
-                            </div>
 
                             {/* Submit Button */}
                             <div className="flex justify-end pt-6">

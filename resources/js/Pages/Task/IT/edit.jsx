@@ -42,6 +42,7 @@ export default function edit({
     const [showOptionTitle, setShowOptionTitle] = useState(false);
     const [showOptionFormat, setShowOptionFormat] = useState(false);
     const [showOptionDescription, setShowOptionDescription] = useState(false);
+    const [showOptionCompany, setShowOptionCompany] = useState(false);
     const [responsiblePopUp, setResponsiblePopUp] = useState(false);
     const [searchUser, setSearchUser] = useState("");
     const [selectedUsers, setSelectedUsers] = useState(arr);
@@ -125,9 +126,7 @@ export default function edit({
         setData("penanggung_jawab", dataSelectUser);
 
         put(route("it.update", { it: task.uuid }), {
-            onSuccess: () => {
-                
-            },
+            onSuccess: () => {},
         });
     }
 
@@ -146,24 +145,27 @@ export default function edit({
                                     href={route("it.index")}
                                     className="inline-flex items-center text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200 bg-white/20 hover:bg-white/30 rounded-lg px-4 py-2 backdrop-blur-sm border border-white/30"
                                 >
-                                    <svg 
-                                        className="w-4 h-4 mr-2" 
-                                        fill="none" 
-                                        stroke="currentColor" 
+                                    <svg
+                                        className="w-4 h-4 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
                                         viewBox="0 0 24 24"
                                     >
-                                        <path 
-                                            strokeLinecap="round" 
-                                            strokeLinejoin="round" 
-                                            strokeWidth={2} 
-                                            d="M10 19l-7-7m0 0l7-7m-7 7h18" 
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
                                         />
                                     </svg>
                                     Back to Tasks
                                 </Link>
                             </div>
-                            <h2 className="text-xl font-bold text-white">Edit IT Task Details</h2>
-                            <div className="w-20"></div> {/* Spacer for balance */}
+                            <h2 className="text-xl font-bold text-white">
+                                Edit IT Task Details
+                            </h2>
+                            <div className="w-20"></div>{" "}
+                            {/* Spacer for balance */}
                         </div>
                     </div>
 
@@ -204,37 +206,49 @@ export default function edit({
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
                                                         overflow-y-auto animate-fadeIn"
                                             >
-                                                {task_title.map((option, i) => (
-                                                    <div
-                                                        key={i}
-                                                        onMouseDown={(e) => {
-                                                            e.stopPropagation();
-                                                            setData(
-                                                                "task_title",
-                                                                option.task_title
-                                                            );
-                                                            setShowOptionTitle(
-                                                                false
-                                                            );
-                                                        }}
-                                                        onMouseEnter={() =>
-                                                            setHighlightedIndex(
-                                                                i
+                                                {task_title
+                                                    .filter((option) =>
+                                                        option.task_title
+                                                            .toLowerCase()
+                                                            .includes(
+                                                                data.task_title.toLowerCase()
                                                             )
-                                                        }
-                                                        className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                                    )
+                                                    .map((option, i) => (
+                                                        <div
+                                                            key={i}
+                                                            onMouseDown={(
+                                                                e
+                                                            ) => {
+                                                                e.stopPropagation();
+                                                                setData(
+                                                                    "task_title",
+                                                                    option.task_title
+                                                                );
+                                                                setShowOptionTitle(
+                                                                    false
+                                                                );
+                                                            }}
+                                                            onMouseEnter={() =>
+                                                                setHighlightedIndex(
+                                                                    i
+                                                                )
+                                                            }
+                                                            className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
                                                                 ${
                                                                     highlightedIndex ===
                                                                     i
                                                                         ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
                                                                         : "hover:bg-gray-50 dark:hover:bg-gray-600"
                                                                 }`}
-                                                    >
-                                                        <span className="truncate text-gray-900 dark:text-white">
-                                                            {option.task_title}
-                                                        </span>
-                                                    </div>
-                                                ))}
+                                                        >
+                                                            <span className="truncate text-gray-900 dark:text-white">
+                                                                {
+                                                                    option.task_title
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                    ))}
                                             </div>
                                         )}
                                 </div>
@@ -313,11 +327,36 @@ export default function edit({
                                                 />
                                             </SelectTrigger>
                                             <SelectContent className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
-                                                <SelectItem value="Idle" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Idle</SelectItem>
-                                                <SelectItem value="On Progress" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">On Progress</SelectItem>
-                                                <SelectItem value="Pending" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Pending</SelectItem>
-                                                <SelectItem value="In Review" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">In Review</SelectItem>
-                                                <SelectItem value="Completed" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Completed</SelectItem>
+                                                <SelectItem
+                                                    value="Idle"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    Idle
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="On Progress"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    On Progress
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="Pending"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    Pending
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="In Review"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    In Review
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="Completed"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    Completed
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
 
@@ -338,37 +377,132 @@ export default function edit({
                                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                 />
                                 <div className="relative w-full">
-                                    <Select
-                                        onValueChange={(value) =>
-                                            setData("company", value)
-                                        }
-                                        value={data.company}
-                                    >
-                                        <SelectTrigger className="w-full border-gray-300 dark:border-gray-600 rounded-[0.5rem] bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                                            <SelectValue
-                                                placeholder="Company"
-                                                className="text-gray-400 dark:text-gray-500"
-                                            />
-                                        </SelectTrigger>
-                                        <SelectContent className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
-                                            {Array.from(
-                                                new Set(
-                                                    companies.map(
-                                                        (company) =>
-                                                            company.company_name
-                                                    )
+                                    <div className="relative">
+                                        <TextInput
+                                            type="text"
+                                            name="company" // Changed from "task_company" to "company" to match your form data
+                                            value={data.company}
+                                            autoComplete="off"
+                                            placeholder="Enter Company Name"
+                                            onChange={(e) => {
+                                                setData(
+                                                    "company",
+                                                    e.target.value
+                                                );
+                                                setShowOptionCompany(true);
+                                            }}
+                                            onFocus={() =>
+                                                setShowOptionCompany(true)
+                                            }
+                                            onBlur={() =>
+                                                setTimeout(
+                                                    () =>
+                                                        setShowOptionCompany(
+                                                            false
+                                                        ),
+                                                    150
                                                 )
-                                            ).map((name, idx) => (
-                                                <SelectItem
-                                                    key={idx}
-                                                    value={name}
-                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
-                                                >
-                                                    {name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                            }
+                                            className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
+                                                        focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                        />
+
+                                        {/* Company Dropdown Options */}
+                                        {showOptionCompany &&
+                                            companies.length > 0 && (
+                                                <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg overflow-y-auto animate-fadeIn">
+                                                    {Array.from(
+                                                        new Set(
+                                                            companies.map(
+                                                                (company) =>
+                                                                    company.company_name
+                                                            )
+                                                        )
+                                                    )
+                                                        .filter((name) =>
+                                                            name
+                                                                .toLowerCase()
+                                                                .includes(
+                                                                    data.company.toLowerCase()
+                                                                )
+                                                        )
+                                                        .map((name, idx) => (
+                                                            <div
+                                                                key={idx}
+                                                                onMouseDown={(
+                                                                    e
+                                                                ) => {
+                                                                    e.preventDefault();
+                                                                    e.stopPropagation();
+                                                                    setData(
+                                                                        "company",
+                                                                        name
+                                                                    );
+                                                                    setShowOptionCompany(
+                                                                        false
+                                                                    );
+                                                                }}
+                                                                className="px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                                                    hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white"
+                                                            >
+                                                                {/* Highlight matching text */}
+                                                                <span className="text-gray-900 dark:text-white">
+                                                                    {name
+                                                                        .split(
+                                                                            new RegExp(
+                                                                                `(${data.company})`,
+                                                                                "gi"
+                                                                            )
+                                                                        )
+                                                                        .map(
+                                                                            (
+                                                                                part,
+                                                                                index
+                                                                            ) =>
+                                                                                part.toLowerCase() ===
+                                                                                data.company.toLowerCase() ? (
+                                                                                    <span
+                                                                                        key={
+                                                                                            index
+                                                                                        }
+                                                                                        className="bg-yellow-200 dark:bg-yellow-800 font-medium"
+                                                                                    >
+                                                                                        {
+                                                                                            part
+                                                                                        }
+                                                                                    </span>
+                                                                                ) : (
+                                                                                    part
+                                                                                )
+                                                                        )}
+                                                                </span>
+                                                            </div>
+                                                        ))}
+
+                                                    {/* No results message */}
+                                                    {Array.from(
+                                                        new Set(
+                                                            companies.map(
+                                                                (company) =>
+                                                                    company.company_name
+                                                            )
+                                                        )
+                                                    ).filter((name) =>
+                                                        name
+                                                            .toLowerCase()
+                                                            .includes(
+                                                                data.company.toLowerCase()
+                                                            )
+                                                    ).length === 0 && (
+                                                        <div className="px-6 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
+                                                            No matching
+                                                            companies found
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+                                    </div>
 
                                     {errors.company && (
                                         <p className="text-red-500 text-sm mt-1">
@@ -409,8 +543,15 @@ export default function edit({
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
                                                         overflow-y-auto animate-fadeIn"
                                             >
-                                                {task_format.map(
-                                                    (option, i) => (
+                                                {task_format
+                                                    .filter((option) =>
+                                                        option.task_format
+                                                            .toLowerCase()
+                                                            .includes(
+                                                                data.task_format.toLowerCase()
+                                                            )
+                                                    )
+                                                    .map((option, i) => (
                                                         <div
                                                             key={i}
                                                             onMouseDown={() => {
@@ -430,10 +571,13 @@ export default function edit({
                                                                         : "hover:bg-gray-50 dark:hover:bg-gray-600"
                                                                 }`}
                                                         >
-                                                            <span className="text-gray-900 dark:text-white">{option.task_format}</span>
+                                                            <span className="text-gray-900 dark:text-white">
+                                                                {
+                                                                    option.task_format
+                                                                }
+                                                            </span>
                                                         </div>
-                                                    )
-                                                )}
+                                                    ))}
                                             </div>
                                         )}
                                 </div>
@@ -466,9 +610,24 @@ export default function edit({
                                                 />
                                             </SelectTrigger>
                                             <SelectContent className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
-                                                <SelectItem value="Monthly" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">📅 Monthly</SelectItem>
-                                                <SelectItem value="By Request" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">📝 By Request</SelectItem>
-                                                <SelectItem value="Urgent" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">⚡ Urgent</SelectItem>
+                                                <SelectItem
+                                                    value="Monthly"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    📅 Monthly
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="By Request"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    📝 By Request
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="Urgent"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    ⚡ Urgent
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
 
@@ -540,8 +699,15 @@ export default function edit({
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
                                                         overflow-y-auto animate-fadeIn"
                                             >
-                                                {description.map(
-                                                    (option, i) => (
+                                                {description
+                                                    .filter((option) =>
+                                                        option.description
+                                                            .toLowerCase()
+                                                            .includes(
+                                                                data.description.toLowerCase()
+                                                            )
+                                                    )
+                                                    .map((option, i) => (
                                                         <div
                                                             key={i}
                                                             onMouseDown={(
@@ -575,8 +741,7 @@ export default function edit({
                                                                 }
                                                             </span>
                                                         </div>
-                                                    )
-                                                )}
+                                                    ))}
                                             </div>
                                         )}
                                 </div>
