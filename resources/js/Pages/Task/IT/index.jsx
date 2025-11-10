@@ -191,7 +191,15 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                     <div className="text-xs text-black dark:text-white">
                         Deadline:{" "}
                         <span className="font-semibold text-gray-700 dark:text-gray-300">
-                            {task.deadline}
+                            {new Date(task.deadline).toLocaleDateString(
+                                "id-ID",
+                                {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                    timeZone: "Asia/Jakarta",
+                                }
+                            )}
                         </span>
                     </div>
                 </div>
@@ -244,13 +252,41 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                             )
                                         ) {
                                             router.delete(
-                                                route(
-                                                    "it.destroy",
-                                                    task.uuid
-                                                ),
+                                                route("it.destroy", task.uuid),
                                                 {
-                                                    onError: (errors) =>
-                                                        console.error(errors),
+                                                    onSuccess: () => {
+                                                        const event =
+                                                            new CustomEvent(
+                                                                "toast",
+                                                                {
+                                                                    detail: {
+                                                                        type: "success",
+                                                                        message:
+                                                                            "Task deleted successfully!",
+                                                                    },
+                                                                }
+                                                            );
+                                                        window.dispatchEvent(
+                                                            event
+                                                        );
+                                                    },
+                                                    onError: (errors) => {
+                                                        console.error(errors);
+                                                        const event =
+                                                            new CustomEvent(
+                                                                "toast",
+                                                                {
+                                                                    detail: {
+                                                                        type: "error",
+                                                                        message:
+                                                                            "Failed to delete task. Please try again.",
+                                                                    },
+                                                                }
+                                                            );
+                                                        window.dispatchEvent(
+                                                            event
+                                                        );
+                                                    },
                                                 }
                                             );
                                         }
@@ -373,7 +409,15 @@ const TaskModal = ({
                                 Deadline:
                             </span>
                             <p className="font-medium text-red-600 dark:text-red-400">
-                                {task.deadline}
+                                {new Date(task.deadline).toLocaleDateString(
+                                    "id-ID",
+                                    {
+                                        day: "2-digit",
+                                        month: "short",
+                                        year: "numeric",
+                                        timeZone: "Asia/Jakarta",
+                                    }
+                                )}
                             </p>
                         </div>
                     </div>

@@ -63,7 +63,7 @@ const PaginationComponent = ({ currentPage, lastPage }) => {
     );
 };
 
-export default function ClientIndex({ clients, cicilans }) {
+export default function ClientIndex({ clients, cicilans, total_clients }) {
     const [activeDropdownIndex, setActiveDropdownIndex] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
@@ -72,7 +72,7 @@ export default function ClientIndex({ clients, cicilans }) {
     const [clickCounts, setClickCounts] = useState({});
     const timeoutRef = useRef({});
 
-    console.log(clickCounts);
+    console.log(total_clients);
 
     const dropdownRefs = useRef([]);
 
@@ -204,8 +204,6 @@ export default function ClientIndex({ clients, cicilans }) {
 
         return statusColors[status] || "from-slate-400 to-gray-600";
     };
-
-    // console.log(clients);
 
     const filteredClients = clients.data.filter((client) => {
         const matchesSearch =
@@ -416,7 +414,7 @@ export default function ClientIndex({ clients, cicilans }) {
                                     Total Clients
                                 </p>
                                 <p className="text-3xl font-bold">
-                                    {filteredClients.length}
+                                    {total_clients}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">

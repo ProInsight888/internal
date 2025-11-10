@@ -274,7 +274,12 @@ export default function AuditIndex({ audits }) {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {audit.date}
+                                                        {new Date(audit.date).toLocaleString('id-ID', {
+                                                            day: "2-digit",
+                                                            month: "short",
+                                                            year: "numeric",
+                                                            timeZone: "Asia/Jakarta"
+                                                        })}
                                                     </div>
                                                     <div className="text-sm text-gray-500 dark:text-gray-400">
                                                         {new Date(
