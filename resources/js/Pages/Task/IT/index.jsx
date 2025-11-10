@@ -249,10 +249,6 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                                     task.uuid
                                                 ),
                                                 {
-<<<<<<< HEAD
-                                                    onError: (errors) =>
-                                                        console.error(errors),
-=======
                                                     onSuccess: () => {
                                                         const event =
                                                             new CustomEvent(
@@ -286,7 +282,6 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                                             event
                                                         );
                                                     },
->>>>>>> 88edb757dc9b9025a9822b6f516fc4049a4a0f45
                                                 }
                                             );
                                         }
