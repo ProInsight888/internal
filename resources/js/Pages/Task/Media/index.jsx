@@ -198,17 +198,27 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-end items-center pt-3 border-t border-black dark:border-white">
+                <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-600">
+                    {/* Category Badge */}
+                    <div className="flex items-center">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                            {task.category}
+                        </span>
+                    </div>
+
+                    {/* Action Buttons */}
                     {!["Cancel", "In Review"].includes(task.status) &&
                         user_role !== "member" && (
-                            <div className="flex space-x-2">
+                            <div className="flex items-center space-x-1">
+                                {/* Edit Button */}
                                 <Link
                                     href={route("media.edit", task.uuid)}
                                     onClick={(e) => e.stopPropagation()}
-                                    className="p-2 text-black dark:text-white hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-lg transition-colors duration-200"
+                                    className="group relative p-2 text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-all duration-200 ease-in-out transform hover:scale-105"
+                                    title="Edit task"
                                 >
                                     <svg
-                                        className="w-4 h-4"
+                                        className="w-4 h-4 transition-transform group-hover:scale-110"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -220,13 +230,18 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                                         />
                                     </svg>
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                                        Edit Task
+                                    </span>
                                 </Link>
+
+                                {/* Delete Button */}
                                 <button
                                     onClick={(e) => {
-                                        e.stopPropagation(); // This prevents the card click
+                                        e.stopPropagation();
                                         if (
-                                            confirm(
-                                                "Are you sure you want to delete this task?"
+                                            window.confirm(
+                                                "Are you sure you want to delete this task? This action cannot be undone."
                                             )
                                         ) {
                                             router.delete(
@@ -235,16 +250,54 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                                     task.uuid
                                                 ),
                                                 {
+<<<<<<< HEAD
                                                     onError: (errors) =>
                                                         console.error(errors),
+=======
+                                                    onSuccess: () => {
+                                                        // Better success notification
+                                                        const event =
+                                                            new CustomEvent(
+                                                                "toast",
+                                                                {
+                                                                    detail: {
+                                                                        type: "success",
+                                                                        message:
+                                                                            "Task deleted successfully!",
+                                                                    },
+                                                                }
+                                                            );
+                                                        window.dispatchEvent(
+                                                            event
+                                                        );
+                                                    },
+                                                    onError: (errors) => {
+                                                        console.error(errors);
+                                                        const event =
+                                                            new CustomEvent(
+                                                                "toast",
+                                                                {
+                                                                    detail: {
+                                                                        type: "error",
+                                                                        message:
+                                                                            "Failed to delete task. Please try again.",
+                                                                    },
+                                                                }
+                                                            );
+                                                        window.dispatchEvent(
+                                                            event
+                                                        );
+                                                    },
+>>>>>>> 88edb757dc9b9025a9822b6f516fc4049a4a0f45
                                                 }
                                             );
                                         }
                                     }}
-                                    className="p-2 text-black dark:text-white hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors duration-200"
+                                    className="group relative p-2 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 ease-in-out transform hover:scale-105"
+                                    title="Delete task"
                                 >
                                     <svg
-                                        className="w-4 h-4"
+                                        className="w-4 h-4 transition-transform group-hover:scale-110"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -256,6 +309,9 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                                         />
                                     </svg>
+                                    <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                                        Delete Task
+                                    </span>
                                 </button>
                             </div>
                         )}
@@ -463,11 +519,13 @@ const TaskModal = ({
                                                 !(task.penanggung_jawab ?? "")
                                                     ?.split(",")
                                                     .map((s) =>
-                                                        parseInt(s.trim().toLowerCase())
+                                                        parseInt(
+                                                            s
+                                                                .trim()
+                                                                .toLowerCase()
+                                                        )
                                                     )
-                                                    .includes(
-                                                        user.id
-                                                    )
+                                                    .includes(user.id)
                                             }
                                         />
                                     </div>
