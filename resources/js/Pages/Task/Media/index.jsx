@@ -29,6 +29,40 @@ const StatusBadge = ({ status }) => {
     );
 };
 
+// Category Badge Component
+const CategoryBadge = ({ category }) => {
+    let priority = "";
+    let bgColor = "";
+
+    // Determine priority and color based on category
+    if (category === "Monthly") {
+        priority = "Monthly";
+        bgColor =
+            "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300  border border-blue-200 dark:border-blue-800";
+    } else if (category === "By Request") {
+        priority = "By Request";
+        bgColor =
+            "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300  border border-green-200 dark:border-green-800";
+    } else if (category === "Urgent") {
+        priority = "Urgent";
+        bgColor =
+            "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 border border-red-200 dark:border-red-800";
+    } else {
+        // Default case for other categories
+        priority = category || "Normal";
+        bgColor =
+            "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300 border border-gray-200 dark:border-gray-800";
+    }
+
+    return (
+        <span
+            className={`inline-flex items-center text-xs font-medium px-2.5 py-0.5 rounded-full ${bgColor}`}
+        >
+            {priority}
+        </span>
+    );
+};
+
 // Priority Badge Component
 const PriorityBadge = ({ deadline }) => {
     const today = new Date();
@@ -209,9 +243,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                 <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-600">
                     {/* Category Badge */}
                     <div className="flex items-center">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                            {task.category}
-                        </span>
+                        <CategoryBadge category={task.category} />
                     </div>
 
                     {/* Action Buttons */}

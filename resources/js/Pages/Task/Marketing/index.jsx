@@ -29,6 +29,40 @@ const StatusBadge = ({ status }) => {
     );
 };
 
+// Category Badge Component
+const CategoryBadge = ({ category }) => {
+    let priority = "";
+    let bgColor = "";
+
+    // Determine priority and color based on category
+    if (category === "Monthly") {
+        priority = "Monthly";
+        bgColor =
+            "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300  border border-blue-200 dark:border-blue-800";
+    } else if (category === "By Request") {
+        priority = "By Request";
+        bgColor =
+            "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300  border border-green-200 dark:border-green-800";
+    } else if (category === "Urgent") {
+        priority = "Urgent";
+        bgColor =
+            "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 border border-red-200 dark:border-red-800";
+    } else {
+        // Default case for other categories
+        priority = category || "Normal";
+        bgColor =
+            "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300 border border-gray-200 dark:border-gray-800";
+    }
+
+    return (
+        <span
+            className={`inline-flex items-center text-xs font-medium px-2.5 py-0.5 rounded-full ${bgColor}`}
+        >
+            {priority}
+        </span>
+    );
+};
+
 // Priority Badge Component
 const PriorityBadge = ({ deadline }) => {
     const today = new Date();
@@ -115,7 +149,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                     <StatusBadge status={task.status} />
                 </div>
 
-                {/* Task Title */}
+                {/* Task Company Name */}
                 <h3 className="flex text-xl font-semibold text-black dark:text-white tracking-wide -mb-0.5 line-clamp-1 border-b border-black dark:border-white pb-0.5 justify-center">
                     {task.task_title}
                 </h3>
@@ -125,7 +159,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                     {task?.company_code?.code || "N/A"}
                 </h1>
 
-                {/* Task Company Name */}
+                {/* Task Title */}
                 <h3 className="text-md text-black dark:text-white font-medium mb-2 line-clamp-2 break-words">
                     {task.company}
                 </h3>
@@ -181,6 +215,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                 })}
                         </div>
                     </div>
+
                     <span className="font-medium text-black dark:text-white text-xs line-clamp-2 break-words">
                         {task.task_format}
                     </span>
@@ -208,9 +243,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                 <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-600">
                     {/* Category Badge */}
                     <div className="flex items-center">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                            {task.category}
-                        </span>
+                        <CategoryBadge category={task.category} />
                     </div>
 
                     {/* Action Buttons */}
@@ -578,15 +611,13 @@ const TaskModal = ({
     );
 };
 
-export default function TaskIndex({ tasks, userName, users, auth }) {
+export default function TaskIndex({ tasks, userName, users }) {
     const user = usePage().props.auth.user;
 
     const { data, setData, post, put, processing, errors } = useForm({
         uuid: "",
         link: "",
         sended_by: user.name || "User Name Not Found",
-        name: auth.user.name || "",
-        avatar: null,
     });
 
     const [selectedFilter, setSelectedFilter] = useState("");
@@ -597,8 +628,6 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const successMessage = usePage().props?.flash?.success;
-
-    // console.log(user);
 
     // Filter and sort tasks
     const filteredTasks = tasks
@@ -647,7 +676,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
     const submitTask = (e) => {
         e.preventDefault();
         // console.log(data.uuid);
-        put(route("marketing_submit.update", { marketing: data.uuid }), {
+        put(route("marketing.update", { marketing: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),
         });
@@ -656,7 +685,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <AuthenticatedLayout>
-                <Head title="Marketing Team Task Management" />
+                <Head title="marketing Team Task Management" />
                 <TaskSideBar
                     users={users}
                     tasks={tasks}
@@ -733,18 +762,26 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                                                     )
                                                     .map((task, index) => {
                                                         return (
-                                                            <TaskCard
-                                                                key={task.uuid}
-                                                                task={task}
-                                                                onOpenDetails={
-                                                                    openTaskDetails
-                                                                }
-                                                                index={index}
-                                                                user_role={
-                                                                    user.role
-                                                                }
-                                                                users={users} // Pass users data here
-                                                            />
+                                                            <>
+                                                                <TaskCard
+                                                                    key={
+                                                                        task.uuid
+                                                                    }
+                                                                    task={task}
+                                                                    onOpenDetails={
+                                                                        openTaskDetails
+                                                                    }
+                                                                    index={
+                                                                        index
+                                                                    }
+                                                                    user_role={
+                                                                        user.role
+                                                                    }
+                                                                    users={
+                                                                        users
+                                                                    }
+                                                                />
+                                                            </>
                                                         );
                                                     })}
                                             </div>
@@ -773,7 +810,6 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                                                                 user_role={
                                                                     user.role
                                                                 }
-                                                                users={users} // Pass users data here
                                                             />
                                                         );
                                                     })}
@@ -803,7 +839,6 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                                                                 user_role={
                                                                     user.role
                                                                 }
-                                                                users={users} // Pass users data here
                                                             />
                                                         );
                                                     })}
@@ -820,7 +855,6 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                                             onOpenDetails={openTaskDetails}
                                             index={index}
                                             user_role={user.role}
-                                            users={users} // Pass users data here
                                         />
                                     );
                                 })
