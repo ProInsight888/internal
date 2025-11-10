@@ -51,23 +51,26 @@ export default function AuthenticatedLayout({ header, children }) {
 
         if (currentRoute === "/creative") {
             checkedCurrentRoute = "/media";
-        } else if (currentRoute === "/marketing") {
+        } else if (["/contract"].includes(currentRoute)) {
+            checkedCurrentRoute = "/new_client";
+        } else if (["/marketing", "/it", "/contract"].includes(currentRoute)) {
             checkedCurrentRoute = "/media";
-        } else if (currentRoute === "/it") {
-            checkedCurrentRoute = "/media";
-        } else if (currentRoute === "/creative_review") {
+        } else if (
+            ["/creative_review", "/marketing_review", "/it_review"].includes(
+                currentRoute
+            )
+        ) {
             checkedCurrentRoute = "/media_review";
-        } else if (currentRoute === "/marketing_review") {
-            checkedCurrentRoute = "/media_review";
-        } else if (currentRoute === "/it_review") {
-            checkedCurrentRoute = "/media_review";
-        }
+        } 
+
+        // console.log(checkedCurrentRoute, routeName,);
 
         return (
             checkedCurrentRoute === routeName ||
             checkedCurrentRoute.startsWith(routeName + "/")
         );
     };
+
 
     // Navigation items
     const navItems = [

@@ -23,6 +23,8 @@ export default function Audit({ audits }) {
         }
     };
 
+    // console.log(audits)
+
     const filteredAudits =
         activeFilter === "All"
             ? audits.data
@@ -87,12 +89,12 @@ export default function Audit({ audits }) {
             {/* Notifications List */}
             <div className="flex-1 space-y-4 overflow-y-auto pr-2">
                 {filteredAudits.map((audit) => {
-                    const isRead = readAudits.includes(audit.uuid);
+                    const isRead = readAudits.includes(audit.id);
 
                     return (
                         <div
                             key={audit.uuid}
-                            onClick={() => handleAuditClick(audit.uuid)}
+                            onClick={() => handleAuditClick(audit.id)}
                             className={`p-4 rounded-lg border-l-4 transition-all hover:shadow-md cursor-pointer ${
                                 !isRead
                                     ? "bg-blue-50 dark:bg-blue-900/20 border-blue-500 shadow-sm"

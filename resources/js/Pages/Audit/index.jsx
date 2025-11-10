@@ -67,14 +67,10 @@ export default function AuditIndex({ audits }) {
     const [actionFilter, setActionFilter] = useState("all");
     const [dateFilter, setDateFilter] = useState("all");
 
-    
-
     // Filter data based on search and filters
     const filteredAudits = audits.data
         .filter((audit) => {
             const matchesSearch =
-
-            console.log(audit)
                 searchTerm === "" ||
                 audit.created_by
                     .toLowerCase()
@@ -89,7 +85,6 @@ export default function AuditIndex({ audits }) {
                 userFilter === "all" || audit.user.name === userFilter;
             const matchesAction =
                 actionFilter === "all" || audit.action === actionFilter;
-
             return matchesSearch && matchesUser && matchesAction;
         })
         .sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -191,10 +186,11 @@ export default function AuditIndex({ audits }) {
                                     }
                                     className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                 >
-                                    <option value="all">All Actions</option>
-                                    <option value="created">Created</option>
-                                    <option value="updated">Updated</option>
-                                    <option value="deleted">Deleted</option>
+                                    <option value="all" hidden>All Actions</option>
+                                    <option value="Created">Created</option>
+                                    <option value="Updated">Updated</option>
+                                    <option value="Deleted">Deleted</option>
+                                    <option value="Submitted">Submitted</option>
                                 </select>
                             </div>
 
@@ -233,9 +229,7 @@ export default function AuditIndex({ audits }) {
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                                     {filteredAudits.map((audit) => {
-                                        const { date, time } = formatDateTime(
-                                            audit.date
-                                        );
+                                        console.log(audit)
                                         return (
                                             <tr
                                                 key={audit.id}
@@ -280,7 +274,7 @@ export default function AuditIndex({ audits }) {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {date}
+                                                        {audit.date}
                                                     </div>
                                                     <div className="text-sm text-gray-500 dark:text-gray-400">
                                                         {new Date(

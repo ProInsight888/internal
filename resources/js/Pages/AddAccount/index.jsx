@@ -111,7 +111,8 @@ const UserTableRow = ({
                 {index + 1}
             </td>
             <td className="px-4 py-3">
-                <div className="flex items-center">
+                <div className="flex items-center gap-5">
+                    <div className="rounded-full w-12 bg-yellow-400 h-12"><img src={`/storage/${user.avatar}`} alt="" className="rounded-full aspect-square"/></div>
                     <div>
                         <span className="font-semibold block text-gray-900 dark:text-gray-100">
                             {user.name}

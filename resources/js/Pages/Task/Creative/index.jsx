@@ -234,10 +234,6 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                                     task.uuid
                                                 ),
                                                 {
-                                                    onSuccess: () =>
-                                                        alert(
-                                                            "Task deleted successfully!"
-                                                        ),
                                                     onError: (errors) =>
                                                         console.error(errors),
                                                 }
@@ -582,7 +578,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
     const submitTask = (e) => {
         e.preventDefault();
         // console.log(data.uuid);
-        put(route("it_submit.update", { creative: data.uuid }), {
+        put(route("creative_submit.update", { creative: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),
         });

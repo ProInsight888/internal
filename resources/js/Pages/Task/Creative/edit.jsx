@@ -126,7 +126,7 @@ export default function edit({
 
         put(route("creative.update", { creative: task.uuid }), {
             onSuccess: () => {
-                alert("Task updated successfully!");
+                
             },
         });
     }
