@@ -134,6 +134,7 @@ CALENDAR DARK MODE
 .dark .sx__chevron-wrapper {
     background-color: #374151 !important;
     border: 1px solid #4b5563 !important;
+    border-radius: 6px !important;
     transition: all 0.2s ease-in-out !important;
 }
 
@@ -157,8 +158,6 @@ CALENDAR DARK MODE
 .dark .sx__view-selection-item {
     background-color: #1e293b !important;
     color: #cbd5e1 !important;
-    border-radius: 6px !important;
-    margin: 2px 0 !important;
     transition: all 0.2s ease-in-out !important;
 }
 
@@ -259,4 +258,9 @@ CALENDAR DARK MODE
 .dark .sx__month-grid-date--today {
     background-color: #3b82f6 !important;
     color: #ffffff !important;
+}
+
+.sx__date-picker-popup {
+    position: absolute;
+    z-index: 9999;
 }

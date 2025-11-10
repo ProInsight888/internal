@@ -190,6 +190,7 @@ export default function edit({
                                         onChange={titleChange}
                                         id="task_title"
                                         onFocus={() => setShowOptionTitle(true)}
+                                        onBlur={() => setShowOptionTitle(false)}
                                         placeholder="Enter task title"
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
                                                     focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
@@ -395,6 +396,9 @@ export default function edit({
                                         onFocus={() =>
                                             setShowOptionFormat(true)
                                         }
+                                        onBlur={() =>
+                                            setShowOptionFormat(false)
+                                        }
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
                                                     focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
                                                     bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
@@ -521,6 +525,9 @@ export default function edit({
                                         placeholder="Enter task description"
                                         onFocus={() =>
                                             setShowOptionDescription(true)
+                                        }
+                                        onBlur={() =>
+                                            setShowOptionDescription(false)
                                         }
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
                                                     focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
