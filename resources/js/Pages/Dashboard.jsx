@@ -785,7 +785,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         name: user.name || "",
     });
 
-    console.log(tasks)
+    // console.log(tasks)
 
 
     const date = new Date();
@@ -816,7 +816,8 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
     const soon = [];
     const up_coming = [];
 
-    console.log(taskUserArray)
+    // console.log(taskSorted)
+
 
     let countTask = 0;
 
@@ -841,18 +842,24 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         }
     };
 
+
+    
+    // console.log(teams)
     teams.forEach((team) => {
         if (!tasks[team]) return;
         tasks[team].forEach((task) => {
             task = {...task, team: team}
+            
             
             if (!task.penanggung_jawab) return;
 
             // Split by comma and check if userName is in the list
             const assignees = task.penanggung_jawab
                 .split(",")
-                .map((name) => name.trim());
-            const isAssignedToUser = assignees.includes(userName);
+                .map((name) => parseInt(name.trim()))
+                ;
+            console.log(assignees, user.id)
+            const isAssignedToUser = assignees.includes(user.id);
             const isNotApproved = task.status !== "Approved";
             const isNotCancle = task.status !== "Cancel";
             const isNotInReview = task.status !== "inReview";
@@ -870,6 +877,9 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         });
     });
 
+    // console.log(taskUserArray[0])
+    console.log(taskUserArray.map((task, index) => task));
+
     const openTaskDetails = (task, index) => {
         setSelectedTask(task);
         setTaskData("uuid", task.uuid);
@@ -883,6 +893,12 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         setIsModalOpen(false);
         setSelectedTask(null);
     };
+
+    console.log(taskUserArray);
+
+    const taskSorted = taskUserArray.sort((a, b) => {
+        return new Date(a.deadline) - new Date(b.deadline);
+    });
 
     // Filtered data
     const filteredAbsens = absens.filter((absen) => absen.tanggal === sortDate);
@@ -1011,27 +1027,23 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                     {/* Scrollable content */}
                                     <div className="flex-1 overflow-y-auto">
                                         <div className="flex h-96 flex-col gap-4 pr-9">
-                                            {taskUserArray.map(
-                                                (task, index) => (
-                                                    <div
-                                                        key={task.id}
-                                                        className="min-w-[200px] sm:min-w-[240px] w-full"
-                                                    >
-                                                        <TaskCard
-                                                            key={task.uuid}
-                                                            task={task}
-                                                            onOpenDetails={
-                                                                openTaskDetails
-                                                            }
-                                                            index={index}
-                                                            user_role={
-                                                                user.role
-                                                            }
-                                                            // users={users}
-                                                        />
-                                                    </div>
-                                                )
-                                            )}
+                                            {taskSorted.map((task, index) => (
+                                                <div
+                                                    key={task.id}
+                                                    className="min-w-[200px] sm:min-w-[240px] w-full"
+                                                >
+                                                    <TaskCard
+                                                        key={task.uuid}
+                                                        task={task}
+                                                        onOpenDetails={
+                                                            openTaskDetails
+                                                        }
+                                                        index={index}
+                                                        user_role={user.role}
+                                                        // users={users}
+                                                    />
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
