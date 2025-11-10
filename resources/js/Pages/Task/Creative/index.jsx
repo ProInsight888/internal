@@ -191,7 +191,15 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                     <div className="text-xs text-black dark:text-white">
                         Deadline:{" "}
                         <span className="font-semibold text-gray-700 dark:text-gray-300">
-                            {task.deadline}
+                            {new Date(task.deadline).toLocaleDateString(
+                                "id-ID",
+                                {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                    timeZone: "Asia/Jakarta",
+                                }
+                            )}
                         </span>
                     </div>
                 </div>
@@ -405,7 +413,15 @@ const TaskModal = ({
                                 Deadline:
                             </span>
                             <p className="font-medium text-red-600 dark:text-red-400">
-                                {task.deadline}
+                                {new Date(task.deadline).toLocaleDateString(
+                                    "id-ID",
+                                    {
+                                        day: "2-digit",
+                                        month: "short",
+                                        year: "numeric",
+                                        timeZone: "Asia/Jakarta",
+                                    }
+                                )}
                             </p>
                         </div>
                     </div>
