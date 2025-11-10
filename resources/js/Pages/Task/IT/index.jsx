@@ -273,7 +273,7 @@ const TaskModal = ({
     data,
     setData,
     onSubmit,
-    userName,
+    user,
     processing,
 }) => {
     if (!isOpen) return null;
@@ -463,12 +463,10 @@ const TaskModal = ({
                                                 !(task.penanggung_jawab ?? "")
                                                     ?.split(",")
                                                     .map((s) =>
-                                                        s.trim().toLowerCase()
+                                                        parseInt(s.trim().toLowerCase())
                                                     )
                                                     .includes(
-                                                        userName
-                                                            .trim()
-                                                            .toLowerCase()
+                                                        user.id
                                                     )
                                             }
                                         />
@@ -804,7 +802,7 @@ export default function TaskIndex({ tasks, userName, users, auth }) {
                         isOpen={isModalOpen}
                         onClose={closeModal}
                         data={data}
-                        userName={userName}
+                        user={user}
                         setData={setData}
                         onSubmit={submitTask}
                         processing={processing}
