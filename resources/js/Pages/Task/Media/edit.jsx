@@ -126,7 +126,7 @@ export default function edit({
 
         put(route("media.update", { media: task.uuid }), {
             onSuccess: () => {
-                alert("Task updated successfully!");
+                
             },
         });
     }

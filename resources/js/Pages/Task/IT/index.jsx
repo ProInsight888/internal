@@ -231,10 +231,6 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                             router.delete(
                                                 route("it.destroy", task.uuid),
                                                 {
-                                                    onSuccess: () =>
-                                                        alert(
-                                                            "Task deleted successfully!"
-                                                        ),
                                                     onError: (errors) =>
                                                         console.error(errors),
                                                 }

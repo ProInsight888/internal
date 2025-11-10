@@ -235,10 +235,6 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                                     task.uuid
                                                 ),
                                                 {
-                                                    onSuccess: () =>
-                                                        alert(
-                                                            "Task deleted successfully!"
-                                                        ),
                                                     onError: (errors) =>
                                                         console.error(errors),
                                                 }

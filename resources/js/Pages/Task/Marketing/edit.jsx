@@ -126,7 +126,7 @@ export default function edit({
 
         put(route("marketing.update", { marketing: task.uuid }), {
             onSuccess: () => {
-                alert("Task updated successfully!");
+                
             },
         });
     }
