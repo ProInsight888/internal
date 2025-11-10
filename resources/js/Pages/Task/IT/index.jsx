@@ -249,44 +249,8 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                                                     task.uuid
                                                 ),
                                                 {
-<<<<<<< HEAD
                                                     onError: (errors) =>
                                                         console.error(errors),
-=======
-                                                    onSuccess: () => {
-                                                        const event =
-                                                            new CustomEvent(
-                                                                "toast",
-                                                                {
-                                                                    detail: {
-                                                                        type: "success",
-                                                                        message:
-                                                                            "Task deleted successfully!",
-                                                                    },
-                                                                }
-                                                            );
-                                                        window.dispatchEvent(
-                                                            event
-                                                        );
-                                                    },
-                                                    onError: (errors) => {
-                                                        console.error(errors);
-                                                        const event =
-                                                            new CustomEvent(
-                                                                "toast",
-                                                                {
-                                                                    detail: {
-                                                                        type: "error",
-                                                                        message:
-                                                                            "Failed to delete task. Please try again.",
-                                                                    },
-                                                                }
-                                                            );
-                                                        window.dispatchEvent(
-                                                            event
-                                                        );
-                                                    },
->>>>>>> 88edb757dc9b9025a9822b6f516fc4049a4a0f45
                                                 }
                                             );
                                         }
