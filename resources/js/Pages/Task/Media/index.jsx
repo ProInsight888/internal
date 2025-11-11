@@ -365,9 +365,16 @@ const TaskModal = ({
     setData,
     onSubmit,
     user,
+    users,
     processing,
 }) => {
     if (!isOpen) return null;
+
+    const assignee_name = users.map((user_name, index) => {
+        // console.log(user_name.id === parseInt(task.penanggung_jawab))
+        return user_name.id === parseInt(task.penanggung_jawab)
+    })
+    // console.log(task.penanggung_jawab)
 
     return (
         <div
@@ -422,7 +429,10 @@ const TaskModal = ({
                                 Assignee:
                             </span>
                             <p className="font-medium dark:text-white">
-                                {task.penanggung_jawab}
+                                {users.map((user) => 
+                                    user.id === parseInt(task?.penanggung_jawab) ? user.name : ""
+                                    
+                                    )}
                             </p>
                         </div>
                         <div>
@@ -676,7 +686,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     const submitTask = (e) => {
         e.preventDefault();
         // console.log(data.uuid);
-        put(route("media_submit.update", { media: data.uuid }), {
+        put(route("media.update", { media: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),
         });
@@ -905,6 +915,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                         onClose={closeModal}
                         data={data}
                         user={user}
+                        users={users}
                         setData={setData}
                         onSubmit={submitTask}
                         processing={processing}

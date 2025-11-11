@@ -30,6 +30,11 @@ export default function edit({
         deadline: task?.deadline || "",
     });
 
+    console.log(users);
+    const assignedUserIds = task.penanggung_jawab
+        ? task.penanggung_jawab.split(",").map((id) => parseInt(id.trim()))
+        : [];
+
     const pj = data.penanggung_jawab;
     const arr = pj
         ? pj.split(",").map((name) => {
@@ -225,7 +230,6 @@ export default function edit({
                                                             onMouseDown={(
                                                                 e
                                                             ) => {
-                                                                e.preventDefault();
                                                                 e.stopPropagation();
                                                                 setData(
                                                                     "task_title",
@@ -241,57 +245,20 @@ export default function edit({
                                                                 )
                                                             }
                                                             className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                        ${
-                                            highlightedIndex === i
-                                                ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
-                                                : "hover:bg-gray-50 dark:hover:bg-gray-600"
-                                        }`}
+                                                                ${
+                                                                    highlightedIndex ===
+                                                                    i
+                                                                        ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
+                                                                        : "hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                                }`}
                                                         >
-                                                            {/* Highlight matching text */}
-                                                            <span className="text-gray-900 dark:text-white">
-                                                                {option.task_title
-                                                                    .split(
-                                                                        new RegExp(
-                                                                            `(${data.task_title})`,
-                                                                            "gi"
-                                                                        )
-                                                                    )
-                                                                    .map(
-                                                                        (
-                                                                            part,
-                                                                            index
-                                                                        ) =>
-                                                                            part.toLowerCase() ===
-                                                                            data.task_title.toLowerCase() ? (
-                                                                                <span
-                                                                                    key={
-                                                                                        index
-                                                                                    }
-                                                                                    className="bg-yellow-200 dark:bg-yellow-800 font-medium"
-                                                                                >
-                                                                                    {
-                                                                                        part
-                                                                                    }
-                                                                                </span>
-                                                                            ) : (
-                                                                                part
-                                                                            )
-                                                                    )}
+                                                            <span className="truncate text-gray-900 dark:text-white">
+                                                                {
+                                                                    option.task_title
+                                                                }
                                                             </span>
                                                         </div>
                                                     ))}
-
-                                                {task_title.filter((option) =>
-                                                    option.task_title
-                                                        .toLowerCase()
-                                                        .includes(
-                                                            data.task_title.toLowerCase()
-                                                        )
-                                                ).length === 0 && (
-                                                    <div className="px-6 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
-                                                        No matching tasks found
-                                                    </div>
-                                                )}
                                             </div>
                                         )}
                                 </div>
@@ -313,7 +280,7 @@ export default function edit({
                                         Penanggung Jawab
                                     </label>
                                     <div
-                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2 min-h-[42px] bg-white dark:bg-gray-700"
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2 bg-white dark:bg-gray-700"
                                         onClick={() =>
                                             setResponsiblePopUp(true)
                                         }
@@ -322,7 +289,7 @@ export default function edit({
                                             selectedUsers.map((user) => (
                                                 <span
                                                     key={user.id}
-                                                    className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded flex items-center"
+                                                    className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded flex items-center mr-2 mb-2"
                                                 >
                                                     {user.name}
                                                     <button
@@ -456,8 +423,8 @@ export default function edit({
                                                 }, 150);
                                             }}
                                             className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                                        focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                                                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                                                                    focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                                                    bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                         />
 
                                         {/* Company Dropdown Options */}
@@ -496,7 +463,7 @@ export default function edit({
                                                                     );
                                                                 }}
                                                                 className="px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                    hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white"
+                                                                                                hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white"
                                                             >
                                                                 {/* Highlight matching text */}
                                                                 <span className="text-gray-900 dark:text-white">
@@ -583,21 +550,17 @@ export default function edit({
                                             setShowOptionFormat(true)
                                         }
                                         onBlur={() =>
-                                            setTimeout(
-                                                () =>
-                                                    setShowOptionFormat(false),
-                                                150
-                                            )
+                                            setShowOptionFormat(false)
                                         }
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                                        focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                                                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                                                                focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                                                bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                     />
                                     {showOptionFormat &&
                                         task_format.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
-                                                            overflow-y-auto animate-fadeIn"
+                                                                                    overflow-y-auto animate-fadeIn"
                                             >
                                                 {task_format
                                                     .filter((option) =>
@@ -610,11 +573,7 @@ export default function edit({
                                                     .map((option, i) => (
                                                         <div
                                                             key={i}
-                                                            onMouseDown={(
-                                                                e
-                                                            ) => {
-                                                                e.preventDefault();
-                                                                e.stopPropagation();
+                                                            onMouseDown={() => {
                                                                 setData(
                                                                     "task_format",
                                                                     option.task_format
@@ -623,66 +582,21 @@ export default function edit({
                                                                     false
                                                                 );
                                                             }}
-                                                            onMouseEnter={() =>
-                                                                setHighlightedIndex(
-                                                                    i
-                                                                )
-                                                            }
                                                             className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                    ${
-                                                                        highlightedIndex ===
-                                                                        i
-                                                                            ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
-                                                                            : "hover:bg-gray-50 dark:hover:bg-gray-600"
-                                                                    }`}
+                                                                                            ${
+                                                                                                highlightedIndex ===
+                                                                                                i
+                                                                                                    ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
+                                                                                                    : "hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                                                            }`}
                                                         >
-                                                            {/* Highlight matching text */}
                                                             <span className="text-gray-900 dark:text-white">
-                                                                {option.task_format
-                                                                    .split(
-                                                                        new RegExp(
-                                                                            `(${data.task_format})`,
-                                                                            "gi"
-                                                                        )
-                                                                    )
-                                                                    .map(
-                                                                        (
-                                                                            part,
-                                                                            index
-                                                                        ) =>
-                                                                            part.toLowerCase() ===
-                                                                            data.task_format.toLowerCase() ? (
-                                                                                <span
-                                                                                    key={
-                                                                                        index
-                                                                                    }
-                                                                                    className="bg-yellow-200 dark:bg-yellow-800 font-medium"
-                                                                                >
-                                                                                    {
-                                                                                        part
-                                                                                    }
-                                                                                </span>
-                                                                            ) : (
-                                                                                part
-                                                                            )
-                                                                    )}
+                                                                {
+                                                                    option.task_format
+                                                                }
                                                             </span>
                                                         </div>
                                                     ))}
-
-                                                {/* Show message when no matches found */}
-                                                {task_format.filter((option) =>
-                                                    option.task_format
-                                                        .toLowerCase()
-                                                        .includes(
-                                                            data.task_format.toLowerCase()
-                                                        )
-                                                ).length === 0 && (
-                                                    <div className="px-6 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
-                                                        No matching formats
-                                                        found
-                                                    </div>
-                                                )}
                                             </div>
                                         )}
                                 </div>
@@ -856,6 +770,7 @@ export default function edit({
                                     </p>
                                 )}
                             </div>
+
                             {/* Submit Button */}
                             <div className="flex justify-end pt-6">
                                 <button
