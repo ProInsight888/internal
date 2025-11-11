@@ -27,7 +27,7 @@ class NewClientController extends Controller
     {
         $clients = newClient::paginate(10);
         $total_clients = count(newClient::all());
-        $cicilans = cicilan::all(); 
+        $cicilans = cicilan::all();
         return inertia('NewClient/index', [
             'clients' => $clients,
             'cicilans' => $cicilans,
@@ -40,9 +40,7 @@ class NewClientController extends Controller
      */
     public function create()
     {
-        return inertia('NewClient/create',[
-            
-        ]);
+        return inertia('NewClient/create', []);
     }
 
     /**
@@ -53,11 +51,9 @@ class NewClientController extends Controller
         // Map the status values
         $statusMapping = [
             'Paid' => 'lunas',
-            'Unpaid' => 'belum bayar', 
+            'Unpaid' => 'belum bayar',
             'Installments' => 'cicil'
         ];
-
-
 
         $validated = $request->validate([
             'company_name' => 'string|required',
@@ -66,34 +62,34 @@ class NewClientController extends Controller
             'location' => 'string|required',
             'contract_start' => 'string|required',
             'contract_end' => 'string|required',
+            'paid' => 'nullable|date', // Changed to nullable date
             'package' => 'string|required',
             'status' => 'required',
             'cicil' => '',
             'fase_pembayaran.*.cicilan' => 'string',
             'fase_pembayaran.*.tanggal' => 'date',
         ]);
-        
+
         $today = now('Asia/Jakarta');
         $contract_start = \Carbon\Carbon::parse($validated['contract_start']);
         $contract_end = \Carbon\Carbon::parse($validated['contract_end']);
 
         $contract = $contract_start->format('d M Y') . ' - ' . $contract_end->format('d M Y');
-        // dd($contract);
 
         // Map the status for internal storage
         $internalStatus = $statusMapping[$validated['status']] ?? $validated['status'];
         $status = Str::lower($internalStatus);
         $payment_month = $status === 'lunas' ?  $today->format('F') . '✅' : "-";
-        
+
         $clientUuid = Str::uuid()->toString();
 
         foreach ($request->fase_pembayaran as $fase) {
             cicilan::create([
                 'client_uuid' => $clientUuid,
                 'cicilan' => $fase['cicilan'],
-                'tanggal' => $fase['tanggal'],
+                'tanggal' => Carbon::parse($fase['tanggal'])->format('d/m/y'),
             ]);
-        };
+        }
 
         $user = Auth::user();
 
@@ -106,7 +102,7 @@ class NewClientController extends Controller
             'date' => $date->format('d F Y'),
             'time' => $date->format('H:i'),
         ]);
-        
+
         newClient::create([
             'uuid' => $clientUuid,
             'company_name' => $validated['company_name'],
@@ -115,9 +111,13 @@ class NewClientController extends Controller
             'location' => $validated['location'],
             'contract' => $contract,
             'package' => $validated['package'],
-            'status' => $internalStatus, 
+            'status' => $internalStatus,
             'payment_month' => $payment_month,
+            'paid' => isset($validated['paid'])
+                ? Carbon::parse($validated['paid'])->format('d/m/y')
+                : null,
         ]);
+
 
         return Redirect::to('new_client')->with("success", 'New Client Created Successfully');
     }
@@ -128,16 +128,16 @@ class NewClientController extends Controller
     public function edit(newClient $newClient)
     {
         $client = $newClient->load('cicilans');
-        
+
         // Map internal status to display status for the frontend
         $statusMapping = [
             'lunas' => 'Paid',
             'belum bayar' => 'Unpaid',
             'cicil' => 'Installments'
         ];
-        
+
         $client->display_status = $statusMapping[$client->status] ?? $client->status;
-        
+
         return inertia('NewClient/edit', [
             'clients' => $client,
         ]);
@@ -163,6 +163,7 @@ class NewClientController extends Controller
             'contract_start' => 'string|required',
             'contract_end' => 'string|required',
             'package' => 'string|required',
+            'paid' => 'nullable|date', // Changed to nullable date
             'status' => 'string|required',
         ]);
 
@@ -172,12 +173,11 @@ class NewClientController extends Controller
         $contract_end = \Carbon\Carbon::parse($validated['contract_end']);
 
         $contract = $contract_start->format('d M Y') . ' - ' . $contract_end->format('d M Y');
-        // dd($contract);
 
         // Map the status for internal storage
         $internalStatus = $statusMapping[$validated['status']] ?? $validated['status'];
         $status = Str::lower($internalStatus);
-        $payment_month = $status === 'lunas' ? $today->format('F').'✅' : "-";
+        $payment_month = $status === 'lunas' ? $today->format('F') . '✅' : "-";
 
         $uuid = $newClient->uuid;
 
@@ -193,14 +193,12 @@ class NewClientController extends Controller
             'time' => $date->format('H:i'),
         ]);
 
-        cicilan::where('client_uuid', $uuid)->delete();;
+        cicilan::where('client_uuid', $uuid)->delete();
 
         $array = [];
         foreach ($request->fase_pembayaran as $fase) {
             array_push($array, $fase);
         }
-        ;
-
 
         foreach ($array as $index => $fase) {
             cicilan::create([
@@ -211,8 +209,9 @@ class NewClientController extends Controller
             ]);
         }
 
-
         $update_client = newClient::where('uuid', $uuid);
+
+        // FIXED: Added 'paid' field here
         $update_client->update([
             'company_name' => $validated['company_name'],
             'code' => $validated['code'],
@@ -220,30 +219,27 @@ class NewClientController extends Controller
             'location' => $validated['location'],
             'contract' => $contract,
             'package' => $validated['package'],
-            'status' => $internalStatus, // Store the internal status
+            'status' => $internalStatus,
             'payment_month' => $payment_month,
+            'paid' => $validated['paid'] ?? null,
         ]);
 
-        return Redirect::to('new_client')->with('success','Client Updated Successfully');
+        return Redirect::to('new_client')->with('success', 'Client Updated Successfully');
     }
 
     public function show(newClient $newClient)
     {
         $client = $newClient->load('cicilans');
-        // dd($newClient);
-        // Map internal status to display status for the frontend
+
         $statusMapping = [
             'lunas' => 'Paid',
             'belum bayar' => 'Unpaid',
             'cicil' => 'Installments'
         ];
 
-        
         $client->display_status = $statusMapping[$client->status] ?? $client->status;
         $contracts = contract::where('uuid_new_client', $newClient->uuid)->get();
-        
-        // dd( $contracts);
-        
+
         return Inertia('NewClient/show', [
             'client' => $client,
             'contracts' => $contracts
@@ -274,8 +270,6 @@ class NewClientController extends Controller
         $newClient->delete();
         $cicilan->delete();
 
-        return Redirect::to('new_client')->with('deleted','Client Deleted');
+        return Redirect::to('new_client')->with('deleted', 'Client Deleted');
     }
-
-    
 }
