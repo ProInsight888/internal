@@ -55,6 +55,7 @@ class NewClientController extends Controller
             'Installments' => 'cicil'
         ];
 
+        
         $validated = $request->validate([
             'company_name' => 'string|required',
             'code' => 'required|string|max:4|unique:new_clients,code',
@@ -68,8 +69,11 @@ class NewClientController extends Controller
             'cicil' => '',
             'fase_pembayaran.*.cicilan' => 'string',
             'fase_pembayaran.*.tanggal' => 'date',
+            'add_ons_drone' => 'nullable',
+            'add_ons_production' => 'nullable',
         ]);
-
+        
+        // dd($validated['add_ons_drone'], $validated['add_ons_production']);
         $today = now('Asia/Jakarta');
         $contract_start = \Carbon\Carbon::parse($validated['contract_start']);
         $contract_end = \Carbon\Carbon::parse($validated['contract_end']);
@@ -113,9 +117,9 @@ class NewClientController extends Controller
             'package' => $validated['package'],
             'status' => $internalStatus,
             'payment_month' => $payment_month,
-            'paid' => isset($validated['paid'])
-                ? Carbon::parse($validated['paid'])->format('d/m/y')
-                : null,
+            'paid' => $validated['paid'],
+            'add_ons_drone' => $validated['add_ons_drone'],
+            'add_ons_production' => $validated['add_ons_production'],
         ]);
 
 
@@ -165,12 +169,16 @@ class NewClientController extends Controller
             'package' => 'string|required',
             'paid' => 'nullable|date', // Changed to nullable date
             'status' => 'string|required',
+            'add_ons_drone' => 'nullable',
+            'add_ons_production' => 'nullable',
         ]);
 
         $today = now('Asia/Jakarta');
 
         $contract_start = \Carbon\Carbon::parse($validated['contract_start']);
         $contract_end = \Carbon\Carbon::parse($validated['contract_end']);
+
+        // dd($request);
 
         $contract = $contract_start->format('d M Y') . ' - ' . $contract_end->format('d M Y');
 
@@ -222,6 +230,8 @@ class NewClientController extends Controller
             'status' => $internalStatus,
             'payment_month' => $payment_month,
             'paid' => $validated['paid'] ?? null,
+            'add_ons_drone' => $validated['add_ons_drone'],
+            'add_ons_production' => $validated['add_ons_production'],
         ]);
 
         return Redirect::to('new_client')->with('success', 'Client Updated Successfully');
