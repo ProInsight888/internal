@@ -70,7 +70,12 @@ export default function TaskSideBar({
         {
             key: "",
             label: "Active Task",
-            count: taskCounts.all - taskCounts.cancel - taskCounts.approved - taskCounts.inReview - taskCounts.rejected,
+            count:
+                taskCounts.all -
+                taskCounts.cancel -
+                taskCounts.approved -
+                taskCounts.inReview -
+                taskCounts.rejected,
             color: "bg-blue-100 text-blue-800 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800",
             icon: <Circle className="h-4 w-4" />,
         },
@@ -321,12 +326,15 @@ export default function TaskSideBar({
                                     >
                                         <option value="">All Users</option>
                                         {Array.from(
-                                            new Set(
-                                                users.map((user) => user.name)
-                                            )
-                                        ).map((user, idx) => (
-                                            <option key={idx} value={user}>
-                                                {user}
+                                            new Map(
+                                                users.map((u) => [u.id, u])
+                                            ).values()
+                                        ).map((user) => (
+                                            <option
+                                                key={user.id}
+                                                value={user.id}
+                                            >
+                                                {user.name}
                                             </option>
                                         ))}
                                     </select>
