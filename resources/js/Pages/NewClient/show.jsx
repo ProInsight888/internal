@@ -100,7 +100,7 @@ export default function Show({ client, contracts }) {
                                             "new_client.edit",
                                             client.uuid
                                         )}
-                                        className="inline-flex items-center px-4 py-2 text-sm text-white font-medium rounded-lg transition-all duration-200"
+                                        className="inline-flex items-center px-4 py-2 dark:text-white font-medium rounded-lg transition-all duration-200"
                                     >
                                         <svg
                                             className="w-4 h-4 mr-2"
@@ -134,7 +134,10 @@ export default function Show({ client, contracts }) {
                                 <InfoField
                                     label="Location"
                                     value={client.location}
-                                    colSpan="md:col-span-2"
+                                />
+                                <InfoField
+                                    label="Package"
+                                    value={client.package}
                                 />
                             </div>
 

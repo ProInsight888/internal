@@ -92,7 +92,6 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
             document.removeEventListener("mousedown", handleClickOutside);
     }, [activeDropdownIndex]);
 
-    // Flash messages with auto-dismiss
     const { success: successMessage, deleted: deletedMessage } =
         usePage().props.flash;
 
@@ -134,59 +133,63 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
         });
     };
 
-    // Format payment dates with security validation
     const formatPaymentDates = (clientUuid) => {
-        if (!clientUuid || !cicilans) return null;
+        if (!clientUuid || !cicilans || !clients?.data) return null;
 
+        const client = clients.data.find((c) => c.uuid === clientUuid);
         const clientCicilans = cicilans
             .filter((c) => c.client_uuid === clientUuid)
-            .slice(0, 3); // Limit to 3 for performance
+            .slice(0, 10);
 
-        return clientCicilans.map((cicilan, index) => {
-            try {
-                const date = new Date(cicilan.tanggal);
-                if (isNaN(date.getTime())) return null;
+        const formatDate = (dateString) => {
+            if (!dateString) return null;
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return null;
 
-                const monthNames = [
-                    "Jan",
-                    "Feb",
-                    "Mar",
-                    "Apr",
-                    "May",
-                    "Jun",
-                    "Jul",
-                    "Aug",
-                    "Sep",
-                    "Oct",
-                    "Nov",
-                    "Dec",
-                ];
-                const formattedDate = `${String(date.getDate()).padStart(
-                    2,
-                    "0"
-                )} 
-                                     ${monthNames[date.getMonth()]} 
-                                     ${date.getFullYear()}`;
+            const day = String(date.getDate()).padStart(2, "0");
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const year = String(date.getFullYear()).slice(-2);
+            return `${day}/${month}/${year}`;
+        };
 
-                return (
-                    <div
-                        key={cicilan.id || index}
-                        className="flex items-center mb-1 last:mb-0 group"
-                    >
-                        <span className="text-sm text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                            {formattedDate}
+        const formattedCicilans = clientCicilans.map((cicilan, index) => {
+            const formattedDate = formatDate(cicilan.tanggal);
+            return (
+                <div
+                    key={cicilan.id || index}
+                    className="flex items-center mb-1 last:mb-0 group"
+                >
+                    <span className="text-sm text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                        {formattedDate}
+                    </span>
+                    {cicilan.status_cicilan === "true" && (
+                        <span className="ml-2 text-green-500 dark:text-green-400 transform group-hover:scale-110 transition-transform">
+                            ✅
                         </span>
-                        {cicilan.status_cicilan === "true" && (
-                            <span className="ml-2 text-green-500 dark:text-green-400 transform group-hover:scale-110 transition-transform">
-                                ✅
-                            </span>
-                        )}
-                    </div>
-                );
-            } catch (error) {
-                return null;
-            }
+                    )}
+                </div>
+            );
         });
+
+        // Add paid date (if any) as the last item with ✅
+        const formattedPaid = formatDate(client?.paid);
+        if (formattedPaid) {
+            formattedCicilans.push(
+                <div
+                    key="paid-date"
+                    className="flex items-center mb-1 last:mb-0 group"
+                >
+                    <span className="text-sm text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                        {formattedPaid}
+                    </span>
+                    <span className="ml-2 text-green-500 dark:text-green-400 transform group-hover:scale-110 transition-transform">
+                        ✅
+                    </span>
+                </div>
+            );
+        }
+
+        return formattedCicilans;
     };
 
     const getStatusColor = (status) => {
@@ -371,13 +374,21 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
         },
         {
             header: "Payment Schedule",
-            render: (client) => (
-                <div className="text-sm space-y-1">
-                    {client.payment_month !== "-"
-                        ? client.payment_month
-                        : formatPaymentDates(client.uuid)}
-                </div>
-            ),
+            render: (client) => {
+                const paymentDates = formatPaymentDates(client.uuid);
+                const hasPaymentDates =
+                    paymentDates && paymentDates.filter(Boolean).length > 0;
+
+                if (hasPaymentDates) {
+                    return (
+                        <div className="text-sm max-h-[80px] overflow-y-auto space-y-1">
+                            {paymentDates}
+                        </div>
+                    );
+                } else {
+                    return <div className="text-sm">{client.paid}</div>;
+                }
+            },
             className: "min-w-[180px]",
         },
     ];
