@@ -18,6 +18,8 @@ export default function create({}) {
         cicil: "",
         code: "", // Add code field
         fase_pembayaran: [{ cicilan: "", tanggal: "" }],
+        add_ons_drone: false,
+        add_ons_production: false,
     });
 
     useEffect(() => {
@@ -240,6 +242,49 @@ export default function create({}) {
                                     message={errors.package}
                                     className="mt-2 dark:text-red-400"
                                 />
+                            </div>
+
+                            <div className="mb-6 grid grid-cols-2">
+                                <div className="col-span-1">
+                                    <InputLabel
+                                        htmlFor="add_ons_drone"
+                                        value="Add Ons Drone"
+                                        className="dark:text-gray-300 mb-2"
+                                    />
+                                    <div className="flex gap-3 items-center">
+                                        <input
+                                            type="checkbox"
+                                            id="add_ons_drone"
+                                            checked={data.add_ons_drone || false}
+                                            onChange={(e) =>
+                                                setData("add_ons_drone", !data.add_ons_drone)
+                                            }
+                                        />
+                                        <label htmlFor="add_ons_drone">
+                                            Add ons drone
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="col-span-1">
+                                    <InputLabel
+                                        htmlFor="add_ons_production"
+                                        value="Add Ons Production"
+                                        className="dark:text-gray-300 mb-2"
+                                    />
+                                    <div className="flex gap-3 items-center">
+                                        <input
+                                            type="checkbox"
+                                            id="add_ons_production"
+                                            value={data.add_ons_production || false}
+                                            onChange={() =>
+                                            setData("add_ons_production", !data.add_ons_production)
+                                            }
+                                        />
+                                        <label htmlFor="add_ons_production">
+                                            Add ons production
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="mb-6">
