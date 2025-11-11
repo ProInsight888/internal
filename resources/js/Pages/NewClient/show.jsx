@@ -139,6 +139,22 @@ export default function Show({ client, contracts }) {
                                     label="Package"
                                     value={client.package}
                                 />
+                                <InfoField
+                                    label="Add ons"
+                                    value={
+                                        client.add_ons_drone === 1
+                                            ? "Add ons drone"
+                                            : ""
+                                    }
+                                />
+                                <InfoField
+                                    label="Add ons"
+                                    value={
+                                        client.add_ons_production === 1
+                                            ? "Add ons production"
+                                            : ""
+                                    }
+                                />
                             </div>
 
                             {/* Payment Info */}
