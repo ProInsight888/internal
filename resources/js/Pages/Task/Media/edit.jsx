@@ -286,17 +286,19 @@ export default function edit({
                                         }
                                     >
                                         {selectedUsers.length > 0 ? (
-                                            selectedUsers.map((user) => (
+                                            selectedUsers.map((assignee) => (
                                                 <span
-                                                    key={user.id}
+                                                    key={assignee.id}
                                                     className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded flex items-center mr-2 mb-2"
                                                 >
-                                                    {user.name}
+                                                    {users.map((user, index) => {
+                                                        return parseInt(assignee.id) === user.id ? user.name : ''
+                                                    })}
                                                     <button
                                                         type="button"
                                                         onClick={(e) => {
                                                             e.stopPropagation();
-                                                            removeUser(user.id);
+                                                            removeUser(assignee.id);
                                                         }}
                                                         className="ml-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200"
                                                     >
