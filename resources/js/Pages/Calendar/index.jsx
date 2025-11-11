@@ -124,7 +124,7 @@ export default function index({ ev }) {
 
     const { success, deleted: deleteMessage } = usePage().props.flash ?? {};
 
-    // console.log(customMenu);
+    // console.log(ev[0].googleEvent.start.dateTime.slice(0, 10));
 
     let number_event = 1;
 
@@ -246,12 +246,28 @@ export default function index({ ev }) {
                     <tbody>
                         {ev.map((e) => (
                             <tr className=" border-b relative bg-gray-100 border-black dark:border-gray-300 dark:bg-gray-800 hover:bg-gray-50 hover:dark:bg-gray-700">
-                                <td className="text-black dark:text-white">{number_event++}</td>
+                                <td className="text-black dark:text-white">
+                                    {number_event++}
+                                </td>
                                 <td>{e?.googleEvent.summary}</td>
                                 <td>
-                                    {e?.googleEvent.start.dateTime.slice(0, 10)}{" "}
+                                    {new Date(
+                                        e?.googleEvent.start.dateTime
+                                    ).toLocaleDateString("id-ID", {
+                                        day: "2-digit",
+                                        month: "short",
+                                        year: "numeric",
+                                        timeZone: "Asia/Jakarta",
+                                    })}{" "}
                                     -{" "}
-                                    {e?.googleEvent.end.dateTime.slice(0, 10)}
+                                    {new Date(
+                                        e?.googleEvent.start.dateTime
+                                    ).toLocaleDateString("id-ID", {
+                                        day: "2-digit",
+                                        month: "short",
+                                        year: "numeric",
+                                        timeZone: "Asia/Jakarta",
+                                    })}
                                 </td>
                                 <td>
                                     {e?.googleEvent.start.dateTime.slice(
