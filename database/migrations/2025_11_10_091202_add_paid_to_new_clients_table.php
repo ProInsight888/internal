@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('new_clients', function (Blueprint $table) {
             $table->string('paid') -> nullable();
+            $table->boolean('add_ons_drone') -> nullable();
+            $table->boolean('add_ons_production') -> nullable();
         });
     }            
 
@@ -23,6 +25,8 @@ return new class extends Migration
     {
         Schema::table('new_clients', function (Blueprint $table) {
             $table->dropColumn('paid');
+            $table->dropColumn('add_ons_drone');
+            $table->dropColumn('add_ons_production');
         });
     }
 };

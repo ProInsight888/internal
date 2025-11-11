@@ -32,6 +32,9 @@ class newClient extends Model
         'pic_title',
         'pic_position',
         'price',
+        'paid',
+        'add_ons_drone',
+        'add_ons_production',
     ];
 
     public function getRouteKeyName()

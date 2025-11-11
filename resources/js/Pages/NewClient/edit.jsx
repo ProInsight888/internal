@@ -22,8 +22,21 @@ export default function edit({ clients }) {
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
 
-        return `${year}/${month}/${day}`;
+        return `${year}-${month}-${day}`;
     };
+
+    // function normalizeDate(str) {
+    //     if (!str) return "";
+    //     const parts = str.replace(/\//g, "-").split("-");
+    //     if (parts.length !== 3) return "";
+    //     const [d, m, y] = parts;
+    //     const fullYear = y.length === 2 ? "20" + y : y;
+    //     return `${fullYear}-${m}-${d}`;
+    // }
+
+    // const formatted = normalizeDate(clients?.paid);
+
+    // console.log(formatted)
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
         company_name: clients?.company_name || "",
@@ -35,12 +48,15 @@ export default function edit({ clients }) {
         package: clients?.package || "",
         status: clients?.status || "",
         cicil: clients?.cicilans.length || "",
-        paid: clients?.paid || "",
+        paid: clients?.paid || null,
         fase_pembayaran: clients?.cicilans?.map((c, i) => ({
             cicilan: c.cicilan || "",
             tanggal: c.tanggal || "",
             status_cicilan: c.status_cicilan || "false",
         })) || [{ cicilan: "", tanggal: "", checked: "false" }],
+        add_ons_drone: (clients?.add_ons_drone !== 1 ? false : true) || false,
+        add_ons_production:
+            (clients?.add_ons_production !== 1 ? false : true) || false,
     });
 
     console.log(data);
@@ -264,6 +280,63 @@ export default function edit({ clients }) {
                                             className="mt-2 dark:text-red-400"
                                         />
                                     </div>
+
+                                    <div
+                                                                    className={`mb-6 grid col-span-2 grid-cols-2 ${
+                                                                        data.package === "Photo & Video"
+                                                                    ? '' : 'hidden'}`}
+                                                                >
+                                                                    <div className="col-span-1">
+                                                                        <InputLabel
+                                                                            htmlFor="add_ons_drone"
+                                                                            value="Add Ons Drone"
+                                                                            className="dark:text-gray-300 mb-2"
+                                                                        />
+                                                                        <div className="flex gap-3 items-center">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                id="add_ons_drone"
+                                                                                checked={
+                                                                                    data.add_ons_drone || false
+                                                                                }
+                                                                                onChange={(e) =>
+                                                                                    setData(
+                                                                                        "add_ons_drone",
+                                                                                        !data.add_ons_drone
+                                                                                    )
+                                                                                }
+                                                                            />
+                                                                            <label htmlFor="add_ons_drone">
+                                                                                Add ons drone
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-span-1">
+                                                                        <InputLabel
+                                                                            htmlFor="add_ons_production"
+                                                                            value="Add Ons Production"
+                                                                            className="dark:text-gray-300 mb-2"
+                                                                        />
+                                                                        <div className="flex gap-3 items-center">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                id="add_ons_production"
+                                                                                checked={
+                                                                                    data.add_ons_production || false
+                                                                                }
+                                                                                onChange={() =>
+                                                                                    setData(
+                                                                                        "add_ons_production",
+                                                                                        !data.add_ons_production
+                                                                                    )
+                                                                                }
+                                                                            />
+                                                                            <label htmlFor="add_ons_production">
+                                                                                Add ons production
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
                                     {/* Example: Location field - also full width if needed */}
                                     <div className="md:col-span-2">
