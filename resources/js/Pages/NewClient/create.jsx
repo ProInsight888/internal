@@ -244,7 +244,11 @@ export default function create({}) {
                                 />
                             </div>
 
-                            <div className="mb-6 grid grid-cols-2">
+                            <div
+                                className={`mb-6 grid grid-cols-2 ${
+                                    data.package === "Photo & Video"
+                                ? '' : 'hidden'}`}
+                            >
                                 <div className="col-span-1">
                                     <InputLabel
                                         htmlFor="add_ons_drone"
@@ -255,9 +259,14 @@ export default function create({}) {
                                         <input
                                             type="checkbox"
                                             id="add_ons_drone"
-                                            checked={data.add_ons_drone || false}
+                                            checked={
+                                                data.add_ons_drone || false
+                                            }
                                             onChange={(e) =>
-                                                setData("add_ons_drone", !data.add_ons_drone)
+                                                setData(
+                                                    "add_ons_drone",
+                                                    !data.add_ons_drone
+                                                )
                                             }
                                         />
                                         <label htmlFor="add_ons_drone">
@@ -275,9 +284,14 @@ export default function create({}) {
                                         <input
                                             type="checkbox"
                                             id="add_ons_production"
-                                            value={data.add_ons_production || false}
+                                            value={
+                                                data.add_ons_production || false
+                                            }
                                             onChange={() =>
-                                            setData("add_ons_production", !data.add_ons_production)
+                                                setData(
+                                                    "add_ons_production",
+                                                    !data.add_ons_production
+                                                )
                                             }
                                         />
                                         <label htmlFor="add_ons_production">
