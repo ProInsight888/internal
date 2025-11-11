@@ -365,9 +365,16 @@ const TaskModal = ({
     setData,
     onSubmit,
     user,
+    users,
     processing,
 }) => {
     if (!isOpen) return null;
+
+    const assignee_name = users.map((user_name, index) => {
+        // console.log(user_name.id === parseInt(task.penanggung_jawab))
+        return user_name.id === parseInt(task.penanggung_jawab)
+    })
+    // console.log(task.penanggung_jawab)
 
     return (
         <div
@@ -422,7 +429,10 @@ const TaskModal = ({
                                 Assignee:
                             </span>
                             <p className="font-medium dark:text-white">
-                                {task.penanggung_jawab}
+                                {users.map((user) => 
+                                    user.id === parseInt(task?.penanggung_jawab) ? user.name : ""
+                                    
+                                    )}
                             </p>
                         </div>
                         <div>
@@ -676,7 +686,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     const submitTask = (e) => {
         e.preventDefault();
         // console.log(data.uuid);
-        put(route("marketing_submit.update", { marketing: data.uuid }), {
+        put(route("marketing.update", { marketing: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),
         });
@@ -685,7 +695,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <AuthenticatedLayout>
-                <Head title="marketing Team Task Management" />
+                <Head title="Marketing Team Task Management" />
                 <TaskSideBar
                     users={users}
                     tasks={tasks}
@@ -905,6 +915,7 @@ export default function TaskIndex({ tasks, userName, users }) {
                         onClose={closeModal}
                         data={data}
                         user={user}
+                        users={users}
                         setData={setData}
                         onSubmit={submitTask}
                         processing={processing}
