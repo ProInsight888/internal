@@ -57,6 +57,7 @@ class NewClientController extends Controller
             'Installments' => 'cicil'
         ];
 
+        dd($request);
 
 
         $validated = $request->validate([
