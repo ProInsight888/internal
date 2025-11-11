@@ -22,6 +22,8 @@ export default function create({}) {
         add_ons_production: false,
     });
 
+    // console.log(data)
+
     useEffect(() => {
         const jumlah = parseInt(data.cicil || 0);
 
@@ -284,7 +286,7 @@ export default function create({}) {
                                         <input
                                             type="checkbox"
                                             id="add_ons_production"
-                                            value={
+                                            checked={
                                                 data.add_ons_production || false
                                             }
                                             onChange={() =>
@@ -453,6 +455,28 @@ export default function create({}) {
                                     className="mt-2 dark:text-red-400"
                                 />
                             </div>
+                            {data.status === "Lunas" && (
+                                <div>
+                                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                                        Date Paid
+                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <TextInput
+                                            type="date"
+                                            id="paid"
+                                            name="paid"
+                                            value={data.paid}
+                                            className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                            onChange={(e) =>
+                                                setData(
+                                                    "paid",
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="mb-4 grid grid-cols-2 gap-5">
                                 {data.status === "Cicil" &&
