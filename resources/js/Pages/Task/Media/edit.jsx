@@ -42,7 +42,11 @@ export default function edit({
     const [showOptionTitle, setShowOptionTitle] = useState(false);
     const [showOptionFormat, setShowOptionFormat] = useState(false);
     const [showOptionDescription, setShowOptionDescription] = useState(false);
+<<<<<<< HEAD
+    const [showOptionCompany, setShowOptionCompany] = useState(false);
+=======
         const [showOptionCompany, setShowOptionCompany] = useState(false);
+>>>>>>> ff8955fc646eda21d150a0c3567a0ddb7a0851d6
     const [responsiblePopUp, setResponsiblePopUp] = useState(false);
     const [searchUser, setSearchUser] = useState("");
     const [selectedUsers, setSelectedUsers] = useState(arr);
@@ -126,9 +130,7 @@ export default function edit({
         setData("penanggung_jawab", dataSelectUser);
 
         put(route("media.update", { media: task.uuid }), {
-            onSuccess: () => {
-                
-            },
+            onSuccess: () => {},
         });
     }
 
@@ -145,7 +147,7 @@ export default function edit({
                                 {/* Back to Tasks Button */}
                                 <Link
                                     href={route("media.index")}
-                                    className="inline-flex items-center text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200 bg-white/20 hover:bg-white/30 rounded-lg px-4 py-2 backdrop-blur-sm border border-white/30 md:flex"
+                                    className="inline-flex items-center text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200 bg-white/20 hover:bg-white/30 rounded-lg px-4 py-2 backdrop-blur-sm border border-white/30"
                                 >
                                     <svg
                                         className="w-4 h-4 mr-2"
@@ -208,7 +210,7 @@ export default function edit({
                                     />
 
                                     {showOptionTitle &&
-                                        task_title.length > 0 && (
+                                        data.task_title.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
                                 overflow-y-auto animate-fadeIn"
@@ -315,7 +317,7 @@ export default function edit({
                                         Penanggung Jawab
                                     </label>
                                     <div
-                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2 bg-white dark:bg-gray-700"
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2 min-h-[42px] bg-white dark:bg-gray-700"
                                         onClick={() =>
                                             setResponsiblePopUp(true)
                                         }

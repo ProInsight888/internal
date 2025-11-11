@@ -412,7 +412,7 @@ export default function Create({
                                     <div className="relative">
                                         <TextInput
                                             type="text"
-                                            name="company" // Changed from "task_company" to "company" to match your form data
+                                            name="company"
                                             value={data.company}
                                             autoComplete="off"
                                             placeholder="Enter Company Name"
@@ -765,7 +765,7 @@ export default function Create({
                                         onChange={descriptionChange}
                                         id="description"
                                         name="description"
-                                        placeholder="Enter task description"
+                                        placeholder="Enter task description"    
                                         onFocus={() =>
                                             setShowOptionDescription(true)
                                         }

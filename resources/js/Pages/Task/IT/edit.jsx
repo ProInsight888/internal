@@ -192,19 +192,24 @@ export default function edit({
                                         onChange={titleChange}
                                         id="task_title"
                                         onFocus={() => setShowOptionTitle(true)}
-                                        onBlur={() => setShowOptionTitle(false)}
+                                        onBlur={() =>
+                                            setTimeout(
+                                                () => setShowOptionTitle(false),
+                                                150
+                                            )
+                                        }
                                         placeholder="Enter task title"
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                                    focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                                                    bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                            focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                         autoComplete="off"
                                     />
 
                                     {showOptionTitle &&
-                                        task_title.length > 0 && (
+                                        data.task_title.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
-                                                        overflow-y-auto animate-fadeIn"
+                                overflow-y-auto animate-fadeIn"
                                             >
                                                 {task_title
                                                     .filter((option) =>
@@ -270,7 +275,7 @@ export default function edit({
                                         Penanggung Jawab
                                     </label>
                                     <div
-                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2 bg-white dark:bg-gray-700"
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2 min-h-[42px] bg-white dark:bg-gray-700"
                                         onClick={() =>
                                             setResponsiblePopUp(true)
                                         }
@@ -531,17 +536,21 @@ export default function edit({
                                             setShowOptionFormat(true)
                                         }
                                         onBlur={() =>
-                                            setShowOptionFormat(false)
+                                            setTimeout(
+                                                () =>
+                                                    setShowOptionFormat(false),
+                                                150
+                                            )
                                         }
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                                    focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                                                    bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                                        focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                     />
                                     {showOptionFormat &&
-                                        task_format.length > 0 && (
+                                        data.task_format.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
-                                                        overflow-y-auto animate-fadeIn"
+                                                            overflow-y-auto animate-fadeIn"
                                             >
                                                 {task_format
                                                     .filter((option) =>
@@ -554,7 +563,11 @@ export default function edit({
                                                     .map((option, i) => (
                                                         <div
                                                             key={i}
-                                                            onMouseDown={() => {
+                                                            onMouseDown={(
+                                                                e
+                                                            ) => {
+                                                                e.preventDefault();
+                                                                e.stopPropagation();
                                                                 setData(
                                                                     "task_format",
                                                                     option.task_format
@@ -563,13 +576,18 @@ export default function edit({
                                                                     false
                                                                 );
                                                             }}
-                                                            className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                ${
-                                                                    highlightedIndex ===
+                                                            onMouseEnter={() =>
+                                                                setHighlightedIndex(
                                                                     i
-                                                                        ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
-                                                                        : "hover:bg-gray-50 dark:hover:bg-gray-600"
-                                                                }`}
+                                                                )
+                                                            }
+                                                            className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
+                                                                    ${
+                                                                        highlightedIndex ===
+                                                                        i
+                                                                            ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
+                                                                            : "hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                                    }`}
                                                         >
                                                             <span className="text-gray-900 dark:text-white">
                                                                 {
@@ -689,15 +707,15 @@ export default function edit({
                                             setShowOptionDescription(false)
                                         }
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                                    focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                                                    bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none"
+                                                                                            focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                                                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none"
                                         rows={4}
                                     />
                                     {showOptionDescription &&
                                         description.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
-                                                        overflow-y-auto animate-fadeIn"
+                                                                                                overflow-y-auto animate-fadeIn"
                                             >
                                                 {description
                                                     .filter((option) =>
@@ -728,12 +746,12 @@ export default function edit({
                                                                 )
                                                             }
                                                             className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                ${
-                                                                    highlightedIndex ===
-                                                                    i
-                                                                        ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
-                                                                        : "hover:bg-gray-50 dark:hover:bg-gray-600"
-                                                                }`}
+                                                                                                        ${
+                                                                                                            highlightedIndex ===
+                                                                                                            i
+                                                                                                                ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
+                                                                                                                : "hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                                                                        }`}
                                                         >
                                                             <span className="truncate text-gray-900 dark:text-white">
                                                                 {

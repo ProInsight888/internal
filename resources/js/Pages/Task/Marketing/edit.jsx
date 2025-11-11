@@ -71,7 +71,7 @@ export default function edit({
 
     // Apply selected users to form data
     const applySelectedUsers = () => {
-        const dataSelectUser = selectedUsers.map((user) => user.name).join(",");
+        const dataSelectUser = selectedUsers.map((user) => user.id).join(",");
         setData("penanggung_jawab", dataSelectUser);
         setResponsiblePopUp(false);
     };
@@ -122,13 +122,11 @@ export default function edit({
     function submit(e) {
         e.preventDefault();
 
-        const dataSelectUser = selectedUsers.map((user) => user.id).join(",");
+        const dataSelectUser = selectedUsers.map((user) => user.name).join(",");
         setData("penanggung_jawab", dataSelectUser);
 
         put(route("marketing.update", { marketing: task.uuid }), {
-            onSuccess: () => {
-                
-            },
+            onSuccess: () => {},
         });
     }
 
@@ -147,24 +145,27 @@ export default function edit({
                                     href={route("marketing.index")}
                                     className="inline-flex items-center text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200 bg-white/20 hover:bg-white/30 rounded-lg px-4 py-2 backdrop-blur-sm border border-white/30"
                                 >
-                                    <svg 
-                                        className="w-4 h-4 mr-2" 
-                                        fill="none" 
-                                        stroke="currentColor" 
+                                    <svg
+                                        className="w-4 h-4 mr-2"
+                                        fill="none"
+                                        stroke="currentColor"
                                         viewBox="0 0 24 24"
                                     >
-                                        <path 
-                                            strokeLinecap="round" 
-                                            strokeLinejoin="round" 
-                                            strokeWidth={2} 
-                                            d="M10 19l-7-7m0 0l7-7m-7 7h18" 
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
                                         />
                                     </svg>
                                     Back to Tasks
                                 </Link>
                             </div>
-                            <h2 className="text-xl font-bold text-white">Edit Marketing Task Details</h2>
-                            <div className="w-20"></div> {/* Spacer for balance */}
+                            <h2 className="text-xl font-bold text-white">
+                                Edit Marketing Task Details
+                            </h2>
+                            <div className="w-20"></div>{" "}
+                            {/* Spacer for balance */}
                         </div>
                     </div>
 
@@ -205,7 +206,7 @@ export default function edit({
                                     />
 
                                     {showOptionTitle &&
-                                        task_title.length > 0 && (
+                                        data.task_title.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
                                 overflow-y-auto animate-fadeIn"
@@ -312,7 +313,7 @@ export default function edit({
                                         Penanggung Jawab
                                     </label>
                                     <div
-                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2  bg-white dark:bg-gray-700"
+                                        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-[0.5rem] cursor-pointer flex items-center flex-wrap gap-2 min-h-[42px] bg-white dark:bg-gray-700"
                                         onClick={() =>
                                             setResponsiblePopUp(true)
                                         }
@@ -369,11 +370,36 @@ export default function edit({
                                                 />
                                             </SelectTrigger>
                                             <SelectContent className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
-                                                <SelectItem value="Idle" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Idle</SelectItem>
-                                                <SelectItem value="On Progress" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">On Progress</SelectItem>
-                                                <SelectItem value="Pending" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Pending</SelectItem>
-                                                <SelectItem value="In Review" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">In Review</SelectItem>
-                                                <SelectItem value="Completed" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">Completed</SelectItem>
+                                                <SelectItem
+                                                    value="Idle"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    Idle
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="On Progress"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    On Progress
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="Pending"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    Pending
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="In Review"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    In Review
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="Completed"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    Completed
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
 
@@ -679,9 +705,24 @@ export default function edit({
                                                 />
                                             </SelectTrigger>
                                             <SelectContent className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
-                                                <SelectItem value="Monthly" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">📅 Monthly</SelectItem>
-                                                <SelectItem value="By Request" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">📝 By Request</SelectItem>
-                                                <SelectItem value="Urgent" className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">⚡ Urgent</SelectItem>
+                                                <SelectItem
+                                                    value="Monthly"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    📅 Monthly
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="By Request"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    📝 By Request
+                                                </SelectItem>
+                                                <SelectItem
+                                                    value="Urgent"
+                                                    className="text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                >
+                                                    ⚡ Urgent
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
 

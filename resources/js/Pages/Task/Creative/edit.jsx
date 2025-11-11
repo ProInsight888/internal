@@ -126,9 +126,7 @@ export default function edit({
         setData("penanggung_jawab", dataSelectUser);
 
         put(route("creative.update", { creative: task.uuid }), {
-            onSuccess: () => {
-                
-            },
+            onSuccess: () => {},
         });
     }
 
@@ -194,19 +192,24 @@ export default function edit({
                                         onChange={titleChange}
                                         id="task_title"
                                         onFocus={() => setShowOptionTitle(true)}
-                                        onBlur={() => setShowOptionTitle(false)}
+                                        onBlur={() =>
+                                            setTimeout(
+                                                () => setShowOptionTitle(false),
+                                                150
+                                            )
+                                        }
                                         placeholder="Enter task title"
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                                    focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                                                    bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                            focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                         autoComplete="off"
                                     />
 
                                     {showOptionTitle &&
-                                        task_title.length > 0 && (
+                                        data.task_title.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
-                                                        overflow-y-auto animate-fadeIn"
+                                overflow-y-auto animate-fadeIn"
                                             >
                                                 {task_title
                                                     .filter((option) =>
