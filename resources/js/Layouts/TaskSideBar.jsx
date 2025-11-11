@@ -303,7 +303,7 @@ export default function TaskSideBar({
                                 <RefreshCw className="h-4 w-4" />
                                 <span className="ml-2 text-xs font-semibold uppercase tracking-wider">
                                     SORT & FILTERS
-                                </span>`w`
+                                </span>
                             </div>
 
                             <div className="space-y-4">
@@ -322,7 +322,7 @@ export default function TaskSideBar({
                                         <option value="">All Users</option>
                                         {Array.from(
                                             new Set(
-                                                users.map((user) => user.id)
+                                                users.map((user) => user.name)
                                             )
                                         ).map((user, idx) => (
                                             <option key={idx} value={user}>

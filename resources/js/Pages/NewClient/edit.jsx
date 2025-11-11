@@ -22,7 +22,7 @@ export default function edit({ clients }) {
         const month = String(date.getMonth() + 1).padStart(2, "0");
         const day = String(date.getDate()).padStart(2, "0");
 
-        return `${year}-${month}-${day}`;
+        return `${year}/${month}/${day}`;
     };
 
     const { data, setData, put, post, processing, errors, reset } = useForm({
@@ -35,6 +35,7 @@ export default function edit({ clients }) {
         package: clients?.package || "",
         status: clients?.status || "",
         cicil: clients?.cicilans.length || "",
+        paid: clients?.paid || "",
         fase_pembayaran: clients?.cicilans?.map((c, i) => ({
             cicilan: c.cicilan || "",
             tanggal: c.tanggal || "",
@@ -264,7 +265,6 @@ export default function edit({ clients }) {
                                         />
                                     </div>
 
-                                    {/* Add more fields here as needed */}
                                     {/* Example: Location field - also full width if needed */}
                                     <div className="md:col-span-2">
                                         <InputLabel
@@ -397,6 +397,28 @@ export default function edit({ clients }) {
                                                         onChange={(e) =>
                                                             setData(
                                                                 "cicil",
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+                                        {data.status === "Lunas" && (
+                                            <div>
+                                                <span className="text-sm text-gray-600 dark:text-gray-400">
+                                                    Date Paid
+                                                </span>
+                                                <div className="flex items-center gap-2">
+                                                    <TextInput
+                                                        type="date"
+                                                        id="paid"
+                                                        name="paid"
+                                                        value={data.paid}
+                                                        className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                "paid",
                                                                 e.target.value
                                                             )
                                                         }
