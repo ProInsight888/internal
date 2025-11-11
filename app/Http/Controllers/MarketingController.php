@@ -29,15 +29,15 @@ class MarketingController extends Controller
     {
         $users = User::all();
         $companies = newClient::all();
-        $task_title = task::select('task_title')
+        $task_title = marketing::select('task_title')
             ->distinct()
             ->orderBy('task_title')
             ->get();
-        $task_format = task::select('task_format')
+        $task_format = marketing::select('task_format')
             ->distinct()
             ->orderBy('task_format')
             ->get();
-        $description = task::select('description')
+        $description = marketing::select('description')
             ->distinct()
             ->orderBy('task_title')
             ->orderBy('description')

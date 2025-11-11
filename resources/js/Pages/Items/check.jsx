@@ -127,7 +127,7 @@ export default function create({ users, dataEvent, event, tanggal }) {
                                             <button
                                                 key={category}
                                                 onClick={() => setActiveCategory(category)}
-                                                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                                                className={`px-3 py-1.5 rounded-lg text-sm font-medium capitalize transition-all ${
                                                     activeCategory === category 
                                                         ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md' 
                                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
@@ -151,7 +151,7 @@ export default function create({ users, dataEvent, event, tanggal }) {
                                                 <li key={category}>
                                                     <button
                                                         onClick={() => setActiveCategory(category)}
-                                                        className={`w-full text-left px-4 py-2.5 rounded-lg transition-all flex justify-between items-center ${
+                                                        className={`w-full capitalize text-left px-4 py-2.5 rounded-lg transition-all flex justify-between items-center ${
                                                             activeCategory === category
                                                                 ? 'bg-indigo-100 text-indigo-700 font-medium shadow-sm dark:bg-indigo-800 dark:text-indigo-200'
                                                                 : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600'
