@@ -30,6 +30,11 @@ export default function edit({
         deadline: task?.deadline || "",
     });
 
+    console.log(users);
+    const assignedUserIds = task.penanggung_jawab
+        ? task.penanggung_jawab.split(",").map((id) => parseInt(id.trim()))
+        : [];
+
     const pj = data.penanggung_jawab;
     const arr = pj
         ? pj.split(",").map((name) => {
@@ -284,7 +289,7 @@ export default function edit({
                                             selectedUsers.map((user) => (
                                                 <span
                                                     key={user.id}
-                                                    className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded flex items-center"
+                                                    className="bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 text-xs font-medium px-2.5 py-0.5 rounded flex items-center mr-2 mb-2"
                                                 >
                                                     {user.name}
                                                     <button
