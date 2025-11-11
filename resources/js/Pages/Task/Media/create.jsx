@@ -412,7 +412,7 @@ export default function Create({
                                     <div className="relative">
                                         <TextInput
                                             type="text"
-                                            name="company" // Changed from "task_company" to "company" to match your form data
+                                            name="company"
                                             value={data.company}
                                             autoComplete="off"
                                             placeholder="Enter Company Name"
@@ -426,15 +426,24 @@ export default function Create({
                                             onFocus={() =>
                                                 setShowOptionCompany(true)
                                             }
-                                            onBlur={() =>
-                                                setTimeout(
-                                                    () =>
-                                                        setShowOptionCompany(
-                                                            false
-                                                        ),
-                                                    150
-                                                )
-                                            }
+                                            onBlur={() => {
+                                                setTimeout(() => {
+                                                    setShowOptionCompany(false);
+
+                                                    const validCompanies =
+                                                        companies.map((c) =>
+                                                            c.company_name.toLowerCase()
+                                                        );
+                                                    if (
+                                                        data.company &&
+                                                        !validCompanies.includes(
+                                                            data.company.toLowerCase()
+                                                        )
+                                                    ) {
+                                                        setData("company", "");
+                                                    }
+                                                }, 150);
+                                            }}
                                             className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
                                                         focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
                                                         bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
@@ -459,6 +468,7 @@ export default function Create({
                                                                     data.company.toLowerCase()
                                                                 )
                                                         )
+
                                                         .map((name, idx) => (
                                                             <div
                                                                 key={idx}

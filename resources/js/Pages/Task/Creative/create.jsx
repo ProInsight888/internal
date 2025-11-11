@@ -426,18 +426,27 @@ export default function Create({
                                             onFocus={() =>
                                                 setShowOptionCompany(true)
                                             }
-                                            onBlur={() =>
-                                                setTimeout(
-                                                    () =>
-                                                        setShowOptionCompany(
-                                                            false
-                                                        ),
-                                                    150
-                                                )
-                                            }
+                                            onBlur={() => {
+                                                setTimeout(() => {
+                                                    setShowOptionCompany(false);
+
+                                                    const validCompanies =
+                                                        companies.map((c) =>
+                                                            c.company_name.toLowerCase()
+                                                        );
+                                                    if (
+                                                        data.company &&
+                                                        !validCompanies.includes(
+                                                            data.company.toLowerCase()
+                                                        )
+                                                    ) {
+                                                        setData("company", "");
+                                                    }
+                                                }, 150);
+                                            }}
                                             className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                            focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                                        focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                         />
 
                                         {/* Company Dropdown Options */}
@@ -459,6 +468,7 @@ export default function Create({
                                                                     data.company.toLowerCase()
                                                                 )
                                                         )
+
                                                         .map((name, idx) => (
                                                             <div
                                                                 key={idx}
@@ -476,7 +486,7 @@ export default function Create({
                                                                     );
                                                                 }}
                                                                 className="px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                        hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white"
+                                                                    hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white"
                                                             >
                                                                 {/* Highlight matching text */}
                                                                 <span className="text-gray-900 dark:text-white">
@@ -570,14 +580,14 @@ export default function Create({
                                             )
                                         }
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                            focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                                        focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                     />
                                     {showOptionFormat &&
                                         task_format.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
-                                overflow-y-auto animate-fadeIn"
+                                                            overflow-y-auto animate-fadeIn"
                                             >
                                                 {task_format
                                                     .filter((option) =>
@@ -609,11 +619,12 @@ export default function Create({
                                                                 )
                                                             }
                                                             className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                        ${
-                                            highlightedIndex === i
-                                                ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
-                                                : "hover:bg-gray-50 dark:hover:bg-gray-600"
-                                        }`}
+                                                                    ${
+                                                                        highlightedIndex ===
+                                                                        i
+                                                                            ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
+                                                                            : "hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                                    }`}
                                                         >
                                                             {/* Highlight matching text */}
                                                             <span className="text-gray-900 dark:text-white">
@@ -765,7 +776,7 @@ export default function Create({
                                         onChange={descriptionChange}
                                         id="description"
                                         name="description"
-                                        placeholder="Enter task description"    
+                                        placeholder="Enter task description"
                                         onFocus={() =>
                                             setShowOptionDescription(true)
                                         }
@@ -773,21 +784,25 @@ export default function Create({
                                             setShowOptionDescription(false)
                                         }
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                                                focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                                                                bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none"
+                                                                                                            focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
+                                                                                                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 resize-none"
                                         rows={4}
                                     />
                                     {showOptionDescription &&
                                         description.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
-                                                                    overflow-y-auto animate-fadeIn"
+                                                                                                                overflow-y-auto animate-fadeIn"
                                             >
                                                 {description
-                                                .filter((option) => 
-                                                    option.description.toLowerCase().includes(data.description.toLowerCase()))
-                                                .map(
-                                                    (option, i) => (
+                                                    .filter((option) =>
+                                                        option.description
+                                                            .toLowerCase()
+                                                            .includes(
+                                                                data.description.toLowerCase()
+                                                            )
+                                                    )
+                                                    .map((option, i) => (
                                                         <div
                                                             key={i}
                                                             onMouseDown={(
@@ -808,12 +823,12 @@ export default function Create({
                                                                 )
                                                             }
                                                             className={`px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                            ${
-                                                                                highlightedIndex ===
-                                                                                i
-                                                                                    ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
-                                                                                    : "hover:bg-gray-50 dark:hover:bg-gray-600"
-                                                                            }`}
+                                                                                                                        ${
+                                                                                                                            highlightedIndex ===
+                                                                                                                            i
+                                                                                                                                ? "bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300"
+                                                                                                                                : "hover:bg-gray-50 dark:hover:bg-gray-600"
+                                                                                                                        }`}
                                                         >
                                                             <span className="truncate text-gray-900 dark:text-white">
                                                                 {
@@ -821,8 +836,7 @@ export default function Create({
                                                                 }
                                                             </span>
                                                         </div>
-                                                    )
-                                                )}
+                                                    ))}
                                             </div>
                                         )}
                                 </div>
