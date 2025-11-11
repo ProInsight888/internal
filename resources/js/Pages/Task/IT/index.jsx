@@ -1,6 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TaskSideBar from "@/Layouts/TaskSideBar";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
+import { parse } from "postcss";
 import { useState, useEffect } from "react";
 
 // Status Badge Component
@@ -429,10 +430,11 @@ const TaskModal = ({
                                 Assignee:
                             </span>
                             <p className="font-medium dark:text-white">
-                                {users.map((user) => 
-                                    user.id === parseInt(task?.penanggung_jawab) ? user.name : ""
-                                    
-                                    )}
+                                {task?.penanggung_jawab
+                                    ?.split(',')
+                                    .map(id => users.find(u => u.id === parseInt(id))?.name)
+                                    .join(', ') || "N/A"
+                                }
                             </p>
                         </div>
                         <div>
