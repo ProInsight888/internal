@@ -195,7 +195,7 @@ export default function Create({
                                     />
 
                                     {showOptionTitle &&
-                                        data.task_title.length > 0 && (
+                                        task_title.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
                                 overflow-y-auto animate-fadeIn"
@@ -442,7 +442,7 @@ export default function Create({
 
                                         {/* Company Dropdown Options */}
                                         {showOptionCompany &&
-                                            data.company.length > 0 && (
+                                            companies.length > 0 && (
                                                 <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg overflow-y-auto animate-fadeIn">
                                                     {Array.from(
                                                         new Set(
@@ -574,7 +574,7 @@ export default function Create({
                             bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                     />
                                     {showOptionFormat &&
-                                        data.task_format.length > 0 && (
+                                        task_format.length > 0 && (
                                             <div
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
                                 overflow-y-auto animate-fadeIn"
@@ -783,7 +783,10 @@ export default function Create({
                                                 className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg 
                                                                     overflow-y-auto animate-fadeIn"
                                             >
-                                                {description.map(
+                                                {description
+                                                .filter((option) => 
+                                                    option.description.toLowerCase().includes(data.description.toLowerCase()))
+                                                .map(
                                                     (option, i) => (
                                                         <div
                                                             key={i}
