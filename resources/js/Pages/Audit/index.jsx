@@ -169,7 +169,6 @@ export default function AuditIndex({ audits }) {
                                 />
                             </div>
 
-                            {/* User Filter - FIXED */}
                             <div>
                                 <InputLabel
                                     htmlFor="userFilter"

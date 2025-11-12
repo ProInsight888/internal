@@ -240,7 +240,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-600">
+                <div className="flex justify-between items-center pt-4 border-t border-black dark:border-white">
                     {/* Category Badge */}
                     <div className="flex items-center">
                         <CategoryBadge category={task.category} />
