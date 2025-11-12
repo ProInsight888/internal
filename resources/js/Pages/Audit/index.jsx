@@ -65,46 +65,63 @@ export default function AuditIndex({ audits }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [userFilter, setUserFilter] = useState("all");
     const [actionFilter, setActionFilter] = useState("all");
-    const [dateFilter, setDateFilter] = useState("all");
 
-    // Filter data based on search and filters
-    const filteredAudits = audits.data
-        .filter((audit) => {
-            const matchesSearch =
-                searchTerm === "" ||
-                audit.created_by
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase()) ||
-                audit.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                audit.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                audit.change_section
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase());
+    // Get unique users for filter dropdown - FIXED
+    const uniqueUsers = [...new Set(audits.data.map(audit => audit.created_by))];
 
-            const matchesUser =
-                userFilter === "all" || audit.user.name === userFilter;
-            const matchesAction =
-                actionFilter === "all" || audit.action === actionFilter;
-            return matchesSearch && matchesUser && matchesAction;
-        })
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Filter data based on search and filters - FIXED: Only filter current page data
+    const filteredAudits = audits.data.filter((audit) => {
+        const matchesSearch =
+            searchTerm === "" ||
+            audit.created_by.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            audit.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            audit.change_section.toLowerCase().includes(searchTerm.toLowerCase());
+
+        const matchesUser =
+            userFilter === "all" || audit.created_by === userFilter;
+        const matchesAction =
+            actionFilter === "all" || audit.action === actionFilter;
+            
+        return matchesSearch && matchesUser && matchesAction;
+    });
 
     const getActionColor = (action) => {
         switch (action) {
-            case 'Created': return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900 dark:text-green-300 dark:border-green-800';
-            case 'Updated': return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:border-blue-800';
-            case 'Deleted': return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900 dark:text-red-300 dark:border-red-800';
-            case 'Submitted': return 'bg-yellow-100 text-yellow-800 border-yellow-400 dark:bg-yellow-500 dark:text-yellow-700 dark:border-yellow-800'
-            default: return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800';
+            case "Created":
+                return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900 dark:text-green-300 dark:border-green-800";
+            case "Updated":
+                return "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:border-blue-800";
+            case "Deleted":
+                return "bg-red-100 text-red-800 border-red-200 dark:bg-red-900 dark:text-red-300 dark:border-red-800";
+            case "Submitted":
+                return "bg-yellow-100 text-yellow-800 border-yellow-400 dark:bg-yellow-500 dark:text-yellow-700 dark:border-yellow-800";
+            default:
+                return "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800";
         }
     };
 
+    // Format date properly - FIXED
     const formatDateTime = (dateString) => {
-        const date = new Date(dateString);
-        return {
-            date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-            time: date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
-        };
+        try {
+            const date = new Date(dateString);
+            return {
+                date: date.toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                }),
+                time: date.toLocaleTimeString("id-ID", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                }),
+            };
+        } catch (error) {
+            return {
+                date: "Invalid Date",
+                time: "",
+            };
+        }
     };
 
     return (
@@ -152,7 +169,6 @@ export default function AuditIndex({ audits }) {
                                 />
                             </div>
 
-                            {/* User Filter */}
                             <div>
                                 <InputLabel
                                     htmlFor="userFilter"
@@ -168,6 +184,11 @@ export default function AuditIndex({ audits }) {
                                     className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                 >
                                     <option value="all">All Users</option>
+                                    {uniqueUsers.map((userName) => (
+                                        <option key={userName} value={userName}>
+                                            {userName}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
 
@@ -186,7 +207,7 @@ export default function AuditIndex({ audits }) {
                                     }
                                     className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
                                 >
-                                    <option value="all" hidden>All Actions</option>
+                                    <option value="all">All Actions</option>
                                     <option value="Created">Created</option>
                                     <option value="Updated">Updated</option>
                                     <option value="Deleted">Deleted</option>
@@ -229,7 +250,7 @@ export default function AuditIndex({ audits }) {
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                                     {filteredAudits.map((audit) => {
-                                        console.log(audit)
+                                        const formattedDate = formatDateTime(audit.created_at);
                                         return (
                                             <tr
                                                 key={audit.id}
@@ -238,20 +259,14 @@ export default function AuditIndex({ audits }) {
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
-                                                            {audit.created_by.charAt(
-                                                                0
-                                                            )}
+                                                            {audit.created_by?.charAt(0) || 'U'}
                                                         </div>
                                                         <div className="ml-4">
                                                             <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                                {
-                                                                    audit.created_by
-                                                                }
+                                                                {audit.created_by}
                                                             </div>
                                                             <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                                {
-                                                                    audit.change_section
-                                                                }
+                                                                {audit.change_section}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -263,36 +278,17 @@ export default function AuditIndex({ audits }) {
                                                                 audit.action
                                                             )}`}
                                                         >
-                                                            {audit.action
-                                                                .charAt(0)
-                                                                .toUpperCase() +
-                                                                audit.action.slice(
-                                                                    1
-                                                                )}
+                                                            {audit.action?.charAt(0)?.toUpperCase() +
+                                                                audit.action?.slice(1) || 'Unknown'}
                                                         </span>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {new Date(audit.date).toLocaleString('id-ID', {
-                                                            day: "2-digit",
-                                                            month: "short",
-                                                            year: "numeric",
-                                                            timeZone: "Asia/Jakarta"
-                                                        })}
+                                                        {formattedDate.date}
                                                     </div>
                                                     <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                        {new Date(
-                                                            `${audit.date} ${audit.time}`
-                                                        ).toLocaleTimeString(
-                                                            "id-ID",
-                                                            {
-                                                                hour: "2-digit",
-                                                                minute: "2-digit",
-                                                                timeZone:
-                                                                    "Asia/Jakarta",
-                                                            }
-                                                        )}
+                                                        {formattedDate.time}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -300,6 +296,15 @@ export default function AuditIndex({ audits }) {
                                     })}
                                 </tbody>
                             </table>
+                            
+                            {/* No results message */}
+                            {filteredAudits.length === 0 && (
+                                <div className="text-center py-8">
+                                    <div className="text-gray-500 dark:text-gray-400">
+                                        No audit logs found matching your filters.
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* Pagination */}
@@ -313,5 +318,5 @@ export default function AuditIndex({ audits }) {
                 </div>
             </div>
         </AuthenticatedLayout>
-    ); 
+    );
 }

@@ -240,7 +240,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-600">
+                <div className="flex justify-between items-center pt-4 border-t border-black dark:border-white">
                     {/* Category Badge */}
                     <div className="flex items-center">
                         <CategoryBadge category={task.category} />
@@ -357,6 +357,7 @@ const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
 };
 
 // Task Modal Component
+// Task Modal Component
 const TaskModal = ({
     task,
     isOpen,
@@ -370,20 +371,49 @@ const TaskModal = ({
 }) => {
     if (!isOpen) return null;
 
+    const handleDelete = () => {
+        if (
+            window.confirm(
+                "Are you sure you want to delete this task? This action cannot be undone."
+            )
+        ) {
+            router.delete(route("it.destroy", task.uuid), {
+                onSuccess: () => {
+                    const event = new CustomEvent("toast", {
+                        detail: {
+                            type: "success",
+                            message: "Task deleted successfully!",
+                        },
+                    });
+                    window.dispatchEvent(event);
+                    onClose(); // Close the modal after deletion
+                },
+                onError: (errors) => {
+                    console.error(errors);
+                    const event = new CustomEvent("toast", {
+                        detail: {
+                            type: "error",
+                            message: "Failed to delete task. Please try again.",
+                        },
+                    });
+                    window.dispatchEvent(event);
+                },
+            });
+        }
+    };
+
     const assignee_name = users.map((user_name, index) => {
-        // console.log(user_name.id === parseInt(task.penanggung_jawab))
-        return user_name.id === parseInt(task.penanggung_jawab)
-    })
-    // console.log(task.penanggung_jawab)
+        return user_name.id === parseInt(task.penanggung_jawab);
+    });
 
     return (
         <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-            onClick={onClose} // Add this to close when clicking overlay
+            onClick={onClose}
         >
             <div
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-                onClick={(e) => e.stopPropagation()} // Add this to prevent closing when clicking inside
+                onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
@@ -429,10 +459,15 @@ const TaskModal = ({
                                 Assignee:
                             </span>
                             <p className="font-medium dark:text-white">
-                                {users.map((user) => 
-                                    user.id === parseInt(task?.penanggung_jawab) ? user.name : ""
-                                    
-                                    )}
+                                {task?.penanggung_jawab
+                                    .split(",")
+                                    .map(
+                                        (id) =>
+                                            users.find(
+                                                (u) => u.id === parseInt(id)
+                                            )?.name
+                                    )
+                                    .join(", ") || "N/A"}
                             </p>
                         </div>
                         <div>
@@ -514,7 +549,7 @@ const TaskModal = ({
                             </div>
                         )}
 
-                    {/* Submission Form */}
+                    {/* Submission Form for non-Cancel tasks */}
                     {task.status !== "Cancel" && (
                         <div>
                             <h3 className="text-lg font-semibold mb-3 flex items-center dark:text-white">
@@ -613,6 +648,39 @@ const TaskModal = ({
                                     </div>
                                 </form>
                             )}
+                        </div>
+                    )}
+
+                    {/* Delete Button for Canceled Tasks */}
+                    {task.status === "Cancel" && user.role !== "member" && (
+                        <div className="mt-4 flex justify-end space-x-3">
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                            >
+                                Close
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-medium rounded-lg shadow-md transition-all duration-300 disabled:opacity-50"
+                                disabled={processing}
+                            >
+                                <svg
+                                    className="w-5 h-5 mr-2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                    />
+                                </svg>
+                                Delete Task
+                            </button>
                         </div>
                     )}
                 </div>

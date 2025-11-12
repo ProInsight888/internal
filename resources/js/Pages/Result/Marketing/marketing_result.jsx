@@ -97,7 +97,7 @@ export default function TaskResult({ tasks, users, userName }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        put(route("marketing_review.update", { marketing_review: data.uuid }), {
+        put(route("marketing.update", { marketing: data.uuid }), {
             onSuccess: () => {
                 window.location.reload();
             },
@@ -110,7 +110,7 @@ export default function TaskResult({ tasks, users, userName }) {
             header={
                 <div className="bg-gradient-to-r from-blue-600 to-purple-700 p-6 rounded-2xl text-white shadow-lg mb-8 dark:from-blue-800 dark:to-purple-900">
                     <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-                        IT Task Results Review 🎯
+                        Marketing Task Results Review 🎯
                     </h1>
                     <p className="text-lg opacity-90">
                         Review completed tasks and provide feedback to your team
@@ -283,7 +283,11 @@ export default function TaskResult({ tasks, users, userName }) {
                                                         Assignee
                                                     </p>
                                                     <p className="font-medium text-gray-800 dark:text-gray-200">
-                                                        {task.penanggung_jawab}
+                                                        {task.penanggung_jawab
+                                                        .split(',')
+                                                        .map(id => users.find(u => u.id === parseInt(id))?.name)
+                                                        .join(', ') || "N/A"
+                                                        }
                                                     </p>
                                                 </div>
                                                 <div>
@@ -444,7 +448,11 @@ export default function TaskResult({ tasks, users, userName }) {
                                             Assignee
                                         </h4>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                                            {selectedTask.penanggung_jawab}
+                                            {selectedTask.penanggung_jawab
+                                            .split(',')
+                                            .map(id => users.find(u => u.id === parseInt(id))?.name)
+                                            .join(', ') || "N/A"
+                                            }
                                         </p>
                                     </div>
                                     <div className="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">
