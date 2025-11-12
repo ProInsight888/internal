@@ -179,7 +179,7 @@
                     <li><b>Pihak Pertama</b> berhak menerima <b><i>Design</i> Hari Besar</b> untuk tahun 2025.</li>
                     <li><b>Pihak Pertama</b> berhak memberikan masukan, arahan, atau pendapat kepada <b>Pihak Kedua</b> sehubungan dengan strategi promosi usaha yang dimilikinya. </li>
                     <li>Kedua belah pihak memiliki hak untuk mengakhiri kontrak apabila salah satu pihak tidak menjalankan kewajibannya sebagaimana mestinya. </li>
-                    <li>Seluruh hasil karya <i>disign</i>, foto, dan video yang telah dipublikasikan selama masa kerjasama merupakan hak milik penuh dari <b>Pihak Pertama</b>. </li>
+                    <li>Seluruh hasil karya <i>Design</i>, foto, dan video yang telah dipublikasikan selama masa kerjasama merupakan hak milik penuh dari <b>Pihak Pertama</b>. </li>
                 </ol>
             </div>
         </div>
