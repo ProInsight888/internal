@@ -165,7 +165,7 @@
                     <li><b>Pihak Pertama</b> dapat memberikan informasi dan pengetahuan produk <b><i>(product knowledge)</i></b> yang dibutuhkan <b>Pihak Kedua</b> dalam menyusun konten dan setelah telah selesai <b>Pihak Pertama</b> dapat melalukan pengecekan dan revisi. </li>
                     <li><b>Pihak Pertama</b> juga berkewajiban memberikan informasi terbaru yang akan dijadikan materi promosi, seperti diskon, <i>giveaway</i>, serta kegiatan perusahaan (misalnya pameran), guna menghindari kekeliruan informasi di media sosial. </li>
                     <li><b>Pihak Kedua</b> tidak bertanggung jawab terhadap biaya iklan berbayar (misalnya <i>endorse, paid promote,</i> dan sebagainya), kecuali terdapat pembayaran terpisah dari <b>Pihak Pertama</b> kepada <b>Pihak Kedua</b> untuk pelaksanaan iklan tersebut. Dan akan dikenakan <i>fee</i> jasa sekali selama sebulan sebesar Rp 50.000. </li>
-                    <li>Apabila <b>Para Pihak</b> menghentikan perjanjian kerjasama secara sepihak tanpa kesepakatan bersama, maka <b>Pihak yang menghentikan perjanjian kerjasama secara sepihak</b> wajib membayarkan kompensasi sebesar nilai sisa kontrak yang telah disepakati dalam perjanjian ini. </li>
+                    <li>Apabila <b>salah satu pihak</b> menghentikan perjanjian kerjasama secara sepihak tanpa persetujuan bersama, maka <b>pihak yang menghentikan</b> perjanjian wajib membayarkan kompensasi sebesar nilai sisa kontrak yang telah disepakati.</li>
                 </ol>
             </div>
         </div>
@@ -197,7 +197,7 @@
         <div class="text-center"><b>Pasal 4</b></div>
         <div class="text-center"><b>Biaya</b></div>
         <div>
-           Pihak Kedua telah menyetujui untuk mengambil paket <b>“{{ $contract->package }}”</b>, dengan total biaya sebesar Rp {{ number_format($contract->price, 0, ',', '.') }}, yang mencakup seluruh komponen layanan sebagaimana tercantum dalam perjanjian ini. Pembayaran atas biaya tersebut wajib diselesaikan oleh Pihak Kedua sesuai dengan ketentuan dan jadwal pembayaran yang telah ditentukan dalam kontrak ini.
+           Pihak Pertama telah menyetujui untuk mengambil paket <b>“{{ $contract->package }}”</b>, dengan total biaya sebesar Rp {{ number_format($contract->price, 0, ',', '.') }}, yang mencakup seluruh komponen layanan sebagaimana tercantum dalam perjanjian ini. Pembayaran atas biaya tersebut wajib diselesaikan oleh Pihak Pertama sesuai dengan ketentuan dan jadwal pembayaran yang telah ditentukan dalam kontrak ini.
         </div>
         
         <br>
