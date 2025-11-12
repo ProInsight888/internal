@@ -453,9 +453,9 @@ export default function edit({ clients }) {
                                             </select>
                                         </div>
                                         {data.status === "Cicil" && (
-                                            <div>
+                                            <div className="mt-5">
                                                 <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                    installments
+                                                    Installments
                                                 </span>
                                                 <div className="flex items-center gap-2">
                                                     <TextInput
@@ -478,7 +478,7 @@ export default function edit({ clients }) {
                                             </div>
                                         )}
                                         {data.status === "Lunas" && (
-                                            <div>
+                                            <div className="mt-5">
                                                 <span className="text-sm text-gray-600 dark:text-gray-400">
                                                     Date Paid
                                                 </span>

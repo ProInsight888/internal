@@ -349,7 +349,7 @@ const AttendanceForm = ({
                         <select
                             value={data.absence}
                             onChange={(e) =>
-                                setAbsenceData("absence", e.target.value)
+                                setData("absence", e.target.value)
                             }
                             className="flex justify-center pl-10 p-2.5 w-full border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-transparent shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         >
@@ -378,7 +378,7 @@ const AttendanceForm = ({
 const AttendanceTable = ({ absens }) => {
     const dayNames = (inputDate) => {
         const date = new Date(inputDate);
-        return date.toLocaleDateString("id-ID", { weekday: "long" });
+        return date.toLocaleDateString("en-US", { weekday: "long" });
     };
 
     return (
@@ -770,6 +770,8 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         errors: absenceErrors,
     } = useForm({ absence: "Hadir" });
 
+    console.log(absenceData )
+
     const {
         data: taskData,
         setData: setTaskData,
@@ -1081,182 +1083,3 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         </AuthenticatedLayout>
     );
 }
-
-// THROWABLES
-{
-    /* Tasks Section */
-}
-{
-    /* <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-200 dark:border-gray-700 shadow-md">
-                        <div className="text-xl font-bold pb-3 border-b border-gray-200 dark:border-gray-600 flex items-center gap-2 mb-4">
-                            <span className=" text-white p-2 rounded-lg">
-                                ✅
-                            </span>
-                            Task Management
-                        </div>
-                        <div className="w-full flex flex-col gap-4">
-                            <TaskSection
-                                title="On Progress"
-                                tasks={onProgressStatus}
-                                borderColor="#3B82F6"
-                                bgColor="#3B82F6"
-                                textColor="#FFFFFF"
-                                isHidden={hiddenSections["on-progress"]}
-                                toggleHidden={() =>
-                                    toggleSection("on-progress")
-                                }
-                                showDescriptionIndex={showDescriptionIndex}
-                                setShowDescriptionIndex={
-                                    setShowDescriptionIndex
-                                }
-                                icon="🚀"
-                            />
-
-                            <TaskSection
-                                title="Pending"
-                                tasks={pendingStatus}
-                                borderColor="#F59E0B"
-                                bgColor="#F59E0B"
-                                textColor="#FFFFFF"
-                                isHidden={hiddenSections["pending"]}
-                                toggleHidden={() => toggleSection("pending")}
-                                showDescriptionIndex={showDescriptionIndex}
-                                setShowDescriptionIndex={
-                                    setShowDescriptionIndex
-                                }
-                                icon="⏳"
-                            />
-
-                            <TaskSection
-                                title="Approved"
-                                tasks={approvedStatus}
-                                borderColor="#10B981"
-                                bgColor="#10B981"
-                                textColor="#FFFFFF"
-                                isHidden={hiddenSections["approved"]}
-                                toggleHidden={() => toggleSection("approved")}
-                                showDescriptionIndex={showDescriptionIndex}
-                                setShowDescriptionIndex={
-                                    setShowDescriptionIndex
-                                }
-                                icon="✅"
-                            />
-
-                            <TaskSection
-                                title="In Review"
-                                tasks={inReviewStatus}
-                                borderColor="#8B5CF6"
-                                bgColor="#8B5CF6"
-                                textColor="#FFFFFF"
-                                isHidden={hiddenSections["in-review"]}
-                                toggleHidden={() => toggleSection("in-review")}
-                                showDescriptionIndex={showDescriptionIndex}
-                                setShowDescriptionIndex={
-                                    setShowDescriptionIndex
-                                }
-                                icon="🔍"
-                            />
-
-                            <TaskSection
-                                title="Rejected"
-                                tasks={rejectedStatus}
-                                borderColor="#EF4444"
-                                bgColor="#EF4444"
-                                textColor="#FFFFFF"
-                                isHidden={hiddenSections["rejected"]}
-                                toggleHidden={() => toggleSection("rejected")}
-                                showDescriptionIndex={showDescriptionIndex}
-                                setShowDescriptionIndex={
-                                    setShowDescriptionIndex
-                                }
-                                icon="❌"
-                            />
-
-                            <TaskSection
-                                title="Revision"
-                                tasks={revisionStatus}
-                                borderColor="#F97316"
-                                bgColor="#F97316"
-                                textColor="#FFFFFF"
-                                isHidden={hiddenSections["revision"]}
-                                toggleHidden={() => toggleSection("revision")}
-                                showDescriptionIndex={showDescriptionIndex}
-                                setShowDescriptionIndex={
-                                    setShowDescriptionIndex
-                                }
-                                icon="📝"
-                            />
-
-                            <TaskSection
-                                title="Idle"
-                                tasks={idleStatus}
-                                borderColor="#6B7280"
-                                bgColor="#6B7280"
-                                textColor="#FFFFFF"
-                                isHidden={hiddenSections["idle"]}
-                                toggleHidden={() => toggleSection("idle")}
-                                showDescriptionIndex={showDescriptionIndex}
-                                setShowDescriptionIndex={
-                                    setShowDescriptionIndex
-                                }
-                                icon="💤"
-                            />
-                        </div>
-                    </div> */
-}
-
-// Task categorization
-// const categorizeTasks = () => {
-
-// const teams = ["it", "marketing", "media", "creative"];
-
-// teams.forEach((team) => {
-//     tasks[team].forEach((task) => {
-//         const deadline = new Date(task.deadline);
-//         const today = new Date();
-
-//         deadline.setHours(0, 0, 0, 0);
-//         today.setHours(0, 0, 0, 0);
-
-//         const diffTime = deadline - today;
-//         const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-//         if (remainingDays < 0 && remainingDays <= 3) {
-//             urgent.push(task);
-//         } else if (remainingDays >= 4 && remainingDays <= 7) {
-//             soon.push(task);
-//         } else if (remainingDays >= 8) {
-//             up_coming.push(task);
-//         }
-//     });
-
-// console.log(urgent, soon, up_coming);
-
-//     return { urgent, soon, up_coming };
-// });
-// }
-
-// const { urgent, soon, up_coming } = categorizeTasks();
-
-// Task status filtering
-
-//TANYA KO FELIXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-// const filterTasksByStatus = (status) =>
-//     tasks.filter((task) => task.status === status);
-
-// const onProgressStatus = filterTasksByStatus("On Progress");
-// const pendingStatus = filterTasksByStatus("Pending");
-// const approvedStatus = filterTasksByStatus("Approved");
-// const inReviewStatus = filterTasksByStatus("In Review");
-// const rejectedStatus = filterTasksByStatus("Rejected");
-// const revisionStatus = filterTasksByStatus("Revision");
-// const idleStatus = filterTasksByStatus("Idle");
-
-// const task_not_include_cancle_approved =
-//     idleStatus.length +
-//     rejectedStatus.length +
-//     pendingStatus.length +
-//     inReviewStatus.length +
-//     onProgressStatus.length;
-
