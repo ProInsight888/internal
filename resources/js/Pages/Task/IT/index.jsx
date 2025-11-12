@@ -688,7 +688,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     const submitTask = (e) => {
         e.preventDefault();
         // console.log(data.uuid);
-        put(route("it.update", { it: data.uuid }), {
+        put(route("it_submit.update", { it: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),
         });

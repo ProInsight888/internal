@@ -31,15 +31,15 @@ export default function Audit({ audits }) {
             : audits.data
                   .filter((audit) =>
                       activeFilter === "Unread"
-                          ? !readAudits.includes(audit.uuid)
+                          ? !readAudits.includes(audit.id)
                           : audit.type === activeFilter
                   )
                   .sort((a, b) => {
-                      const aRead = readAudits.includes(a.uuid);
-                      const bRead = readAudits.includes(b.uuid);
+                      const aRead = readAudits.includes(a.id);
+                      const bRead = readAudits.includes(b.id);
 
                       if (aRead !== bRead) return aRead ? 1 : -1; // unread first
-                      return new Date(a.date) - new Date(a.date); // newest first
+                      return new Date(b.date) - new Date(a.date); // newest first
                   });
 
     return (
@@ -144,7 +144,7 @@ export default function Audit({ audits }) {
                                     ).toLocaleTimeString("id-ID", {
                                         hour: "2-digit",
                                         minute: "2-digit",
-                                        timeZone: "Asia/Jakarta"
+                                        timeZone: "Asia/Jakarta",
                                     })}
                                 </span>
                                 <span
