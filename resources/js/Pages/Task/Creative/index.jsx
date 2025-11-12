@@ -754,7 +754,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     const submitTask = (e) => {
         e.preventDefault();
         // console.log(data.uuid);
-        put(route("creative.update", { creative: data.uuid }), {
+        put(route("creative_submit.update", { creative: data.uuid }), {
             onSuccess: () => window.location.reload(),
             onError: (e) => console.error("PUT error", e),
         });
