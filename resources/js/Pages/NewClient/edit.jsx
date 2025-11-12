@@ -455,7 +455,7 @@ export default function edit({ clients }) {
                                         {data.status === "Cicil" && (
                                             <div className="mt-5">
                                                 <span className="text-sm text-gray-600 dark:text-gray-400">
-                                                    installments
+                                                    Installments
                                                 </span>
                                                 <div className="flex items-center gap-2">
                                                     <TextInput
