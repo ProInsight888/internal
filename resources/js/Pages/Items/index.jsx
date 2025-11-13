@@ -122,7 +122,7 @@ export default function EquipmentInventory({
                                                 className="bg-gray-50 dark:bg-gray-700 rounded-lg md:rounded-xl p-3 md:p-4 border border-gray-200 dark:border-gray-600"
                                             >
                                                 <div
-                                                    className={`flex items-center p-2 md:p-3 rounded-lg mb-3 md:mb-4 bg-red-900 text-white`}
+                                                    className={`flex items-center p-2 md:p-3 rounded-lg mb-3 md:mb-4 bg-gradient-to-l from-purple-500 to-indigo-600 text-white`}
                                                 >
                                                     <h3 className="text-lg md:text-xl font-bold capitalize">
                                                         {category}
