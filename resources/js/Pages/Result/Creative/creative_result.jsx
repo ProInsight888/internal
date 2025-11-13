@@ -97,7 +97,7 @@ export default function TaskResult({ tasks, users, userName }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        put(route("creative.update", { creative: data.uuid }), {
+        put(route("creative_review.update", { creative_review: data.uuid }), {
             onSuccess: () => {
                 window.location.reload();
             },
@@ -284,10 +284,19 @@ export default function TaskResult({ tasks, users, userName }) {
                                                     </p>
                                                     <p className="font-medium text-gray-800 dark:text-gray-200">
                                                         {task.penanggung_jawab
-                                                        .split(',')
-                                                        .map(id => users.find(u => u.id === parseInt(id))?.name)
-                                                        .join(', ') || "N/A"
-                                                        }
+                                                            .split(",")
+                                                            .map(
+                                                                (id) =>
+                                                                    users.find(
+                                                                        (u) =>
+                                                                            u.id ===
+                                                                            parseInt(
+                                                                                id
+                                                                            )
+                                                                    )?.name
+                                                            )
+                                                            .join(", ") ||
+                                                            "N/A"}
                                                     </p>
                                                 </div>
                                                 <div>
@@ -449,10 +458,16 @@ export default function TaskResult({ tasks, users, userName }) {
                                         </h4>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">
                                             {selectedTask.penanggung_jawab
-                                            .split(',')
-                                            .map(id => users.find(u => u.id === parseInt(id))?.name)
-                                            .join(', ') || "N/A"
-                                            }
+                                                .split(",")
+                                                .map(
+                                                    (id) =>
+                                                        users.find(
+                                                            (u) =>
+                                                                u.id ===
+                                                                parseInt(id)
+                                                        )?.name
+                                                )
+                                                .join(", ") || "N/A"}
                                         </p>
                                     </div>
                                     <div className="bg-gray-50 p-4 rounded-lg dark:bg-gray-700">

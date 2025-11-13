@@ -1,32 +1,133 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage, Link } from "@inertiajs/react";
-import { Fragment, use, useState } from "react";
+import { Head, useForm, usePage, Link, router } from "@inertiajs/react";
+import { useState, useMemo, useCallback } from "react";
 
+// Status Badge Component
 const StatusBadge = ({ status }) => {
     const statusColors = {
-        "On Progress": "#3B82F6", // blue
-        Pending: "#F59E0B", // amber
-        Approved: "#10B981", // emerald
-        "In Review": "#8B5CF6", // violet
-        Rejected: "#EF4444", // red
-        Revision: "#F97316", // orange
-        Idle: "#6B7280", // gray
-        // Lunas: "#EC4899", // pink
-        Lunas: "#14B8A6", // teal
+        "On Progress": "#3B82F6",
+        Pending: "#F59E0B",
+        Approved: "#10B981",
+        "In Review": "#8B5CF6",
+        Rejected: "#EF4444",
+        Revision: "#F97316",
+        Idle: "#6B7280",
+        Lunas: "#14B8A6",
     };
 
     return (
         <div
-            className={`${
-                statusColors[status] ||
-                "bg-gray-200 text-black dark:bg-gray-700 dark:text-white"
-            } font-medium py-1.5 px-3 rounded-full text-center text-xs shadow-sm dark:shadow-gray-800`}
+            className="font-medium py-1.5 px-3 rounded-full text-center text-xs shadow-sm dark:shadow-gray-800"
+            style={{
+                backgroundColor: statusColors[status] || "#6B7280",
+                color: "white",
+            }}
         >
             {status}
         </div>
     );
 };
 
+// Icon Components
+const CloseIcon = () => (
+    <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+    >
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+        />
+    </svg>
+);
+
+const InfoIcon = () => (
+    <svg
+        className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+    >
+        <path
+            fillRule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+            clipRule="evenodd"
+        />
+    </svg>
+);
+
+const WarningIcon = () => (
+    <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+        <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+            clipRule="evenodd"
+        />
+    </svg>
+);
+
+const CheckIcon = () => (
+    <svg
+        className="w-5 h-5 mr-2 text-green-600 dark:text-green-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+    >
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+    </svg>
+);
+
+const LinkIcon = () => (
+    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path
+            fillRule="evenodd"
+            d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
+            clipRule="evenodd"
+        />
+    </svg>
+);
+
+const SubmitIcon = () => (
+    <svg
+        className="w-5 h-5 mr-2"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+    >
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+        />
+    </svg>
+);
+
+const DeleteIcon = () => (
+    <svg
+        className="w-5 h-5 mr-2"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+    >
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+        />
+    </svg>
+);
+
+// Task Modal Component
 const TaskModal = ({
     task,
     isOpen,
@@ -34,19 +135,65 @@ const TaskModal = ({
     data,
     setData,
     onSubmit,
-    userName,
+    user,
+    users,
     processing,
 }) => {
+    const handleDelete = useCallback(() => {
+        if (
+            window.confirm(
+                "Are you sure you want to delete this task? This action cannot be undone."
+            )
+        ) {
+            router.delete(route("media.destroy", task.uuid), {
+                onSuccess: () => {
+                    window.dispatchEvent(
+                        new CustomEvent("toast", {
+                            detail: {
+                                type: "success",
+                                message: "Task deleted successfully!",
+                            },
+                        })
+                    );
+                    onClose();
+                },
+                onError: () => {
+                    window.dispatchEvent(
+                        new CustomEvent("toast", {
+                            detail: {
+                                type: "error",
+                                message:
+                                    "Failed to delete task. Please try again.",
+                            },
+                        })
+                    );
+                },
+            });
+        }
+    }, [task.uuid, onClose]);
+
     if (!isOpen) return null;
+
+    const isAssignee = task.penanggung_jawab
+        ?.split(",")
+        .map((id) => parseInt(id.trim()))
+        .includes(user.id);
+
+    const assigneeNames =
+        task.penanggung_jawab
+            ?.split(",")
+            .map((id) => users.find((u) => u.id === parseInt(id))?.name)
+            .filter(Boolean)
+            .join(", ") || "N/A";
 
     return (
         <div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-            onClick={onClose} // Add this to close when clicking overlay
+            onClick={onClose}
         >
             <div
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-                onClick={(e) => e.stopPropagation()} // Add this to prevent closing when clicking inside
+                onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
                 <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-t-2xl text-white">
@@ -66,19 +213,7 @@ const TaskModal = ({
                             onClick={onClose}
                             className="text-white hover:text-blue-200 transition-colors"
                         >
-                            <svg
-                                className="w-6 h-6"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
+                            <CloseIcon />
                         </button>
                     </div>
                 </div>
@@ -92,7 +227,7 @@ const TaskModal = ({
                                 Assignee:
                             </span>
                             <p className="font-medium dark:text-white">
-                                {task.penanggung_jawab}
+                                {assigneeNames}
                             </p>
                         </div>
                         <div>
@@ -116,7 +251,15 @@ const TaskModal = ({
                                 Deadline:
                             </span>
                             <p className="font-medium text-red-600 dark:text-red-400">
-                                {task.deadline}
+                                {new Date(task.deadline).toLocaleDateString(
+                                    "id-ID",
+                                    {
+                                        day: "2-digit",
+                                        month: "short",
+                                        year: "numeric",
+                                        timeZone: "Asia/Jakarta",
+                                    }
+                                )}
                             </p>
                         </div>
                     </div>
@@ -124,17 +267,7 @@ const TaskModal = ({
                     {/* Description */}
                     <div>
                         <h3 className="text-lg font-semibold mb-3 flex items-center dark:text-white">
-                            <svg
-                                className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                    clipRule="evenodd"
-                                ></path>
-                            </svg>
+                            <InfoIcon />
                             Description
                         </h3>
                         <p className="text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600">
@@ -142,22 +275,12 @@ const TaskModal = ({
                         </p>
                     </div>
 
-                    {/* Revision Notice (if rejected) */}
+                    {/* Revision Notice */}
                     {task.status === "Rejected" &&
                         task.rejected_revision?.revision && (
                             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
                                 <h4 className="text-red-800 dark:text-red-300 font-semibold mb-2 flex items-center">
-                                    <svg
-                                        className="w-5 h-5 mr-2"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                            clipRule="evenodd"
-                                        ></path>
-                                    </svg>
+                                    <WarningIcon />
                                     Revision Required
                                 </h4>
                                 <p className="text-red-700 dark:text-red-300">
@@ -170,19 +293,7 @@ const TaskModal = ({
                     {task.status !== "Cancel" && (
                         <div>
                             <h3 className="text-lg font-semibold mb-3 flex items-center dark:text-white">
-                                <svg
-                                    className="w-5 h-5 mr-2 text-green-600 dark:text-green-400"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                </svg>
+                                <CheckIcon />
                                 Submit Your Work
                             </h3>
 
@@ -199,17 +310,7 @@ const TaskModal = ({
                                 <form onSubmit={onSubmit}>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500 dark:text-gray-400">
-                                            <svg
-                                                className="w-5 h-5"
-                                                fill="currentColor"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
-                                                    clipRule="evenodd"
-                                                ></path>
-                                            </svg>
+                                            <LinkIcon />
                                         </div>
                                         <input
                                             type="text"
@@ -220,18 +321,7 @@ const TaskModal = ({
                                             }
                                             placeholder="https://example.com/your-work"
                                             required
-                                            disabled={
-                                                !(task.penanggung_jawab ?? "")
-                                                    ?.split(",")
-                                                    .map((s) =>
-                                                        s.trim().toLowerCase()
-                                                    )
-                                                    .includes(
-                                                        userName
-                                                            .trim()
-                                                            .toLowerCase()
-                                                    )
-                                            }
+                                            disabled={!isAssignee}
                                         />
                                     </div>
                                     <div className="mt-4 flex justify-end space-x-3">
@@ -247,19 +337,7 @@ const TaskModal = ({
                                             className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg shadow-md transition-all duration-300 disabled:opacity-50"
                                             disabled={processing}
                                         >
-                                            <svg
-                                                className="w-5 h-5 mr-2"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                                                />
-                                            </svg>
+                                            <SubmitIcon />
                                             Submit Task
                                         </button>
                                     </div>
@@ -267,12 +345,32 @@ const TaskModal = ({
                             )}
                         </div>
                     )}
+
+                    {/* Delete Button for Canceled Tasks */}
+                    {task.status === "Cancel" && user.role !== "member" && (
+                        <div className="mt-4 flex justify-end space-x-3">
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 font-medium rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                            >
+                                Close
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-medium rounded-lg shadow-md transition-all duration-300 disabled:opacity-50"
+                                disabled={processing}
+                            >
+                                <DeleteIcon />
+                                Delete Task
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     );
 };
-
 
 // Status Card Component
 const StatusCard = ({
@@ -292,7 +390,7 @@ const StatusCard = ({
         <div className="w-full bg-white/20 rounded-full h-2.5 dark:bg-gray-800/30">
             <div
                 className="bg-white h-2.5 rounded-full dark:bg-gray-200"
-                style={{ width: `${(count / total) * 100}%` }}
+                style={{ width: `${total > 0 ? (count / total) * 100 : 0}%` }}
             ></div>
         </div>
     </div>
@@ -321,7 +419,7 @@ const AttendanceForm = ({
                                 fillRule="evenodd"
                                 d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                                 clipRule="evenodd"
-                            ></path>
+                            />
                         </svg>
                     </div>
                     <input
@@ -343,14 +441,12 @@ const AttendanceForm = ({
                                     fillRule="evenodd"
                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
                                     clipRule="evenodd"
-                                ></path>
+                                />
                             </svg>
                         </div>
                         <select
                             value={data.absence}
-                            onChange={(e) =>
-                                setData("absence", e.target.value)
-                            }
+                            onChange={(e) => setData("absence", e.target.value)}
                             className="flex justify-center pl-10 p-2.5 w-full border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-transparent shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         >
                             <option value="Hadir">Hadir</option>
@@ -374,6 +470,30 @@ const AttendanceForm = ({
     </div>
 );
 
+// Helper functions for status colors
+const getAttendanceStatusColor = (status) => {
+    const statusColors = {
+        Hadir: "#10B981",
+        Sakit: "#F59E0B",
+        Izin: "#3B82F6",
+        Cuti: "#8B5CF6",
+        "Ketemu Client": "#EC4899",
+        Lembur: "#F97316",
+        "Pulang Lembur": "#14B8A6",
+        Balek: "#06B6D4",
+    };
+    return statusColors[status] || "#6B7280";
+};
+
+const getClientStatusColor = (status) => {
+    const statusColors = {
+        Lunas: "#10B981",
+        Cicil: "#3B82F6",
+        "Belum Bayar": "#EF4444",
+    };
+    return statusColors[status] || "#ff6868";
+};
+
 // Attendance Table Component
 const AttendanceTable = ({ absens }) => {
     const dayNames = (inputDate) => {
@@ -385,7 +505,7 @@ const AttendanceTable = ({ absens }) => {
         <div className="overflow-x-auto w-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
             <table className="w-full border-collapse">
                 <thead className="w-full bg-gradient-to-r from-blue-500 to-blue-400 text-white">
-                    <tr className="text-xs md:text-sm text-center lg:table-fixed sm:table-auto">
+                    <tr className="text-xs md:text-sm text-center">
                         <th className="px-4 py-3">No</th>
                         <th className="px-4 py-3">Name</th>
                         <th className="px-4 py-3">Status</th>
@@ -486,18 +606,15 @@ const ClientTable = ({ clients }) => (
                                     color: getClientStatusColor(client.status),
                                 }}
                             >
-                                {client.status === "Belum Bayar" ? 'Unpaid' : client.status === 'Cicil' ? 'Installment' : 'Paid'}
+                                {client.status === "Belum Bayar"
+                                    ? "Unpaid"
+                                    : client.status === "Cicil"
+                                    ? "Installment"
+                                    : "Paid"}
                             </span>
                         </td>
                         <td>
-                            <span
-                                className="px-3 py-1.5 rounded-full text-xs font-bold shadow-sm"
-                                style={{
-                                    backgroundColor: `${getClientStatusColor(
-                                        client.status
-                                    )}50`,
-                                }}
-                            >
+                            <span className="px-3 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
                                 {client.code}
                             </span>
                         </td>
@@ -508,85 +625,7 @@ const ClientTable = ({ clients }) => (
     </div>
 );
 
-// Helper functions for status colors
-const getStatusColor = (status) => {
-    const statusColors = {
-        "On Progress": "#3B82F6", // blue
-        Pending: "#F59E0B", // amber
-        Approved: "#10B981", // emerald
-        "In Review": "#8B5CF6", // violet
-        Rejected: "#EF4444", // red
-        Revision: "#F97316", // orange
-        Idle: "#6B7280", // gray
-        Lunas: "#EC4899", // pink
-        Cicil: "#14B8A6", // teal
-    };
-    return statusColors[status] || "#6B7280";
-};
-
-const getAttendanceStatusColor = (status) => {
-    const statusColors = {
-        Hadir: "#10B981", // emerald
-        Sakit: "#F59E0B", // amber
-        Izin: "#3B82F6", // blue
-        Cuti: "#8B5CF6", // violet
-        "Ketemu Client": "#EC4899", // pink
-        Lembur: "#F97316", // orange
-        "Pulang Lembur": "#14B8A6", // teal
-        Balek: "#06B6D4", // cyan
-    };
-    return statusColors[status] || "#6B7280";
-};
-
-const getClientStatusColor = (status) => {
-    const statusColors = {
-        Lunas: "#10B981", // emerald
-        Cicil: "#3B82F6", // blue: "#00ffff"
-    };
-    return statusColors[status] || "#ff6868";
-};
-
-const TaskCard = ({ task, onOpenDetails, index, user_role, users }) => {
-    const deadline = new Date(task.deadline);
-    const today = new Date();
-
-    deadline.setHours(0, 0, 0, 0);
-    today.setHours(0, 0, 0, 0);
-
-    const diffTime = deadline - today;
-    const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    // Get task status information
-    const { status, bgColor, textColor, borderColor, statusText } =
-        getTaskStatus(remainingDays);
-
-    // Format date for display
-    const formattedDate = new Date(task.deadline).toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-    });
-
-    return (
-        <div
-            className={`flex-none w-full rounded-xl border-2 ${borderColor} ${bgColor} p-4 m-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] dark:shadow-gray-800`}
-            onClick={() => {
-                onOpenDetails(task, index), 
-                setTaskData('team', )
-            }}
-        >
-            <TaskStatusBadge status={status} remainingDays={remainingDays} />
-            <TaskTitle title={task.task_title} />
-            <TaskCompany company={task.company} />
-            <TaskDeadline date={formattedDate} />
-            {task.description && (
-                <TaskDescription description={task.description} />
-            )}
-            <TaskAssignee assignee={task.penanggung_jawab} />
-        </div>
-    );
-};
-
+// Task Status Helper
 const getTaskStatus = (remainingDays) => {
     if (remainingDays < 0) {
         return {
@@ -639,6 +678,7 @@ const getTaskStatus = (remainingDays) => {
     }
 };
 
+// Task Status Badge Component
 const TaskStatusBadge = ({ status, remainingDays }) => {
     const statusColors = {
         overdue: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
@@ -651,20 +691,27 @@ const TaskStatusBadge = ({ status, remainingDays }) => {
             "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
     };
 
+    const getStatusText = () => {
+        switch (status) {
+            case "overdue":
+                return `Overdue by ${Math.abs(remainingDays)} day${
+                    Math.abs(remainingDays) !== 1 ? "s" : ""
+                }`;
+            case "due-today":
+                return "Due today";
+            default:
+                return `${remainingDays} day${
+                    remainingDays !== 1 ? "s" : ""
+                } left`;
+        }
+    };
+
     return (
         <div className="flex justify-between items-start mb-3">
             <span
                 className={`px-3 py-1 rounded-full text-xs font-bold ${statusColors[status]} shadow-sm`}
             >
-                {status === "overdue"
-                    ? `Overdue by ${Math.abs(remainingDays)} day${
-                          Math.abs(remainingDays) !== 1 ? "s" : ""
-                      }`
-                    : status === "due-today"
-                    ? "Due today"
-                    : `${remainingDays} day${
-                          remainingDays !== 1 ? "s" : ""
-                      } left`}
+                {getStatusText()}
             </span>
             <div
                 className={`w-3 h-3 rounded-full ${
@@ -678,107 +725,133 @@ const TaskStatusBadge = ({ status, remainingDays }) => {
                         ? "bg-yellow-400"
                         : "bg-green-500"
                 }`}
-            ></div>
+            />
         </div>
     );
 };
 
-const TaskTitle = ({ title }) => (
-    <h3 className="font-bold text-lg mb-2 line-clamp-2 text-gray-800 dark:text-gray-200">
-        {title}
-    </h3>
-);
+// Task Card Component
+const TaskCard = ({ task, onOpenDetails, user, users }) => {
+    const deadline = new Date(task.deadline);
+    const today = new Date();
 
-const TaskCompany = ({ company }) => (
-    <div className="flex items-center mb-3 text-sm text-gray-600 dark:text-gray-400">
-        <svg
-            className="w-4 h-4 mr-1.5 text-blue-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+    deadline.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    const diffTime = deadline - today;
+    const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    const { status, bgColor, borderColor } = getTaskStatus(remainingDays);
+
+    const formattedDate = new Date(task.deadline).toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+    });
+
+    const isAssignee = task.penanggung_jawab
+        ?.split(",")
+        .map((id) => parseInt(id.trim()))
+        .includes(user.id);
+
+    const assigneeNames =
+        task.penanggung_jawab
+            ?.split(",")
+            .map((id) => users.find((u) => u.id === parseInt(id))?.name)
+            .filter(Boolean)
+            .join(", ") || "N/A";
+
+    return (
+        <div
+            className={`flex-none w-full rounded-xl border-2 ${borderColor} ${bgColor} p-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.01] dark:shadow-gray-800`}
+            onClick={() => onOpenDetails(task)}
         >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-6 0H5m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-            />
-        </svg>
-        <span className="truncate">{company}</span>
-    </div>
-);
-
-const TaskDeadline = ({ date }) => (
-    <div className="flex items-center mb-4 text-sm">
-        <svg
-            className="w-4 h-4 mr-1.5 text-purple-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-        >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-        </svg>
-        <span className="font-semibold text-gray-700 dark:text-gray-300">
-            {date}
-        </span>
-    </div>
-);
-
-const TaskDescription = ({ description }) => (
-    <div className="mb-4">
-        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
-            {description}
-        </p>
-    </div>
-);
-
-const TaskAssignee = ({ assignee }) => (
-    <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
-        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-            <svg
-                className="w-4 h-4 mr-1.5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-            >
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-            </svg>
-            <span className="truncate">{assignee}</span>
+            <TaskStatusBadge status={status} remainingDays={remainingDays} />
+            <h3 className="font-bold text-lg mb-2 line-clamp-2 text-gray-800 dark:text-gray-200">
+                {task.task_title}
+            </h3>
+            <div className="flex items-center mb-3 text-sm text-gray-600 dark:text-gray-400">
+                <svg
+                    className="w-4 h-4 mr-1.5 text-blue-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-6 0H5m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                    />
+                </svg>
+                <span className="truncate">{task.company}</span>
+            </div>
+            <div className="flex items-center mb-4 text-sm">
+                <svg
+                    className="w-4 h-4 mr-1.5 text-purple-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                </svg>
+                <span className="font-semibold text-gray-700 dark:text-gray-300">
+                    {formattedDate}
+                </span>
+            </div>
+            {task.description && (
+                <div className="mb-4">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+                        {task.description}
+                    </p>
+                </div>
+            )}
+            <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
+                <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                    <svg
+                        className="w-4 h-4 mr-1.5 text-green-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                    </svg>
+                    <span className="truncate">{assigneeNames}</span>
+                </div>
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 // Main Dashboard Component
-export default function Dashboard({ userName, absens, clients, tasks }) {
-    // State management
+export default function Dashboard({ userName, absens, clients, tasks, users }) {
     const user = usePage().props.auth.user;
-    // console.log(tasks.it)
+
+    // Form handlers
     const {
         data: absenceData,
         setData: setAbsenceData,
         post: postAbsence,
         errors: absenceErrors,
-    } = useForm({ absence: "Hadir" });
-
-    console.log(absenceData )
+    } = useForm({
+        absence: "Hadir",
+    });
 
     const {
         data: taskData,
         setData: setTaskData,
-        post: postTask,
         put: putTask,
         processing: taskProcessing,
-        errors: taskErrors,
     } = useForm({
         uuid: "",
         link: "",
@@ -787,147 +860,128 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
         name: user.name || "",
     });
 
-    // console.log(tasks)
-
-
-    const date = new Date();
-    const today = date.toISOString().slice(0, 10);
+    // State management
+    const today = new Date().toISOString().slice(0, 10);
     const [sortDate, setSortDate] = useState(today);
-    const [showDescriptionIndex, setShowDescriptionIndex] = useState(null);
-    const [selectedFilter, setSelectedFilter] = useState("");
-    const [selectedUser, setSelectedUser] = useState("");
-    const [selectedCompany, setSelectedCompany] = useState("");
-    const [sortDeadline, setSortDeadline] = useState("Desc");
     const [selectedTask, setSelectedTask] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [hiddenSections, setHiddenSections] = useState({
-        "on-progress": true,
-        pending: true,
-        approved: true,
-        "in-review": true,
-        rejected: true,
-        revision: true,
-        idle: true,
-    });
+    // Process user tasks
+    const { taskUserArray, urgent, soon, up_coming, countTask } =
+        useMemo(() => {
+            const teams = ["it", "marketing", "media", "creative"];
+            const taskUserArray = [];
+            const urgent = [];
+            const soon = [];
+            const up_coming = [];
+            let countTask = 0;
 
-    
+            teams.forEach((team) => {
+                if (!tasks[team]) return;
 
-    let taskUserArray = [];
-    const urgent = [];
-    const soon = [];
-    const up_coming = [];
+                tasks[team].forEach((task) => {
+                    const taskWithTeam = { ...task, team };
 
-    // console.log(taskSorted)
+                    if (!task.penanggung_jawab) return;
 
+                    const assignees = task.penanggung_jawab
+                        .split(",")
+                        .map((id) => parseInt(id.trim()));
 
-    let countTask = 0;
+                    const isAssignedToUser = assignees.includes(user.id);
+                    const isNotApproved = task.status !== "Approved";
+                    const isNotCancel = task.status !== "Cancel";
+                    const isNotInReview = task.status !== "In Review";
 
-    const teams = ["it", "marketing", "media", "creative"];
+                    if (
+                        isAssignedToUser &&
+                        isNotApproved &&
+                        isNotCancel &&
+                        isNotInReview
+                    ) {
+                        taskUserArray.push(taskWithTeam);
+                        countTask += 1;
 
-    const checkUrgentTask = (task) => {
-        const deadline = new Date(task.deadline);
-        const today = new Date();
+                        // Calculate remaining days
+                        const deadline = new Date(task.deadline);
+                        const today = new Date();
+                        deadline.setHours(0, 0, 0, 0);
+                        today.setHours(0, 0, 0, 0);
+                        const diffTime = deadline - today;
+                        const remainingDays = Math.ceil(
+                            diffTime / (1000 * 60 * 60 * 24)
+                        );
 
-        deadline.setHours(0, 0, 0, 0);
-        today.setHours(0, 0, 0, 0);
+                        if (remainingDays < 0 || remainingDays <= 3) {
+                            urgent.push(taskWithTeam);
+                        } else if (remainingDays >= 4 && remainingDays <= 7) {
+                            soon.push(taskWithTeam);
+                        } else if (remainingDays >= 8) {
+                            up_coming.push(taskWithTeam);
+                        }
+                    }
+                });
+            });
 
-        const diffTime = deadline - today;
-        const remainingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return { taskUserArray, urgent, soon, up_coming, countTask };
+        }, [tasks, user.id]);
 
-        if (remainingDays < 0 && remainingDays <= 3) {
-            urgent.push(task);
-        } else if (remainingDays >= 4 && remainingDays <= 7) {
-            soon.push(task);
-        } else if (remainingDays >= 8) {
-            up_coming.push(task);
-        }
-    };
+    // Sort tasks by deadline
+    const taskSorted = useMemo(() => {
+        return [...taskUserArray].sort(
+            (a, b) => new Date(a.deadline) - new Date(b.deadline)
+        );
+    }, [taskUserArray]);
 
-
-    
-    // console.log(teams)
-    teams.forEach((team) => {
-        if (!tasks[team]) return;
-        tasks[team].forEach((task) => {
-            task = {...task, team: team}
-            
-            
-            if (!task.penanggung_jawab) return;
-
-            // Split by comma and check if userName is in the list
-            const assignees = task.penanggung_jawab
-                .split(",")
-                .map((name) => parseInt(name.trim()))
-                ;
-            console.log(assignees, user.id)
-            const isAssignedToUser = assignees.includes(user.id);
-            const isNotApproved = task.status !== "Approved";
-            const isNotCancle = task.status !== "Cancel";
-            const isNotInReview = task.status !== "inReview";
-
-            if (
-                isAssignedToUser &&
-                isNotApproved &&
-                isNotCancle &&
-                isNotInReview
-            ) {
-                taskUserArray.push(task);
-                checkUrgentTask(task);
-                countTask += 1;
-            }
-        });
-    });
-
-    // console.log(taskUserArray[0])
-    console.log(taskUserArray.map((task, index) => task));
-
-    const openTaskDetails = (task, index) => {
-        setSelectedTask(task);
-        setTaskData("uuid", task.uuid);
-        setTaskData("link", task.result?.link || "");
-        setTaskData("team", task?.team || "")
-        setIsModalOpen(true);
-    };
-
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setSelectedTask(null);
-    };
-
-    console.log(taskUserArray);
-
-    const taskSorted = taskUserArray.sort((a, b) => {
-        return new Date(a.deadline) - new Date(b.deadline);
-    });
-
-    // Filtered data
-    const filteredAbsens = absens.filter((absen) => absen.tanggal === sortDate);
+    // Filtered attendance data
+    const filteredAbsens = useMemo(() => {
+        return absens.filter((absen) => absen.tanggal === sortDate);
+    }, [absens, sortDate]);
 
     // Handlers
-    const submit = (e) => {
-        e.preventDefault();
-        postAbsence(route("absen.store"), {
-            onSuccess: () => window.location.reload(),
-        });
-    };
+    const openTaskDetails = useCallback(
+        (task) => {
+            setSelectedTask(task);
+            setTaskData("uuid", task.uuid);
+            setTaskData("link", task.result?.link || "");
+            setTaskData("team", task.team || "");
+            setIsModalOpen(true);
+        },
+        [setTaskData]
+    );
 
-    const toggleSection = (section) => {
-        setHiddenSections((prev) => ({
-            ...prev,
-            [section]: !prev[section],
-        }));
-    };
+    const closeModal = useCallback(() => {
+        setIsModalOpen(false);
+        setSelectedTask(null);
+    }, []);
 
-    const submitTask = (e) => {
-        e.preventDefault();
-        // console.log(data.uuid);
-        putTask(route(`${taskData.team}_submit.update`, taskData.uuid), {
-            onSuccess: () => window.location.reload(),
-            onError: (e) => console.error("PUT error", e),
-        });
-    };
+    const submitAbsence = useCallback(
+        (e) => {
+            e.preventDefault();
+            postAbsence(route("absen.store"), {
+                onSuccess: () => window.location.reload(),
+            });
+        },
+        [postAbsence]
+    );
+
+    const submitTask = useCallback(
+        (e) => {
+            e.preventDefault();
+            if (!taskData.team || !taskData.uuid) {
+                console.error("Missing team or UUID data");
+                return;
+            }
+
+            putTask(route(`${taskData.team}_submit.update`, taskData.uuid), {
+                onSuccess: () => window.location.reload(),
+                onError: (error) => console.error("PUT error", error),
+            });
+        },
+        [putTask, taskData.team, taskData.uuid]
+    );
+
+    
 
     return (
         <AuthenticatedLayout
@@ -948,10 +1002,10 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
 
             <div className="py-2 sm:py-3">
                 <div className="mx-auto w-full px-2 sm:px-3">
-                    {/* PARENT GRID: make both columns equal height */}
-                    <div className="grid grid-cols-3 gap-6 items-stretch">
+                    {/* PARENT GRID */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
                         {/* LEFT COLUMN */}
-                        <div className="flex flex-col gap-6 col-span-2 h-full">
+                        <div className="flex flex-col gap-6 lg:col-span-2 h-full">
                             {/* Status Cards */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 <StatusCard
@@ -984,7 +1038,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                                 </div>
                                 <div className="space-y-3">
                                     <AttendanceForm
-                                        onSubmit={submit}
+                                        onSubmit={submitAbsence}
                                         data={absenceData}
                                         setData={setAbsenceData}
                                         errors={absenceErrors}
@@ -1002,7 +1056,7 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
 
                         {/* RIGHT COLUMN (Your Upcoming Tasks) */}
                         <div className="flex flex-col h-full">
-                            {taskUserArray.length > 0 && (
+                            {taskSorted.length > 0 && (
                                 <div className="flex flex-col flex-1 p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl border border-amber-200 dark:border-amber-700 shadow-sm overflow-y-auto overflow-x-hidden">
                                     {/* Header */}
                                     <div className="flex items-center mb-3 flex-shrink-0">
@@ -1028,21 +1082,20 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
 
                                     {/* Scrollable content */}
                                     <div className="flex-1 overflow-y-auto">
-                                        <div className="flex h-96 flex-col gap-4 pr-9">
-                                            {taskSorted.map((task, index) => (
+                                        <div className="flex h-96 flex-col gap-4 pr-2">
+                                            {taskSorted.map((task) => (
                                                 <div
                                                     key={task.id}
                                                     className="min-w-[200px] sm:min-w-[240px] w-full"
                                                 >
                                                     <TaskCard
-                                                        key={task.uuid}
+                                                        key={`${task.uuid}-${task.team}`}
                                                         task={task}
                                                         onOpenDetails={
                                                             openTaskDetails
                                                         }
-                                                        index={index}
-                                                        user_role={user.role}
-                                                        // users={users}
+                                                        user={user}
+                                                        users={users}
                                                     />
                                                 </div>
                                             ))}
@@ -1066,13 +1119,15 @@ export default function Dashboard({ userName, absens, clients, tasks }) {
                         </div>
                     )}
 
+                    {/* Task Modal */}
                     {selectedTask && (
                         <TaskModal
                             task={selectedTask}
                             isOpen={isModalOpen}
                             onClose={closeModal}
                             data={taskData}
-                            userName={userName}
+                            user={user}
+                            users={users}
                             setData={setTaskData}
                             onSubmit={submitTask}
                             processing={taskProcessing}

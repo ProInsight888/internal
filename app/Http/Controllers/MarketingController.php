@@ -171,7 +171,7 @@ class MarketingController extends Controller
 
         audit::create([
             'action' => 'Deleted',
-            'change_section' => "Delete Marketing Task.",
+            'change_section' => "Deleted Marketing Task.",
             'created_by' => $user->name,
             'date' => $date->format('d F Y'),
             'time' => $date->format('H:i'),

@@ -67,7 +67,9 @@ export default function AuditIndex({ audits }) {
     const [actionFilter, setActionFilter] = useState("all");
 
     // Get unique users for filter dropdown - FIXED
-    const uniqueUsers = [...new Set(audits.data.map(audit => audit.created_by))];
+    const uniqueUsers = [
+        ...new Set(audits.data.map((audit) => audit.created_by)),
+    ];
 
     // Filter data based on search and filters - FIXED: Only filter current page data
     const filteredAudits = audits.data.filter((audit) => {
@@ -75,13 +77,15 @@ export default function AuditIndex({ audits }) {
             searchTerm === "" ||
             audit.created_by.toLowerCase().includes(searchTerm.toLowerCase()) ||
             audit.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            audit.change_section.toLowerCase().includes(searchTerm.toLowerCase());
+            audit.change_section
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
 
         const matchesUser =
             userFilter === "all" || audit.created_by === userFilter;
         const matchesAction =
             actionFilter === "all" || audit.action === actionFilter;
-            
+
         return matchesSearch && matchesUser && matchesAction;
     });
 
@@ -95,6 +99,8 @@ export default function AuditIndex({ audits }) {
                 return "bg-red-100 text-red-800 border-red-200 dark:bg-red-900 dark:text-red-300 dark:border-red-800";
             case "Submitted":
                 return "bg-yellow-100 text-yellow-800 border-yellow-400 dark:bg-yellow-500 dark:text-yellow-700 dark:border-yellow-800";
+            case "Checked":
+                return "bg-purple-400 text-purple-800 border-yellow-400 dark:bg-purple-400 dark:text-purple-700 dark:border-purple-800";
             default:
                 return "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-800";
         }
@@ -250,7 +256,9 @@ export default function AuditIndex({ audits }) {
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                                     {filteredAudits.map((audit) => {
-                                        const formattedDate = formatDateTime(audit.created_at);
+                                        const formattedDate = formatDateTime(
+                                            audit.created_at
+                                        );
                                         return (
                                             <tr
                                                 key={audit.id}
@@ -259,14 +267,20 @@ export default function AuditIndex({ audits }) {
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
-                                                            {audit.created_by?.charAt(0) || 'U'}
+                                                            {audit.created_by?.charAt(
+                                                                0
+                                                            ) || "U"}
                                                         </div>
                                                         <div className="ml-4">
                                                             <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                                {audit.created_by}
+                                                                {
+                                                                    audit.created_by
+                                                                }
                                                             </div>
                                                             <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                                {audit.change_section}
+                                                                {
+                                                                    audit.change_section
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
@@ -278,8 +292,12 @@ export default function AuditIndex({ audits }) {
                                                                 audit.action
                                                             )}`}
                                                         >
-                                                            {audit.action?.charAt(0)?.toUpperCase() +
-                                                                audit.action?.slice(1) || 'Unknown'}
+                                                            {audit.action
+                                                                ?.charAt(0)
+                                                                ?.toUpperCase() +
+                                                                audit.action?.slice(
+                                                                    1
+                                                                ) || "Unknown"}
                                                         </span>
                                                     </div>
                                                 </td>
@@ -296,12 +314,13 @@ export default function AuditIndex({ audits }) {
                                     })}
                                 </tbody>
                             </table>
-                            
+
                             {/* No results message */}
                             {filteredAudits.length === 0 && (
                                 <div className="text-center py-8">
                                     <div className="text-gray-500 dark:text-gray-400">
-                                        No audit logs found matching your filters.
+                                        No audit logs found matching your
+                                        filters.
                                     </div>
                                 </div>
                             )}
