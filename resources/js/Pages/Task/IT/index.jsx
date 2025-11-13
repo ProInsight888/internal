@@ -261,7 +261,7 @@ const TaskCard = ({ task, onOpenDetails, user_role, users }) => {
                         Deadline:{" "}
                         <span className="font-semibold text-gray-700 dark:text-gray-300">
                             {new Date(task.deadline).toLocaleDateString(
-                                "id-ID",
+                                "en-EN",
                                 {
                                     day: "2-digit",
                                     month: "short",
