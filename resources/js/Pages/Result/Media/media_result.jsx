@@ -97,7 +97,7 @@ export default function TaskResult({ tasks, users, userName }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        put(route("media_review.update", { marketing_review: data.uuid }), {
+        put(route("media_review.update", { media_review: data.uuid }), {
             onSuccess: () => {
                 window.location.reload();
             },
@@ -110,7 +110,7 @@ export default function TaskResult({ tasks, users, userName }) {
             header={
                 <div className="bg-gradient-to-r from-blue-600 to-purple-700 p-6 rounded-2xl text-white shadow-lg mb-8 dark:from-blue-800 dark:to-purple-900">
                     <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-                        Marketing Task Results Review 🎯
+                        Media Task Results Review 🎯
                     </h1>
                     <p className="text-lg opacity-90">
                         Review completed tasks and provide feedback to your team
