@@ -60,7 +60,12 @@ class AddAccountController extends Controller
                 Storage::disk('public')->delete($user->avatar);
             }
 
-            $path = $request->file('avatar')->store('avatars', 'public');
+            $filename = $request->file('avatar')->hashName();
+            $request->file('avatar')->move(public_path('storage/avatars'), $filename);
+            $path = 'avatars/' . $filename;
+            chmod(public_path('storage/avatars/' . $filename), 0644);
+
+
 
             // Debug line — check if file exists in disk
             // dd([
