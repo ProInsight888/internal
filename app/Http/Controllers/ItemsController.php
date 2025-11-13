@@ -34,7 +34,7 @@ class ItemsController extends Controller
             'userName' => Auth::user()->name,
             'items' => $items,
             'tool_data_collection' => $toolDataCollection,
-            'events_name' =>$eventNames,
+            'events_name' => $eventNames,
             'category' => $category,
         ]);
     }
@@ -96,14 +96,17 @@ class ItemsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(items $items, $id)
+    public function edit($id)
     {
-        // dd($items, $id);
-        $items_select = items::all()->where('id', $id);
-        return Inertia('Items/edit', [
-            'items_select' => $items_select,
+        $item = items::findOrFail($id);
+        $categories = items::select('category')->distinct()->pluck('category')->toArray();
+
+        return inertia('Items/edit', [
+            'items_select' => [$item],
+            'categories' => $categories,
         ]);
     }
+
 
     /**
      * Update the specified resource in storage.

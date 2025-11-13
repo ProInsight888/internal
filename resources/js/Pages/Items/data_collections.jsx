@@ -14,27 +14,11 @@ export default function Create({ users, items }) {
         created_by: user_create.name,
     });
 
-    console.log(items)
+    // console.log(items)
+    const categories = [...new Set(items.map((item) => item.category))].sort();
 
-    const [activeCategory, setActiveCategory] = useState("camera");
+    const [activeCategory, setActiveCategory] = useState(categories[0] || "");
     const [searchTerm, setSearchTerm] = useState("");
-    const categories = [
-        "camera",
-        "lensa",
-        "audio",
-        "cable audio",
-        "gimbal",
-        "drone",
-        "lighting",
-        "battery drone",
-        "tripod lighting",
-        "tripod",
-        "cleaning kit",
-        "charger",
-        "sd card",
-        "micro sd card",
-        "battery camera",
-    ];
 
     const formRef = useRef();
 

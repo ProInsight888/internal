@@ -3,7 +3,6 @@
 import * as React from "react";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
     Command,
@@ -19,75 +18,18 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 
-const frameworks = [
-    {
-        value: "camera",
-        label: "Camera",
-    },
-    {
-        value: "lensa",
-        label: "Lensa",
-    },
-    {
-        value: "audio",
-        label: "Audio",
-    },
-    {
-        value: "cable audio",
-        label: "Cable Audio",
-    },
-    {
-        value: "card",
-        label: "Card",
-    },
-    {
-        value: "gimbal",
-        label: "Gimbal",
-    },
-    {
-        value: "drone",
-        label: "Drone",
-    },
-    {
-        value: "lighting",
-        label: "Lighting",
-    },
-    {
-        value: "tripod",
-        label: "Tripod",
-    },
-    {
-        value: "cleaning kit",
-        label: "Cleaning Kit",
-    },
-    {
-        value: "tripod lighting",
-        label: "Tripod Lighting",
-    },
-    {
-        value: "charger",
-        label: "Charger",
-    },
-    {
-        value: "sd card",
-        label: "SD Card",
-    },
-    {
-        value: "micro sd card",
-        label: "Micro SD Card",
-    },
-    {
-        value: "battery camera",
-        label: "Battery Camera",
-    },
-    {
-        value: "battery drone",
-        label: "Battery Drone",
-    },
-];
-
-export function ExampleCombobox({ value, onChange }) {
+export function ExampleCombobox({ value, onChange, options = [] }) {
     const [open, setOpen] = React.useState(false);
+
+    const formattedOptions = React.useMemo(() => {
+        if (!Array.isArray(options)) return [];
+        return options
+            .filter((opt) => typeof opt === "string" && opt.trim() !== "")
+            .map((opt) => ({
+                value: opt,
+                label: opt.charAt(0).toUpperCase() + opt.slice(1),
+            }));
+    }, [options]);
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -99,23 +41,22 @@ export function ExampleCombobox({ value, onChange }) {
                     className="w-full justify-between dark:bg-gray-700"
                 >
                     {value
-                        ? frameworks.find(
-                              (framework) => framework.value === value
-                          )?.label
-                        : "Select framework..."}
+                        ? formattedOptions.find((opt) => opt.value === value)?.label
+                        : "Select category..."}
                     <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
+
             <PopoverContent className="w-full p-0">
                 <Command className="w-full">
-                    <CommandInput placeholder="Search Items..." />
+                    <CommandInput placeholder="Search categories..." />
                     <CommandList>
-                        <CommandEmpty>No items found.</CommandEmpty>
+                        <CommandEmpty>No categories found.</CommandEmpty>
                         <CommandGroup>
-                            {frameworks.map((framework) => (
+                            {formattedOptions.map((opt) => (
                                 <CommandItem
-                                    key={framework.value}
-                                    value={framework.value}
+                                    key={opt.value}
+                                    value={opt.value}
                                     onSelect={(currentValue) => {
                                         const newValue =
                                             currentValue === value
@@ -125,8 +66,8 @@ export function ExampleCombobox({ value, onChange }) {
                                         setOpen(false);
                                     }}
                                 >
-                                    {framework.label}
-                                    {value === framework.value && (
+                                    {opt.label}
+                                    {value === opt.value && (
                                         <CheckIcon className="ml-auto h-4 w-4" />
                                     )}
                                 </CommandItem>
