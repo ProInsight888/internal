@@ -27,12 +27,15 @@ class ItemsController extends Controller
         $eventNames = ToolDataCollection::select('event_name')
             ->distinct()
             ->pluck('event_name');
+        $category = items::distinct()->pluck('category');
+        // dd($category);
 
         return inertia('Items/index', [
             'userName' => Auth::user()->name,
             'items' => $items,
             'tool_data_collection' => $toolDataCollection,
             'events_name' =>$eventNames,
+            'category' => $category,
         ]);
     }
 

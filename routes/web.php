@@ -147,5 +147,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // Audit Routes
     Route::get('pages/audit', [AuditController::class, 'index'])->name('audit.index');
 
-
 require __DIR__ . '/auth.php';
