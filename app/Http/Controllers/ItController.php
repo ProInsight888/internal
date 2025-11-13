@@ -179,7 +179,7 @@ class ItController extends Controller
         audit::create([
             'uuid' => $uuid_new,
             'action' => 'Deleted',
-            'change_section' => "Delete IT Task.",
+            'change_section' => "Deleted IT Task.",
             'created_by' => $user->name,
             'date' => $date->format('d F Y'),
             'time' => $date->format('H:i'),

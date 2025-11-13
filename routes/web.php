@@ -45,6 +45,7 @@ use App\Http\Controllers\update_submit_it_task;
 use App\Http\Controllers\update_submit_marketing_task;
 use App\Models\creative;
 use App\Models\media;
+use App\Models\User;
 
 Route::redirect('/', '/dashboard');
 
@@ -57,6 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $media = media::all();
         $creative = creative::all();
         $marketing = marketing::all();
+        $users = User::all();
         return Inertia::render('Dashboard', [
             'userName' => Auth::user()->name,
             'absens' => $absens,
@@ -67,6 +69,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 'creative' => $creative,
                 'marketing' => $marketing,
             ],
+            'users' => $users,
         ]);
     })->name('dashboard');
 

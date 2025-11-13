@@ -174,8 +174,8 @@ class CreativeController extends Controller
 
         audit::create([
             'uuid' => $uuid_new,
-            'action' => 'Delete',
-            'change_section' => "Delete Creative Task.",
+            'action' => 'Deleted',
+            'change_section' => "Deleted Creative Task.",
             'created_by' => $user->name,
             'date' => $date->format('d F Y'),
             'time' => $date->format('H:i'),
