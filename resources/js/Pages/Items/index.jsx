@@ -6,46 +6,10 @@ export default function EquipmentInventory({
     items,
     tool_data_collection,
     events_name,
+    category,
 }) {
     const user = usePage().props.auth.user;
     const successMessage = usePage().props?.flash?.success;
-
-    // Define category colors for consistent styling
-    const categoryColors = {
-        camera: "bg-gradient-to-r from-blue-500 to-blue-600",
-        lensa: "bg-gradient-to-r from-purple-500 to-purple-600",
-        audio: "bg-gradient-to-r from-green-500 to-green-600",
-        "cable audio": "bg-gradient-to-r from-teal-500 to-teal-600",
-        gimbal: "bg-gradient-to-r from-orange-500 to-orange-600",
-        drone: "bg-gradient-to-r from-red-500 to-red-600",
-        lighting: "bg-gradient-to-r from-yellow-500 to-yellow-600",
-        "battery camera": "bg-gradient-to-r from-indigo-500 to-indigo-600",
-        tripod: "bg-gradient-to-r from-pink-500 to-pink-600",
-        "cleaning kit": "bg-gradient-to-r from-cyan-500 to-cyan-600",
-        "tripod lighting": "bg-gradient-to-r from-lime-500 to-lime-600",
-        charger: "bg-gradient-to-r from-amber-500 to-amber-600",
-        "sd card": "bg-gradient-to-r from-emerald-500 to-emerald-600",
-        "micro sd card": "bg-gradient-to-r from-rose-500 to-rose-600",
-        "battery drone": "bg-gradient-to-r from-violet-500 to-violet-600",
-    };
-
-    const categoryIcons = {
-        camera: "📷",
-        lensa: "🔍",
-        audio: "🎤",
-        "cable audio": "🔌",
-        gimbal: "📹",
-        drone: "🚁",
-        lighting: "💡",
-        "battery camera": "🔋",
-        tripod: "📐",
-        "cleaning kit": "🧹",
-        "tripod lighting": "💡",
-        charger: "⚡",
-        "sd card": "💾",
-        "micro sd card": "📀",
-        "battery drone": "🔋",
-    };
 
     // Group items by category for better organization
     const itemsByCategory = items.reduce((acc, item) => {
@@ -57,11 +21,7 @@ export default function EquipmentInventory({
     }, {});
 
     // Define the order of categories for display
-    const categoryOrder = [
-        "camera", "lensa", "audio", "cable audio", "gimbal", "drone", 
-        "lighting", "battery camera", "tripod", "cleaning kit", 
-        "tripod lighting", "charger", "sd card", "micro sd card", "battery drone"
-    ];
+    const categoryOrder = category;
 
     return (
         <AuthenticatedLayout
@@ -162,15 +122,8 @@ export default function EquipmentInventory({
                                                 className="bg-gray-50 dark:bg-gray-700 rounded-lg md:rounded-xl p-3 md:p-4 border border-gray-200 dark:border-gray-600"
                                             >
                                                 <div
-                                                    className={`flex items-center p-2 md:p-3 rounded-lg mb-3 md:mb-4 ${categoryColors[category]} text-white`}
+                                                    className={`flex items-center p-2 md:p-3 rounded-lg mb-3 md:mb-4 bg-red-900 text-white`}
                                                 >
-                                                    <span className="text-xl md:text-2xl mr-2 md:mr-3">
-                                                        {
-                                                            categoryIcons[
-                                                                category
-                                                            ]
-                                                        }
-                                                    </span>
                                                     <h3 className="text-lg md:text-xl font-bold capitalize">
                                                         {category}
                                                     </h3>
