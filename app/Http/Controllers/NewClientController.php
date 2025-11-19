@@ -25,9 +25,37 @@ class NewClientController extends Controller
      */
     public function index()
     {
-        $clients = newClient::paginate(10);
-        $total_clients = count(newClient::all());
+        $clients = newClient::orderByRaw("
+    CAST(
+        strftime('%m', 
+            substr(contract, 8, 4) || '-' ||
+            CASE substr(contract, 4, 3)
+                WHEN 'Jan' THEN '01'
+                WHEN 'Feb' THEN '02'
+                WHEN 'Mar' THEN '03'
+                WHEN 'Apr' THEN '04'
+                WHEN 'May' THEN '05'
+                WHEN 'Jun' THEN '06'
+                WHEN 'Jul' THEN '07'
+                WHEN 'Aug' THEN '08'
+                WHEN 'Sep' THEN '09'
+                WHEN 'Oct' THEN '10'
+                WHEN 'Nov' THEN '11'
+                WHEN 'Dec' THEN '12'
+            END
+            || '-' ||
+            substr(contract, 1, 2)
+        ) 
+    AS INTEGER
+) asc
+")
+->orderBy('company_name')
+->paginate(20);
+
+
+        $total_clients = newClient::count();
         $cicilans = cicilan::all();
+
         return inertia('NewClient/index', [
             'clients' => $clients,
             'cicilans' => $cicilans,
@@ -55,7 +83,7 @@ class NewClientController extends Controller
             'Installments' => 'cicil'
         ];
 
-        
+
         $validated = $request->validate([
             'company_name' => 'string|required',
             'code' => 'required|string|max:4|unique:new_clients,code',
@@ -72,7 +100,7 @@ class NewClientController extends Controller
             'add_ons_drone' => 'nullable',
             'add_ons_production' => 'nullable',
         ]);
-        
+
         // dd($validated['add_ons_drone'], $validated['add_ons_production']);
         $today = now('Asia/Jakarta');
         $contract_start = \Carbon\Carbon::parse($validated['contract_start']);
@@ -117,7 +145,7 @@ class NewClientController extends Controller
             'package' => $validated['package'],
             'status' => $internalStatus,
             'payment_month' => $payment_month,
-            'paid' => $validated['paid'],
+            'paid' => $validated['paid'] ?? null,
             'add_ons_drone' => $validated['add_ons_drone'],
             'add_ons_production' => $validated['add_ons_production'],
         ]);
