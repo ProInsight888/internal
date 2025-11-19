@@ -449,8 +449,8 @@ const AttendanceForm = ({
                             onChange={(e) => setData("absence", e.target.value)}
                             className="flex justify-center pl-10 p-2.5 w-full border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 focus:border-transparent shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                         >
-                            <option value="Hadir">Hadir</option>
-                            <option value="Balek">Pulang</option>
+                            <option value="CheckIn">Check In</option>
+                            <option value="CheckOut">Check Out</option>
                         </select>
                     </div>
                     <button
@@ -473,14 +473,14 @@ const AttendanceForm = ({
 // Helper functions for status colors
 const getAttendanceStatusColor = (status) => {
     const statusColors = {
-        Hadir: "#10B981",
+        CheckIn: "#10B981",
         Sakit: "#F59E0B",
         Izin: "#3B82F6",
         Cuti: "#8B5CF6",
         "Ketemu Client": "#EC4899",
         Lembur: "#F97316",
         "Pulang Lembur": "#14B8A6",
-        Balek: "#06B6D4",
+        CheckOut: "#06B6D4",
     };
     return statusColors[status] || "#6B7280";
 };
@@ -844,7 +844,7 @@ export default function Dashboard({ userName, absens, clients, tasks, users }) {
         post: postAbsence,
         errors: absenceErrors,
     } = useForm({
-        absence: "Hadir",
+        absence: "CheckIn",
     });
 
     const {
