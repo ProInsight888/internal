@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\absen;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Google\Client;
@@ -18,24 +19,23 @@ class SpreadsheetController extends Controller
 {
     public function export(Request $request)
     {
-        // dd($request);
         try {
             $client = new Client();
             $client->setAuthConfig(storage_path('app/credentials/google-sheets.json'));
             $client->addScope(Sheets::SPREADSHEETS);
             $service = new Sheets($client);
             $spreadsheetId = env('GOOGLE_SHEETS_ID');
-            $users = explode(',', $request->users);
+            $users_id = explode(',', $request->users);
             $startDate = $request->date_from;
             $endDate = $request->date_end;
             $period = CarbonPeriod::create($startDate, $endDate);
-
+            
             // 1. FIRST CLEAR THE EXISTING DATA
             $this->clearSheetData($service, $spreadsheetId, 'Sheet3');
-            $sortName = $request->sortName;
-
-            // dd($request->sortName);
+            $sortId = $request->sortUserId;
+            
             // 2. GET NEW DATA FROM DATABASE
+            // dd($request->sortUserId);
             $absens = Absen::whereBetween('tanggal', [
                 $startDate,
                 $endDate
@@ -63,14 +63,20 @@ class SpreadsheetController extends Controller
                     return "$jam Jam $menitSisa Menit";
                 }
                 
-            if($sortName === null){
-                foreach($users as $userIndex => $user) {
+            if($sortId === null){
+                foreach($users_id as $userIndex => $user_id) {
+                    // dd($user_id);
+
+                    $real_user = User::where('id', $user_id)->first();
+                    // dd($real_user->name);
+
                     
                     $values[] = [''];
-                    $values[] = [$user];
+                    $values[] = [$real_user->name];
                     $values[] = ['Date', 'Day', 'Working Hour', 'Activity', 'Check-in', 'Check-out', 'Overtime', 'Notes', 'Status'] ;
 
-                    $absenSortUser = $absens->where('user', $user);
+                    $absenSortUser = $absens->where('user_id', $user_id);
+                    // dd($user_id, $absenSortUser, $period);
                     
                     // $absenSortUser = $absens->where('user', $user); 
                     foreach ($period as $date){
@@ -82,10 +88,7 @@ class SpreadsheetController extends Controller
                         } else {
                             $working_hour = '09:00 - 17:00';
                         }
-                        
-                        // dd($absenSortUser, $date->format('Y-m-d'));
                         $periodSortUser = $absenSortUser->where('tanggal', $date->format('Y-m-d'));
-                        // dd($periodSortUser);
                         if ($periodSortUser->isNotEmpty()) {
                             foreach ($periodSortUser as $userIndex => $user) {
                                 $jam_balek = $user->jam_balek ? Carbon::parse($user->jam_balek) : null;
@@ -128,11 +131,13 @@ class SpreadsheetController extends Controller
                 }
             }
             else{
+                $real_user = User::where('id', $sortId)->first();
+                // dd($real_user);
                 $values[] = [''];
-                $values[] = [$sortName];
+                $values[] = [$real_user->name];
                 $values[] = ['Date', 'Day', 'Working Hour', 'Activity', 'Check-in', 'Check-out', 'Overtime', 'Notes', 'Status'];
 
-                $absenSortUser = $absens->where('user', $sortName);
+                $absenSortUser = $absens->where('user_id', $sortId);
 
                 // $absenSortUser = $absens->where('user', $user); 
                 foreach ($period as $date) {
