@@ -11,10 +11,12 @@ class absen extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'user',
         'status',
         'tanggal',
         'jam_datang',
         'jam_balek',
+        'user_id',
     ];
 }
