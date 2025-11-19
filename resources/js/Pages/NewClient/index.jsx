@@ -620,11 +620,6 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
                             </thead>
                             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                                 {filteredClients
-                                    .sort(
-                                        (a, b) =>
-                                            new Date(b.created_at) -
-                                            new Date(a.created_at)
-                                    )
                                     .map((client, index) => (
                                         <tr
                                             key={client.uuid}

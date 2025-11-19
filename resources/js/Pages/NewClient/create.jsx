@@ -34,6 +34,8 @@ export default function create({}) {
                     cicilan: `Cicilan ${i + 1}`,
                     tanggal: data.fase_pembayaran[i]?.tanggal || "",
                 }));
+
+                setData("fase_pembayaran", fase);
             }
         }
 
