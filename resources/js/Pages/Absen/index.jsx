@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { router } from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
+import { id } from "date-fns/locale/id";
 
 // Reusable Components
 const MonthSelector = ({ value, onChange }) => (
@@ -244,7 +245,7 @@ export default function AbsenceDashboard({ absens, users }) {
 
     let userArray = [];
     {
-        Array.from(new Set(users.map((user) => user.name))).map((name, idx) =>
+        Array.from(new Set(users.map((user) => user.id))).map((name, idx) =>
             userArray.push(name)
         );
     }
