@@ -83,8 +83,8 @@ class SpreadsheetController extends Controller
                         $daysName = Carbon::parse($date)->locale('id')->dayName;
                         if ($daysName === 'Minggu') {
                             $working_hour = '00:00 - 23:59';
-                        } elseif ($daysName === 'Sabtu') {
-                            $working_hour = '08:00 - 12:00';
+                        } elseif($daysName === 'Sabtu') {
+                            $working_hour = '00:00 - 23:59';
                         } else {
                             $working_hour = '09:00 - 17:00';
                         }
@@ -109,7 +109,7 @@ class SpreadsheetController extends Controller
                                     $daysName === 'Minggu' ? 'Work-Over Time' : 'Work',
                                     $jamDatangFormatted,
                                     $jamBalekFormatted,
-                                    $daysName === 'Sabtu' ? $durasi_weekEnd : $durasi_weekDay,
+                                    $daysName === 'Sabtu' ? 'Work-Over Time' : 'Work',
                                     '',
                                     $user->status ?? 'N/A',
                                 ];
@@ -145,7 +145,7 @@ class SpreadsheetController extends Controller
                     if ($daysName === 'Minggu') {
                         $working_hour = '00:00 - 23:59';
                     } elseif ($daysName === 'Sabtu') {
-                        $working_hour = '08:00 - 12:00';
+                        $working_hour = '00:00 - 23:59';
                     } else {
                         $working_hour = '09:00 - 17:00';
                     }
@@ -173,7 +173,7 @@ class SpreadsheetController extends Controller
                                 $daysName === 'Minggu' ? 'Work-Over Time' : 'Work',
                                 $jamDatangFormatted,
                                 $jamBalekFormatted,
-                                $daysName === 'Sabtu' ? $durasi_weekEnd : $durasi_weekDay,
+                                $daysName === 'Sabtu' ? 'Work-Over Time' : 'Work',
                                 '',
                                 $user->status ?? 'N/A',
                             ];

@@ -38,6 +38,8 @@ export default function edit({ clients }) {
 
     // console.log(formatted)
 
+    
+
     const { data, setData, put, post, processing, errors, reset } = useForm({
         company_name: clients?.company_name || "",
         code: clients?.code || "",
@@ -57,9 +59,9 @@ export default function edit({ clients }) {
         add_ons_drone: (clients?.add_ons_drone !== 1 ? false : true) || false,
         add_ons_production:
             (clients?.add_ons_production !== 1 ? false : true) || false,
-    });
-
-    console.log(data);
+        });
+        
+        console.log(data, clients.cicilans);
 
     useEffect(() => {
         const jumlah = parseInt(data.cicil || 0);
@@ -568,7 +570,9 @@ export default function edit({ clients }) {
                                             </h3>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 {data.fase_pembayaran.map(
-                                                    (fase, index) => (
+                                                    (fase, index) =>{ 
+                                                        console.log(fase.tanggal)
+                                                        return (
                                                         <div
                                                             key={index}
                                                             className="bg-gray-50 p-4 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600"
@@ -653,7 +657,7 @@ export default function edit({ clients }) {
                                                                 }}
                                                             />
                                                         </div>
-                                                    )
+                                                    )}
                                                 )}
                                             </div>
                                         </div>
