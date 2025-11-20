@@ -143,6 +143,7 @@ const UserAvatar = ({ user, assigneeId }) => {
 
 // Task Card Component
 const TaskCard = ({ task, onOpenDetails, user_role, users }) => {
+    console.log(task);
     const getCardColor = (status) => {
         const colorMap = {
             "In Review":
@@ -326,6 +327,8 @@ const TaskModal = ({
 }) => {
     if (!isOpen) return null;
 
+    console.log(task);
+
     const handleDelete = useCallback(() => {
         if (
             window.confirm(
@@ -437,7 +440,7 @@ const TaskModal = ({
                             </span>
                             <p className="font-medium text-red-600 dark:text-red-400">
                                 {new Date(task.deadline).toLocaleDateString(
-                                    "id-ID",
+                                    "en-EN",
                                     {
                                         day: "2-digit",
                                         month: "short",
@@ -484,12 +487,27 @@ const TaskModal = ({
 
                             {["In Review", "Approved"].includes(task.status) ? (
                                 <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-                                    <p className="text-green-800 dark:text-green-300 font-medium">
+                                    <p className="text-green-800 dark:text-green-300 font-medium mb-2">
                                         {task.status === "Approved"
                                             ? "Approved"
-                                            : "Under Review"}{" "}
-                                        - {task.result?.link}
+                                            : "Under Review"}
                                     </p>
+
+                                    {task.result_link && (
+                                        <div className="mt-2">
+                                            <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">
+                                                Submission:
+                                            </span>
+                                            <a
+                                                href={task.result_link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline break-all"
+                                            >
+                                                {task.result_link}
+                                            </a>
+                                        </div>
+                                    )}
                                 </div>
                             ) : (
                                 <form onSubmit={onSubmit}>
@@ -742,7 +760,7 @@ export default function TaskIndex({ tasks, userName, users }) {
         (task) => {
             setSelectedTask(task);
             setData("uuid", task.uuid);
-            setData("link", task.result?.link || "");
+            setData("link", task.link || "");
             setIsModalOpen(true);
         },
         [setData]

@@ -25,54 +25,32 @@ class NewClientController extends Controller
      */
     public function index()
     {
-$clients = newClient::orderByRaw("
+        $clients = newClient::orderByRaw("
     CAST(
-        strftime(
-            '%m',
+        strftime('%m', 
             substr(contract, 8, 4) || '-' ||
             CASE substr(contract, 4, 3)
-                WHEN 'Jan' THEN '01'
-                WHEN 'Feb' THEN '02'
-                WHEN 'Mar' THEN '03'
-                WHEN 'Apr' THEN '04'
-                WHEN 'May' THEN '05'
-                WHEN 'Jun' THEN '06'
-                WHEN 'Jul' THEN '07'
-                WHEN 'Aug' THEN '08'
-                WHEN 'Sep' THEN '09'
-                WHEN 'Oct' THEN '10'
-                WHEN 'Nov' THEN '11'
-                WHEN 'Dec' THEN '12'
+            WHEN 'Dec' THEN '01'
+            WHEN 'Nov' THEN '02'
+            WHEN 'Oct' THEN '03'
+            WHEN 'Sep' THEN '04'
+            WHEN 'Aug' THEN '05'
+            WHEN 'Jul' THEN '06'
+            WHEN 'Jun' THEN '07'
+            WHEN 'May' THEN '08'
+            WHEN 'Apr' THEN '09'
+            WHEN 'Mar' THEN '10'
+            WHEN 'Feb' THEN '11'
+            WHEN 'Jan' THEN '12'
             END
             || '-' ||
             substr(contract, 1, 2)
-        )
-    AS INTEGER) DESC
+        ) 
+    AS INTEGER
+) asc
 ")
-->orderByRaw("
-    date(
-        substr(contract, 8, 4) || '-' ||
-        CASE substr(contract, 4, 3)
-            WHEN 'Jan' THEN '01'
-            WHEN 'Feb' THEN '02'
-            WHEN 'Mar' THEN '03'
-            WHEN 'Apr' THEN '04'
-            WHEN 'May' THEN '05'
-            WHEN 'Jun' THEN '06'
-            WHEN 'Jul' THEN '07'
-            WHEN 'Aug' THEN '08'
-            WHEN 'Sep' THEN '09'
-            WHEN 'Oct' THEN '10'
-            WHEN 'Nov' THEN '11'
-            WHEN 'Dec' THEN '12'
-        END
-        || '-' ||
-        substr(contract, 1, 2)
-    ) ASC
-")
-->paginate(20);
-
-
+            ->orderBy('company_name')
+            ->paginate(20);
 
 
         $total_clients = newClient::count();
@@ -141,7 +119,7 @@ $clients = newClient::orderByRaw("
             cicilan::create([
                 'client_uuid' => $clientUuid,
                 'cicilan' => $fase['cicilan'],
-                'tanggal' => Carbon::parse($fase['tanggal'])->format('d/m/y'),
+                'tanggal' => $fase['tanggal'],
             ]);
         }
 

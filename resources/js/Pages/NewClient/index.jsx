@@ -72,7 +72,8 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
     const [clickCounts, setClickCounts] = useState({});
     const timeoutRef = useRef({});
 
-    console.log(total_clients);
+
+    console.log(clients, cicilans, total_clients)
 
     const dropdownRefs = useRef([]);
 
@@ -140,27 +141,31 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
         const clientCicilans = cicilans
             .filter((c) => c.client_uuid === clientUuid)
             .slice(0, 10);
-
-        const formatDate = (dateString) => {
-            if (!dateString) return null;
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) return null;
-
-            const day = String(date.getDate()).padStart(2, "0");
-            const month = String(date.getMonth() + 1).padStart(2, "0");
-            const year = String(date.getFullYear()).slice(-2);
-            return `${day}/${month}/${year}`;
-        };
+            
+            const formatDate = (dateString) => {
+                if (!dateString) return null;
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return null;
+                
+                const day = String(date.getDate()).padStart(2, "0");
+                const month = String(date.getMonth() + 1).padStart(2, "0");
+                const year = String(date.getFullYear()).slice(-2);
+                return `${day}/${month}/${year}`;
+            };
+            
+            console.log(clientCicilans, formatDate);
 
         const formattedCicilans = clientCicilans.map((cicilan, index) => {
-            const formattedDate = formatDate(cicilan.tanggal);
+            console.log(cicilan.client_uuid==='57ce3b9b-4ce2-4810-83c0-7f34228cc7cd', cicilan.tanggal)
+            // const formattedDate = formatDate(cicilan.tanggal);
+            // console.log(formattedDate)
             return (
                 <div
                     key={cicilan.id || index}
                     className="flex items-center mb-1 last:mb-0 group"
                 >
                     <span className="text-sm text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                        {formattedDate}
+                        {cicilan.tanggal}
                     </span>
                     {cicilan.status_cicilan === "true" && (
                         <span className="ml-2 text-green-500 dark:text-green-400 transform group-hover:scale-110 transition-transform">
