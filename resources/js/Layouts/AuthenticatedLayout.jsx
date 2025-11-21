@@ -247,14 +247,14 @@ export default function AuthenticatedLayout({ header, children }) {
         >
             {/* Top Navigation Bar */}
             <div className="bg-white dark:bg-gray-800 sticky top-0 shadow-sm z-50 border-b border-gray-200 dark:border-gray-700">
-                <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-full mx-auto pr-4 sm:pr-6 lg:pr-8 pl-1 sm:pl-2 lg:pl-2">
                     <div className="flex justify-between h-16">
                         {/* Logo */}
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center">
                                 <img
-                                    src="/logo/Logo Pro Insight.png"
-                                    className="h-10"
+                                    src="/logo/Logo Fix-16 .svg"
+                                    className="h-[75px]"
                                     alt="Pro Insight Logo"
                                 />
                             </Link>
