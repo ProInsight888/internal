@@ -128,7 +128,7 @@ class ItController extends Controller
 
     public function update(Request $request, it $it)
     {
-        // dd( $request);
+        dd( $request);
         
 
         $user = Auth::user();

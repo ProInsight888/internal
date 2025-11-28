@@ -27,7 +27,7 @@ class mediaReviewController extends Controller
     {
         // dd($it, $request);
         $validated = $request->validate([
-            // 'link' => 'required|string|max:255',
+            'link' => 'required|string',
             'checked_by' => 'required|max:255',
             'status' => 'required|max:255',
             'revision' => 'nullable|max:255',
@@ -53,7 +53,7 @@ class mediaReviewController extends Controller
 
         $update_task = media::where('uuid', $uuid);
         $update_task->update([
-            'result_link' => $validated['status'] === 'Rejected' ?? "",
+            'result_link' => $validated['status'] === 'Rejected' ? "": $request->link,
             'checked_by' => $validated['checked_by'],
             'status' => $validated['status'],
             'revision' => $validated['revision'],

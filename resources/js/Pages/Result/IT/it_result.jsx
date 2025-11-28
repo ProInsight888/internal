@@ -12,7 +12,7 @@ export default function TaskResult({ tasks, users, userName }) {
     const [selectedTask, setSelectedTask] = useState(null);
     const [statusFilter, setStatusFilter] = useState("In Review");
     const revisionRef = useRef(null);
-    // console.log(user);
+    console.log(tasks);
 
     // Form handling
     const { data, setData, put, post, processing, errors, reset } = useForm({
@@ -20,6 +20,7 @@ export default function TaskResult({ tasks, users, userName }) {
         status: "",
         revision: "",
         checked_by: user.name,
+        link: "",
     });
 
     // Filter tasks based on status and search term
@@ -54,6 +55,7 @@ export default function TaskResult({ tasks, users, userName }) {
 
         setSelectedTask(task);
         setData("uuid", task.uuid);
+        setData('link', task.result_link || "");
         setIsReviewModalOpen(true);
     };
 
@@ -199,7 +201,9 @@ export default function TaskResult({ tasks, users, userName }) {
                             ].map((status) => (
                                 <button
                                     key={status}
-                                    onClick={() => setStatusFilter(status)}
+                                    onClick={() => {
+                                        setStatusFilter(status)
+                                    }}
                                     className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                                         statusFilter === status
                                             ? `${getStatusColor(
