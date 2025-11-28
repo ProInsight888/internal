@@ -28,7 +28,7 @@ class itReviewController extends Controller
     {
         // dd($it, $request);
         $validated = $request->validate([
-            // 'link' => 'required|string|max:255',
+            'link' => 'required|string',
             'checked_by' => 'required|max:255',
             'status' => 'required|max:255',
             'revision' => 'nullable|max:255',
@@ -55,7 +55,7 @@ class itReviewController extends Controller
 
         $update_task = it::where('uuid', $uuid);
         $update_task->update([
-            'result_link' => $validated['status'] === 'Rejected' ?? "",
+            'result_link' => $validated['status'] === 'Rejected' ?"": $request->link,
             'checked_by' => $validated['checked_by'],
             'status' => $validated['status'],
             'revision' => $validated['revision'],

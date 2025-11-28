@@ -26,32 +26,13 @@ class NewClientController extends Controller
     public function index()
     {
         $clients = newClient::orderByRaw("
-    CAST(
-        strftime('%m', 
-            substr(contract, 8, 4) || '-' ||
-            CASE substr(contract, 4, 3)
-            WHEN 'Dec' THEN '01'
-            WHEN 'Nov' THEN '02'
-            WHEN 'Oct' THEN '03'
-            WHEN 'Sep' THEN '04'
-            WHEN 'Aug' THEN '05'
-            WHEN 'Jul' THEN '06'
-            WHEN 'Jun' THEN '07'
-            WHEN 'May' THEN '08'
-            WHEN 'Apr' THEN '09'
-            WHEN 'Mar' THEN '10'
-            WHEN 'Feb' THEN '11'
-            WHEN 'Jan' THEN '12'
-            END
-            || '-' ||
-            substr(contract, 1, 2)
-        ) 
-    AS INTEGER
-) asc
+    STR_TO_DATE(
+        LEFT(contract, INSTR(contract, ' - ') - 1),
+        '%d %b %Y'
+    ) DESC
 ")
             ->orderBy('company_name')
             ->paginate(20);
-
 
         $total_clients = newClient::count();
         $cicilans = cicilan::all();

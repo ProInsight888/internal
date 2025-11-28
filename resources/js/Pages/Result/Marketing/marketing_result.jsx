@@ -20,6 +20,7 @@ export default function TaskResult({ tasks, users, userName }) {
         status: "",
         revision: "",
         checked_by: user.name,
+        link:"",
     });
 
     // Filter tasks based on status and search term
@@ -54,6 +55,7 @@ export default function TaskResult({ tasks, users, userName }) {
 
         setSelectedTask(task);
         setData("uuid", task.uuid);
+        setData("link", task.result_link || "");
         setIsReviewModalOpen(true);
     };
 

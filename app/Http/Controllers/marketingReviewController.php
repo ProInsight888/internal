@@ -53,7 +53,7 @@ class marketingReviewController extends Controller
 
         $update_task = marketing::where('uuid', $uuid);
         $update_task->update([
-            'result_link' => $validated['status'] === 'Rejected' ?? "",
+            'result_link' => $validated['status'] === 'Rejected' ?"": $request->link,
             'checked_by' => $validated['checked_by'],
             'status' => $validated['status'],
             'revision' => $validated['revision'],
