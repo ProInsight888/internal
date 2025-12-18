@@ -202,7 +202,7 @@ export default function TaskResult({ tasks, users, userName }) {
                                 <button
                                     key={status}
                                     onClick={() => {
-                                        setStatusFilter(status)
+                                        setStatusFilter(status);
                                     }}
                                     className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                                         statusFilter === status
@@ -504,7 +504,8 @@ export default function TaskResult({ tasks, users, userName }) {
                                             Date Submitted
                                         </h4>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                                            {selectedTask.send_date}
+                                            {selectedTask.send_date}:
+                                            {selectedTask.send_time}
                                         </p>
                                     </div>
                                 </div>

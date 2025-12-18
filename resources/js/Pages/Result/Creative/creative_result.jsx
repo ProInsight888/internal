@@ -82,8 +82,8 @@ export default function TaskResult({ tasks, users, userName }) {
 
     // Format date
     const formatDate = (dateString) => {
-        const options = { day: "numeric", month: "short", year: "numeric" };
-        return new Date(dateString).toLocaleDateString("en-US", options);
+        const options = { day: "numeric", month: "short", year: "numeric"};
+        return new Date(dateString).toLocaleDateString("id-ID", options);
     };
 
     // Calculate days until deadline
@@ -502,7 +502,8 @@ export default function TaskResult({ tasks, users, userName }) {
                                             Date Submitted
                                         </h4>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                                            {selectedTask.send_date}
+                                            {selectedTask.send_date}:
+                                            {selectedTask.send_time}
                                         </p>
                                     </div>
                                 </div>

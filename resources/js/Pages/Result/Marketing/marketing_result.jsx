@@ -502,7 +502,8 @@ export default function TaskResult({ tasks, users, userName }) {
                                             Date Submitted
                                         </h4>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                                            {selectedTask.send_date}
+                                            {selectedTask.send_date}:
+                                            {selectedTask.send_time}
                                         </p>
                                     </div>
                                 </div>
