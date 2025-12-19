@@ -502,8 +502,16 @@ export default function TaskResult({ tasks, users, userName }) {
                                             Date Submitted
                                         </h4>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                                            {selectedTask.send_date}
-                                            {selectedTask.send_time}
+                                            {new Date(
+                                                `${selectedTask.send_date}, ${selectedTask.send_time}+00:00`
+                                            ).toLocaleString("id-ID", {
+                                                day: "2-digit",
+                                                month: "short",
+                                                year: "numeric",
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                            })}{" "}
+                                            WIB
                                         </p>
                                     </div>
                                 </div>

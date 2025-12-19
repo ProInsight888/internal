@@ -98,7 +98,7 @@ class CreativeController extends Controller
 
     public function edit(creative $creative)
     {
-        // dd($task);
+        // dd($creative);
         $users = User::all();
         $companies = newClient::all();
         $task_title = creative::select('task_title')
