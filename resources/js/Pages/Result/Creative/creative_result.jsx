@@ -13,6 +13,7 @@ export default function TaskResult({ tasks, users, userName }) {
     const [statusFilter, setStatusFilter] = useState("In Review");
     const revisionRef = useRef(null);
     // console.log(user);
+    // console.log(selectedTask);
 
     // Form handling
     const { data, setData, put, post, processing, errors, reset } = useForm({
@@ -51,7 +52,7 @@ export default function TaskResult({ tasks, users, userName }) {
 
     // Open review modal
     const openReviewModal = (task) => {
-        console.log(task);
+        // console.log(task);
 
         setSelectedTask(task);
         setData("uuid", task.uuid);
@@ -82,7 +83,7 @@ export default function TaskResult({ tasks, users, userName }) {
 
     // Format date
     const formatDate = (dateString) => {
-        const options = { day: "numeric", month: "short", year: "numeric"};
+        const options = { day: "numeric", month: "short", year: "numeric" };
         return new Date(dateString).toLocaleDateString("id-ID", options);
     };
 
@@ -502,8 +503,16 @@ export default function TaskResult({ tasks, users, userName }) {
                                             Date Submitted
                                         </h4>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                                            {selectedTask.send_date}:
-                                            {selectedTask.send_time}
+                                            {new Date(
+                                                `${selectedTask.send_date}, ${selectedTask.send_time}+00:00`
+                                            ).toLocaleDateString("id-ID", {
+                                                day: "2-digit",
+                                                month: "short",
+                                                year: "numeric",
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                            })}{" "}
+                                            WIB
                                         </p>
                                     </div>
                                 </div>

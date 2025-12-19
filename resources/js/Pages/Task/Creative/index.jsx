@@ -61,6 +61,16 @@ const CategoryBadge = ({ category }) => {
     );
 };
 
+const formatDateTimeWIB = (date, time) =>
+    new Date(`${date} ${time}+00:00`).toLocaleString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Asia/Jakarta",
+    });
+
 // Priority Badge Component
 const PriorityBadge = ({ deadline }) => {
     const today = new Date();
@@ -327,7 +337,7 @@ const TaskModal = ({
 }) => {
     if (!isOpen) return null;
 
-    console.log(task);
+    // console.log(task.revision);
 
     const handleDelete = useCallback(() => {
         if (
@@ -450,6 +460,21 @@ const TaskModal = ({
                                 )}
                             </p>
                         </div>
+                        {(task.status === "Approved" ||
+                            task.status === "Rejected") && (
+                            <div>
+                                <span className="text-gray-500 dark:text-gray-400">
+                                    Submit time:
+                                </span>
+                                <p>
+                                    {formatDateTimeWIB(
+                                        task.send_date,
+                                        task.send_time
+                                    )}{" "}
+                                    WIB
+                                </p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Description */}
@@ -464,18 +489,17 @@ const TaskModal = ({
                     </div>
 
                     {/* Revision Notice */}
-                    {task.status === "Rejected" &&
-                        task.rejected_revision?.revision && (
-                            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                                <h4 className="text-red-800 dark:text-red-300 font-semibold mb-2 flex items-center">
-                                    <WarningIcon />
-                                    Revision Required
-                                </h4>
-                                <p className="text-red-700 dark:text-red-300">
-                                    {task.rejected_revision.revision}
-                                </p>
-                            </div>
-                        )}
+                    {task.status === "Rejected" && (
+                        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                            <h4 className="text-red-800 dark:text-red-300 font-semibold mb-2 flex items-center">
+                                <WarningIcon />
+                                Revision Required
+                            </h4>
+                            <p className="text-red-700 dark:text-red-300">
+                                {task.revision !== null ? task.revision : "-"}
+                            </p>
+                        </div>
+                    )}
 
                     {/* Submission Form */}
                     {task.status !== "Cancel" && (
