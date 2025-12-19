@@ -728,7 +728,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     const [selectedFilter, setSelectedFilter] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
     const [selectedCompany, setSelectedCompany] = useState("");
-    const [sortDeadline, setSortDeadline] = useState("Desc");
+    const [sortDeadline, setSortDeadline] = useState("Asc");
     const [selectedTask, setSelectedTask] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
