@@ -41,6 +41,7 @@
 -   Role-based authentication and policy control.
 -   Preconfigured **PHPUnit** testing and **Seeder** data.
 -   Built-in modules for Calendar, Tasks, Media, and Data management.
+-   Profile System
 
 ---
 
@@ -97,3 +98,5 @@ Please contact the development lead or read the internal documentation before op
 ## 🔒 License
 
 This project is **not open-sourced** and is restricted to company employees only.
+
+## How profile system works is in .env change into APP_URL=https://internal.proinsight.id and make a symlink "php artisan storage:link"

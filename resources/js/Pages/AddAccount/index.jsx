@@ -112,7 +112,14 @@ const UserTableRow = ({
             </td>
             <td className="px-4 py-3">
                 <div className="flex items-center gap-5">
-                    <div className="rounded-full w-12 bg-yellow-400 h-12"><img src={`/storage/${user.avatar}`} alt="" className="rounded-full aspect-square"/></div>
+                    <div className="rounded-full w-12 h-12 bg-yellow-400 overflow-hidden">
+                        <img
+                            src={user.avatar_url}
+                            alt="Avatar"
+                            className="w-full h-full object-cover rounded-full"
+                        />
+                    </div>
+
                     <div>
                         <span className="font-semibold block text-gray-900 dark:text-gray-100">
                             {user.name}
@@ -439,6 +446,7 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
     ];
 
     const teamOptions = [
+        { value: "core", label: "Core" },
         { value: "media", label: "Media Team" },
         { value: "creative", label: "Creative Team" },
         { value: "marketing", label: "Marketing" },

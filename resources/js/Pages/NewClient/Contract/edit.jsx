@@ -583,16 +583,16 @@ export default function edit({ clients }) {
                                                     className="dark:text-gray-300"
                                                 >
                                                     <option value="Protall">
-                                                        Protall
+                                                        PROTALL
                                                     </option>
                                                     <option value="Progrand">
-                                                        Progrand
+                                                        PROGRAND
                                                     </option>
                                                     <option value="Proventi">
-                                                        Proventi
+                                                        PROVENTI
                                                     </option>
                                                     <option value="Promax">
-                                                        Promax
+                                                        PROMAX
                                                     </option>
                                                     <option value="Feeds">
                                                         Add Ons Feeds

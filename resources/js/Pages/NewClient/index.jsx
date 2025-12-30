@@ -72,7 +72,6 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
     const [clickCounts, setClickCounts] = useState({});
     const timeoutRef = useRef({});
 
-
     console.log(clients, cicilans, total_clients)
 
     const dropdownRefs = useRef([]);
@@ -99,7 +98,6 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
     useEffect(() => {
         if (successMessage || deletedMessage) {
             const timer = setTimeout(() => {
-                // Clear flash messages after 5 seconds
                 router.get(
                     route("new_client.index"),
                     {},
