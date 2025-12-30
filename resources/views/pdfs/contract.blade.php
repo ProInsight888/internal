@@ -132,7 +132,7 @@
                 <div>Nomor Surat : {{ $contract->reference_num }}</div>
                 <div>Berlaku: {{ \Carbon\Carbon::parse($contract->contract_start)->format('d F Y') }} sampai {{ \Carbon\Carbon::parse($contract->contract_end)->format('d F Y') }}</div>
                 <br>
-                <div>Pada hari ini, <b>{{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('l') }}
+                <div>Pada hari ini, <b>{{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('l')}}
                     </b>, Tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->format('d F Y') }}
                     , yang bertanda tangan di bawah ini</div>
                 <div class=""><b>1. {{ $client->company_name }}</b></div>
