@@ -108,7 +108,7 @@ export default function create({}) {
                                     name="company_name"
                                     value={data.company_name}
                                     className="mt-1 block w-full bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
-                                    autoComplete="company_name"
+                                    autoComplete="off"
                                     onChange={(e) =>
                                         setData("company_name", e.target.value)
                                     }
@@ -186,14 +186,18 @@ export default function create({}) {
                                         label="Social Media Management"
                                         className="dark:text-gray-300 dark:bg-gray-700"
                                     >
-                                        <option value="Protall">Protall</option>
+                                        <option value="Protall">
+                                            PROTALL
+                                        </option>
                                         <option value="Progrand">
-                                            Progrand
+                                            PROGRAND
                                         </option>
                                         <option value="Proventi">
-                                            Proventi
+                                            PROVENTI
                                         </option>
-                                        <option value="Promax">Promax</option>
+                                        <option value="Promax">
+                                            PROMAX
+                                        </option>
                                         <option value="Feeds">
                                             Add Ons Feeds
                                         </option>
@@ -251,7 +255,9 @@ export default function create({}) {
                             <div
                                 className={`mb-6 grid grid-cols-2 ${
                                     data.package === "Photo & Video"
-                                ? '' : 'hidden'}`}
+                                        ? ""
+                                        : "hidden"
+                                }`}
                             >
                                 <div className="col-span-1">
                                     <InputLabel
@@ -470,10 +476,7 @@ export default function create({}) {
                                             value={data.paid}
                                             className="mt-1 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
                                             onChange={(e) =>
-                                                setData(
-                                                    "paid",
-                                                    e.target.value
-                                                )
+                                                setData("paid", e.target.value)
                                             }
                                         />
                                     </div>
