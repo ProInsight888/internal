@@ -32,7 +32,7 @@ class NewClientController extends Controller
     //     ) DESC
     // ")
     //             ->orderBy('company_name')
-    //             ->paginate(20);
+    //             ->paginate(200000000);
 
     //         $total_clients = newClient::count();
     //         $cicilans = cicilan::all();
@@ -62,7 +62,7 @@ class NewClientController extends Controller
             ->values();
 
         // Manual pagination
-        $perPage = 20;
+        $perPage = 200000000;
         $currentPage = request('page', 1);
 
         $paginatedClients = new \Illuminate\Pagination\LengthAwarePaginator(
