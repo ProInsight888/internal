@@ -117,27 +117,26 @@
         </div>
         <div class="proinsight-small-identity">
             <div class="pro-insight-text">
-                <b>PRO INSIGHT</b>
+                <b>PROINSIGHT</b>
             </div>
             <div class="pro-insight-address">
                 Ruko Cahaya Garden Blok B2-01 Tahap 2, Batam Centre
             </div>
             <div class="proinsight-tlp-email">
-                <div>Telp : 0853-5575-8581&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email : proinsight888@gmail.com</div>
+                <div>Telp: 0853-5575-8581&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email: proinsight888@gmail.com</div>
             </div>
         </div>
         <div>
             <div class=""><b><u>SURAT PERJANJIAN KERJASAMA</u></b></div>
             <div>
-                <div>Nomor Surat : {{ $contract->reference_num }}</div>
-                <div>Berlaku: {{ \Carbon\Carbon::parse($contract->contract_start)->format('d F Y') }} sampai {{ \Carbon\Carbon::parse($contract->contract_end)->format('d F Y') }}</div>
+                <div>Nomor Surat: {{ $contract->reference_num }}</div>
+                <div>Berlaku: {{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('d F Y') }} sampai {{ \Carbon\Carbon::parse($contract->contract_end)->locale('id')->translatedFormat('d F Y') }}</div>
                 <br>
                 <div>Pada hari ini, <b>{{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('l')}}
-                    </b>, Tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->format('d F Y') }}
-                    , yang bertanda tangan di bawah ini</div>
+                    </b>, Tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('d F Y') }}, yang bertanda tangan di bawah ini:</div>
                 <div class=""><b>1. {{ $client->company_name }}</b></div>
                 <div class="tab-1">
-                    <div>Alamat : {{ $contract->full_address }}</div>
+                    <div>Alamat: {{ $contract->full_address }}</div>
                     <div>Telp: {{ $contract->tlp_num }}</div>
                     @foreach ($pics as $key => $pic)
                     <div>Telp: {{ $pic->pic_tlp_num }} a/n {{ $pic->pic_name }}, sebagai {{ $pic->pic_position }}</div>
@@ -145,9 +144,9 @@
                     <div>Selanjutnya disebut sebagai <b>PlHAK PERTAMA</b></div>
                 </div>
                 <br>
-                <div class=""><b>2. PRO INSIGHT</b></div>
+                <div class=""><b>2. PROINSIGHT</b></div>
                 <div class="tab-1">
-                    <div>Alamat : Ruko Cahaya Garden Blok B2-01 Tahap 2, Batam Centre</div>
+                    <div>Alamat: Ruko Cahaya Garden Blok B2-01 Tahap 2, Batam Centre</div>
                     <div>Telp: 0853-5575-8581</div>
                     <div>Telp: 08117755996 a/n Felix Zeng, B.CS sebagai Creative Agency Coordinator</div>
                     <div>Selanjutnya disebut sebagai <b>PIHAK KEDUA</b></div>
@@ -156,7 +155,7 @@
 
             <div style="page-break-after: always;"></div>
 
-            <div>Kedua belah pihak sepakat untuk mengadakan <b>Perjanjian Kerjasama Paket “{{ $contract->package }}”</b> dengan ketentuan sebagai berikut: </div>
+            <div>Kedua belah pihak sepakat untuk mengadakan <b>Perjanjian Kerjasama Paket “{{ strtoupper ($contract->package) }}”</b> dengan ketentuan sebagai berikut: </div>
             <br>
             <div class="text-center"><b>Pasal 1</b></div>
             <div class="text-center"><b>Tujuan Kerjasama</b></div>
@@ -167,7 +166,7 @@
             <div class="text-center"><b>Pasal 2</b></div>
             <div class="text-center"><b>Hak dan Kewajiban Pihak Pertama </b></div>
             <div class="border-bot">
-                <div>Kewajiban : </div>
+                <div>Kewajiban: </div>
                 <div class="tab-1">
                     <ol>
                         <li><b>Pihak Pertama</b> berkewajiban menyerahkan akses berupa <b><i>username</i></b> dan <b><i>password</i></b> akun media sosial kepada <b>Pihak Kedua</b> untuk keperluan operasional. </li>
@@ -190,7 +189,7 @@
                 </div>
             </div>
             <div>
-                <div>Hak : </div>
+                <div>Hak: </div>
                 <div class="tab-1">
                     <ol>
                         <li><b>Pihak Pertama</b> berhak memperoleh pembaruan konten media sosial sesuai ketentuan yang telah disebutkan di atas. </li>
@@ -208,7 +207,7 @@
             <div class="text-center"><b>Durasi Pengerjaan </b></div>
             <div>
                 <ol>
-                    <li>Durasi paket yang diambil selama {{ $client->duration }} terhitung sejak tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->format('d F Y') }} hingga {{ \Carbon\Carbon::parse($contract->contract_end)->format('d F Y') }}.</li>
+                    <li>Durasi paket yang diambil selama {{ $client->duration }} terhitung sejak tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('d F Y') }} hingga {{ \Carbon\Carbon::parse($contract->contract_end)->locale('id')->translatedFormat('d F Y') }}.</li>
                     <li>Untuk <b><i>Video Shooting</i></b> proses pengerjaan membutuhkan 3-5 hari kerja.</li>
                     <li>Untuk <b><i>Design Post</i></b> membutuhkan 1-3 hari kerja.</li>
                 </ol>
@@ -217,7 +216,7 @@
             <div class="text-center"><b>Pasal 4</b></div>
             <div class="text-center"><b>Biaya</b></div>
             <div>
-                Pihak Pertama telah menyetujui untuk mengambil paket <b>“{{ $contract->package }}”</b>, dengan total biaya sebesar Rp {{ number_format($contract->price, 0, ',', '.') }}, yang mencakup seluruh komponen layanan sebagaimana tercantum dalam perjanjian ini. Pembayaran atas biaya tersebut wajib diselesaikan oleh Pihak Pertama sesuai dengan ketentuan dan jadwal pembayaran yang telah ditentukan dalam kontrak ini.
+                Pihak Pertama telah menyetujui untuk mengambil paket <b>“{{ strtoupper ($contract->package) }}”</b>, dengan total biaya sebesar Rp {{ number_format($contract->price, 0, ',', '.') }}, yang mencakup seluruh komponen layanan sebagaimana tercantum dalam perjanjian ini. Pembayaran atas biaya tersebut wajib diselesaikan oleh Pihak Pertama sesuai dengan ketentuan dan jadwal pembayaran yang telah ditentukan dalam kontrak ini.
             </div>
 
             <br>
@@ -270,7 +269,7 @@
                 <tbody>
                     <tr>
                         <td><b>{{ $client->company_name }}</b></td>
-                        <td><b>PRO INSIGHT</b></td>
+                        <td><b>PROINSIGHT</b></td>
                     </tr>
                     <tr>
                         <td class="font_white">a</td>
@@ -282,7 +281,7 @@
                     </tr>
                     <tr>
                         <td><b>{{ $pics[0]->pic_name }}</b></td>
-                        <td><b>Felix Zeng, B. CS</b></td>
+                        <td><b>Felix Zeng, B.CS</b></td>
                     </tr>
                     <tr>
                         <td><b>{{ $pics[0]->pic_position }}</b></td>

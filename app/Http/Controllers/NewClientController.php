@@ -32,7 +32,6 @@ class NewClientController extends Controller
     //     ) DESC
     // ")
     //             ->orderBy('company_name')
-    //             ->paginate(200000000);
 
     //         $total_clients = newClient::count();
     //         $cicilans = cicilan::all();
@@ -61,24 +60,48 @@ class NewClientController extends Controller
             ->sortBy('company_name')
             ->values();
 
-        // Manual pagination
-        $perPage = 200000000;
-        $currentPage = request('page', 1);
-
-        $paginatedClients = new \Illuminate\Pagination\LengthAwarePaginator(
-            $clients->forPage($currentPage, $perPage),
-            $clients->count(),
-            $perPage,
-            $currentPage,
-            ['path' => request()->url()]
-        );
-
         return inertia('NewClient/index', [
-            'clients' => $paginatedClients,
+            'clients' => $clients,
             'cicilans' => cicilan::all(),
             'total_clients' => newClient::count(),
         ]);
     }
+
+    // public function index()
+    // {
+    //     $clients = newClient::all()
+    //         ->sortByDesc(function ($client) {
+    //             // Ambil tanggal awal sebelum " - "
+    //             $startDate = explode(' - ', $client->contract)[0];
+
+    //             // Parse manual
+    //             try {
+    //                 return Carbon::createFromFormat('d M Y', $startDate);
+    //             } catch (\Exception $e) {
+    //                 return Carbon::minValue();
+    //             }
+    //         })
+    //         ->sortBy('company_name')
+    //         ->values();
+
+    //     // Manual pagination
+    //     $perPage = 20;
+    //     $currentPage = request('page', 1);
+
+    //     $paginatedClients = new \Illuminate\Pagination\LengthAwarePaginator(
+    //         $clients->forPage($currentPage, $perPage),
+    //         $clients->count(),
+    //         $perPage,
+    //         $currentPage,
+    //         ['path' => request()->url()]
+    //     );
+
+    //     return inertia('NewClient/index', [
+    //         'clients' => $paginatedClients,
+    //         'cicilans' => cicilan::all(),
+    //         'total_clients' => newClient::count(),
+    //     ]);
+    // }
 
     /**
      * Show the form for creating a new resource.

@@ -119,6 +119,10 @@ export default function Create({
         post(route("it.store"));
     }
 
+    function escapeRegx (str) {
+        return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+    }
+
     return (
         <AuthenticatedLayout>
             <Head title="Create IT Task" />
@@ -241,7 +245,9 @@ export default function Create({
                                                                 {option.task_title
                                                                     .split(
                                                                         new RegExp(
-                                                                            `(${data.task_title})`,
+                                                                            `(${escapeRegx(
+                                                                                data.task_title
+                                                                            )})`,
                                                                             "gi"
                                                                         )
                                                                     )
