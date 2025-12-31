@@ -23,24 +23,47 @@ class NewClientController extends Controller
     /**
      * Display a listing of the resource.
      */
+    //     public function index()
+    //     {
+    //         $clients = newClient::orderByRaw("
+    //     STR_TO_DATE(
+    //         LEFT(contract, INSTR(contract, ' - ') - 1),
+    //         '%d %b %Y'
+    //     ) DESC
+    // ")
+    //             ->orderBy('company_name')
+
+    //         $total_clients = newClient::count();
+    //         $cicilans = cicilan::all();
+
+    //         return inertia('NewClient/index', [
+    //             'clients' => $clients,
+    //             'cicilans' => $cicilans,
+    //             'total_clients' => $total_clients,
+    //         ]);
+    //     }
+
     public function index()
     {
-        $clients = newClient::orderByRaw("
-    STR_TO_DATE(
-        LEFT(contract, INSTR(contract, ' - ') - 1),
-        '%d %b %Y'
-    ) DESC
-")
-            ->orderBy('company_name')
-            ->paginate(20);
+        $clients = newClient::all()
+            ->sortByDesc(function ($client) {
+                // Ambil tanggal awal sebelum " - "
+                $startDate = explode(' - ', $client->contract)[0];
 
-        $total_clients = newClient::count();
-        $cicilans = cicilan::all();
+                // Parse manual
+                try {
+                    return Carbon::createFromFormat('d M Y', $startDate);
+                } catch (\Exception $e) {
+                    return Carbon::minValue();
+                }
+            })
+            ->sortBy('company_name')
+            ->values();
 
         return inertia('NewClient/index', [
             'clients' => $clients,
-            'cicilans' => $cicilans,
-            'total_clients' => $total_clients,
+            'cicilans' => cicilan::all(),
+            'total_clients' => newClient::count(),
         ]);
     }
 
@@ -291,4 +314,4 @@ class NewClientController extends Controller
 
         return Redirect::to('new_client')->with('deleted', 'Client Deleted');
     }
-}
+} 
