@@ -84,13 +84,14 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
     ];
 
     const teamOptions = [
+        { value: "core", label: "Core" },
         { value: "media", label: "Media Team" },
         { value: "creative", label: "Creative Team" },
         { value: "marketing", label: "Marketing" },
         { value: "it", label: "IT Team" },
     ];
 
-    const { auth } = usePage().props;
+    // const { auth } = usePage().props;
     const [preview, setPreview] = useState(formProps.data.avatar || null);
 
     const handleAvatarChange = (e) => {
@@ -104,12 +105,14 @@ const UserRegistrationForm = ({ onSubmit, processing, ...formProps }) => {
 
     console.log(formProps.data, preview)
 
-    const handleRemoveAvatar = () => {
-        formProps.setData("avatar", null);
-        setPreview(null);
-        const fileInput = document.getElementById("avatar");
-        if (fileInput) fileInput.value = "";
-    };
+const handleRemoveAvatar = () => {
+    formProps.setData({
+        ...formProps.data,
+        avatar: null,
+        remove_avatar: true,
+    });
+    setPreview(null);
+};
 
     return (
         <form onSubmit={onSubmit} className="space-y-5">

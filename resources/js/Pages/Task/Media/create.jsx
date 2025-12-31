@@ -119,6 +119,10 @@ export default function Create({
         post(route("media.store"));
     }
 
+    function escapeRegex(str) {
+        return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+    }
+
     return (
         <AuthenticatedLayout>
             <Head title="Create Media Task" />
@@ -241,10 +245,13 @@ export default function Create({
                                                                 {option.task_title
                                                                     .split(
                                                                         new RegExp(
-                                                                            `(${data.task_title})`,
+                                                                            `(${escapeRegex(
+                                                                                data.task_title
+                                                                            )})`,
                                                                             "gi"
                                                                         )
                                                                     )
+
                                                                     .map(
                                                                         (
                                                                             part,

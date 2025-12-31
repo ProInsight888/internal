@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
-import { Fragment, useState, useRef, useEffect } from "react";
+import { Fragment, useState, useRef, useEffect, useMemo } from "react";
 import {
     Pagination,
     PaginationContent,
@@ -72,7 +72,6 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
     const [clickCounts, setClickCounts] = useState({});
     const timeoutRef = useRef({});
 
-
     console.log(clients, cicilans, total_clients)
 
     const dropdownRefs = useRef([]);
@@ -99,7 +98,6 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
     useEffect(() => {
         if (successMessage || deletedMessage) {
             const timer = setTimeout(() => {
-                // Clear flash messages after 5 seconds
                 router.get(
                     route("new_client.index"),
                     {},
@@ -213,17 +211,32 @@ export default function ClientIndex({ clients, cicilans, total_clients }) {
         return statusColors[status] || "from-slate-400 to-gray-600";
     };
 
-    const filteredClients = clients.data.filter((client) => {
-        const matchesSearch =
-            client.company_name
-                ?.toLowerCase()
-                .includes(searchTerm.toLowerCase()) ||
-            client.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            client.code?.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesStatus =
-            statusFilter === "all" || client.status === statusFilter;
-        return matchesSearch && matchesStatus;
-    });
+    // const filteredClients = clients.data.filter((client) => {
+    //     const matchesSearch =
+    //         client.company_name
+    //             ?.toLowerCase()
+    //             .includes(searchTerm.toLowerCase()) ||
+    //         client.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //         client.code?.toLowerCase().includes(searchTerm.toLowerCase());
+    //     const matchesStatus =
+    //         statusFilter === "all" || client.status === statusFilter;
+    //     return matchesSearch && matchesStatus;
+    // });
+
+        const filteredClients = useMemo(() => {
+            const search = searchTerm.toLowerCase();
+
+            return clients.filter((client) => {
+                const matchesSearch =
+                    client.company_name?.toLowerCase().includes(search) ||
+                    client.location?.toLowerCase().includes(search) ||
+                    client.code?.toLowerCase().includes(search);
+
+                const matchesStatus =
+                    statusFilter === "all" || client.status === statusFilter;
+                return matchesStatus && matchesSearch;
+            });
+        }, [clients, searchTerm, statusFilter]);
 
     // Enhanced Client Actions Component
     const ClientActionsDropDown = ({ client, index }) => {

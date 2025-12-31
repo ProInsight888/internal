@@ -72,7 +72,7 @@ class ProfileController extends Controller
         $user->name = $validated['name'];
         $user->save();
 
-        return back()->with('success', 'Profile updated successfully.');
+        return redirect()->route('profile.index');
     }
 
 
