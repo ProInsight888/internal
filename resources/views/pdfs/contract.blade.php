@@ -107,6 +107,10 @@
         br {
             line-height: 28px;
         }
+
+        .bold {
+            font-weight: 900;
+        }
     </style>
 </head>
 
@@ -132,8 +136,7 @@
                 <div>Nomor Surat: {{ $contract->reference_num }}</div>
                 <div>Berlaku: {{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('d F Y') }} sampai {{ \Carbon\Carbon::parse($contract->contract_end)->locale('id')->translatedFormat('d F Y') }}</div>
                 <br>
-                <div>Pada hari ini, <b>{{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('l')}}
-                    </b>, Tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('d F Y') }}, yang bertanda tangan di bawah ini:</div>
+                <div>Pada hari ini, <span class="bold">{{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('l')}}</span>, Tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('d F Y') }}, yang bertanda tangan di bawah ini:</div>
                 <div class=""><b>1. {{ $client->company_name }}</b></div>
                 <div class="tab-1">
                     <div>Alamat: {{ $contract->full_address }}</div>
@@ -194,8 +197,8 @@
                     <ol>
                         <li><b>Pihak Pertama</b> berhak memperoleh pembaruan konten media sosial sesuai ketentuan yang telah disebutkan di atas. </li>
                         <li><b>Pihak Pertama</b> berhak menerima <b>1 (satu) <i>motion graphic video </i></b> selama <b>1 (satu) bulan</b>, dengan ketentuan bahwa <b>Pihak Pertama</b> menyediakan materi atau bahan yang akan dijadikan isi dari video tersebut. </li>
-                        <li><b>Pihak Pertama</b> berhak menerima <b><i>Feedback Reports</i></b> setiap tanggal 30 setiap bulan. </li>
-                        <li><b>Pihak Pertama</b> berhak menerima <b><i>Design</i> Hari Besar</b> untuk tahun 2025.</li>
+                        <li><b>Pihak Pertama</b> berhak menerima <b><i>Feedback Reports</i></b> satu hari sebelum tanggal terakhir di setiap bulan.</li>
+                        <!-- <li><b>Pihak Pertama</b> berhak menerima <b><i>Design</i> Hari Besar</b> untuk tahun 2025.</li> -->
                         <li><b>Pihak Pertama</b> berhak memberikan masukan, arahan, atau pendapat kepada <b>Pihak Kedua</b> sehubungan dengan strategi promosi usaha yang dimilikinya. </li>
                         <li>Kedua belah pihak memiliki hak untuk mengakhiri kontrak apabila salah satu pihak tidak menjalankan kewajibannya sebagaimana mestinya. </li>
                         <li>Seluruh hasil karya <i>Design</i>, foto, dan video yang telah dipublikasikan selama masa kerjasama merupakan hak milik penuh dari <b>Pihak Pertama</b>. </li>
@@ -207,11 +210,12 @@
             <div class="text-center"><b>Durasi Pengerjaan </b></div>
             <div>
                 <ol>
-                    <li>Durasi paket yang diambil selama {{ $client->duration }} terhitung sejak tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('d F Y') }} hingga {{ \Carbon\Carbon::parse($contract->contract_end)->locale('id')->translatedFormat('d F Y') }}.</li>
+                    <li>Durasi paket yang diambil selama {{ ((int) $client->duration) +1 }} bulan terhitung sejak tanggal {{ \Carbon\Carbon::parse($contract->contract_start)->locale('id')->translatedFormat('d F Y') }} hingga {{ \Carbon\Carbon::parse($contract->contract_end)->locale('id')->translatedFormat('d F Y') }}.</li>
                     <li>Untuk <b><i>Video Shooting</i></b> proses pengerjaan membutuhkan 3-5 hari kerja.</li>
                     <li>Untuk <b><i>Design Post</i></b> membutuhkan 1-3 hari kerja.</li>
                 </ol>
             </div>
+            <br>
             <br>
             <div class="text-center"><b>Pasal 4</b></div>
             <div class="text-center"><b>Biaya</b></div>
@@ -273,10 +277,14 @@
                     </tr>
                     <tr>
                         <td class="font_white">a</td>
+                    </tr>
+                    <tr>
                         <td class="font_white">a</td>
                     </tr>
                     <tr>
                         <td class="font_white">a</td>
+                    </tr>
+                    <tr>
                         <td class="font_white">a</td>
                     </tr>
                     <tr>
@@ -294,6 +302,12 @@
                         </tr>
                         <tr>
                             <td><b>{{ $client->company_name }}</b></td>
+                        </tr>
+                        <tr>
+                            <td class="font_white">a</td>
+                        </tr>
+                        <tr>
+                            <td class="font_white">a</td>
                         </tr>
                         <tr>
                             <td class="font_white">a</td>

@@ -32,6 +32,7 @@ class NewClientController extends Controller
     //     ) DESC
     // ")
     //             ->orderBy('company_name')
+    //             ->paginate(20);
 
     //         $total_clients = newClient::count();
     //         $cicilans = cicilan::all();
@@ -126,7 +127,7 @@ class NewClientController extends Controller
 
         $validated = $request->validate([
             'company_name' => 'string|required',
-            'code' => 'required|string|max:4|unique:new_clients,code',
+            'code' => 'required|string|max:4|min:4|unique:new_clients,code',
             'type' => 'string|required',
             'location' => 'string|required',
             'contract_start' => 'string|required',
@@ -229,7 +230,7 @@ class NewClientController extends Controller
 
         $validated = $request->validate([
             'company_name' => 'string|required',
-            'code' => 'string|required',
+            'code' => 'string|required|max:4|min:4|unique:new_clients,code,' . $newClient->uuid . ',uuid',
             'type' => 'string|required',
             'location' => 'string|required',
             'contract_start' => 'string|required',

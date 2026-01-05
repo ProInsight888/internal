@@ -16,7 +16,7 @@ export default function create({}) {
         package: "",
         status: "Lunas",
         cicil: "",
-        code: "", // Add code field
+        code: "", 
         fase_pembayaran: [{ cicilan: "", tanggal: "" }],
         add_ons_drone: false,
         add_ons_production: false,
@@ -141,13 +141,13 @@ export default function create({}) {
                                                 e.target.value.toUpperCase()
                                             )
                                         }
-                                        placeholder="e.g., EYCA"
+                                        placeholder="e.g., EYCA (4 Characters)"
                                         maxLength={4}
                                         required
                                     />
-                                    <span className="text-sm text-gray-500 font-mono dark:text-gray-400">
+                                    {/* <span className="text-sm text-gray-500 font-mono dark:text-gray-400">
                                         (4 characters)
-                                    </span>
+                                    </span> */}
                                 </div>
                                 <InputError
                                     message={errors.code}

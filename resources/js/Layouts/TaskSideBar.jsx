@@ -356,7 +356,7 @@ export default function TaskSideBar({
                                         {Array.from(
                                             new Set(
                                                 tasks.map(
-                                                    (task) => task.company
+                                                    (task) => task.company?.company_name
                                                 )
                                             )
                                         ).map((company, idx) => (

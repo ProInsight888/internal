@@ -39,17 +39,19 @@ export default function index({ ev }) {
         ],
         defaultView: "month-grid",
 
-        events: [
-            ...ev.map((e) => ({
+        events: ev.map((e) => {
+            const rawStart = e.googleEvent.start.dateTime || e.googleEvent.start.date;
+            const rawEnd = e.googleEvent.end.dateTime || e.googleEvent.end.date;
+
+            return {
                 id: e.googleEvent.id,
                 title: e.googleEvent.summary,
-                start: e.googleEvent.start.dateTime
-                    .slice(0, 16)
-                    .replace("T", " "),
-                end: e.googleEvent.end.dateTime.slice(0, 16).replace("T", " "),
+                start: rawStart.length > 10 ? rawStart?.slice(0, 16).replace("T", " ") : rawStart + " 00:00",
+                end: rawEnd.length > 10 ? rawEnd?.slice(0, 16).replace("T", " ") : rawEnd + " 00:00",
                 description: e.googleEvent.description,
-            })),
-        ],
+            };
+        }),
+
         selectedDate: formattedDate,
         plugins: [createEventModalPlugin(), createDragAndDropPlugin()],
         callbacks: {
@@ -270,12 +272,12 @@ export default function index({ ev }) {
                                     })}
                                 </td>
                                 <td>
-                                    {e?.googleEvent.start.dateTime.slice(
+                                    {e?.googleEvent.start.dateTime?.slice(
                                         11,
                                         16
                                     )}{" "}
                                     -{" "}
-                                    {e?.googleEvent.end.dateTime.slice(11, 16)}
+                                    {e?.googleEvent.end.dateTime?.slice(11, 16)}
                                 </td>
                                 <td>{e?.googleEvent.description}</td>
                             </tr>

@@ -235,12 +235,12 @@ const TaskCard = ({ task, onOpenDetails, user_role, users }) => {
 
                 {/* Code */}
                 <h1 className="font-black text-2xl text-gray-900 dark:text-white mb-1 leading-tight pt-3">
-                    {task?.company_code?.code || "N/A"}
+                    {task?.company?.code || "N/A"}
                 </h1>
 
                 {/* Task Title */}
                 <h3 className="text-md text-black dark:text-white font-medium mb-2 line-clamp-2 break-words">
-                    {task.company}
+                    {task.company?.company_name || "N/A"}
                 </h3>
 
                 {/* Assignee and Format */}
@@ -337,7 +337,7 @@ const TaskModal = ({
 }) => {
     if (!isOpen) return null;
 
-    console.log(task);
+    // console.log(task);
 
     const handleDelete = useCallback(() => {
         if (
@@ -403,7 +403,7 @@ const TaskModal = ({
                             <div className="flex items-center gap-3">
                                 <StatusBadge status={task.status} />
                                 <span className="text-blue-100">
-                                    {task.company}
+                                    {task.company?.company_name ?? "N/A"}
                                 </span>
                             </div>
                         </div>
@@ -460,8 +460,7 @@ const TaskModal = ({
                                 )}
                             </p>
                         </div>
-                        {(task.status === "Approved" ||
-                            task.status === "Rejected") && (
+                        {(task.status === "Approved" || task.status === "Rejected") && (
                             <div>
                                 <span className="text-gray-500 dark:text-gray-400">
                                     Submit time:
@@ -512,9 +511,7 @@ const TaskModal = ({
                             {["In Review", "Approved"].includes(task.status) ? (
                                 <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
                                     <p className="text-green-800 dark:text-green-300 font-medium mb-2">
-                                        {task.status === "Approved"
-                                            ? "Approved"
-                                            : "Under Review"}
+                                        {task.status === "Approved" ? "Approved" : "Under Review"}
                                     </p>
 
                                     {task.result_link && (
@@ -728,7 +725,7 @@ export default function TaskIndex({ tasks, userName, users }) {
     const [selectedFilter, setSelectedFilter] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
     const [selectedCompany, setSelectedCompany] = useState("");
-    const [sortDeadline, setSortDeadline] = useState("Asc");
+    const [sortDeadline, setSortDeadline] = useState("Desc");
     const [selectedTask, setSelectedTask] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -762,8 +759,17 @@ export default function TaskIndex({ tasks, userName, users }) {
             .sort((a, b) => {
                 const dateA = new Date(a.deadline);
                 const dateB = new Date(b.deadline);
-                return sortDeadline === "Desc" ? dateA - dateB : dateB - dateA;
+
+                if (a.status === "Approved" && b.status === "Approved") {
+                    return dateB - dateA;
+                }
+
+                if (a.status === "Approved") return -1;
+                if (b.status === "Approved") return 1;
+
+                return dateA - dateB;
             });
+
     }, [tasks, selectedFilter, selectedUser, selectedCompany, sortDeadline]);
 
     // Group tasks by status for the default view
