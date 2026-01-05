@@ -44,13 +44,13 @@ class ContractController extends Controller
             'pic_position' => 'string|nullable',
             'price' => 'string|nullable',
         ]);
-
+        
         $today = now('Asia/Jakarta');
-
+        
         $uuid = Str::uuid()->toString();
-
+        
         $pics = $request->pics;
-
+        
         foreach ($pics as $pic) {
             // dd($pic);
             contract_pic::create([
@@ -61,13 +61,13 @@ class ContractController extends Controller
             ]);
         }
         ;
-
+        
         // dd($uuid);
-
+        
         $user = Auth::user();
-
+        
         $date = Carbon::now('Asia/Jakarta');
-
+        
         audit::create([
             'action' => 'Created',
             'change_section' => "Contract Created.",
@@ -75,7 +75,7 @@ class ContractController extends Controller
             'date' => $date->format('d F Y'),
             'time' => $date->format('H:i'),
         ]);
-
+        
         // $update_client = newClient::where('uuid', $uuid);
         contract::create([
             'uuid' => $uuid,
@@ -89,53 +89,57 @@ class ContractController extends Controller
             'full_address' => $validated['full_address'],
             'price' => $validated['price'],
         ]);
-
+        // dd($request->all());
+        
         return Redirect::to('new_client')->with('success', 'Client Updated Successfully');
     }
 
-    // public function clientContract(Request $request)
-    // {
-    //     $uuid = $request->clientsUuid;
-    //     $client = newClient::where('uuid', $uuid)->first();
-    //     $imageLogo = public_path('logo/logo.png');
-    //     $contract = contract::where('uuid_new_client', $uuid)->latest('created_at')->first();
-    //     $pics = contract_pic::where('contract_uuid', $contract->uuid)->get();
-    //     $package = [
-    //         'Protall' => [
-    //             'feeds' => '16 (enam belas)',
-    //             'x_per_minggu' => '4 (empat)',
-    //             'story' => '8 (delapan)',
-    //             'hari' => 'Senin, Selasa, Kamis dan Jumat',
-    //             'reel' => '4 (empat)',
-    //             'reel_post' => 'seminggu sekali',
-    //             'motion_graphic' => '1 (satu)'
-    //         ],
-    //     ];
-    //     $start = Carbon::parse($contract->contract_start);
-    //     $end = Carbon::parse($contract->contract_end);
-    //     $diff = $start->diff($end);
+    public function clientContract(Request $request)
+    {
 
-    //     $durationParts = [];
+        // dd($request->all());
+        $uuid = $request->clientsUuid;
+        $client = newClient::where('uuid', $uuid)->first();
+        $imageLogo = public_path('logo/logo.png');
+        $contract = contract::where('uuid_new_client', $uuid)->latest('created_at')->first();
+        $pics = contract_pic::where('contract_uuid', $contract->uuid)->get();
+        $package = [
+            'Protall' => [
+                'feeds' => '16 (enam belas)',
+                'x_per_minggu' => '4 (empat)',
+                'story' => '8 (delapan)',
+                'hari' => 'Senin, Selasa, Kamis dan Jumat',
+                'reel' => '4 (empat)',
+                'reel_post' => 'seminggu sekali',
+                'motion_graphic' => '1 (satu)'
+            ],
+        ];
+        $start = Carbon::parse($contract->contract_start);
+        $end = Carbon::parse($contract->contract_end);
+        $diff = $start->diff($end);
 
-    //     // dd($package[$contract->package]);
+        $durationParts = [];
 
-    //     if ($diff->y > 0)
-    //         $durationParts[] = $diff->y . ' Tahun';
-    //     if ($diff->m > 0)
-    //         $durationParts[] = $diff->m . ' Bulan';
+        // dd($package[$contract->package]);
 
-    //     $duration = count($durationParts) ? implode(' ', $durationParts) : '0 Bulan';
+        if ($diff->y > 0)
+            $durationParts[] = $diff->y . ' Tahun';
+        if ($diff->m > 0)
+            $durationParts[] = $diff->m . ' Bulan';
 
-    //     $client->duration = $duration;
+        $duration = count($durationParts) ? implode(' ', $durationParts) : '0 Bulan';
+
+        $client->duration = $duration;
     
-    //     // dd($pics[0]->pic_name);
-    //     $pdf = Pdf::loadView('pdfs.contract', compact('imageLogo', 'client', 'pics', 'contract', 'package'))
-    //         ->setPaper('a4', 'portrait');
+        // dd($pics[0]->pic_name);
+        $pdf = Pdf::loadView('pdfs.contract', compact('imageLogo', 'client', 'pics', 'contract', 'package'))
+            ->setPaper('a4', 'portrait');
 
-    //     return $pdf->stream('client_contract.pdf');
-    // }
+        return $pdf->stream('client_contract.pdf');
+    }
     public function viewClientContract(Request $request)
     {
+        // dd($request);
         $uuid = $request->clientsUuid;
         $contract = contract::where('uuid', $uuid)->first();
         $pics = contract_pic::where('contract_uuid', $uuid)->get();
