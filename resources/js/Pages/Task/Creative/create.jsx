@@ -25,6 +25,7 @@ export default function Create({
         task_format: "",
         status: "Idle",
         company: "",
+        company_label: "",
         category: "Monthly",
         deadline: new Date().toISOString().split("T")[0],
     });
@@ -414,143 +415,98 @@ export default function Create({
                                     value="Company"
                                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                                 />
+
                                 <div className="relative w-full">
-                                    <div className="relative">
-                                        <TextInput
-                                            type="text"
-                                            name="company"
-                                            value={data.company}
-                                            autoComplete="off"
-                                            placeholder="Enter Company Name"
-                                            onChange={(e) => {
-                                                setData(
-                                                    "company",
-                                                    e.target.value
-                                                );
-                                                setShowOptionCompany(true);
-                                            }}
-                                            onFocus={() =>
-                                                setShowOptionCompany(true)
-                                            }
-                                            onBlur={() => {
-                                                setTimeout(() => {
-                                                    setShowOptionCompany(false);
+                                    <TextInput
+                                        type="text"
+                                        name="company"
+                                        value={data.company_label}
+                                        autoComplete="off"
+                                        placeholder="Enter Company Name"
+                                        onChange={(e) => {
+                                            setData(
+                                                "company_label",
+                                                e.target.value
+                                            );
+                                            setShowOptionCompany(true);
+                                        }}
+                                        onFocus={() =>
+                                            setShowOptionCompany(true)
+                                        }
+                                        onBlur={() => {
+                                            setTimeout(() => {
+                                                setShowOptionCompany(false);
 
-                                                    const validCompanies =
-                                                        companies.map((c) =>
-                                                            c.company_name.toLowerCase()
-                                                        );
-                                                    if (
-                                                        data.company &&
-                                                        !validCompanies.includes(
-                                                            data.company.toLowerCase()
-                                                        )
-                                                    ) {
-                                                        setData("company", "");
-                                                    }
-                                                }, 150);
-                                            }}
-                                            className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                                        focus:ring-0 focus:ring-none focus:border-gray-400 dark:focus:border-gray-500 shadow-sm
-                                                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                                        />
+                                                const validNames =
+                                                    companies.map((c) =>
+                                                        c.company_name.toLowerCase()
+                                                    );
 
-                                        {/* Company Dropdown Options */}
-                                        {showOptionCompany &&
-                                            companies.length > 0 && (
-                                                <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg overflow-y-auto animate-fadeIn">
-                                                    {Array.from(
-                                                        new Set(
-                                                            companies.map(
-                                                                (company) =>
-                                                                    company.company_name
-                                                            )
-                                                        )
+                                                if (
+                                                    data.company_label &&
+                                                    !validNames.includes(
+                                                        data.company_label.toLowerCase()
                                                     )
-                                                        .filter((name) =>
-                                                            name
-                                                                .toLowerCase()
-                                                                .includes(
-                                                                    data.company.toLowerCase()
-                                                                )
-                                                        )
+                                                ) {
+                                                    setData("company", "");
+                                                }
+                                            }, 150);
+                                        }}
+                                        className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2  bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    />
 
-                                                        .map((name, idx) => (
-                                                            <div
-                                                                key={idx}
-                                                                onMouseDown={(
-                                                                    e
-                                                                ) => {
-                                                                    e.preventDefault();
-                                                                    e.stopPropagation();
-                                                                    setData(
-                                                                        "company",
-                                                                        name
-                                                                    );
-                                                                    setShowOptionCompany(
-                                                                        false
-                                                                    );
-                                                                }}
-                                                                className="px-6 text-sm py-2 cursor-pointer flex items-center gap-2 transition-colors duration-150  
-                                                                    hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white"
-                                                            >
-                                                                {/* Highlight matching text */}
-                                                                <span className="text-gray-900 dark:text-white">
-                                                                    {name
-                                                                        .split(
-                                                                            new RegExp(
-                                                                                `(${data.company})`,
-                                                                                "gi"
-                                                                            )
-                                                                        )
-                                                                        .map(
-                                                                            (
-                                                                                part,
-                                                                                index
-                                                                            ) =>
-                                                                                part.toLowerCase() ===
-                                                                                data.company.toLowerCase() ? (
-                                                                                    <span
-                                                                                        key={
-                                                                                            index
-                                                                                        }
-                                                                                        className="bg-yellow-200 dark:bg-yellow-800 font-medium"
-                                                                                    >
-                                                                                        {
-                                                                                            part
-                                                                                        }
-                                                                                    </span>
-                                                                                ) : (
-                                                                                    part
-                                                                                )
-                                                                        )}
-                                                                </span>
-                                                            </div>
-                                                        ))}
-
-                                                    {/* No results message */}
-                                                    {Array.from(
-                                                        new Set(
-                                                            companies.map(
-                                                                (company) =>
-                                                                    company.company_name
-                                                            )
-                                                        )
-                                                    ).filter((name) =>
-                                                        name
+                                    {showOptionCompany &&
+                                        companies.length > 0 && (
+                                            <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border rounded shadow max-h-32 overflow-y-auto">
+                                                {companies
+                                                    .filter((company) =>
+                                                        company.company_name
                                                             .toLowerCase()
                                                             .includes(
-                                                                data.company.toLowerCase()
+                                                                data.company_label.toLowerCase()
                                                             )
-                                                    ).length === 0 && (
-                                                        <div className="px-6 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
-                                                            No matching
-                                                            companies found
+                                                    )
+                                                    .map((company) => (
+                                                        <div
+                                                            key={company.uuid}
+                                                            onMouseDown={(
+                                                                e
+                                                            ) => {
+                                                                e.preventDefault();
+                                                                setData(
+                                                                    "company",
+                                                                    company.uuid
+                                                                );
+                                                                setData(
+                                                                    "company_label",
+                                                                    company.company_name
+                                                                );
+                                                                setShowOptionCompany(
+                                                                    false
+                                                                );
+                                                            }}
+                                                            className="px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                                                        >
+                                                            {
+                                                                company.company_name
+                                                            }
                                                         </div>
-                                                    )}
-                                                </div>
-                                            )}
-                                    </div>
+                                                    ))}
+
+                                                {companies.filter((company) =>
+                                                    company.company_name
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            data.company_label.toLowerCase()
+                                                        )
+                                                ).length === 0 && (
+                                                    <div className="px-4 py-2 text-sm text-gray-400 text-center">
+                                                        No matching companies
+                                                        found
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
 
                                     {errors.company && (
                                         <p className="text-red-500 text-sm mt-1">

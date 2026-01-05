@@ -26,8 +26,8 @@ class marketing extends Model
         return 'uuid';
     }
 
-    public function companyCode()
+    public function company()
     {
-        return $this->hasOne(newClient::class, 'company_name', 'company');
+        return $this->belongsTo(newClient::class, 'company', 'uuid');
     }
 }

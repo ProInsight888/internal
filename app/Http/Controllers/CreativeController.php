@@ -16,7 +16,7 @@ use Inertia\Inertia;
 class CreativeController extends Controller
 {
     public function index(){
-        $tasks = creative::with('companyCode')->get();
+        $tasks = creative::with('company')->get();
         $users = User::all();
         return Inertia::render('Task/Creative/index', [
             'tasks' => $tasks,

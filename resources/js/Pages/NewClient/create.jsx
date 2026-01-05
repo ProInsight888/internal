@@ -11,40 +11,8 @@ export default function create({}) {
         company_name: "",
         type: "",
         location: "",
-        contract_start: "",
-        contract_end: "",
-        package: "",
-        status: "Lunas",
-        cicil: "",
-        code: "", // Add code field
-        fase_pembayaran: [{ cicilan: "", tanggal: "" }],
-        add_ons_drone: false,
-        add_ons_production: false,
+        code: "", 
     });
-
-    // console.log(data)
-
-    useEffect(() => {
-        const jumlah = parseInt(data.cicil || 0);
-
-        if (data.status === "Cicil" && jumlah > 0) {
-            // Hanya update jika panjang fase_pembayaran tidak sama
-            if (data.fase_pembayaran.length !== jumlah) {
-                const fase = Array.from({ length: jumlah }, (_, i) => ({
-                    cicilan: `Cicilan ${i + 1}`,
-                    tanggal: data.fase_pembayaran[i]?.tanggal || "",
-                }));
-
-                setData("fase_pembayaran", fase);
-            }
-        }
-
-        if (data.status !== "Cicil") {
-            if (data.fase_pembayaran.length > 0) {
-                setData("fase_pembayaran", []);
-            }
-        }
-    }, [data.cicil, data.status]);
 
     // Optional: Auto-generate code when company name changes
     useEffect(() => {
@@ -141,13 +109,13 @@ export default function create({}) {
                                                 e.target.value.toUpperCase()
                                             )
                                         }
-                                        placeholder="e.g., EYCA"
+                                        placeholder="e.g., EYCA (4 Characters)"
                                         maxLength={4}
                                         required
                                     />
-                                    <span className="font-mono text-sm text-gray-500 dark:text-gray-400">
+                                    {/* <span className="font-mono text-sm text-gray-500 dark:text-gray-400">
                                         (4 characters)
-                                    </span>
+                                    </span> */}
                                 </div>
                                 <InputError
                                     message={errors.code}
@@ -203,124 +171,6 @@ export default function create({}) {
                                     message={errors.type}
                                     className="mt-2 dark:text-red-400"
                                 />
-                            </div>
-                            <div className="mb-6">
-                                <InputLabel
-                                    htmlFor="status"
-                                    value="Status"
-                                    className="dark:text-gray-300"
-                                />
-
-                                <div className="flex items-center gap-10">
-                                    <select
-                                        id="status"
-                                        name="status"
-                                        value={data.status}
-                                        className="block w-full mt-1 bg-transparent border-0 border-b border-gray-400 dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
-                                        autoComplete="status"
-                                        onChange={(e) =>
-                                            setData("status", e.target.value)
-                                        }
-                                    >
-                                        <option
-                                            value="Lunas"
-                                            className="dark:bg-gray-700"
-                                        >
-                                            Paid
-                                        </option>
-                                        <option
-                                            value="Cicil"
-                                            className="dark:bg-gray-700"
-                                        >
-                                            Installments
-                                        </option>
-                                        <option
-                                            value="Belum Bayar"
-                                            className="dark:bg-gray-700"
-                                        >
-                                            Unpaid
-                                        </option>
-                                    </select>
-                                    <div
-                                        className={`${
-                                            data.status === "Cicil"
-                                                ? ""
-                                                : "hidden"
-                                        } flex items-center dark:text-gray-300`}
-                                    >
-                                        <input
-                                            id="cicil"
-                                            name="cicil"
-                                            value={data.cicil}
-                                            className={`mt-1 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b dark:border-gray-600 dark:text-white dark:focus:border-blue-400`}
-                                            type="number"
-                                            min="1"
-                                            max="10"
-                                            onChange={(e) =>
-                                                setData("cicil", e.target.value)
-                                            }
-                                        />
-                                        X
-                                    </div>
-                                </div>
-
-                                <InputError
-                                    message={errors.status}
-                                    className="mt-2 dark:text-red-400"
-                                />
-                            </div>
-                            {data.status === "Lunas" && (
-                                <div>
-                                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                                        Date Paid
-                                    </span>
-                                    <div className="flex items-center gap-2">
-                                        <TextInput
-                                            type="date"
-                                            id="paid"
-                                            name="paid"
-                                            value={data.paid}
-                                            className="block w-full mt-1 transition-all duration-200 border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 dark:focus:border-blue-400"
-                                            onChange={(e) =>
-                                                setData("paid", e.target.value)
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="grid grid-cols-2 gap-5 mb-4">
-                                {data.status === "Cicil" &&
-                                    Array.isArray(data.fase_pembayaran) &&
-                                    data.fase_pembayaran.map((fase, index) => (
-                                        <div key={index}>
-                                            <InputLabel
-                                                htmlFor={`fase-${index}`}
-                                                value={`Tanggal ${fase.cicilan}`}
-                                                className="dark:text-gray-300"
-                                            />
-                                            <TextInput
-                                                type="date"
-                                                id={`fase-${index}`}
-                                                name={`fase-${index}`}
-                                                className="block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
-                                                value={fase.tanggal || ""}
-                                                onChange={(e) => {
-                                                    const updatedFase = [
-                                                        ...data.fase_pembayaran,
-                                                    ];
-                                                    updatedFase[index] = {
-                                                        ...updatedFase[index],
-                                                        tanggal: e.target.value,
-                                                    };
-                                                    setData(
-                                                        "fase_pembayaran",
-                                                        updatedFase
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                    ))}
                             </div>
                             <div className="flex items-center justify-end mt-4">
                                 <PrimaryButton

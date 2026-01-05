@@ -20,7 +20,7 @@ class ContractController extends Controller
 {
     public function edit(newclient $contract)
     {
-        dd($contract);
+        // dd($contract);
         $client = newClient::where('uuid', $contract->uuid)->first();
         // dd($client, $contract->uuid);
         return Inertia::render('NewClient/Contract/edit', [

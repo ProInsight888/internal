@@ -17,7 +17,7 @@ class ItController extends Controller
 {
     public function index()
     {
-        $tasks = it::with('companyCode')->get();
+        $tasks = it::with('company')->get();
         // dd($tasks);
         $users = User::all();
         return Inertia::render('Task/IT/index', [
@@ -128,8 +128,7 @@ class ItController extends Controller
 
     public function update(Request $request, it $it)
     {
-        dd( $request);
-        
+        // dd( $request);        
 
         $user = Auth::user();
 

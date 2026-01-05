@@ -26,6 +26,7 @@ export default function Edit({
         task_format: task?.task_format || "",
         status: task?.status || "On Progress",
         company: task?.company || "",
+        company_label: task?.company || "",
         category: task?.category || "",
         deadline: task?.deadline || "",
     });
@@ -71,6 +72,14 @@ export default function Edit({
             setSelectedUsers([...selectedUsers, user]);
         }
     };
+
+    const selectedCompany = companies.find((c) => c.uuid === data.company);
+
+    useEffect(() => {
+        if (selectedCompany) {
+            setData("company_label", selectedCompany.company_name);
+        }
+    }, [selectedCompany]);
 
     // Remove selected user
     const removeUser = (userId) => {
@@ -139,16 +148,16 @@ export default function Edit({
         // Ensure selected users are synced with form data
         const dataSelectUser = selectedUsers.map((user) => user.id).join(",");
         setData("penanggung_jawab", dataSelectUser);
-        console.log(task.uuid)
+        console.log(task.uuid);
 
         put(route("creative.update", { creative: task.uuid }), {
             onSuccess: () => {
                 // Optional: Add success handling
-                console.log(task.uuid)
+                console.log(task.uuid);
             },
             onError: (errors) => {
                 // Optional: Add error handling
-                console.log(task.uuid)
+                console.log(task.uuid);
             },
         });
     }
@@ -391,11 +400,14 @@ export default function Edit({
                                     <TextInput
                                         type="text"
                                         name="company"
-                                        value={data.company}
+                                        value={data.company_label}
                                         autoComplete="off"
                                         placeholder="Enter Company Name"
                                         onChange={(e) => {
-                                            setData("company", e.target.value);
+                                            setData(
+                                                "company_label",
+                                                e.target.value
+                                            );
                                             setShowOptionCompany(true);
                                         }}
                                         onFocus={() =>
@@ -407,31 +419,34 @@ export default function Edit({
                                             }, 150);
                                         }}
                                         className="w-full rounded-[0.5rem] text-sm border border-gray-300 dark:border-gray-600 px-4 py-2 
-                                            focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 shadow-sm
-                                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                     />
 
                                     {showOptionCompany &&
-                                        uniqueCompanies.length > 0 && (
+                                        companies.length > 0 && (
                                             <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-2 max-h-32 rounded-[0.5rem] shadow-lg overflow-y-auto animate-fadeIn">
-                                                {uniqueCompanies
-                                                    .filter((name) =>
-                                                        name
+                                                {companies
+                                                    .filter((company) =>
+                                                        company.company_name
                                                             .toLowerCase()
                                                             .includes(
-                                                                data.company.toLowerCase()
+                                                                data.company_label.toLowerCase()
                                                             )
                                                     )
-                                                    .map((name, idx) => (
+                                                    .map((company) => (
                                                         <div
-                                                            key={idx}
+                                                            key={company.uuid}
                                                             onMouseDown={(
                                                                 e
                                                             ) => {
                                                                 e.preventDefault();
                                                                 setData(
                                                                     "company",
-                                                                    name
+                                                                    company.uuid
+                                                                );
+                                                                setData(
+                                                                    "company_label",
+                                                                    company.company_name
                                                                 );
                                                                 setShowOptionCompany(
                                                                     false
@@ -439,17 +454,18 @@ export default function Edit({
                                                             }}
                                                             className="px-4 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-900 dark:text-white"
                                                         >
-                                                            {name}
+                                                            {
+                                                                company.company_name
+                                                            }
                                                         </div>
                                                     ))}
 
-                                                {uniqueCompanies.filter(
-                                                    (name) =>
-                                                        name
-                                                            .toLowerCase()
-                                                            .includes(
-                                                                data.company.toLowerCase()
-                                                            )
+                                                {companies.filter((company) =>
+                                                    company.company_name
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            data.company_label.toLowerCase()
+                                                        )
                                                 ).length === 0 && (
                                                     <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 text-center">
                                                         No matching companies

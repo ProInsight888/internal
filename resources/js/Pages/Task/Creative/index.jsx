@@ -235,12 +235,12 @@ const TaskCard = ({ task, onOpenDetails, user_role, users }) => {
 
                 {/* Code */}
                 <h1 className="font-black text-2xl text-gray-900 dark:text-white mb-1 leading-tight pt-3">
-                    {task?.company_code?.code || "N/A"}
+                    {task?.company?.code || "N/A"}
                 </h1>
 
                 {/* Task Title */}
                 <h3 className="text-md text-black dark:text-white font-medium mb-2 line-clamp-2 break-words">
-                    {task.company}
+                    {task.company?.company_name || "N/A"}
                 </h3>
 
                 {/* Assignee and Format */}
@@ -403,7 +403,7 @@ const TaskModal = ({
                             <div className="flex items-center gap-3">
                                 <StatusBadge status={task.status} />
                                 <span className="text-blue-100">
-                                    {task.company}
+                                    {task.company?.company_name ?? "N/A"}
                                 </span>
                             </div>
                         </div>
@@ -710,7 +710,7 @@ const SubmitIcon = () => (
             strokeLinejoin="round"
             strokeWidth={2}
             d="M13 10V3L4 14h7v7l9-11h-7z"
-        />
+        />+
     </svg>
 );
 
@@ -762,7 +762,15 @@ export default function TaskIndex({ tasks, userName, users }) {
             .sort((a, b) => {
                 const dateA = new Date(a.deadline);
                 const dateB = new Date(b.deadline);
-                return sortDeadline === "Desc" ? dateA - dateB : dateB - dateA;
+
+                if (a.status === "Approved" && b.status === "Approved") {
+                    return dateB - dateA;
+                }
+
+                if (a.status === "Approved") return -1;
+                if (b.status === "Approved") return 1;
+            
+                return dateA - dateB;
             });
     }, [tasks, selectedFilter, selectedUser, selectedCompany, sortDeadline]);
 

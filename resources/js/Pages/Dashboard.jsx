@@ -563,7 +563,7 @@ const ClientTable = ({ clients }) => (
     <div className="overflow-x-auto h-64 border border-gray-200 dark:border-gray-700 rounded-2xl bg-white dark:bg-gray-800 shadow-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <table className="w-full text-left border-collapse min-w-[800px] md:min-w-full">
             <thead>
-                <tr className="sticky top-0 text-xs md:text-sm bg-gradient-to-r from-blue-600 to-purple-700 text-white text-center">
+                <tr className="sticky top-0 text-xs md:text-sm bg-gradient-to-r from-blue-600 to-purple-700 text-white text-left">
                     <th className="p-4 sticky top-0">No</th>
                     <th className="p-4 sticky top-0">Nama</th>
                     <th className="p-4 sticky top-0">Type</th>
