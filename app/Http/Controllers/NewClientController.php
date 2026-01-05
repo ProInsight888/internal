@@ -8,6 +8,7 @@ use App\Models\contract;
 use App\Models\newClient;
 use App\Http\Requests\StorenewClientRequest;
 use App\Http\Requests\UpdatenewClientRequest;
+use App\Models\package;
 use App\Models\task;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -46,17 +47,6 @@ class NewClientController extends Controller
     public function index()
     {
         $clients = newClient::all()
-            ->sortByDesc(function ($client) {
-                // Ambil tanggal awal sebelum " - "
-                $startDate = explode(' - ', $client->contract)[0];
-
-                // Parse manual
-                try {
-                    return Carbon::createFromFormat('d M Y', $startDate);
-                } catch (\Exception $e) {
-                    return Carbon::minValue();
-                }
-            })
             ->sortBy('company_name')
             ->values();
 
@@ -316,11 +306,21 @@ class NewClientController extends Controller
         ];
 
         $client->display_status = $statusMapping[$client->status] ?? $client->status;
+        // $contracts = contract::where('uuid_new_client', $newClient->uuid)->get();
+        $packages = package::where('client_uuid', $newClient->uuid)->get();
+        $client->display_status = $statusMapping[$client->status] ?? $client->status;
         $contracts = contract::where('uuid_new_client', $newClient->uuid)->get();
+        $packages = package::where('client_uuid', $newClient->uuid)->get();
+        $packages_uuids = $packages->pluck('uuid')->toArray();
+        $cicilans_package = cicilan::whereIn('client_uuid', $packages_uuids)->get();
+
+        // dd($cicilans_package);
 
         return Inertia('NewClient/show', [
             'client' => $client,
-            'contracts' => $contracts
+            'contracts' => $contracts,
+            'clientPackages' => $packages,
+            'cicilan_package' => $cicilans_package,
         ]);
     }
 

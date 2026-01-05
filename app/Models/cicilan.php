@@ -18,7 +18,7 @@ class cicilan extends Model
 
     public function client()
     {
-        return $this->belongsTo(newClient::class, 'client_uuid', 'uuid');
+        return $this->belongsTo(package::class, 'client_uuid', 'id');
     }
 
 }
