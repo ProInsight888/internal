@@ -8,6 +8,7 @@ use App\Models\contract;
 use App\Models\newClient;
 use App\Http\Requests\StorenewClientRequest;
 use App\Http\Requests\UpdatenewClientRequest;
+use App\Models\package;
 use App\Models\task;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -130,39 +131,9 @@ class NewClientController extends Controller
             'code' => 'required|string|max:4|min:4|unique:new_clients,code',
             'type' => 'string|required',
             'location' => 'string|required',
-            'contract_start' => 'string|required',
-            'contract_end' => 'string|required',
-            'paid' => 'nullable|date', // Changed to nullable date
-            'package' => 'string|required',
-            'status' => 'required',
-            'cicil' => '',
-            'fase_pembayaran.*.cicilan' => 'string',
-            'fase_pembayaran.*.tanggal' => 'date',
-            'add_ons_drone' => 'nullable',
-            'add_ons_production' => 'nullable',
         ]);
 
-        // dd($validated['add_ons_drone'], $validated['add_ons_production']);
-        $today = now('Asia/Jakarta');
-        $contract_start = \Carbon\Carbon::parse($validated['contract_start']);
-        $contract_end = \Carbon\Carbon::parse($validated['contract_end']);
-
-        $contract = $contract_start->format('d M Y') . ' - ' . $contract_end->format('d M Y');
-
-        // Map the status for internal storage
-        $internalStatus = $statusMapping[$validated['status']] ?? $validated['status'];
-        $status = Str::lower($internalStatus);
-        $payment_month = $status === 'lunas' ?  $today->format('F') . '✅' : "-";
-
         $clientUuid = Str::uuid()->toString();
-
-        foreach ($request->fase_pembayaran as $fase) {
-            cicilan::create([
-                'client_uuid' => $clientUuid,
-                'cicilan' => $fase['cicilan'],
-                'tanggal' => $fase['tanggal'],
-            ]);
-        }
 
         $user = Auth::user();
 
@@ -181,14 +152,7 @@ class NewClientController extends Controller
             'company_name' => $validated['company_name'],
             'code' => $validated['code'],
             'type' => $validated['type'],
-            'location' => $validated['location'],
-            'contract' => $contract,
-            'package' => $validated['package'],
-            'status' => $internalStatus,
-            'payment_month' => $payment_month,
-            'paid' => $validated['paid'] ?? null,
-            'add_ons_drone' => $validated['add_ons_drone'],
-            'add_ons_production' => $validated['add_ons_production'],
+            'location' => $validated['location']
         ]);
 
 
@@ -317,11 +281,21 @@ class NewClientController extends Controller
         ];
 
         $client->display_status = $statusMapping[$client->status] ?? $client->status;
+        // $contracts = contract::where('uuid_new_client', $newClient->uuid)->get();
+        $packages = package::where('client_uuid', $newClient->uuid)->get();
+        $client->display_status = $statusMapping[$client->status] ?? $client->status;
         $contracts = contract::where('uuid_new_client', $newClient->uuid)->get();
+        $packages = package::where('client_uuid', $newClient->uuid)->get();
+        $packages_uuids = $packages->pluck('uuid')->toArray();
+        $cicilans_package = cicilan::whereIn('client_uuid', $packages_uuids)->get();
+
+        // dd($cicilans_package);
 
         return Inertia('NewClient/show', [
             'client' => $client,
-            'contracts' => $contracts
+            'contracts' => $contracts,
+            'clientPackages' => $packages,
+            'cicilan_package' => $cicilans_package,
         ]);
     }
 
@@ -351,4 +325,4 @@ class NewClientController extends Controller
 
         return Redirect::to('new_client')->with('deleted', 'Client Deleted');
     }
-}
+} 

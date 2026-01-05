@@ -20,6 +20,7 @@ use App\Http\Controllers\marketingReviewController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\mediaReviewController;
 use App\Http\Controllers\NewClientController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PersonalDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RejectedRevisionController;
@@ -140,6 +141,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('contract/{clientsUuid}/contract', [ContractController::class, 'clientContract'])->name('contract.export');
     Route::get('newClient/{clientsUuid}/contract', [ContractController::class, 'viewClientContract'])->name('viewContract.export');
     Route::resource('contract', ContractController::class);
+    Route::resource('package', PackageController::class);
 
     Route::resource('new_client', NewClientController::class);
 });

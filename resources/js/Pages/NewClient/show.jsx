@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
+import { PackageSearch } from "lucide-react";
 import { useState } from "react";
 
 // Single, consistent InfoField component
@@ -7,12 +8,12 @@ function InfoField({ label, value, colSpan = "col-span-1" }) {
     return (
         <div className={`${colSpan} space-y-1`}>
             {/* Label */}
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 tracking-wide">
+            <p className="text-sm font-medium tracking-wide text-gray-600 dark:text-gray-400">
                 {label}
             </p>
 
             {/* Card-like container */}
-            <div className="border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-xl p-4 shadow-sm backdrop-blur-sm transition-all duration-200 hover:shadow-md">
+            <div className="p-4 transition-all duration-200 bg-white border border-gray-200 shadow-sm dark:border-gray-600 dark:bg-gray-700 rounded-xl backdrop-blur-sm hover:shadow-md">
                 <p className="text-base font-semibold text-gray-900 dark:text-white">
                     {value || "—"}
                 </p>
@@ -24,14 +25,20 @@ function InfoField({ label, value, colSpan = "col-span-1" }) {
 // SectionTitle component
 function SectionTitle({ title }) {
     return (
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
             {title}
         </h3>
     );
 }
 
-export default function Show({ client, contracts }) {
+export default function Show({ client, contracts, clientPackages, cicilan_package}) {
+        
+    cicilan_package.map((e)=>{
+        console.log(e)
+    }
+    )
 
+    
     const [isLoading, setIsLoading] = useState(false);
 
     const handleDelete = (contract_del_uuid) => {
@@ -62,11 +69,11 @@ export default function Show({ client, contracts }) {
     return (
         <AuthenticatedLayout
             header={
-                <div className="text-center py-8 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg dark:from-indigo-800 dark:to-purple-900">
-                    <h1 className="text-3xl md:text-4xl font-bold mb-4">
+                <div className="py-8 text-center text-white rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-800 dark:to-purple-900">
+                    <h1 className="mb-4 text-3xl font-bold md:text-4xl">
                         Client Information 📄
                     </h1>
-                    <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
+                    <p className="mx-auto text-lg max-w-7xl md:text-xl opacity-90">
                         Viewing {client?.company_name}'s details and contract
                         information
                     </p>
@@ -76,12 +83,12 @@ export default function Show({ client, contracts }) {
             <Head title={`Client - ${client?.company_name}`} />
 
             <div className="py-6">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-xl rounded-2xl border border-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:shadow-gray-900/30">
+                <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div className="overflow-hidden bg-white border border-gray-100 shadow-xl rounded-2xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-gray-900/30">
                         <div className="p-6 md:p-8">
                             {/* Header */}
 
-                            <div className="mb-8 p-5 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100 dark:from-indigo-900/20 dark:to-purple-900/20 dark:border-indigo-800">
+                            <div className="p-5 mb-8 border border-indigo-100 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl dark:from-indigo-900/20 dark:to-purple-900/20 dark:border-indigo-800">
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-1">
                                         <h2 className="text-2xl font-bold text-indigo-800 dark:text-indigo-300">
@@ -100,7 +107,7 @@ export default function Show({ client, contracts }) {
                                             "new_client.edit",
                                             client.uuid
                                         )}
-                                        className="inline-flex items-center px-4 py-2 dark:text-white font-medium rounded-lg transition-all duration-200"
+                                        className="inline-flex items-center px-4 py-2 font-medium transition-all duration-200 rounded-lg dark:text-white"
                                     >
                                         <svg
                                             className="w-4 h-4 mr-2"
@@ -121,114 +128,154 @@ export default function Show({ client, contracts }) {
 
                             {/* Basic Info */}
                             <SectionTitle title="Basic Information" />
-                            <div className="mb-8">
-                                <InfoField
-                                    label="Company Name"
-                                    value={client.company_name}
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <InfoField label="Code" value={client.code} />
+                            <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2">
                                 <InfoField label="Type" value={client.type} />
                                 <InfoField
                                     label="Location"
                                     value={client.location}
                                 />
-                                <InfoField
-                                    label="Package"
-                                    value={client.package}
-                                />
-                                <InfoField
-                                    label="Add ons"
-                                    value={
-                                        client.add_ons_drone === 1
-                                            ? "Add ons drone"
-                                            : ""
-                                    }
-                                />
-                                <InfoField
-                                    label="Add ons"
-                                    value={
-                                        client.add_ons_production === 1
-                                            ? "Add ons production"
-                                            : ""
-                                    }
-                                />
                             </div>
 
-                            {/* Payment Info */}
-                            <SectionTitle title="Payment Information" />
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <InfoField
-                                    label="Payment Status"
-                                    value={client.status}
-                                />
-                                {client.status === "Cicil" && (
-                                    <InfoField
-                                        label="Number of Installments"
-                                        value={client.cicilans.length}
-                                    />
-                                )}
-                            </div>
+                            {/* Package Info */}
 
                             {/* Installment Schedule */}
-                            {client.status === "Cicil" &&
-                                client.fase_pembayaran?.length > 0 && (
-                                    <div className="mb-8">
-                                        <SectionTitle title="Installment Schedule" />
-                                        <div className="space-y-4">
-                                            {client.fase_pembayaran.map(
-                                                (fase, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className="p-4 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 shadow-sm"
-                                                    >
-                                                        <div className="flex justify-between items-center">
-                                                            <p className="text-gray-800 dark:text-gray-200">
-                                                                <span className="font-semibold">
-                                                                    Installment{" "}
-                                                                    {index + 1}{" "}
-                                                                    Date:
-                                                                </span>{" "}
-                                                                {fase.tanggal ||
-                                                                    "—"}
-                                                            </p>
-                                                            <p
-                                                                className={`font-semibold ${
-                                                                    fase.status_cicilan
-                                                                        ? "text-green-600"
-                                                                        : "text-yellow-600"
-                                                                }`}
-                                                            >
-                                                                {fase.status_cicilan
-                                                                    ? "Paid"
-                                                                    : "Pending"}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            )}
+                            
+
+                            {/* Table Data Package */}
+                            <SectionTitle title="Package Details" />
+                            <div className="mb-8">
+                                <div className="overflow-hidden bg-white border border-gray-300 rounded-lg shadow-sm dark:border-gray-600 dark:bg-gray-800">
+                                    {/* Table Header */}
+                                    <div className="grid grid-cols-12 bg-gray-100 border-b border-gray-300 dark:bg-gray-700 dark:border-gray-600">
+                                        <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
+                                            Package
+                                        </div>
+                                        <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
+                                            Payment Date
+                                        </div>
+                                        <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
+                                            Payment Status
+                                        </div>
+                                        <div className="col-span-1 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
+                                            Ins Total
+                                        </div>
+                                        <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
+                                            Installment.S
+                                        </div>
+                                        <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
+                                            Add Ons
                                         </div>
                                     </div>
-                                )}
 
+                                    {/* Table Row */}
+                                    {clientPackages.map((packages, index) => {
+                                        const cicilan_per_package = 
+                                        console.log(packages.uuid)
+                                        return(
+                                        <div className="grid grid-cols-12 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
+                                            {/* Package Cell */}
+                                            <div className="flex items-center justify-center col-span-2 px-4 py-3 text-center text-gray-900 border-r border-gray-300 dark:text-white dark:border-gray-600">
+                                                {packages.package_name || "—"}
+                                            </div>
+
+                                            {/* Contract Duration Cell */}
+                                            <div className="col-span-2 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                                <div className="">
+                                                    {packages.payment_date || "-"}
+                                                </div>
+                                            </div>
+                                            <div className="col-span-2 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                                <div className="">
+                                                    {packages.payment_status || "-"}
+                                                </div>
+                                            </div>
+                                            <div className="col-span-1 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                                <div className="">
+                                                    {packages.total_installment || "-"}
+                                                </div>
+                                            </div>
+                                            <div className="col-span-2 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                                {cicilan_package.map((e, index)=>{
+                                                    // console.log(e)
+                                                    return(
+                                                        <div>{e?.client_uuid === packages?.uuid ? e.tanggal : ""} {e.status_cicilan === "true" ? "✅" : ""}</div>
+                                                    )
+                                                })}
+                                            </div>
+                                            
+                                            <div className="col-span-2 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                                <div className="">
+                                                    {packages.add_ons || "-"}
+                                                </div>
+                                            </div>
+
+                                            <div className="inline-flex items-center justify-center w-full col-span-1 gap-5 px-4 py-2 text-sm font-medium text-black transition-all duration-200 rounded-lg dark:text-white">
+                                                <Link
+                                                    href={
+                                                        route("package.edit", packages.uuid)
+                                                    }
+                                                    className=""
+                                                >
+                                                    <svg
+                                                        className="w-4 h-4 mr-2"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                        />
+                                                    </svg>
+                                                </Link>
+                                                <button
+                                                    onClick={() =>
+                                                        handleDelete(
+                                                            contract.uuid
+                                                        )
+                                                    }
+                                                    disabled={isLoading}
+                                                    className="p-2 text-gray-600 transition-all duration-300 hover:text-red-600 hover:bg-red-50 rounded-xl hover:scale-110 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-900/30 group"
+                                                    title="Delete Client"
+                                                >
+                                                    <svg
+                                                        className="w-4 h-4 transition-transform group-hover:shake"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+)})}
+                                </div>
+                            </div>
+                            
                             {/* Table Data Contract */}
                             <SectionTitle title="Contract Details" />
                             <div className="mb-8">
-                                <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
+                                <div className="overflow-hidden bg-white border border-gray-300 rounded-lg shadow-sm dark:border-gray-600 dark:bg-gray-800">
                                     {/* Table Header */}
-                                    <div className="grid grid-cols-12 bg-gray-100 dark:bg-gray-700 border-b border-gray-300 dark:border-gray-600">
-                                        <div className="col-span-3 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
+                                    <div className="grid grid-cols-12 bg-gray-100 border-b border-gray-300 dark:bg-gray-700 dark:border-gray-600">
+                                        <div className="col-span-3 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
                                             Reference Number
                                         </div>
-                                        <div className="col-span-2 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
+                                        <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
                                             Package
                                         </div>
-                                        <div className="col-span-5 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm border-r border-gray-300 dark:border-gray-600 text-center">
+                                        <div className="col-span-5 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
                                             Contract Duration
                                         </div>
-                                        <div className="col-span-2 px-4 py-3 font-semibold text-gray-700 dark:text-gray-300 text-sm text-center">
+                                        <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 dark:text-gray-300">
                                             Actions
                                         </div>
                                     </div>
@@ -237,12 +284,12 @@ export default function Show({ client, contracts }) {
                                     {contracts.map((contract, index) => (
                                         <div className="grid grid-cols-12 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
                                             {/* Reference Number Cell */}
-                                            <div className="flex col-span-3 px-4 py-3 text-gray-900 dark:text-white border-r border-gray-300 dark:border-gray-600 text-center justify-center items-center">
+                                            <div className="flex items-center justify-center col-span-3 px-4 py-3 text-center text-gray-900 border-r border-gray-300 dark:text-white dark:border-gray-600">
                                                 {contract.reference_num || "—"}
                                             </div>
 
                                             {/* Package Cell */}
-                                            <div className="flex col-span-2 px-4 py-3 text-gray-900 dark:text-white border-r border-gray-300 dark:border-gray-600 text-center justify-center items-center">
+                                            <div className="flex items-center justify-center col-span-2 px-4 py-3 text-center text-gray-900 border-r border-gray-300 dark:text-white dark:border-gray-600">
                                                 {contract.package || "—"}
                                             </div>
 
@@ -253,7 +300,7 @@ export default function Show({ client, contracts }) {
                                                 </div>
                                             </div>
 
-                                            <div className="col-span-2  inline-flex w-full items-center justify-center px-4 py-2 text-sm text-black dark:text-white font-medium rounded-lg transition-all duration-200 gap-5">
+                                            <div className="inline-flex items-center justify-center w-full col-span-2 gap-5 px-4 py-2 text-sm font-medium text-black transition-all duration-200 rounded-lg dark:text-white">
                                                 <button
                                                     onClick={(e) => {
                                                         const clientsUuid =
@@ -267,8 +314,7 @@ export default function Show({ client, contracts }) {
                                                     className=""
                                                 >
                                                     <svg
-                                                        className="w-4 h-4
-                                                        "
+                                                        className="w-4 h-4 "
                                                         width="16"
                                                         height="16"
                                                         fill="currentColor"
@@ -295,11 +341,11 @@ export default function Show({ client, contracts }) {
                                                         )
                                                     }
                                                     disabled={isLoading}
-                                                    className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300 hover:scale-110 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-900/30 group"
+                                                    className="p-2 text-gray-600 transition-all duration-300 hover:text-red-600 hover:bg-red-50 rounded-xl hover:scale-110 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-900/30 group"
                                                     title="Delete Client"
                                                 >
                                                     <svg
-                                                        className="w-4 h-4 group-hover:shake transition-transform"
+                                                        className="w-4 h-4 transition-transform group-hover:shake"
                                                         fill="none"
                                                         stroke="currentColor"
                                                         viewBox="0 0 24 24"
@@ -319,12 +365,12 @@ export default function Show({ client, contracts }) {
                             </div>
 
                             {/* Action Buttons */}
-                            <div className="inline-flex w-full justify-between items-center">
-                                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 w-full">
-                                    <div className="flex justify-between items-center">
+                            <div className="inline-flex items-center justify-between w-full">
+                                <div className="w-full pt-6 mt-8 border-t border-gray-200 dark:border-gray-700">
+                                    <div className="flex items-center justify-between">
                                         <Link
                                             href={route("new_client.index")}
-                                            className="inline-flex items-center px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors duration-200 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
+                                            className="inline-flex items-center px-4 py-2 text-sm text-gray-600 transition-colors duration-200 rounded-lg hover:text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
                                         >
                                             <svg
                                                 className="w-4 h-4 mr-2"
@@ -343,16 +389,37 @@ export default function Show({ client, contracts }) {
                                         </Link>
                                         <div className="flex items-center">
                                             <Link
-                                                href={route("contract.edit", {
-                                                    contract: client.uuid,
+                                                href={route("package.create", {
+                                                    package: client.uuid
                                                 })}
-                                                className="inline-flex items-center px-4 py-2 text-sm text-black dark:text-white font-medium rounded-lg transition-all duration-200"
+                                                className="inline-flex items-center px-4 py-2 text-sm font-medium text-black transition-all duration-200 rounded-lg dark:text-gray-200 dark:hover:scale-105 dark:hover:text-white"
                                             >
                                                 <svg
                                                     className="w-4 h-4 mr-2"
                                                     fill="none"
                                                     stroke="currentColor"
                                                     viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                    />
+                                                </svg>
+                                                New Package
+                                            </Link>
+                                            <Link
+                                                href={route("contract.edit", {
+                                                    contract: client.uuid,
+                                                })}
+                                                className="inline-flex items-center px-4 py-2 text-sm font-medium text-black transition-all duration-200 rounded-lg dark:text-gray-200 dark:hover:scale-105 dark:hover:text-white"
+                                            >
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    className="w-4 h-4 mr-2"
+                                                    fill="none"
+                                                    stroke="currentColor"
                                                 >
                                                     <path
                                                         strokeLinecap="round"
