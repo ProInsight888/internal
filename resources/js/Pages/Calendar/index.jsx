@@ -22,7 +22,7 @@ export default function index({ ev }) {
     // console.log(ev);
 
     const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, "0"); // bulan dimulai dari 0
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
     const dd = String(date.getDate()).padStart(2, "0");
 
     const formattedDate = `${yyyy}-${mm}-${dd}`;
@@ -95,7 +95,7 @@ export default function index({ ev }) {
             if (eventEl) {
                 e.preventDefault(); // Disable browser context menu
 
-                const id = eventId?.getAttribute("data-event-id"); // You might need to inspect ScheduleX DOM for actual attr
+                const id = eventId?.getAttribute("data-event-id");
                 const position = {
                     top: e.pageY,
                     left: e.pageX,
@@ -177,12 +177,13 @@ export default function index({ ev }) {
 
             <div>
                 <ScheduleXCalendar calendarApp={calendar} />
+
                 {customMenu.visible && (
                     <div
                         className="absolute bg-white dark:bg-gray-700 border border-gray-300 rounded-md shadow-lg z-[9999]"
                         style={{ top: customMenu.top, left: customMenu.left }}
                         onClick={() =>
-                            setCustomMenu({ ...customMenu, visible: false })
+                            setCustomMenu({ ...customMenu, visible: true })
                         }
                     >
                         <ul className=" flex flex-col p-5">
