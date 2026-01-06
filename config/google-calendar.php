@@ -25,4 +25,11 @@ return [
      *  The email address of the user account to impersonate.
      */
     'user_to_impersonate' => env('GOOGLE_CALENDAR_IMPERSONATE'),
+
+    'calendars' => [
+        'proinsight' => env('GOOGLE_CALENDAR_ID'),
+        'it' => env('GOOGLE_CALENDAR_IT_ID'),
+        'media' => env('GOOGLE_CALENDAR_MEDIA_ID'),
+        'creative' => env('GOOGLE_CALENDAR_CREATIVE_ID'),
+    ],
 ];

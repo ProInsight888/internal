@@ -731,7 +731,7 @@ const TaskStatusBadge = ({ status, remainingDays }) => {
 };
 
 // Task Card Component
-const TaskCard = ({ task, onOpenDetails, user, users }) => {
+const TaskCard = ({ task, onOpenDetails, user, users, companies }) => {
     const deadline = new Date(task.deadline);
     const today = new Date();
 
@@ -761,6 +761,8 @@ const TaskCard = ({ task, onOpenDetails, user, users }) => {
             .filter(Boolean)
             .join(", ") || "N/A";
 
+    const companyName = companies.find((c) => c.uuid === task.company)?.company_name;
+
     return (
         <div
             className={`flex-none w-full rounded-xl border-2 ${borderColor} ${bgColor} p-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.01] dark:shadow-gray-800`}
@@ -784,7 +786,8 @@ const TaskCard = ({ task, onOpenDetails, user, users }) => {
                         d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-6 0H5m2 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                     />
                 </svg>
-                <span className="truncate">{task.company}</span>
+                <span className="truncate">{companyName}</span>{" "}
+                {/* Changed from task.company to companyName */}
             </div>
             <div className="flex items-center mb-4 text-sm">
                 <svg
@@ -981,8 +984,6 @@ export default function Dashboard({ userName, absens, clients, tasks, users }) {
         [putTask, taskData.team, taskData.uuid]
     );
 
-    
-
     return (
         <AuthenticatedLayout
             header={
@@ -1096,6 +1097,7 @@ export default function Dashboard({ userName, absens, clients, tasks, users }) {
                                                         }
                                                         user={user}
                                                         users={users}
+                                                        companies={clients}
                                                     />
                                                 </div>
                                             ))}
@@ -1128,6 +1130,7 @@ export default function Dashboard({ userName, absens, clients, tasks, users }) {
                             data={taskData}
                             user={user}
                             users={users}
+                            companies={clients}
                             setData={setTaskData}
                             onSubmit={submitTask}
                             processing={taskProcessing}

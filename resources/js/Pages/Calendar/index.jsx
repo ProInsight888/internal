@@ -17,8 +17,14 @@ import "@schedule-x/theme-default/dist/index.css";
 import { createEventModalPlugin } from "@schedule-x/event-modal";
 import { createDragAndDropPlugin } from "@schedule-x/drag-and-drop";
 
-export default function index({ ev }) {
+export default function index({
+    ev,
+    selectedTeams,
+    setSelectedTeams,
+    teams,
+}) {
     const date = new Date();
+    // console.log(teams);
     // console.log(ev);
 
     const yyyy = date.getFullYear();
@@ -40,14 +46,21 @@ export default function index({ ev }) {
         defaultView: "month-grid",
 
         events: ev.map((e) => {
-            const rawStart = e.googleEvent.start.dateTime || e.googleEvent.start.date;
+            const rawStart =
+                e.googleEvent.start.dateTime || e.googleEvent.start.date;
             const rawEnd = e.googleEvent.end.dateTime || e.googleEvent.end.date;
 
             return {
                 id: e.googleEvent.id,
                 title: e.googleEvent.summary,
-                start: rawStart.length > 10 ? rawStart?.slice(0, 16).replace("T", " ") : rawStart + " 00:00",
-                end: rawEnd.length > 10 ? rawEnd?.slice(0, 16).replace("T", " ") : rawEnd + " 00:00",
+                start:
+                    rawStart.length > 10
+                        ? rawStart?.slice(0, 16).replace("T", " ")
+                        : rawStart + " 00:00",
+                end:
+                    rawEnd.length > 10
+                        ? rawEnd?.slice(0, 16).replace("T", " ")
+                        : rawEnd + " 00:00",
                 description: e.googleEvent.description,
             };
         }),
@@ -74,8 +87,6 @@ export default function index({ ev }) {
             },
         },
     });
-
-    // console.log(calendar);
 
     const [customMenu, setCustomMenu] = useState({
         visible: false,
@@ -151,13 +162,50 @@ export default function index({ ev }) {
 
             {main_user.role !== "member" && (
                 <div>
-                    <div className=" my-5 w-full justify-end flex">
-                        <Link
-                            href={route("calendar.create")}
-                            className="px-5 py-4 mb-10 bg-yellow-500 text-black rounded-lg"
-                        >
-                            + Add Event
-                        </Link>
+                    <div className="flex justify-between">
+                        <div>
+                            <div className=" bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600">
+                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 text-left">
+                                    Filter by Teams
+                                </label>
+                                <select
+                                    className="w-full px-5 py-2 rounded-lg bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all"
+                                    value={selectedTeams}
+                                    onChange={(e) =>{
+                                            console.log(e.target.value);
+
+                                        router.get(route("calendar.index"), {
+                                            team: e.target.value,
+                                        }, {
+                                            replace: true,
+                                        })}
+                                    }
+                                >
+                                        <option value="proinsight">
+                                            All Teams
+                                        </option>
+                                        <option value="it">
+                                            IT
+                                        </option>
+                                        <option value="media">
+                                            Media
+                                        </option>
+                                        <option value="creative">
+                                            Creative
+                                        </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div className=" my-5 w-full flex">
+                                <Link
+                                    href={route("calendar.create", { team: selectedTeams })}
+                                    className="px-5 py-4 mb-10 bg-yellow-500 text-black rounded-lg"
+                                >
+                                    + Add Event
+                                </Link>
+                            </div>
+                        </div>
                     </div>
 
                     <div>

@@ -95,7 +95,7 @@ export default function AuthenticatedLayout({ header, children }) {
             ),
         },
         {
-            name: "Media",
+            name: "Tasks",
             href: route("media.index"),
             routeName: "/media",
             icon: (
