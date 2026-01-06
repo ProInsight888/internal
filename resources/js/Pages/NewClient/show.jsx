@@ -63,6 +63,28 @@ export default function Show({ client, contracts, clientPackages, cicilan_packag
                 preserveScroll: true,
             });
         };
+    const handleDeletePackage = (package_del_uuid) => {
+            if (
+                !confirm(
+                    `Are you sure you want to delete "${package_del_uuid}"? This action cannot be undone and all associated data will be permanently lost.`
+                )
+            ) {
+                return;
+            }
+    
+            setIsLoading(true);
+            router.delete(route("package.destroy", package_del_uuid), {
+                onSuccess: () => {
+                    setIsLoading(false);
+                },
+                onError: (errors) => {
+                    console.error("Delete error:", errors);
+                    setIsLoading(false);
+                    alert("Failed to delete client. Please try again.");
+                },
+                preserveScroll: true,
+            });
+        };
 
     
 
@@ -84,7 +106,7 @@ export default function Show({ client, contracts, clientPackages, cicilan_packag
             <Head title={`Client - ${client?.company_name}`} />
 
             <div className="py-6">
-                <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div className="px-4 mx-auto max-w-screen-2xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white border border-gray-100 shadow-xl rounded-2xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-gray-900/30">
                         <div className="p-6 md:p-8">
                             {/* Header */}
@@ -152,7 +174,7 @@ export default function Show({ client, contracts, clientPackages, cicilan_packag
                                             Package
                                         </div>
                                         <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
-                                            Payment Date
+                                            Term
                                         </div>
                                         <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
                                             Payment Status
@@ -161,7 +183,7 @@ export default function Show({ client, contracts, clientPackages, cicilan_packag
                                             Ins Total
                                         </div>
                                         <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
-                                            Installment.S
+                                            Payment Date
                                         </div>
                                         <div className="col-span-2 px-4 py-3 text-sm font-semibold text-center text-gray-700 border-r border-gray-300 dark:text-gray-300 dark:border-gray-600">
                                             Add Ons
@@ -175,36 +197,37 @@ export default function Show({ client, contracts, clientPackages, cicilan_packag
                                         return(
                                         <div className="grid grid-cols-12 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
                                             {/* Package Cell */}
-                                            <div className="flex items-center justify-center col-span-2 px-4 py-3 text-center text-gray-900 border-r border-gray-300 dark:text-white dark:border-gray-600">
+                                            <div className="flex items-center justify-center col-span-2 px-4 py-3 text-center text-gray-900 uppercase border-r border-gray-300 dark:text-white dark:border-gray-600">
                                                 {packages.package_name || "—"}
                                             </div>
 
                                             {/* Contract Duration Cell */}
-                                            <div className="col-span-2 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                            <div className="col-span-2 px-4 py-3 text-center border-r border-gray-300 dark:border-gray-600">
                                                 <div className="">
-                                                    {packages.payment_date || "-"}
+                                                    {packages.term_start  || "-"} - {packages.term_end} 
                                                 </div>
                                             </div>
-                                            <div className="col-span-2 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                            <div className="col-span-2 px-4 py-3 text-center capitalize border-r border-gray-300 dark:border-gray-600">
                                                 <div className="">
                                                     {packages.payment_status || "-"}
                                                 </div>
                                             </div>
-                                            <div className="col-span-1 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                            <div className="col-span-1 px-4 py-3 text-center border-r border-gray-300 dark:border-gray-600">
                                                 <div className="">
                                                     {packages.total_installment || "-"}
                                                 </div>
                                             </div>
                                             <div className="col-span-2 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
-                                                {cicilan_package.map((e, index)=>{
+                                                {packages.payment_status === "installment" ? cicilan_package.map((e, index)=>{
                                                     // console.log(e)
                                                     return(
                                                         <div>{e?.client_uuid === packages?.uuid ? e.tanggal : ""} {e.status_cicilan === "true" ? "✅" : ""}</div>
                                                     )
-                                                })}
+                                                }) : packages.payment_date || "-"
+                                                }
                                             </div>
                                             
-                                            <div className="col-span-2 px-4 py-3 border-r border-gray-300 dark:border-gray-600">
+                                            <div className="col-span-2 px-4 py-3 capitalize border-r border-gray-300 dark:border-gray-600">
                                                 <div className="">
                                                     {packages.add_ons || "-"}
                                                 </div>
@@ -233,8 +256,8 @@ export default function Show({ client, contracts, clientPackages, cicilan_packag
                                                 </Link>
                                                 <button
                                                     onClick={() =>
-                                                        handleDelete(
-                                                            contract.uuid
+                                                        handleDeletePackage(
+                                                            packages.uuid
                                                         )
                                                     }
                                                     disabled={isLoading}

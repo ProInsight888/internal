@@ -12,6 +12,8 @@ class package extends Model
         'uuid',
         'client_uuid',
         'package_name',
+        'term_start',
+        'term_end',
         'payment_date',
         'payment_status',
         'total_installment',

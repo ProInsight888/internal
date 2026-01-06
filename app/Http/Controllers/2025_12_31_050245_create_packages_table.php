@@ -15,6 +15,8 @@ return new class extends Migration
             $table->uuid('uuid')->primary();
             $table->string('client_uuid');
             $table->string('package_name');
+            $table->string('term_start');
+            $table->string('term_end');
             $table->string('payment_date')->nullable();
             $table->string('payment_status');
             $table->string('total_installment')->nullable();

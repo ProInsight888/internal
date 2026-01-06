@@ -9,6 +9,8 @@ export default function edit({packages, cicilan_package}) {
     const { data, setData, put, post, processing, errors } = useForm({
         package_name: packages.package_name || "",
         payment_date: packages.payment_date || "",
+        term_start: packages.term_start || "",
+        term_end: packages.term_end || "",
         payment_status: packages.payment_status || "paid",
         total_installment: packages.total_installment || "",
         payment_phase: cicilan_package.map((c, i) => ({
@@ -184,6 +186,36 @@ export default function edit({packages, cicilan_package}) {
                                         className="mt-2 dark:text-red-400"
                                     />
                                 </div>
+                                <div className="mb-8">
+                                                                    <InputLabel
+                                                                        htmlFor={`start`}
+                                                                        value={`Term`}
+                                                                        className="dark:text-gray-300"
+                                                                    />
+                                                                    <div className="flex items-center justify-center gap-3">
+                                                                    <TextInput
+                                                                        type="date"
+                                                                        id={`start`}
+                                                                        name={`start`}
+                                                                        className="block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
+                                                                        value={data.term_start || ""}
+                                                                        onChange={(e) => {
+                                                                            setData("term_start", e.target.value)
+                                                                        }}
+                                                                    />
+                                                                    -
+                                                                    <TextInput
+                                                                        type="date"
+                                                                        id={`end`}
+                                                                        name={`end`}
+                                                                        className="block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
+                                                                        value={data.term_end || ""}
+                                                                        onChange={(e) => {
+                                                                            setData("term_end", e.target.value)
+                                                                        }}
+                                                                    />
+                                                                    </div>
+                                                                </div>
                                 <div className="mb-6">
                                     <InputLabel
                                         htmlFor="status"
@@ -238,8 +270,6 @@ export default function edit({packages, cicilan_package}) {
                                                 value={data.total_installment}
                                                 className={`mt-1 block bg-transparent shadow-sm border-0 border-b border-gray-400 focus:border-black focus:ring-0 outline-none active:border-b dark:border-gray-600 dark:text-white dark:focus:border-blue-400`}
                                                 type="number"
-                                                min="1"
-                                                max="10"
                                                 onChange={(e) =>
                                                     setData(
                                                         "total_installment",
