@@ -59,7 +59,7 @@ class NewClientController extends Controller
     }
 
     // public function index()
-    // {
+    // {hg
     //     $clients = newClient::all()
     //         ->sortByDesc(function ($client) {
     //             // Ambil tanggal awal sebelum " - "
