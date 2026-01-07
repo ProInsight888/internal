@@ -50,9 +50,7 @@ class PackageController extends Controller
             }
         }
 
-        $payment_month = $validated['payment_status'] === 'paid' ?  $today->format('d F Y') . '✅' : "-";
-        
-        
+        $payment_month = $validated['payment_status'] === 'paid' ?  SupportCarbon::parse($validated['payment_date'])->timezone('Asia/Jakarta')->format("d M Y") . '✅' : "-";        
 
         $user = Auth::user();
         $date = Carbon::now('Asia/Jakarta');
@@ -71,8 +69,8 @@ class PackageController extends Controller
             'uuid'=> $packageUuid,
             'client_uuid'=> $validated['client_uuid'],
             'package_name' => $validated['package_name'],
-            'term_start' => SupportCarbon::parse($validated['term_start'])->format("d M Y"),
-            'term_end' => SupportCarbon::parse($validated['term_end'])->format("d M Y"),
+            'term_start' => SupportCarbon::parse($validated['term_start'])->timezone('Asia/Jakarta')->format("d M Y"),
+            'term_end' => SupportCarbon::parse($validated['term_end'])->timezone('Asia/Jakarta')->format("d M Y"),
             'payment_date' => $payment_month,
             'payment_status' => $validated['payment_status'],
             'total_installment' => $validated['total_installment'] ?? "",
@@ -127,7 +125,7 @@ class PackageController extends Controller
             }
         }
 
-        $payment_month = $validated['payment_status'] === 'paid' ?  $today->format('d F Y') . '✅' : "-";
+        $payment_month = $validated['payment_status'] === 'paid' ?  SupportCarbon::parse($validated['payment_date'])->timezone('Asia/Jakarta')->format("d M Y") . '✅' : "-";
         
         
 
@@ -148,8 +146,8 @@ class PackageController extends Controller
         $update_package->update([
             'package_name' => $validated['package_name'],
             'payment_date' => $payment_month,
-            'term_start' => SupportCarbon::parse($validated["term_start"])->format("d M Y"),
-            'term_end' => SupportCarbon::parse($validated['term_end'])->format("d M Y"),
+            'term_start' => SupportCarbon::parse($validated["term_start"])->timezone('Asia/Jakarta')->format("d M Y"),
+            'term_end' => SupportCarbon::parse($validated['term_end'])->timezone('Asia/Jakarta')->format("d M Y"),
             'payment_status' => $validated['payment_status'],
             'total_installment' => $validated['total_installment'] ?? "",
             'add_ons' => $validated['add_ons']
