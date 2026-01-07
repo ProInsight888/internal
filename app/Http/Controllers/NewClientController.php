@@ -70,7 +70,7 @@ class NewClientController extends Controller
     }
 
     // public function index()
-    // {
+    // {hg
     //     $clients = newClient::all()
     //         ->sortByDesc(function ($client) {
     //             // Ambil tanggal awal sebelum " - "
@@ -196,29 +196,8 @@ class NewClientController extends Controller
             'company_name' => 'string|required',
             'code' => 'string|required|max:4|min:4|unique:new_clients,code,' . $newClient->uuid . ',uuid',
             'type' => 'string|required',
-            'location' => 'string|required',
-            'contract_start' => 'string|required',
-            'contract_end' => 'string|required',
-            'package' => 'string|required',
-            'paid' => 'nullable|date', // Changed to nullable date
-            'status' => 'string|required',
-            'add_ons_drone' => 'nullable',
-            'add_ons_production' => 'nullable',
+            'location' => 'string|required'
         ]);
-
-        $today = now('Asia/Jakarta');
-
-        $contract_start = \Carbon\Carbon::parse($validated['contract_start']);
-        $contract_end = \Carbon\Carbon::parse($validated['contract_end']);
-
-        // dd($request);
-
-        $contract = $contract_start->format('d M Y') . ' - ' . $contract_end->format('d M Y');
-
-        // Map the status for internal storage
-        $internalStatus = $statusMapping[$validated['status']] ?? $validated['status'];
-        $status = Str::lower($internalStatus);
-        $payment_month = $status === 'lunas' ? $today->format('F') . '✅' : "-";
 
         $uuid = $newClient->uuid;
 
@@ -258,13 +237,6 @@ class NewClientController extends Controller
             'code' => $validated['code'],
             'type' => $validated['type'],
             'location' => $validated['location'],
-            'contract' => $contract,
-            'package' => $validated['package'],
-            'status' => $internalStatus,
-            'payment_month' => $payment_month,
-            'paid' => $validated['paid'] ?? null,
-            'add_ons_drone' => $validated['add_ons_drone'],
-            'add_ons_production' => $validated['add_ons_production'],
         ]);
 
         return Redirect::to('new_client')->with('success', 'Client Updated Successfully');
@@ -285,7 +257,8 @@ class NewClientController extends Controller
         $packages = package::where('client_uuid', $newClient->uuid)->get();
         $client->display_status = $statusMapping[$client->status] ?? $client->status;
         $contracts = contract::where('uuid_new_client', $newClient->uuid)->get();
-        $packages = package::where('client_uuid', $newClient->uuid)->get();
+        $packages = package::where('client_uuid', $newClient->uuid)->orderBy('term_end','asc')->get();
+        // dd($packages);
         $packages_uuids = $packages->pluck('uuid')->toArray();
         $cicilans_package = cicilan::whereIn('client_uuid', $packages_uuids)->get();
 

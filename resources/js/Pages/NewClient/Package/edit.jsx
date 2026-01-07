@@ -6,9 +6,25 @@ import { useForm } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
 
 export default function edit({packages, cicilan_package}) {
+    
+    const term_end = new Date(packages.term_end);
+    const term_start = new Date(packages.term_start);
+    const paid_date = new Date((packages.payment_date).split("✅")[0]);
+
+
+    term_end.setHours(term_end.getHours() + 7);
+    term_start.setHours(term_start.getHours() + 7);
+    paid_date.setHours(paid_date.getHours() + 7);
+
+    const term_ends = term_end.toISOString().split('T')[0];
+    const term_starts = term_start.toISOString().split('T')[0];
+    const paid_dates = paid_date.toISOString().split('T')[0];
+    
     const { data, setData, put, post, processing, errors } = useForm({
         package_name: packages.package_name || "",
-        payment_date: packages.payment_date || "",
+        payment_date: paid_dates || "",
+        term_start: term_starts|| "",
+        term_end: term_ends || "",
         payment_status: packages.payment_status || "paid",
         total_installment: packages.total_installment || "",
         payment_phase: cicilan_package.map((c, i) => ({
@@ -18,6 +34,8 @@ export default function edit({packages, cicilan_package}) {
         })) || [{installment:"", date:"", installment_status: "false"}],
         add_ons: packages.add_ons || "",
     });
+
+
 
     useEffect(() => {
         const jumlah = parseInt(data.total_installment || 0);
@@ -184,6 +202,36 @@ export default function edit({packages, cicilan_package}) {
                                         className="mt-2 dark:text-red-400"
                                     />
                                 </div>
+                                <div className="mb-8">
+                                                                    <InputLabel
+                                                                        htmlFor={`start`}
+                                                                        value={`Term`}
+                                                                        className="dark:text-gray-300"
+                                                                    />
+                                                                    <div className="flex items-center justify-center gap-3">
+                                                                    <TextInput
+                                                                        type="date"
+                                                                        id={`start`}
+                                                                        name={`start`}
+                                                                        className="block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
+                                                                        value={data.term_start || ""}
+                                                                        onChange={(e) => {
+                                                                            setData("term_start", e.target.value)
+                                                                        }}
+                                                                    />
+                                                                    -
+                                                                    <TextInput
+                                                                        type="date"
+                                                                        id={`end`}
+                                                                        name={`end`}
+                                                                        className="block w-full bg-transparent border-0 border-b border-gray-400 outline-none focus:ring-0 focus:border-black dark:border-gray-600 dark:text-white dark:focus:border-blue-400"
+                                                                        value={data.term_end || ""}
+                                                                        onChange={(e) => {
+                                                                            setData("term_end", e.target.value)
+                                                                        }}
+                                                                    />
+                                                                    </div>
+                                                                </div>
                                 <div className="mb-6">
                                     <InputLabel
                                         htmlFor="status"

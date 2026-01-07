@@ -21,7 +21,7 @@ export default function edit({ clients }) {
     const { data, setData, put, post, processing, errors, reset } = useForm({
         uuid: clients.uuid ?? "",
         reference_num: clients?.reference_num ?? "",
-        package: clients?.package ?? "",
+        package: clients?.package ?? "Protall",
         company_name: clients?.company_name ?? "",
         tlp_num: clients?.tlp_num ?? "",
         contract_start: clients?.contract_start ?? "",

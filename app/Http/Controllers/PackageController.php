@@ -7,6 +7,7 @@ use App\Models\cicilan;
 use App\Models\package;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
@@ -24,6 +25,8 @@ class PackageController extends Controller
        $validated = $request->validate([
             "client_uuid" => "string|required",
             "package_name" => "string|required",
+            "term_start" => "string|required",
+            "term_end" => "string|required",
             "payment_date" => "string|nullable",
             "payment_status" => "string|required",
             "total_installment" => "string|nullable",
@@ -47,9 +50,7 @@ class PackageController extends Controller
             }
         }
 
-        $payment_month = $validated['payment_status'] === 'paid' ?  $today->format('d F Y') . '✅' : "-";
-        
-        
+        $payment_month = $validated['payment_status'] === 'paid' ?  SupportCarbon::parse($validated['payment_date'])->timezone('Asia/Jakarta')->format("d M Y") . '✅' : "-";        
 
         $user = Auth::user();
         $date = Carbon::now('Asia/Jakarta');
@@ -68,6 +69,8 @@ class PackageController extends Controller
             'uuid'=> $packageUuid,
             'client_uuid'=> $validated['client_uuid'],
             'package_name' => $validated['package_name'],
+            'term_start' => SupportCarbon::parse($validated['term_start'])->timezone('Asia/Jakarta')->format("d M Y"),
+            'term_end' => SupportCarbon::parse($validated['term_end'])->timezone('Asia/Jakarta')->format("d M Y"),
             'payment_date' => $payment_month,
             'payment_status' => $validated['payment_status'],
             'total_installment' => $validated['total_installment'] ?? "",
@@ -91,6 +94,8 @@ class PackageController extends Controller
             // "client_uuid" => "string|required",
             "package_name" => "string|required",
             "payment_date" => "string|nullable",
+            "term_start" => "string|nullable",
+            "term_end" => "string|nullable",
             "payment_status" => "string|required",
             "total_installment" => "string|nullable",
             "payment_phase" => "nullable",
@@ -120,7 +125,7 @@ class PackageController extends Controller
             }
         }
 
-        $payment_month = $validated['payment_status'] === 'paid' ?  $today->format('d F Y') . '✅' : "-";
+        $payment_month = $validated['payment_status'] === 'paid' ?  SupportCarbon::parse($validated['payment_date'])->timezone('Asia/Jakarta')->format("d M Y") . '✅' : "-";
         
         
 
@@ -141,6 +146,8 @@ class PackageController extends Controller
         $update_package->update([
             'package_name' => $validated['package_name'],
             'payment_date' => $payment_month,
+            'term_start' => SupportCarbon::parse($validated["term_start"])->timezone('Asia/Jakarta')->format("d M Y"),
+            'term_end' => SupportCarbon::parse($validated['term_end'])->timezone('Asia/Jakarta')->format("d M Y"),
             'payment_status' => $validated['payment_status'],
             'total_installment' => $validated['total_installment'] ?? "",
             'add_ons' => $validated['add_ons']
@@ -148,5 +155,16 @@ class PackageController extends Controller
 
         return Redirect::to('new_client')->with('success', 'Client Updated Successfully');
 
+    }
+
+    public function destroy(Request $request, $id){
+        // dd($id);
+
+        $package = package::where('uuid', $id);
+        $cicilan = cicilan::where('client_uuid', $id);
+        $package->delete();
+        $cicilan->delete();
+
+        return Redirect::to('new_client')->with('deleted', 'Package Deleted');
     }
 }
