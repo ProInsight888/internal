@@ -17,12 +17,7 @@ import "@schedule-x/theme-default/dist/index.css";
 import { createEventModalPlugin } from "@schedule-x/event-modal";
 import { createDragAndDropPlugin } from "@schedule-x/drag-and-drop";
 
-export default function index({
-    ev,
-    selectedTeams,
-    setSelectedTeams,
-    teams,
-}) {
+export default function index({ ev, selectedTeams, setSelectedTeams, teams }) {
     const date = new Date();
     // console.log(teams);
     // console.log(ev);
@@ -62,6 +57,7 @@ export default function index({
                         ? rawEnd?.slice(0, 16).replace("T", " ")
                         : rawEnd + " 00:00",
                 description: e.googleEvent.description,
+                team: e.team_slug || selectedTeams,
             };
         }),
 
@@ -69,12 +65,21 @@ export default function index({
         plugins: [createEventModalPlugin(), createDragAndDropPlugin()],
         callbacks: {
             onEventUpdate(updatedEvent) {
-                // console.log(updatedEvent);
+                // 1. Find the event in your original 'ev' array to get its team
+                const originalEvent = ev.find(
+                    (item) => item.googleEvent.id === updatedEvent.id
+                );
+                const teamSlug = originalEvent?.team_slug || selectedTeams;
+
                 router.visit(
                     route("drag_and_drop_update.update", updatedEvent.id),
                     {
                         method: "put",
-                        data: updatedEvent,
+                        // 2. Include the team in the data payload
+                        data: {
+                            ...updatedEvent,
+                            team: teamSlug,
+                        },
                         headers: {
                             "Content-Type": "application/json",
                             Accept: "application/json",
@@ -93,31 +98,33 @@ export default function index({
         top: 0,
         left: 0,
         eventId: null,
+        team: null,
     });
 
     useEffect(() => {
         const handleContextMenu = (e) => {
-            const eventEl = e.target.closest(".sx__time-grid-event-inner");
-            // console.log(eventEl);
-            const eventId =
-                e.target.closest(".sx__time-grid-event.sx__event") ||
-                e.target.closest("[data-event-id]");
-            // console.log(eventId);
-            if (eventEl) {
-                e.preventDefault(); // Disable browser context menu
+            const eventEl =
+                e.target.closest(".sx__time-grid-event-inner") ||
+                e.target.closest(".sx__event");
 
-                const id = eventId?.getAttribute("data-event-id");
-                const position = {
-                    top: e.pageY,
-                    left: e.pageX,
-                };
-                // console.log(id);
+            if (eventEl) {
+                e.preventDefault();
+
+                // Schedule-X stores the ID, but we need the team slug too.
+                // We'll find the event in our 'ev' array that matches this ID
+                const id = eventEl
+                    .closest("[data-event-id]")
+                    ?.getAttribute("data-event-id");
+                const originalEvent = ev.find(
+                    (item) => item.googleEvent.id === id
+                );
 
                 setCustomMenu({
                     visible: true,
-                    top: position.top,
-                    left: position.left,
+                    top: e.pageY,
+                    left: e.pageX,
                     eventId: id,
+                    team: originalEvent?.team_slug || selectedTeams, // Capture the team here
                 });
             }
         };
@@ -171,35 +178,35 @@ export default function index({
                                 <select
                                     className="w-full px-5 py-2 rounded-lg bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-all"
                                     value={selectedTeams}
-                                    onChange={(e) =>{
-                                            console.log(e.target.value);
+                                    onChange={(e) => {
+                                        console.log(e.target.value);
 
-                                        router.get(route("calendar.index"), {
-                                            team: e.target.value,
-                                        }, {
-                                            replace: true,
-                                        })}
-                                    }
+                                        router.get(
+                                            route("calendar.index"),
+                                            {
+                                                team: e.target.value,
+                                            },
+                                            {
+                                                replace: true,
+                                            }
+                                        );
+                                    }}
                                 >
-                                        <option value="proinsight">
-                                            All Teams
-                                        </option>
-                                        <option value="it">
-                                            IT
-                                        </option>
-                                        <option value="media">
-                                            Media
-                                        </option>
-                                        <option value="creative">
-                                            Creative
-                                        </option>
+                                    <option value="proinsight">
+                                        All Teams
+                                    </option>
+                                    <option value="it">IT</option>
+                                    <option value="media">Media</option>
+                                    <option value="creative">Creative</option>
                                 </select>
                             </div>
                         </div>
                         <div>
                             <div className=" my-5 w-full flex">
                                 <Link
-                                    href={route("calendar.create", { team: selectedTeams })}
+                                    href={route("calendar.create", {
+                                        team: selectedTeams,
+                                    })}
                                     className="px-5 py-4 mb-10 bg-yellow-500 text-black rounded-lg"
                                 >
                                     + Add Event
@@ -237,10 +244,10 @@ export default function index({
                         <ul className=" flex flex-col p-5">
                             <Link
                                 id="edit"
-                                href={route(
-                                    "calendar.edit",
-                                    customMenu.eventId
-                                )}
+                                href={route("calendar.edit", {
+                                    calendar: customMenu.eventId,
+                                    team: customMenu.team,
+                                })}
                                 className="text-left ml-2 text-sm pr-3 pb-2 w-fit hover:text-green-600"
                             >
                                 Edit
@@ -255,12 +262,11 @@ export default function index({
                                                 customMenu.eventId
                                             ),
                                             {
+                                                data: { team: customMenu.team },
                                                 onSuccess: () => {
-                                                    alert("Calendar deleted!"),
-                                                        window.location.reload();
+                                                    window.location.reload();
+                                                    alert("Event deleted!");
                                                 },
-                                                onError: (errors) =>
-                                                    console.error(errors),
                                             }
                                         );
                                     }
@@ -273,7 +279,7 @@ export default function index({
                     </div>
                 )}
             </div>
-            <div className="mt-10 overflow-x-auto w-full">
+            <div className="mt-10 overflow-x-auto w-full ">
                 <table className="w-full pb-8 border-collapse">
                     <thead>
                         <tr className="border-b-2 border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-300">
@@ -295,42 +301,51 @@ export default function index({
                         </tr>
                     </thead>
                     <tbody>
-                        {ev.map((e) => (
-                            <tr className=" border-b relative bg-gray-100 border-black dark:border-gray-300 dark:bg-gray-800 hover:bg-gray-50 hover:dark:bg-gray-700">
-                                <td className="text-black dark:text-white">
-                                    {number_event++}
-                                </td>
-                                <td>{e?.googleEvent.summary}</td>
-                                <td>
-                                    {new Date(
-                                        e?.googleEvent.start.dateTime
-                                    ).toLocaleDateString("id-ID", {
-                                        day: "2-digit",
-                                        month: "short",
-                                        year: "numeric",
-                                        timeZone: "Asia/Jakarta",
-                                    })}{" "}
-                                    -{" "}
-                                    {new Date(
-                                        e?.googleEvent.start.dateTime
-                                    ).toLocaleDateString("id-ID", {
-                                        day: "2-digit",
-                                        month: "short",
-                                        year: "numeric",
-                                        timeZone: "Asia/Jakarta",
-                                    })}
-                                </td>
-                                <td>
-                                    {e?.googleEvent.start.dateTime?.slice(
-                                        11,
-                                        16
-                                    )}{" "}
-                                    -{" "}
-                                    {e?.googleEvent.end.dateTime?.slice(11, 16)}
-                                </td>
-                                <td>{e?.googleEvent.description}</td>
-                            </tr>
-                        ))}
+                        {[...ev]
+                            .sort(
+                                (a, b) =>
+                                    new Date(b.googleEvent.start.dateTime) -
+                                    new Date(a.googleEvent.start.dateTime)
+                            )
+                            .map((e) => (
+                                <tr className=" border-b relative bg-gray-100 border-black dark:border-gray-300 dark:bg-gray-800 hover:bg-gray-50 hover:dark:bg-gray-700">
+                                    <td className="text-black dark:text-white">
+                                        {number_event++}
+                                    </td>
+                                    <td>{e?.googleEvent.summary}</td>
+                                    <td>
+                                        {new Date(
+                                            e?.googleEvent.start.dateTime
+                                        ).toLocaleDateString("id-ID", {
+                                            day: "2-digit",
+                                            month: "short",
+                                            year: "numeric",
+                                            timeZone: "Asia/Jakarta",
+                                        })}{" "}
+                                        -{" "}
+                                        {new Date(
+                                            e?.googleEvent.start.dateTime
+                                        ).toLocaleDateString("id-ID", {
+                                            day: "2-digit",
+                                            month: "short",
+                                            year: "numeric",
+                                            timeZone: "Asia/Jakarta",
+                                        })}
+                                    </td>
+                                    <td>
+                                        {e?.googleEvent.start.dateTime?.slice(
+                                            11,
+                                            16
+                                        )}{" "}
+                                        -{" "}
+                                        {e?.googleEvent.end.dateTime?.slice(
+                                            11,
+                                            16
+                                        )}
+                                    </td>
+                                    <td>{e?.googleEvent.description}</td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>

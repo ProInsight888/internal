@@ -134,7 +134,7 @@ class ItController extends Controller
 
         $date = Carbon::now('Asia/Jakarta');
 
-        
+
         $validated = $request->validate([
             'task_title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -145,7 +145,7 @@ class ItController extends Controller
             'category' => 'nullable|string',
             'deadline' => 'nullable|date',
         ]);
-        
+
         $uuid = $it->uuid;
 
 
@@ -157,7 +157,7 @@ class ItController extends Controller
             'date' => $date->format('d F Y'),
             'time' => $date->format('H:i'),
         ]);
-        
+
         $update_task = it::where('uuid', $uuid);
         $update_task->update($validated);
         // dd($update_task->update($validated));

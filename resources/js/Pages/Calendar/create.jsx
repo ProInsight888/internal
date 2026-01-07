@@ -6,8 +6,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { Fragment, useState, useRef, useEffect } from "react";
 
-export default function create({}) {
+export default function create({ selectedTeams }) {
     const { data, setData, post, processing, errors, reset } = useForm({
+        team: selectedTeams,
         calendar_id: "",
         title: "",
         start: "",

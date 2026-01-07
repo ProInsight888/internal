@@ -325,4 +325,4 @@ class NewClientController extends Controller
 
         return Redirect::to('new_client')->with('deleted', 'Client Deleted');
     }
-} 
+}

@@ -76,9 +76,9 @@ export default function index({ event }) {
                 </>
             }
         >
-            <div className="min-h-screen bg-gradient-to-br from-[#121216] to-[#1a1a20] py-8 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 to-[#1a1a20] py-8 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-4xl mx-auto">
-                    <div className="bg-[#121216] border border-[#CFB14F]/20 rounded-xl shadow-lg overflow-hidden">
+                    <div className="bg-[#1f2937] border border-[#CFB14F]/20 rounded-xl shadow-lg overflow-hidden">
                         <div className="px-6 py-5 bg-[#121216] border-b border-[#CFB14F]/10">
                             <Head title="Create Event" />
                             <h2 className="text-3xl font-bold text-[#CFB14F]">

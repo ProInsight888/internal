@@ -244,9 +244,6 @@ export default function edit({ clients }) {
                                         />
                                     </div>
 
-                                    
-
-                                    
                                 </div>
                                 {/* Action Buttons */}
                                 <div className="flex items-center justify-between pt-6 mt-8 border-t border-gray-200 dark:border-gray-700">

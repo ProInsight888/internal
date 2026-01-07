@@ -22,9 +22,13 @@ class GoogleCalendarController extends Controller
 
         if ($team === 'proinsight') {
             // ALL calendars
-            foreach ($calendars as $calendarId) {
+            foreach ($calendars as $teamSlug => $calendarId) {
                 $events = $events->merge(
                     Event::get(Carbon::now()->subYears(10), null, [], $calendarId)
+                        ->map(function ($event) use ($teamSlug) {
+                            $event->team_slug = $teamSlug;
+                            return $event;
+                        })
                 );
             }
         } else {
@@ -50,59 +54,51 @@ class GoogleCalendarController extends Controller
         ]);
     }
 
-
     public function create(Request $request)
     {
         // $schedule = kalender::all();
         return inertia('Calendar/create', [
-            // 'schedule' => $schedule,
             'selectedTeams' => $request->query("team", "proinsight"),
         ]);
     }
 
     public function store(Request $request)
     {
-        // dd($request);
-        $dateStart = $request->start;
-        $timeStart = $request->start_time;
-        $dateEnd = $request->end;
-        $timeEnd = $request->end_time;
+        $currentView = $request->team; // what user is viewing
 
-        $calendarId = config("google-calendar.calendars.{$request->team}");
+        $storeTeam = $currentView === 'proinsight'
+            ? 'it'
+            : $currentView;
 
-        $event = new Event;
+        $calendarId = config("google-calendar.calendars.{$storeTeam}");
+        abort_unless($calendarId, 404);
 
         $timezone = 'Asia/Jakarta';
 
-        $event->name = $request->title;
-        $event->startDateTime = Carbon::parse("{$dateStart} {$timeStart}", $timezone);
-        $event->endDateTime = Carbon::parse("{$dateEnd} {$timeEnd}", $timezone);
-        $event->description = $request->description;
-        // dd($request->$calendarId);
-        // dd($event->startDateTime);
-        // dd($event->endDateTime);
-        // dd($calendarId);
-        // Gunakan static method `create()` dengan parameter kedua untuk calendarId
         Event::create([
             'name' => $request->title,
-            'startDateTime' => Carbon::parse("{$dateStart} {$timeStart}", 'Asia/Jakarta'),
-            'endDateTime' => Carbon::parse("{$dateEnd} {$timeEnd}", 'Asia/Jakarta'),
+            'startDateTime' => Carbon::parse(
+                "{$request->start} {$request->start_time}",
+                $timezone
+            ),
+            'endDateTime' => Carbon::parse(
+                "{$request->end} {$request->end_time}",
+                $timezone
+            ),
             'description' => $request->description,
         ], $calendarId);
 
-        $user = Auth::user();
-
-        $date = Carbon::now('Asia/Jakarta');
-
         audit::create([
             'action' => 'Created',
-            'change_section' => "Add New Event.",
-            'created_by' => $user->name,
-            'date' => $date->format('d F Y'),
-            'time' => $date->format('H:i'),
+            'change_section' => "Add New Event ({$storeTeam})",
+            'created_by' => Auth::user()->name,
+            'date' => now('Asia/Jakarta')->format('d F Y'),
+            'time' => now('Asia/Jakarta')->format('H:i'),
         ]);
 
-        return redirect()->route('calendar.index')->with('success', 'Event Noted!');
+        return redirect()
+            ->route('calendar.index', ['team' => $currentView])
+            ->with('success', 'Event Noted!');
     }
 
     public function show($calendar)
@@ -117,6 +113,24 @@ class GoogleCalendarController extends Controller
         ]);;
     }
 
+    private function findEventInAnyCalendar(string $eventId): array
+    {
+        $calendars = config('google-calendar.calendars');
+
+        foreach ($calendars as $team => $calendarId) {
+            try {
+                $event = Event::find($eventId, $calendarId);
+                if ($event) {
+                    return [$event, $team, $calendarId];
+                }
+            } catch (\Exception $e) {
+                // Ignore and continue
+            }
+        }
+
+        abort(404, 'Event not found in any calendar');
+    }
+
 
     private function resolveCalendarId(string $team): string
     {
@@ -127,100 +141,63 @@ class GoogleCalendarController extends Controller
         return $calendars[$team];
     }
 
-
-    public function edit(Request $request, $calendar)
+    public function edit(Request $request, $id)
     {
-        $calendarId = $this->resolveCalendarId($request->team);
-        // dd($calendarId, $calendar);
-        $events = Event::get(Carbon::now()->subYears(10), null, [], $calendarId);
-
-        // Find the event by ID
-        $selectedEvent = null;
-        foreach ($events as $event) {
-            if ($event->googleEvent->id === $calendar) {
-                $selectedEvent = $event;
-                break;
-            }
-        }
-
-        if (!$selectedEvent) {
-            return abort(404, 'Event not found in this calendar');
-        }
+        [$event, $team] = $this->findEventInAnyCalendar($id);
 
         return inertia('Calendar/edit', [
-            'event' => $selectedEvent,
+            'event' => $event,
+            'team' => $team, // real team
         ]);
     }
 
+
     public function update(Request $request, $id)
     {
+        [$event, $team, $calendarId] = $this->findEventInAnyCalendar($id);
 
-        // $calendarId = $this->resolveCalendarId($calendar);
-        $calendarId = config("google-calendar.calendars.{$request->team}");
-        
-        // dd($request, $id);
-
-        // Fetch the event from Google Calendar by ID + calendarId
-        $event = Event::find($id, $calendarId); // ✅ CORRECT way to fetch existing event
-
-        $dateStart = $request->start;
-        $timeStart = $request->start_time;
-        $dateEnd = $request->end;
-        $timeEnd = $request->end_time;
-
-        if (!$event) {
-            return back()->withErrors(['event' => 'Event not found']);
-        }
         $timezone = 'Asia/Jakarta';
 
-        // Update fields
         $event->name = $request->title;
-        $event->startDateTime = Carbon::parse("{$request->start} {$request->start_time}", $timezone);
-        $event->endDateTime = Carbon::parse("{$request->end} {$request->end_time}", $timezone);
+        $event->startDateTime = Carbon::parse(
+            "{$request->start} {$request->start_time}",
+            $timezone
+        );
+        $event->endDateTime = Carbon::parse(
+            "{$request->end} {$request->end_time}",
+            $timezone
+        );
         $event->description = $request->description;
 
-        $event->save(); // ✅ Save back to Google Calendar
-
-        $user = Auth::user();
-
-        $date = Carbon::now('Asia/Jakarta');
+        $event->save();
 
         audit::create([
             'action' => 'Updated',
-            'change_section' => "Updated A Event.",
-            'created_by' => $user->name,
-            'date' => $date->format('d F Y'),
-            'time' => $date->format('H:i'),
+            'change_section' => "Updated Event ({$team})",
+            'created_by' => Auth::user()->name,
+            'date' => now('Asia/Jakarta')->format('d F Y'),
+            'time' => now('Asia/Jakarta')->format('H:i'),
         ]);
 
         return redirect()->route('calendar.index', ['team' => 'proinsight']);
     }
 
-
-
     public function destroy(Request $request, $eventId)
     {
-        $calendarId = config("google-calendar.calendars.{$request->team}");
-
-        abort_unless($calendarId, 404);
-
-        $event = Event::find($eventId, $calendarId);
-
-        abort_unless($event, 404);
+        [$event, $team] = $this->findEventInAnyCalendar($eventId);
 
         $event->delete();
 
         audit::create([
             'action' => 'Deleted',
-            'change_section' => "Deleted an Event.",
+            'change_section' => "Deleted Event ({$team})",
             'created_by' => Auth::user()->name,
             'date' => now('Asia/Jakarta')->format('d F Y'),
             'time' => now('Asia/Jakarta')->format('H:i'),
         ]);
 
         return redirect()
-            ->route('calendar.index', ['team' => $request->team])
+            ->route('calendar.index', ['team' => 'proinsight'])
             ->with('deleted', 'Event deleted!');
     }
 }
-

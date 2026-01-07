@@ -110,9 +110,14 @@ CALENDAR DARK MODE
     color: #f1f5f9 !important;
 }
 
-.dark .sx__calendar-header {
+.dark .sx__date-grid-cell {
     background-color: #1e293b !important;
-    border-bottom: 1px solid #334155 !important;
+    border: 1px solid #334155 !important;
+    color: #e2e8f0 !important;
+}
+
+.dark .sx__date-grid{
+    background-color: #1e293b !important;
 }
 
 .dark .sx__today-button {
